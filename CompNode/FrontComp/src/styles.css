@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+/* *Añadir aqui los estilos globales (bootstrap por ejemplo) */
+/* Bootstrap */
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+.main {
+	/* Si la navbar es fixed-top */
+	margin-top: 72px;
+}
