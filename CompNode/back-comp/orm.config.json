@@ -1,0 +1,24 @@
+{
+	"type": "postgres",
+	"host": "youtDbHost",
+	"port": 5433,
+	"username": "postgres",
+	"password": "yourDbPassword",
+	"database": "node-competencias",
+	"synchronize": true,
+	"logging": false,
+	"entities": [
+		"src/entity/**/*.entity{.ts,.js}"
+	],
+	"migrations": [
+		"src/migration/**/*.ts"
+	],
+	"subscribers": [
+		"src/subscriber/**/*.ts"
+	],
+	"cli": {
+		"entitiesDir": "src/entity",
+		"migrationsDir": "src/migration",
+		"subscribersDir": "src/subscriber"
+	}
+}
