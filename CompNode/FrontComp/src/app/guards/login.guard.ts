@@ -7,20 +7,19 @@ import { IJwtToken } from '../modules/auth/JWTlocal.interface';
 @Injectable()
 export class LoginGuard implements CanLoad {
 	//En caso de usar una ruta varias veces guardarla en una variable, si son mas en un objeto.
-	loginRoute = '/auth/login';
+	static loginRoute = '/auth/login';
 
 	constructor(private jwtService: JwtHelperService, private router: Router) {}
 
 	canLoad(route: Route): boolean {
 		const token: string = localStorage.getItem(JWT_NAME)!;
-		console.log(route.path);
+
 		/**Redirige al usuario al login, añadiendo como parametro la url solicitada para poder volver al logarse
-		 * @see https://bit.ly/3qfwR4V */
+		 * @see [Tutorial seguido](https://bit.ly/3qfwR4V) */
 		const toLogin = () =>
-			this.router.navigate([this.loginRoute], {
+			this.router.navigate([LoginGuard.loginRoute], {
 				queryParams: { returnUrl: route.path },
 			});
-
 		if (!route.data!.roles) {
 			return true;
 		}

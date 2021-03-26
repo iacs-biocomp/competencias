@@ -3,11 +3,9 @@ import {
 	Column,
 	BaseEntity,
 	OneToMany,
-	PrimaryColumn,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Ev } from './Ev.entity';
-import { PeriodoTrab } from './PeriodoTrab.entity';
 
 @Entity()
 export class EvModel extends BaseEntity {
@@ -18,5 +16,5 @@ export class EvModel extends BaseEntity {
 	description: string;
 
 	@OneToMany((type) => Ev, (ev) => ev.model)
-	periodosTrab: Ev[];
+	evs: Ev[];
 }

@@ -2,11 +2,12 @@ import {
 	BaseEntity,
 	Entity,
 	Column,
-	CreateDateColumn,
-	UpdateDateColumn,
 	OneToMany,
 	PrimaryColumn,
+	OneToOne,
+	JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 import { PeriodoTrab } from './PeriodoTrab.entity';
 
 @Entity('trabajador')
@@ -22,11 +23,17 @@ export class Trabajador extends BaseEntity {
 
 	@Column({ type: 'varchar', length: 50, nullable: false })
 	area: string;
+
 	@Column({ type: 'varchar', length: 50, nullable: false })
 	unidad: string;
+
 	@Column({ type: 'varchar', length: 50, nullable: true })
 	departamento: string;
 
 	@OneToMany((type) => PeriodoTrab, (periodoTrab) => periodoTrab.trabajador)
 	periodos: PeriodoTrab[];
+
+	@OneToOne((type) => User, (usr) => usr.trabajador)
+	@JoinColumn()
+	user: User;
 }

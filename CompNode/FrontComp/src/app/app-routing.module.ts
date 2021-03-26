@@ -4,24 +4,31 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AppComponent } from './app.component';
 import { LoginGuard } from './guards/login.guard';
 import { Error404Component } from './modules/app/error404/error404.component';
+// export interface RouteData {
+// 	roles: 'PUBLIC' | 'ADMIN ';
+// 	ShowSideBar: boolean;
+// }
 
+// interface MyRoutes extends Route {
+// 	data?: RouteData;
+// }
 const routes: Routes = [
-	{
-		path: '',
-		loadChildren: () =>
-			import('./modules/public/public.module').then((mod) => mod.PublicModule),
-	},
-	{
-		path: 'catalog',
-		loadChildren: () =>
-			import('./modules/catalogs/catalog.module').then(
-				(mod) => mod.CatalogModule
-			),
-	},
+	//!La ruta con path = '' va la ultima, Explicación aqui https://is.gd/qRxAtW (Sino el guard hace loop infinito)
 	{
 		path: 'auth',
 		loadChildren: () =>
 			import('./modules/auth/auth.module').then((mod) => mod.AuthModule),
+	},
+	{
+		path: 'catalog',
+		canLoad: [LoginGuard],
+		data: {
+			roles: ['PUBLIC'],
+		},
+		loadChildren: () =>
+			import('./modules/catalogs/catalog.module').then(
+				(mod) => mod.CatalogModule
+			),
 	},
 	{
 		path: 'activity',
@@ -36,6 +43,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'data_req',
+		canLoad: [LoginGuard],
 		loadChildren: () =>
 			import('./modules/data-req/data-req.module').then(
 				(mod) => mod.DataReqModule
@@ -44,6 +52,7 @@ const routes: Routes = [
 	{
 		//?: Nombre correcto?
 		path: 'projects',
+		canLoad: [LoginGuard],
 		loadChildren: () =>
 			import('./modules/current-projects/current-projects.module').then(
 				(mod) => mod.CurrentProjectsModule
@@ -52,6 +61,7 @@ const routes: Routes = [
 	{
 		//?: Nombre correcto?
 		path: 'about',
+		canLoad: [LoginGuard],
 		loadChildren: () =>
 			import('./modules/about-page/about-page.module').then(
 				(mod) => mod.AboutPageModule
@@ -69,6 +79,15 @@ const routes: Routes = [
 			import('./modules/sede-electronica/sede-electronica.module').then(
 				(mod) => mod.SedeElectronicaModule
 			),
+	},
+	{
+		path: '',
+		// canLoad: [LoginGuard],
+		// data: {
+		// 	roles: ['ADMIN'],
+		// },
+		loadChildren: () =>
+			import('./modules/public/public.module').then((mod) => mod.PublicModule),
 	},
 	//*Redireccionar a public en caso de ruta erronea
 	/* {

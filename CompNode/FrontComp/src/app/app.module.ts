@@ -12,7 +12,6 @@ import { Error404Component } from './modules/app/error404/error404.component';
 //Usado para tener fechas y monedas en castellano
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
-import { KeycloakService } from 'keycloak-angular';
 registerLocaleData(localeEs);
 
 // function initializeKeycloak(keycloak: KeycloakService) {

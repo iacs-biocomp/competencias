@@ -6,7 +6,6 @@ import {
 	ManyToOne,
 } from 'typeorm';
 import { EvModel } from './EvModel.entity';
-import { PeriodoTrab } from './PeriodoTrab.entity';
 
 @Entity()
 export class Ev extends BaseEntity {

@@ -1,0 +1,10 @@
+PG_HOST=yourDbHost
+PG_PORT=5433
+PG_USER=yourDbUser
+PG_PASS=yourDbPassword
+PGDB_NAME=yourDbName
+POSTGRES_PORT_EXTERNAL=5432
+PG_SYNC=true
+JWT_SECRET=secretkey
+JWT_NAME=login-token
+APP_PORT=3000
