@@ -15,7 +15,7 @@ export class AuthController {
 	) {}
 
 	@Post('signup')
-	@UsePipes(ValidationPipe)
+	// @UsePipes(ValidationPipe)
 	async signup(@Body() signupDto: SignupDto) {
 		// return false;
 		return await this._authService.signup(signupDto);

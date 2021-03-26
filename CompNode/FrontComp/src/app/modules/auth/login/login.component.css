@@ -1,47 +1,39 @@
 .auth-page {
-  min-height: 100vh;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+	min-height: 100vh;
+	background: #09548d;
+	background-size: 400% 400%;
 }
 .login-logo {
-  width: 100%;
-  max-height: 500px;
-}
-.auth-page {
-  min-height: 100vh;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+	display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+	text-align: center;
+	height: 100%;
+	max-height: 500px;
 }
 .form-control {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 #formDiv {
-  margin-top: 10px;
+	margin-top: 10px;
 }
 .titleCenter {
-  text-align: center;
+	text-align: center;
+}
+.login-banner {
+	margin-top: 2rem;
+	font-size: 2.5rem;
+	color: #fff;
+	text-align: center;
 }
 
 @media (min-width: 768px) {
-  .login-branding {
-    margin-top: 80px;
-    margin-left: 30px;
-  }
-  #formDiv {
-    margin-top: 80px;
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+	.login-branding {
+		margin-top: 80px;
+		margin-left: 30px;
+	}
+	#formDiv {
+		margin-top: 80px;
+	}
 }

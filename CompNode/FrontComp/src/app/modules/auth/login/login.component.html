@@ -1,79 +1,75 @@
 <div class="auth-page container-fluid vertical-center">
-  <div class="row justify-content-end align-items-center" style="height: 100vh">
-    <div class="col-lg-4 col-sm-12">
-      <div class="login-branding">
-        <div id="logo">
-          <a routerLink="/"
-            ><img
-              src="/../../../assets/images/logo.svg"
-              class="login-logo"
-              alt="BIGAN Investigación"
-              title="BIGAN Investigación"
-            />
-          </a>
-        </div>
-      </div>
-    </div>
-    <!-- TODO: Corregir layout del login page -->
-    <div id="formDiv" class="col-lg-6 offset-2 pe-sm-5 col-sm-12">
-      <div class="login-content">
-        <h2><strong>Bienvenido</strong>. Por favor, identifícate</h2>
+	<div class="row justify-content-end align-items-center" style="height: 100vh">
+		<div class="col-lg-4 col-sm-12">
+			<a routerLink="/">
+				<div class="login-branding">
+					<div id="logo">
+						<img
+							src="/../../../assets/images/iacsLogo.png"
+							class="login-logo"
+							alt="IACS"
+						/>
+					</div>
+				</div>
+			</a>
+		</div>
+		<!-- TODO: Corregir layout del login page -->
+		<div id="formDiv" class="col-lg-6 offset-2 pe-sm-5 col-sm-12">
+			<div class="login-content">
+				<h2><strong>Bienvenido</strong>. Por favor, identifícate</h2>
 
-        <form
-          id="formLogin"
-          name="formLogin"
-          (ngSubmit)="sendForm()"
-          [formGroup]="loginForm"
-        >
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="username"
-              placeholder="Usuario"
-              id="username"
-              size="30"
-              autocomplete="off"
-              name="username"
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              placeholder="Contraseña"
-              formControlName="password"
-              class="form-control"
-              size="30"
-              id="password"
-              name="password"
-            />
-          </div>
+				<form
+					id="formLogin"
+					name="formLogin"
+					(ngSubmit)="sendForm()"
+					[formGroup]="loginForm"
+				>
+					<div class="form-group">
+						<input
+							type="text"
+							class="form-control"
+							formControlName="username"
+							placeholder="Usuario"
+							id="username"
+							size="30"
+							autocomplete="off"
+							name="username"
+						/>
+					</div>
+					<div class="form-group">
+						<input
+							type="password"
+							placeholder="Contraseña"
+							formControlName="password"
+							class="form-control"
+							size="30"
+							id="password"
+							name="password"
+						/>
+					</div>
 
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">
-              Acceder
-            </button>
-          </div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-block">
+							Acceder
+						</button>
+					</div>
+					<div id="banner">
+						<h2 class="login-banner">
+							<strong id="bannertext"> Evaluación en competencias </strong>
+						</h2>
+					</div>
 
-          <!--	// Recover password -->
-          <!-- <p class="text-center">
+					<!--	// Recover password -->
+					<!-- <p class="text-center">
             <a href="forgot-password.html">¿Olvidaste tu contraseña?</a>
           </p>
           <p class="text-center">
             <a href="newformSolicitud">¿Quiere registrarse?</a>
           </p> -->
 
-          <!--  // Acceso mediante certificado digital -->
-        </form>
-      </div>
-    </div>
-    <div id="banner">
-      <h2 class="login-banner">
-        <strong id="bannertext">
-          BIGAN Los datos sanitarios de Aragón al servicio de la investigación
-          biomédica
-        </strong>
-      </h2>
-    </div>
-  </div>
+					<!--  // Acceso mediante certificado digital -->
+				</form>
+			</div>
+		</div>
+	</div>
 </div>

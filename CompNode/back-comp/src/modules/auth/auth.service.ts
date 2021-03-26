@@ -60,8 +60,12 @@ export class AuthService {
 		if (user.status != 'ACTIVE') {
 			throw new UnauthorizedException('User not verified');
 		}
-		const isMatch = await compare(password, user.password);
-
+		var isMatch;
+		try {
+			isMatch = await compare(password, user.password);
+		} catch (error) {
+			isMatch = false;
+		}
 		if (!isMatch) {
 			throw new UnauthorizedException(errMsg);
 		}
