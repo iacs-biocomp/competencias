@@ -22,6 +22,10 @@ const routes: Routes = [
 	{
 		//?: Nombre correcto?
 		path: 'usuario',
+		canLoad: [LoginGuard],
+		data: {
+			roles: ['PUBLIC'],
+		},
 		loadChildren: () =>
 			import('./modules/usuario/usuario.module').then(
 				(mod) => mod.UsuarioModule
@@ -40,7 +44,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'resultados',
-		// canLoad: [LoginGuard],
+		canLoad: [LoginGuard],
 		data: {
 			roles: ['PUBLIC'],
 		},
@@ -51,7 +55,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'evaluaciones',
-		// canLoad: [LoginGuard],
+		canLoad: [LoginGuard],
 		data: {
 			roles: ['PUBLIC'],
 		},
@@ -84,15 +88,6 @@ const routes: Routes = [
 	},
 	{
 		//?: Nombre correcto?
-		path: 'projects',
-		canLoad: [LoginGuard],
-		loadChildren: () =>
-			import('./modules/current-projects/current-projects.module').then(
-				(mod) => mod.CurrentProjectsModule
-			),
-	},
-	{
-		//?: Nombre correcto?
 		path: 'about',
 		canLoad: [LoginGuard],
 		loadChildren: () =>
@@ -115,10 +110,10 @@ const routes: Routes = [
 	},
 	{
 		path: '',
-		// canLoad: [LoginGuard],
-		// data: {
-		// 	roles: ['ADMIN'],
-		// },
+		canLoad: [LoginGuard],
+		data: {
+			roles: ['PUBLIC'],
+		},
 		loadChildren: () =>
 			import('./modules/public/public.module').then((mod) => mod.PublicModule),
 	},
