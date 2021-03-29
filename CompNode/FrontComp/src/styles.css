@@ -2,6 +2,11 @@
 /* Bootstrap */
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 .main {
-	/* Si la navbar es fixed-top */
-	margin-top: 72px;
+	margin-left: 240px;
+}
+
+@media (max-width: 768px) {
+	.main {
+		margin-left: 0px;
+	}
 }
