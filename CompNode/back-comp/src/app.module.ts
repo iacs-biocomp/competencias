@@ -14,15 +14,17 @@ import { DatabaseModule } from './database/database.module';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { FrontendMiddleware } from './middlewares/frontend.middleware';
 import { UserModule } from './modules/users/user.module';
+import { EvaluacionesModule } from './modules/evaluaciones/evaluaciones.module';
 
 @Module({
 	imports: [
 		UserModule,
 		DatabaseModule,
 		ServeStaticModule.forRoot({
-			rootPath: join(__dirname, '..', 'ngInves'),
+			rootPath: join(__dirname, '..', 'ngDist'),
 			exclude: ['/nest*'],
 		}),
+		EvaluacionesModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AuthGuard, ConfigService],

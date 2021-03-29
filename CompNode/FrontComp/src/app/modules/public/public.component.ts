@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { jsonBackend } from '../../../../../interfaces/user';
 
 @Component({
 	selector: 'public-component',

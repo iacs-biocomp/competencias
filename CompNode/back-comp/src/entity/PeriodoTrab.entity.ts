@@ -15,15 +15,6 @@ export class PeriodoTrab extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
-	firstName: string;
-
-	@Column()
-	lastName: string;
-
-	@Column()
-	age: number;
-
 	@ManyToOne((type) => Trabajador, (trabajador) => trabajador.periodos)
 	trabajador: Trabajador;
 
@@ -35,4 +26,7 @@ export class PeriodoTrab extends BaseEntity {
 
 	@CreateDateColumn({ type: 'timestamp', name: 'created_at' })
 	createdAt: Date;
+
+	@Column({ type: 'timestamp', nullable: true })
+	endAt: Date;
 }

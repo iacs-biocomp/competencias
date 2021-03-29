@@ -1,0 +1,9 @@
+<p>
+	Aqui se pueden mostrar los datos del usuario recogidos del backend, por
+	ejemplo:
+</p>
+<p>Hola mi nombre de usuario es: {{ userData.name }}</p>
+<p>
+	Mis roles son:
+	<span *ngFor="let role of userData.roles">{{ role.name }}</span>
+</p>

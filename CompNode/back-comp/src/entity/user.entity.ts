@@ -51,7 +51,7 @@ export class User extends BaseEntity {
 	 * @param usr User from signupDto, must ve valid
 	 */
 	public static buildFromRegister(usr: SignupDto): User {
-		let user = new User();
+		var user = new User();
 		user.username = usr.username;
 		user.password = usr.password;
 		user.name = usr.name;

@@ -20,8 +20,16 @@ const routes: Routes = [
 			import('./modules/auth/auth.module').then((mod) => mod.AuthModule),
 	},
 	{
+		//?: Nombre correcto?
+		path: 'usuario',
+		loadChildren: () =>
+			import('./modules/usuario/usuario.module').then(
+				(mod) => mod.UsuarioModule
+			),
+	},
+	{
 		path: 'competencias',
-		// canLoad: [LoginGuard],
+		canLoad: [LoginGuard],
 		data: {
 			roles: ['PUBLIC'],
 		},
