@@ -1,3 +1,27 @@
-.body{
-	margin: 1em, red, solid;
+.side_menu{
+	background-color: #9BE7F5;
+
+}
+
+
+#logo{
+	margin: 5%;
+}
+
+.list_load{
+	list-style-type: none; /* Remove bullets */
+	text-align: left;
+
+
+}
+
+.list_item{
+  font-size: 20px;
+
+}
+
+
+.link{
+	text-decoration: none; /* Remove underline */
+
 }
