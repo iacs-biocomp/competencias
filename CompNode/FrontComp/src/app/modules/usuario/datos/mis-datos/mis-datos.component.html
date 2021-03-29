@@ -1,9 +1,28 @@
-<p>
-	Aqui se pueden mostrar los datos del usuario recogidos del backend, por
-	ejemplo:
-</p>
-<p>Hola mi nombre de usuario es: {{ userData.name }}</p>
-<p>
-	Mis roles son:
-	<span *ngFor="let role of userData.roles">{{ role.name }}</span>
-</p>
+<div class="col-md-12 col-center">
+	<div class="panel panel-default">
+		<div class="panel-heading clearfix">
+			<h1>Mis Datos</h1>
+		</div>
+		<div class="panel-body">
+			<h3><label class="col-sm-4 control-label">Nombre:</label>
+				{{ userData.name }}
+			</h3>
+			<h3><label class="col-sm-4 control-label">Apellidos:</label>
+				{{ userData.lastname }}
+			</h3>
+			<h3><label class="col-sm-4 control-label">Email:</label>
+				{{ userData.email }}
+			</h3>
+			<h3><label class="col-sm-4 control-label">Nombre:</label>
+				{{ userData.name }}
+			</h3>
+			<h3><label class="col-sm-4 control-label">Status:</label>
+				{{ userData.status }}
+			</h3>
+			<h3><label class="col-sm-4 control-label">Mis roles son:</label>
+				<span *ngFor="let role of userData.roles">{{ role.name }}</span>
+			</h3>
+		</div>
+
+
+
