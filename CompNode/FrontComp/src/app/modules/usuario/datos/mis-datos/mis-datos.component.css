@@ -11,7 +11,7 @@
 }
 
 .col-md-12 {
-	width: 100%;
+	width: 95%;
 }
 
 .col-md-12, .col-sm-4{
@@ -22,27 +22,23 @@
 }
 
 .panel-default {
-	border-color: #ddd;
+	border-color: rgb(149, 231, 241);
 }
 
 .panel {
 	margin-bottom: 20px;
-	background-color: rgba(187, 243, 240, 0.534);
-	border: 1px solid transparent;
-	border-top-color: transparent;
-	border-right-color: transparent;
-	border-bottom-color: transparent;
-	border-left-color: transparent;
+	background-color: rgba(187, 243, 240, 0.150);
+	border: 1px solid #09548D;
 	border-radius: 4px;
 	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
-	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	box-shadow: 15px 15px rgba(0,0,0,.05);
 	margin-bottom: 25px;
 }
 
 .panel-default > .panel-heading {
 	color: #505050;
 	background-color: #fff;
-	border-color: #ddd;
+	border-color: #09548D;
 }
 
 .panel-heading {
@@ -80,6 +76,7 @@ h1,h3{
 	font-weight: 300;
 	font-family: "Source Sans Pro", sans-serif;
 	margin: 0 0 15px;
+
 }
 
 .h1, .h3{
@@ -100,8 +97,11 @@ h3 {
 }
 
 h1, h3{
-	font-weight: 300;
 	font-family: "Source Sans Pro", sans-serif;
 	margin: 0 0 15px;
   margin-bottom: 15px;
+}
+
+.control-label{
+	font-weight: bold;
 }
