@@ -1,27 +1,45 @@
-.side_menu{
-	background-color: #9BE7F5;
-
+body{
+	font-family: Arial, sans-serif;
 }
 
 
+.side_menu{
+	background-color: #09548D;
+	position: fixed;
+	width: 280px;
+	height: 100%;
+}
+
 #logo{
-	margin: 5%;
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+	border: 0;
 }
 
 .list_load{
 	list-style-type: none; /* Remove bullets */
-	text-align: left;
-
-
 }
 
-.list_item{
-  font-size: 20px;
-
-}
 
 
 .link{
 	text-decoration: none; /* Remove underline */
-
+	list-style-type: outside none none;
+  content: "\e75e";
+	display: inline-block;
+	float: right;
+	font-family: "entypo";
+	font-size: 15px;
+	margin-left: 10px;
+	position: relative;
+	-webkit-transition: all 300ms ease-in-out;
+	-o-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+	font-weight: normal;
+	color: #ebebeb;
 }
+
+
+
+
