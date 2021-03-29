@@ -1,61 +1,141 @@
-<div class="side_menu">
-	<div class="burger_box">
-		<div class="menu-icon-container">
-			<a routerLink="#" class="menu-icon js-menu_toggle closed"> </a>
-
+<div class="page-sidebar">
+	<div class="sidebar-fixed">
+		<header class="site-header">
+			<div class="site-logo">
+			<a routerLink="#">
+				<img
+					src="/../../../assets/images/Biganlogo.png"
+					alt="IACS"
+				/>
+			</a>
 		</div>
-	</div>
-	<div class="col-lg-4 col-sm-12">
-		<a routerLink="/">
-			<div class="login-branding">
-				<div id="logo">
-					<img
-						src="/../../../assets/images/Biganlogo.png"
-						class="login-logo"
-						alt="IACS"
-					/>
-				</div>
-			</div>
-		</a>
-		<ul class="list_load">
-			<li class="list_item"><a routerLink="#" class="link">Mis datos</a></li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Mis evaluadores</a>
+
+<!--ICONO BARRA DESPLEGABLE-->
+
+		<div class="sidebar-collapse hidden-xs">
+			<a class="sidebar-collapse-icon" href="#">
+				<em class="icon-menu"></em>
+			</a>
+		</div>
+		<div class="sidebar-mobile-menu visible-xs">
+			<a data-target="#side-nav" data-toggle="collapse" class="mobile-menu-icon" href="#">
+				<em class="icon-menu"></em>
+			</a>
+		</div>
+
+		</header>
+<!--/ICONO BARRA DESPLEGABLE-->
+
+		<ul id="side-nav" class="main-menu navbar-collapse collapse">
+			<li id="1000" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Mis datos</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Mis supervisados</a>
+			<li id="1001" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Mis evaluadores</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="evaluaciones" class="link">Mis evaluaciones</a>
+			<li id="1002" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Mis supervisados</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="resultados" class="link">Mis resultados</a>
+			<li id="1003" class="has-sub ">
+				<a routerLink="evaluaciones">
+					<em class=""></em>
+					<span class="title">Mis evaluaciones</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="competencias/admin" class="link">Competencias</a>
+			<li id="1004" class="has-sub ">
+				<a routerLink="resultados">
+					<em class=""></em>
+					<span class="title">Mis resultados</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Niveles de comportamiento</a>
+			<li id="1005" class="has-sub ">
+				<a routerLink="competencias/admin">
+					<em class=""></em>
+					<span class="title">Competencias</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Comportamientos</a>
+			<li id="1006" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Niveles de comportamiento</span>
+				</a>
 			</li>
-			<li class="list_item"><a routerLink="#" class="link">Trabajadores</a></li>
-			<li class="list_item"><a routerLink="#" class="link">Evaluaciones</a></li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Modelo competencial</a>
+			<li id="1007" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Comportamientos</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Categorias competenciales</a>
+			<li id="1008" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Trabajadores</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="competencias" class="link">Mis competencias</a>
+			<li id="1009" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Evaluaciones</span>
+				</a>
 			</li>
-			<li class="list_item">
-				<a routerLink="#" class="link">Recargar datos</a>
+			<li id="1010" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Todos trabajadores</span>
+				</a>
 			</li>
+			<li id="1011" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Comportamientos</span>
+				</a>
+			</li>
+			<li id="1012" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Todos trabajadores</span>
+				</a>
+			</li>
+			<li id="1013" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Categorias competenciales</span>
+				</a>
+			</li>
+			<li id="1014" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Categorias contractuales</span>
+				</a>
+			</li>
+			<li id="1015" class="has-sub ">
+				<a routerLink="competencias">
+					<em class=""></em>
+					<span class="title">Mis competencias</span>
+				</a>
+			</li>
+			<li id="1016" class="has-sub ">
+				<a routerLink="#">
+					<em class=""></em>
+					<span class="title">Recargar datos</span>
+				</a>
+			</li>
+
 		</ul>
 	</div>
-</div>
+	</div>
+
+
+
+
 
 
