@@ -20,6 +20,39 @@ const routes: Routes = [
 			import('./modules/auth/auth.module').then((mod) => mod.AuthModule),
 	},
 	{
+		path: 'competencias',
+		// canLoad: [LoginGuard],
+		data: {
+			roles: ['PUBLIC'],
+		},
+		loadChildren: () =>
+			import('./modules/competencias/competencias.module').then(
+				(mod) => mod.CompetenciasModule
+			),
+	},
+	{
+		path: 'resultados',
+		// canLoad: [LoginGuard],
+		data: {
+			roles: ['PUBLIC'],
+		},
+		loadChildren: () =>
+			import('./modules/resultados/resultados.module').then(
+				(mod) => mod.ResultadosModule
+			),
+	},
+	{
+		path: 'evaluaciones',
+		// canLoad: [LoginGuard],
+		data: {
+			roles: ['PUBLIC'],
+		},
+		loadChildren: () =>
+			import('./modules/evaluaciones/evaluaciones.module').then(
+				(mod) => mod.EvaluacionesModule
+			),
+	},
+	{
 		path: 'catalog',
 		canLoad: [LoginGuard],
 		data: {
@@ -39,14 +72,6 @@ const routes: Routes = [
 		loadChildren: () =>
 			import('./modules/activity/activity.module').then(
 				(mod) => mod.ActivityModule
-			),
-	},
-	{
-		path: 'data_req',
-		canLoad: [LoginGuard],
-		loadChildren: () =>
-			import('./modules/data-req/data-req.module').then(
-				(mod) => mod.DataReqModule
 			),
 	},
 	{
