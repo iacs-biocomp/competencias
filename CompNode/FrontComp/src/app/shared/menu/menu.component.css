@@ -165,3 +165,25 @@ ul.main-menu li em {
 		display: none;
 	}
 }
+
+li::before{
+	content: "\003E";
+	color: #ebebeb;
+	/*display: inline-block;*/
+	float: right;
+	font-size: 20px;
+	position: relative;
+	padding: 5;
+	margin-top: 12px;
+	margin-right: 12px;
+}
+
+.site-header::before{
+	content: "\2630";
+	color: #ebebeb;
+	float: right;
+	font-size: 20px;
+}
+
+
+
