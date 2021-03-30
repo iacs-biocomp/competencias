@@ -1,11 +1,5 @@
-import {
-	Entity,
-	Column,
-	BaseEntity,
-	OneToMany,
-	PrimaryColumn,
-	ManyToOne,
-} from 'typeorm';
+import { Entity, Column, BaseEntity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Ev } from './Ev.entity';
 import { EvModel } from './EvModel.entity';
 import { PeriodoTrab } from './PeriodoTrab.entity';
 
@@ -20,6 +14,9 @@ export class CatComp extends BaseEntity {
 	@OneToMany((type) => PeriodoTrab, (periodoTrab) => periodoTrab.catComp)
 	periodosTrab: PeriodoTrab[];
 
-	@ManyToOne((type) => EvModel, (model) => model.catComp)
+	@OneToMany((type) => EvModel, (model) => model.catComp)
 	models: EvModel[];
+
+	@OneToMany((type) => Ev, (ev) => ev.catComp)
+	evaluaciones: Ev[];
 }

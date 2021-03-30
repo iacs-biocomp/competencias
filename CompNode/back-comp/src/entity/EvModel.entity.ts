@@ -4,9 +4,12 @@ import {
 	OneToMany,
 	PrimaryGeneratedColumn,
 	ManyToOne,
+	ManyToMany,
+	JoinTable,
 } from 'typeorm';
 import { CatComp } from './CatComp.entity';
 import { Ev } from './Ev.entity';
+import { SubModel } from './SubModel.entity';
 
 @Entity()
 export class EvModel extends BaseEntity {
@@ -18,4 +21,9 @@ export class EvModel extends BaseEntity {
 
 	@ManyToOne((type) => CatComp, (cat) => cat.models)
 	catComp: CatComp;
+
+	@ManyToMany((type) => SubModel, (subModel) => subModel.modelos)
+	@JoinTable()
+	subModels: SubModel[];
+	// TODO: Elegir un nombre correcto
 }
