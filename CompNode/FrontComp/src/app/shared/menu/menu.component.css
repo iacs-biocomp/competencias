@@ -5,7 +5,13 @@
 	box-sizing: border-box;
 }
 
+.main-menu > li > a:hover {
+	background-color: #49a0e7;
+}
+.active-route{
+	background-color: #297fc5;
 
+}
 
 .page-sidebar {
 	background-color: #09548d;
@@ -166,7 +172,7 @@ ul.main-menu li em {
 	}
 }
 
-li::before{
+li::before {
 	content: "\003E";
 	color: #ebebeb;
 	/*display: inline-block;*/
@@ -178,12 +184,9 @@ li::before{
 	margin-right: 12px;
 }
 
-.site-header::before{
+.site-header::before {
 	content: "\2630";
 	color: #ebebeb;
 	float: right;
 	font-size: 20px;
 }
-
-
-

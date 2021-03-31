@@ -15,6 +15,15 @@ import { Error404Component } from './modules/app/error404/error404.component';
 const routes: Routes = [
 	//!La ruta con path = '' va la ultima, Explicación aqui https://is.gd/qRxAtW (Sino el guard hace loop infinito)
 	{
+		path: 'admin',
+		canLoad: [LoginGuard],
+		data: {
+			roles: ['ADMIN'],
+		},
+		loadChildren: () =>
+			import('./modules/admin/admin.module').then((mod) => mod.AdminModule),
+	},
+	{
 		path: 'auth',
 		loadChildren: () =>
 			import('./modules/auth/auth.module').then((mod) => mod.AuthModule),
@@ -76,37 +85,9 @@ const routes: Routes = [
 			),
 	},
 	{
-		path: 'activity',
-		canLoad: [LoginGuard],
-		data: {
-			roles: ['ADMIN'],
-		},
-		loadChildren: () =>
-			import('./modules/activity/activity.module').then(
-				(mod) => mod.ActivityModule
-			),
-	},
-	{
-		//?: Nombre correcto?
-		path: 'about',
-		canLoad: [LoginGuard],
-		loadChildren: () =>
-			import('./modules/about-page/about-page.module').then(
-				(mod) => mod.AboutPageModule
-			),
-	},
-	{
 		//?: Nombre correcto?
 		path: 'test',
 		component: AppComponent,
-	},
-	{
-		//?: Nombre correcto?
-		path: 'sede_electronica',
-		loadChildren: () =>
-			import('./modules/sede-electronica/sede-electronica.module').then(
-				(mod) => mod.SedeElectronicaModule
-			),
 	},
 	{
 		path: '',

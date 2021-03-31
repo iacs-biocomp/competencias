@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MisCompetenciasComponent } from './mis-competencias.component';
+import { CurrCompetComponent } from './curr-compet.component';
 
-describe('MisCompetenciasComponent', () => {
-  let component: MisCompetenciasComponent;
-  let fixture: ComponentFixture<MisCompetenciasComponent>;
+describe('CurrCompetComponent', () => {
+  let component: CurrCompetComponent;
+  let fixture: ComponentFixture<CurrCompetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MisCompetenciasComponent ]
+      declarations: [ CurrCompetComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MisCompetenciasComponent);
+    fixture = TestBed.createComponent(CurrCompetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

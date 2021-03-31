@@ -15,10 +15,10 @@ export class AppComponent implements OnInit {
 	ngOnInit(): void {
 		//TODO: Cambiar el 'login-token' por una variable de entorno por si en un futuro se cambia el nombre
 		const jwtLoginName = 'login-token';
-		window.onbeforeunload = () => {
-			localStorage.removeItem(jwtLoginName);
-			cookieRm(jwtLoginName);
-		};
+		// window.onbeforeunload = () => {
+		// 	localStorage.removeItem(jwtLoginName);
+		// 	cookieRm(jwtLoginName);
+		// };
 		Aos.init({
 			duration: 700,
 			once: true,

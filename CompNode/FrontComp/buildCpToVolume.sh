@@ -1,2 +1,2 @@
 ng build --prod
-cp -r dist/FrontComp /app/ngDist
+cp -r dist/FrontComp/. /app/ngDist

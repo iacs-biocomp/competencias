@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../../entity/user.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { Trabajador } from '../../entity/Trabajador.entity';
 
 @Controller('nest/users')
 export class UserController {
@@ -22,7 +22,17 @@ export class UserController {
 		const users = await this._userService.getFromUsername(username);
 		return users;
 	}
+	@Get('allinfo/:username')
+	async getAllUserInfo(
+		@Param('username') username: string,
+	): Promise<Trabajador> {
+		var worker = await Trabajador.findOne({
+			where: { user: username },
+			relations: ['superiores', 'inferiores', 'pares'],
+		});
 
+		return worker;
+	}
 	// @UseGuards(AuthGuard())
 	// @Get()
 	// async getUsers(): Promise<User[]> {
