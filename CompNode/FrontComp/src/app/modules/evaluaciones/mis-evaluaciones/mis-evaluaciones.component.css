@@ -39,6 +39,13 @@ body {
 	border-radius: 2%;
 
 }
+/*
+.card:hover{
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+	background: linear-gradient(135deg, #e2a9e5 15%,#2b94e5 100%);
+	color: white;
+}
+*/
 
 .card:hover{
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -69,11 +76,12 @@ h1 {
 	width: 50%;
 	text-align: center;
 	margin: auto;
-
-
+	color: #09548D;
 }
 
 .btn:hover{
-	background-color: #09548D;
+	background-color: #2b94e5;
 	color: white;
+
 }
+
