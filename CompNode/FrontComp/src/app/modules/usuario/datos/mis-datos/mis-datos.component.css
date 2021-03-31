@@ -55,7 +55,7 @@
 .panel-heading {
 	padding: 10px 15px;
 	border-bottom: 1px solid transparent;
-			border-bottom-color: transparent;
+	border-bottom-color: transparent;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 }
@@ -105,3 +105,5 @@ h1, h3{
 .control-label{
 	font-weight: bold;
 }
+
+
