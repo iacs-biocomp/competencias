@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IEvaluacion } from '../../../../../../interfaces/IEvaluaciones';
+import { EvaluacionesService } from '../evaluaciones.service';
 
 @Component({
 	selector: 'app-mis-evaluaciones',
@@ -7,10 +8,13 @@ import { IEvaluacion } from '../../../../../../interfaces/IEvaluaciones';
 	styleUrls: ['./mis-evaluaciones.component.css'],
 })
 export class MisEvaluacionesComponent implements OnInit {
+	evaluacionData!: IEvaluacion[];
 
-	evaluacionData!: IEvaluacion;
+	constructor(private evService: EvaluacionesService) {}
 
-	constructor() {}
+	async ngOnInit(): Promise<void> {
+		this.evaluacionData = await this.evService.evaluacionesUsr('TEST');
 
-	ngOnInit() {}
+		console.log(this.evaluacionData, await this.evService.evaluacionesUsr('TEST'));
+	}
 }

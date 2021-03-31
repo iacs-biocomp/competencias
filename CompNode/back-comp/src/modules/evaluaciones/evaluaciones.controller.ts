@@ -24,6 +24,7 @@ export class EvaluacionesController {
 				'periodos',
 				'periodos.catComp',
 				'periodos.catComp.evaluaciones',
+				'periodos.catComp.evaluaciones.catComp',
 				'periodos.catComp.evaluaciones.model',
 			],
 		});
