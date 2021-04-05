@@ -15,6 +15,7 @@ import { AuthGuard } from './guards/auth/auth.guard';
 import { FrontendMiddleware } from './middlewares/frontend.middleware';
 import { UserModule } from './modules/users/user.module';
 import { EvaluacionesModule } from './modules/evaluaciones/evaluaciones.module';
+import { CompetenciasModule } from './modules/competencias/competencias.module';
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { EvaluacionesModule } from './modules/evaluaciones/evaluaciones.module';
 			exclude: ['/nest*'],
 		}),
 		EvaluacionesModule,
+		CompetenciasModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AuthGuard, ConfigService],

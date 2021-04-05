@@ -8,6 +8,8 @@ import { OrganigramaAdminComponent } from './organigrama-admin/organigrama-admin
 const routes: Routes = [
 	{ path: 'competencias', component: CompetenciasAdminComponent },
 	{ path: 'organigrama', component: OrganigramaAdminComponent },
+	{ path: '', redirectTo: '/' },
+
 	// { path: '', component: CompetenciasAdminComponent },
 ];
 
