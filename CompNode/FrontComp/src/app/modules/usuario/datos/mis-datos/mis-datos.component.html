@@ -4,25 +4,26 @@
 			<h1>Mis datos</h1>
 		</div>
 		<div class="panel-body">
-			<h3><label class="col-sm-4 control-label">Nombre:</label>
+			<h3>
+				<label class="col-sm-4 control-label">Nombre:</label>
 				{{ userData?.name }}
 			</h3>
-			<h3><label class="col-sm-4 control-label">Apellidos:</label>
+			<h3>
+				<label class="col-sm-4 control-label">Apellidos:</label>
 				{{ userData?.lastname }}
 			</h3>
-			<h3><label class="col-sm-4 control-label">Email:</label>
+			<h3>
+				<label class="col-sm-4 control-label">Email:</label>
 				{{ userData?.email }}
 			</h3>
-			<h3><label class="col-sm-4 control-label">Status:</label>
+			<h3>
+				<label class="col-sm-4 control-label">Status:</label>
 				{{ userData?.status }}
 			</h3>
-			<h3><label class="col-sm-4 control-label">Mis roles son:</label>
-				<span *ngFor="let role of userData.roles">{{ role.name }}</span>
+			<h3>
+				<label class="col-sm-4 control-label">Mis roles son:</label>
+				<span *ngFor="let role of userData.roles">{{ role.name }} </span>
 			</h3>
 		</div>
 	</div>
 </div>
-
-
-
-

@@ -1,4 +1,11 @@
-import { Entity, BaseEntity, OneToMany, PrimaryColumn, Column } from 'typeorm';
+import {
+	Entity,
+	BaseEntity,
+	OneToMany,
+	PrimaryColumn,
+	Column,
+	CreateDateColumn,
+} from 'typeorm';
 import { SubModel } from './SubModel.entity';
 
 @Entity()
@@ -9,8 +16,9 @@ export class Competencia extends BaseEntity {
 	@Column({ type: 'varchar', nullable: false })
 	descripcion: string;
 
+	@CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+	createdAt: Date;
+
 	@OneToMany((type) => SubModel, (subm) => subm.nivel)
 	subModels: SubModel[];
-
-	// TODO: Elegir un nombre correcto
 }

@@ -26,8 +26,8 @@ export class Valoracion extends BaseEntity {
 	@OneToOne((type) => Ev)
 	@JoinColumn()
 	ev: Ev;
+	// Añadir competencia nivel y comportamiento junto con la valoración en si
+
 	// @OneToOne((type) => Trabajador)
 	// @JoinColumn()
-
-
 }
