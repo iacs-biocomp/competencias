@@ -65,6 +65,7 @@ const routes: Routes = [
 	{
 		path: 'evaluaciones',
 		canLoad: [LoginGuard],
+
 		data: {
 			roles: ['PUBLIC'],
 		},
@@ -76,6 +77,7 @@ const routes: Routes = [
 	{
 		path: 'catalog',
 		canLoad: [LoginGuard],
+
 		data: {
 			roles: ['PUBLIC'],
 		},
@@ -92,6 +94,7 @@ const routes: Routes = [
 	{
 		path: '',
 		canLoad: [LoginGuard],
+
 		data: {
 			roles: ['PUBLIC'],
 		},

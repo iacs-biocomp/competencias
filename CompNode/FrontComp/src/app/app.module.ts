@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, NgModuleRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -48,4 +48,11 @@ registerLocaleData(localeEs);
 	exports: [SharedModule],
 	bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+	constructor(private m: NgModuleRef<AppModule>) {}
+
+	/**Destruye el modulo de app y sus childrens, usar solo para el logout */
+	destory() {
+		this.m.destroy();
+	}
+}

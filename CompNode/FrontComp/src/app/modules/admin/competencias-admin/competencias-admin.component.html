@@ -4,30 +4,5 @@
 	borrar viejas, sino darlas de baja y poder borrar solo las que no se usan en
 	ninguna evaluación)
 	<p>Modificables si hay una evaluación abierta?</p>
-
-	<h1>Listado de competencias</h1>
-	<table class="table">
-		<thead>
-			<tr>
-				<th scope="col">CÓDIGO</th>
-				<th scope="col">DESCRIPCIÓN</th>
-				<th scope="col">BORRAR/EDITAR</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let competencia of competencias">
-				<td>{{competencia.id}}</td>
-				<td>{{competencia.descripcion}}</td>
-				<td>
-					<a routerLink="/" class="link">
-					<i class="fa fa-clean"></i>
-					</a>
-					<a routerLink="/" class="link">
-						<i class="fa fa-edit"></i>
-					</a>
-			</tr>
-			<tr>
-		</tbody>
-		</table>
+	<table-competencias></table-competencias>
 </div>
-

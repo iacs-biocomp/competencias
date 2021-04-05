@@ -1,0 +1,23 @@
+<h1>Listado de competencias</h1>
+<table aria-label="Listado de todas las competencias existentes" class="table">
+	<thead>
+		<tr>
+			<th scope="col">CÓDIGO</th>
+			<th scope="col">DESCRIPCIÓN</th>
+			<th scope="col">BORRAR</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let competencia of competencias">
+			<td>{{ competencia.id }}</td>
+			<td>{{ competencia.descripcion }}</td>
+			<td>
+				<!-- TODO: Añadir petición para borrar la competencia, comprobar que se puede borrar y mostrar el botón solo si se puede eliminar -->
+				<a routerLink="/" class="link">
+					<em class="fa fa-clean"></em>
+				</a>
+			</td>
+		</tr>
+		<tr></tr>
+	</tbody>
+</table>

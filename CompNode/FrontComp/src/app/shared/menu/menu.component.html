@@ -53,48 +53,51 @@
 					<span class="title">Mis resultados</span>
 				</a>
 			</li>
-			<li>
-				<a routerLinkActive="active-route" routerLink="/admin/competencias">
-					<span class="title">Competencias</span>
-				</a>
-			</li>
-			<li>
-				<a routerLinkActive="active-route" routerlink="/noroute">
-					<span class="title">Niveles de comportamiento</span>
-				</a>
-			</li>
+			<div class="admin-menu" *ngIf="isAdmin">
+				<hr />
+				<li>
+					<a routerLinkActive="active-route" routerLink="/admin/competencias">
+						<span class="title">Competencias</span>
+					</a>
+				</li>
+				<li>
+					<a routerLinkActive="active-route" routerlink="/noroute">
+						<span class="title">Niveles de comportamiento</span>
+					</a>
+				</li>
 
-			<li>
-				<a routerLinkActive="active-route" routerlink="/noroute">
-					<span class="title">Trabajadores</span>
-				</a>
-			</li>
-			<li>
-				<a routerLinkActive="active-route" routerlink="/noroute">
-					<span class="title">Evaluaciones</span>
-				</a>
-			</li>
-			<li>
-				<a routerLinkActive="active-route" routerlink="/noroute">
-					<span class="title">Todos trabajadores</span>
-				</a>
-			</li>
-			<li>
-				<a routerLinkActive="active-route" routerlink="/noroute">
-					<span class="title">Comportamientos</span>
-				</a>
-			</li>
+				<li>
+					<a routerLinkActive="active-route" routerlink="/noroute">
+						<span class="title">Trabajadores</span>
+					</a>
+				</li>
+				<li>
+					<a routerLinkActive="active-route" routerlink="/noroute">
+						<span class="title">Evaluaciones</span>
+					</a>
+				</li>
+				<li>
+					<a routerLinkActive="active-route" routerlink="/noroute">
+						<span class="title">Todos trabajadores</span>
+					</a>
+				</li>
+				<li>
+					<a routerLinkActive="active-route" routerlink="/noroute">
+						<span class="title">Comportamientos</span>
+					</a>
+				</li>
 
-			<li>
-				<a routerLinkActive="active-route" routerlink="/noroute">
-					<span class="title">Categorias competenciales</span>
-				</a>
-			</li>
-			<li>
-				<a routerLinkActive="active-route" routerLink="/noroute">
-					<span class="title">Categorias contractuales</span>
-				</a>
-			</li>
+				<li>
+					<a routerLinkActive="active-route" routerlink="/noroute">
+						<span class="title">Categorias competenciales</span>
+					</a>
+				</li>
+				<li>
+					<a routerLinkActive="active-route" routerLink="/noroute">
+						<span class="title">Categorias contractuales</span>
+					</a>
+				</li>
+			</div>
 		</ul>
 	</div>
 </div>

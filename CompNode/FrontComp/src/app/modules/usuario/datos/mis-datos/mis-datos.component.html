@@ -5,16 +5,16 @@
 		</div>
 		<div class="panel-body">
 			<h3><label class="col-sm-4 control-label">Nombre:</label>
-				{{ userData.name }}
+				{{ userData?.name }}
 			</h3>
 			<h3><label class="col-sm-4 control-label">Apellidos:</label>
-				{{ userData.lastname }}
+				{{ userData?.lastname }}
 			</h3>
 			<h3><label class="col-sm-4 control-label">Email:</label>
-				{{ userData.email }}
+				{{ userData?.email }}
 			</h3>
 			<h3><label class="col-sm-4 control-label">Status:</label>
-				{{ userData.status }}
+				{{ userData?.status }}
 			</h3>
 			<h3><label class="col-sm-4 control-label">Mis roles son:</label>
 				<span *ngFor="let role of userData.roles">{{ role.name }}</span>

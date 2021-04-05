@@ -5,12 +5,15 @@
 	box-sizing: border-box;
 }
 
-.main-menu > li > a:hover {
+.main-menu > li > a:hover,
+.admin-menu > li > a:hover {
 	background-color: #49a0e7;
 }
-.active-route{
+.admin-menu > li > a {
+	background-color: #1663a1;
+}
+.active-route {
 	background-color: #297fc5;
-
 }
 
 .page-sidebar {

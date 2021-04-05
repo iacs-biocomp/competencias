@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CompetenciasAdminComponent } from './competencias-admin/competencias-admin.component';
 import { OrganigramaAdminComponent } from './organigrama-admin/organigrama-admin.component';
+import {
+	CompetenciasAdminModule,
+	compRoutes,
+} from './competencias-admin/competencias-admin.module';
 
 const routes: Routes = [
-	{ path: 'competencias', component: CompetenciasAdminComponent },
+	{ path: 'competencias', children: compRoutes },
 	{ path: 'organigrama', component: OrganigramaAdminComponent },
 	{ path: '', redirectTo: '/' },
 
@@ -14,8 +17,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	declarations: [CompetenciasAdminComponent, OrganigramaAdminComponent],
-	imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
+	declarations: [OrganigramaAdminComponent],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(routes),
+		SharedModule,
+		CompetenciasAdminModule,
+	],
+	exports: [SharedModule],
 })
 /** De este modulo cuelga toda la interfaz que el administrador utilizará,
  * para asi al servirla en Nest sea mas facil autorizar la descarga de este */
