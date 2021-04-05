@@ -8,8 +8,8 @@ import { UserDataService } from '../../usuario/datos/user-data.service';
 	styleUrls: ['./competencias-admin.component.css'],
 })
 export class CompetenciasAdminComponent implements OnInit {
-	competencias: ICompetencia[] = [{ id: "C1", descripcion: 'fh' },
-																 { id: "C2", descripcion: 'fGFGFGh' }];
+	competencias: ICompetencia[] = [{ id: "C1", descripcion: 'Comportamiento ético' },
+																 { id: "C2", descripcion: 'Responsabilidad' }];
 
 	constructor(private usrDataService: UserDataService) {}
 

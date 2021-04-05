@@ -5,22 +5,26 @@
 	ninguna evaluación)
 	<p>Modificables si hay una evaluación abierta?</p>
 
-	<h1>Competencias</h1>
+	<h1>Listado de competencias</h1>
 	<table class="table">
 		<thead>
 			<tr>
 				<th scope="col">CÓDIGO</th>
 				<th scope="col">DESCRIPCIÓN</th>
-				<th scope="col">FECHA ALTA</th>
-				<th scope="col">FECHA BAJA</th>
+				<th scope="col">BORRAR/EDITAR</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let competencia of competencias">
-				<th scope="row"></th>
 				<td>{{competencia.id}}</td>
-				<td></td>
-				<td></td>
+				<td>{{competencia.descripcion}}</td>
+				<td>
+					<a routerLink="/" class="link">
+					<i class="fa fa-clean"></i>
+					</a>
+					<a routerLink="/" class="link">
+						<i class="fa fa-edit"></i>
+					</a>
 			</tr>
 			<tr>
 		</tbody>
