@@ -7,8 +7,10 @@ import {
 	CompetenciasAdminModule,
 	compRoutes,
 } from './competencias-admin/competencias-admin.module';
+import { comportRoutes } from './comportamientos-admin/comportamientos-admin.module';
 
 const routes: Routes = [
+	{ path: 'comportamientos', children: comportRoutes },
 	{ path: 'competencias', children: compRoutes },
 	{ path: 'organigrama', component: OrganigramaAdminComponent },
 	{ path: '', redirectTo: '/' },
