@@ -25,16 +25,26 @@ export class TableCompetenciasComponent implements OnInit {
 	sePuedeBorrar(competencia: ICompetencia): boolean {
 		return competencia.createdAt <= this.OneWeekAgo ? false : true;
 	}
-	borrarCompt(competencia: ICompetencia){
-		this.comptService.borrarCompt(competencia.id);
+
+	borrarCompt(competencia: ICompetencia) {
+		const borrado = this.comptService.borrarCompt(competencia.id);
+		if (borrado) {
+			const index =  this.competencias?.indexOf(competencia)
+			delete this.competencias![index!];
+		}
 	}
 
-	aniadirComp(competencia: ICompetencia): void{
-		if (!competencia) { return; }
-		this.comptService.addComp(competencia)
-		.subscribe(CompetenciasService => {
+	aniadirComp(competencia: ICompetencia): void {
+		if (!competencia) {
+			return;
+		}
+		this.comptService.addComp(competencia).subscribe((CompetenciasService) => {
 			this.competencias?.push(CompetenciasService);
 		});
 	}
 
+	onAddRow() {
+		var currentElement = this.competencias?.length;
+		this.competencias?.splice(this.competencias?.length, 0);
+	}
 }

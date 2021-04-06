@@ -7,7 +7,27 @@
 			<th scope="col">CÓDIGO</th>
 			<th scope="col">DESCRIPCIÓN</th>
 			<th scope="col">BORRAR</th>
-		</tr>
+
+
+			<table>
+				<thead>
+
+				</thead>
+				<tbody>
+					<tr *ngFor="let row of competencias; let i = index">
+						<td>
+							<input type="text" name="{{ row.id }}">
+						</td>
+						<td>
+							<input type="text" name="{{ row.descripcion }}">
+						</td>
+
+					</tr>
+					<button (click)="onAddRow()">Añadir competencia</button>
+				</tbody>
+			</table>
+
+
 	</thead>
 	<tbody>
 		<tr *ngFor="let competencia of competencias">
@@ -19,9 +39,7 @@
 					<em class="fa fa-clean"></em>
 				</button>
 			</td>
-			<button type="button" class="linkEditar" (click)="aniadirComp(competencia)">
-				<em class="fa fa-edit">Añadir competencia</em>
-			</button>
+
 		</tr>
 	</tbody>
 </table>

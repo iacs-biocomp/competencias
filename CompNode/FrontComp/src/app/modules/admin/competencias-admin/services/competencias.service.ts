@@ -9,7 +9,6 @@ import { environment as cnf } from '../../../../../environments/environment';
 	providedIn: 'root',
 })
 export class CompetenciasService {
-
 	constructor(private httpClient: HttpClient) {}
 
 	/**
@@ -23,14 +22,25 @@ export class CompetenciasService {
 			.toPromise();
 	}
 
-	borrarCompt(id: string): Observable<ICompetencia>{
-		const url = cnf.apiURL+'delete'+id;
+	async borrarCompt(id: string) {
+		var borrado = false;
+		try {
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${id}`).toPromise();
+		} catch (error) {
+			console.log(error);
+			alert(
+				'No se ha podido borrar esa competencia, contacte con un administrador.'
+			);
+		}
 
-		return this.httpClient.delete<ICompetencia>(url);
+		return borrado;
 	}
 
 	/** POST: add a new competencia to the server */
 	addComp(comp: ICompetencia): Observable<ICompetencia> {
-		return this.httpClient.post<ICompetencia>(cnf.apiURL+`/nest/competencias/delete`, comp);
+		return this.httpClient.post<ICompetencia>(
+			(`${cnf.apiURL}/competencias`),
+			comp
+		);
 	}
 }
