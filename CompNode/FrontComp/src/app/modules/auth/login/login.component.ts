@@ -27,12 +27,12 @@ export class LoginComponent implements OnInit {
 	 * Funcion para enviar el formulario, si el backend devuelve un error se notifica al usuario con un `alert`
 	 */
 	async sendForm() {
-		let username: string = this.loginForm.controls['username'].value;
-		let password: string = this.loginForm.controls['password'].value;
+		const username: string = this.loginForm.controls.username.value;
+		const password: string = this.loginForm.controls.password.value;
 		if (username && password) {
 			const body: IAuthLogin = {
-				username: username,
-				password: password,
+				username,
+				password,
 			};
 			try {
 				await this.authService.sendLoginInfo(body);
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
 		});
 
 		//Pasar usuario a mayusculas
-		let username = this.loginForm.controls.username;
+		const username = this.loginForm.controls.username;
 		username.valueChanges.subscribe((value: string) => {
 			//Añadido if para evitar error al form.reset()
 			if (value != null) {

@@ -9,12 +9,14 @@ import { remove as cookieRm } from 'js-cookie';
 })
 /** Este servicio contiene todas funciones relacionadas con los jwt, tanto para las cookies como el localStorage */
 export class JwtService {
-	constructor(private jwtHelper: JwtHelperService) {}
 	/** Token codificado en base64 */
 	token: string = localStorage.getItem(JWT_NAME)!;
 
+	constructor(private jwtHelper: JwtHelperService) {}
+
 	/**
 	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
+	 *
 	 * @returns El token de tipo `IJwtToken` descodificado
 	 */
 	getDecodedToken(): IJwtToken {

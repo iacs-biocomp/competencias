@@ -11,8 +11,8 @@ export class MisEvaluacionesComponent implements OnInit {
 	evaluacionData!: IEvaluacion[];
 
 	//Pruebas para mostrar un texto u otro en los botones (evaluar o calcular)
-	buttonEvaluar: boolean = true;
-	buttonCalcular: boolean = true;
+	buttonEvaluar = true;
+	buttonCalcular = true;
 
 	constructor(private evService: EvaluacionesService) {}
 
@@ -21,7 +21,9 @@ export class MisEvaluacionesComponent implements OnInit {
 		this.buttonEvaluar = true;
 		this.buttonCalcular = true;
 
-
-		console.log(this.evaluacionData, await this.evService.evaluacionesUsr('TEST'));
+		console.log(
+			this.evaluacionData,
+			await this.evService.evaluacionesUsr('TEST')
+		);
 	}
 }

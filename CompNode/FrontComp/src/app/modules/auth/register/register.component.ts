@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
 	) {}
 	async sendForm() {
 		let registerReq: IRegisterRequest;
-		let value: form = this.signupForm.value;
+		const value: form = this.signupForm.value;
 		if (this.signupForm.valid) {
 			const logued: boolean = await this.authService.sendRegisterReq({
 				username: value.username,
@@ -67,7 +67,7 @@ export class RegisterComponent implements OnInit {
 		});
 
 		//Pasar usuario a mayusculas
-		let username = this.signupForm.controls.username;
+		const username = this.signupForm.controls.username;
 		username.valueChanges.subscribe((value: string) => {
 			username.setValue(value.toUpperCase(), { emitEvent: false });
 		});

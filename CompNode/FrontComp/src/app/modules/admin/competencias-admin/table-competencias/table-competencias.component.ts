@@ -29,12 +29,12 @@ export class TableCompetenciasComponent implements OnInit {
 		this.comptService.borrarCompt(competencia.id);
 	}
 
-	aniadirComp(competencia: ICompetencia):void{
+	aniadirComp(competencia: ICompetencia): void{
 		if (!competencia) { return; }
 		this.comptService.addComp(competencia)
 		.subscribe(CompetenciasService => {
 			this.competencias?.push(CompetenciasService);
-		})
+		});
 	}
 
 }

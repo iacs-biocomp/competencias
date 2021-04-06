@@ -9,8 +9,9 @@ import { JwtService } from 'src/app/services/jwt.service';
 	styleUrls: ['./session.component.css'],
 })
 export class SessionComponent implements OnInit {
-	constructor(private jwtService: JwtService, private router: Router) {}
 	username: string = this.jwtService.getDecodedToken().username;
+
+	constructor(private jwtService: JwtService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.username = this.jwtService.getDecodedToken().username;

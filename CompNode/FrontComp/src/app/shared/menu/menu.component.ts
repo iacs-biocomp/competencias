@@ -7,10 +7,12 @@ import { LoginGuard } from 'src/app/guards/login.guard';
 	styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit {
-	constructor(private loginGuard: LoginGuard) {}
 	/** Variable usada para mostrar o no los menus del administrador */
-	isAdmin: boolean = false;
-	clase: string = 'collapse';
+	isAdmin = false;
+	clase = 'collapse';
+
+	constructor(private loginGuard: LoginGuard) {}
+
 	collapse(): void {}
 	ngOnInit(): void {
 		this.isAdmin = this.loginGuard.hasRole('ADMIN');

@@ -15,6 +15,7 @@ export class CompetenciasService {
 
 	/**
 	 * Metodo que obtiene todas las competencias del backend, usado solo para el ADMIN
+	 *
 	 * @returns Un `Array` de todas las competencias
 	 */
 	public getAllCompt(): Promise<ICompetencia[]> {

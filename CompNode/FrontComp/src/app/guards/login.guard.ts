@@ -44,6 +44,7 @@ export class LoginGuard implements CanLoad {
 	 * Este metodo adquiere el token del localStorage.
 	 *
 	 * No le pide al backend información para ver si el token es valido, es decir usarlo solo para la interfaz no para auth
+	 *
 	 * @param role El rol a comprobar en el jwt
 	 * @returns `True` si el rol esta en el token y `false` en caso contrario
 	 */

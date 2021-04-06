@@ -14,6 +14,7 @@ export class AuthService {
 
 	/**
 	 * Function that send the login information to api and set the jwt token if the information given is valid
+	 *
 	 * @param body Is the json object with username and password, email optional
 	 * @return Return `true` if successful authentication, otherwise return `false`.
 	 */
