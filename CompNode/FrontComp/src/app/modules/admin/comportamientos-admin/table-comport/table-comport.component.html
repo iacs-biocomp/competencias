@@ -1,1 +1,67 @@
-<p>table-comport works!</p>
+<div class="tablewrapper">
+	<h1 class="title">Lista de todos los comportamientos</h1>
+	<table
+		aria-label="Listado de todas las competencias existentes"
+		class="table table-hover"
+	>
+		<thead>
+			<tr>
+				<th scope="col">CÓDIGO</th>
+				<th scope="col">DESCRIPCIÓN</th>
+				<th scope="col">BORRAR/AÑADIR</th>
+				<th scope="col" style="max-width: 1rem">
+					<button class="btn btn-primary" (click)="newEmptyCompt()">
+						<span class="material-icons"> add </span>
+					</button>
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr *ngFor="let row of comportToAdd">
+				<td>
+					<input type="text" class="form-control" [(ngModel)]="row.id" />
+				</td>
+				<td>
+					<input
+						type="text"
+						class="form-control"
+						[(ngModel)]="row.descripcion"
+					/>
+				</td>
+				<td>
+					<!-- <button
+						type="button"
+						class="btn btn-danger"
+
+					>
+						<em class="">-</em>
+					</button> -->
+					<div class="btn btn-danger">
+						<span class="material-icons" (click)="deleteComptToAdd(row)">
+							delete
+						</span>
+					</div>
+					<div
+						class="btn btn-success"
+						(click)="persistComport(row)"
+						*ngIf="row.descripcion !== '' && row.id !== ''"
+					>
+						<span class="material-icons"> add </span>
+					</div>
+				</td>
+			</tr>
+
+			<tr *ngFor="let comport of comports">
+				<td>{{ comport.id }}</td>
+				<td>{{ comport.descripcion }}</td>
+
+				<td *ngIf="canDelete(comport)">
+					<button type="button" class="link" (click)="deleteComport(comport)">
+						<em class="fa fa-clean"></em>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

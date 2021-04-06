@@ -1,34 +1,29 @@
 <h1>Listado de competencias</h1>
 
-
 <table aria-label="Listado de todas las competencias existentes" class="table">
 	<thead>
 		<tr>
 			<th scope="col">CÓDIGO</th>
 			<th scope="col">DESCRIPCIÓN</th>
 			<th scope="col">BORRAR</th>
-
-
+			<!-- Table dentro de table me da a mi que no, copiar de comportamientos-admin.component-->
 			<table>
-				<thead>
-
-				</thead>
+				<thead></thead>
 				<tbody>
 					<tr *ngFor="let row of competencias; let i = index">
 						<td>
-							<input type="text" name="{{ row.id }}">
+							<input type="text" name="{{ row.id }}" />
 						</td>
 						<td>
-							<input type="text" name="{{ row.descripcion }}">
+							<input type="text" name="{{ row.descripcion }}" />
 						</td>
-
 					</tr>
 					<button (click)="onAddRow()">Añadir competencia</button>
 				</tbody>
 			</table>
-
-
+		</tr>
 	</thead>
+
 	<tbody>
 		<tr *ngFor="let competencia of competencias">
 			<td>{{ competencia.id }}</td>
@@ -39,8 +34,6 @@
 					<em class="fa fa-clean"></em>
 				</button>
 			</td>
-
 		</tr>
 	</tbody>
 </table>
-

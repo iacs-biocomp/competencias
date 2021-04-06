@@ -54,7 +54,7 @@ export class ComportamientosController {
 
 	@Post('')
 	async createComport(@Body() compt: Comportamiento): Promise<boolean> {
-		const existingCompt = this.comportRepo.findOne({ id: compt.id });
+		const existingCompt = await this.comportRepo.findOne({ id: compt.id });
 		if (existingCompt) {
 			throw new ConflictException('Comportamiento ya creado');
 		}
@@ -67,7 +67,7 @@ export class ComportamientosController {
 
 	@Put('')
 	async updateComport(@Body() compt: Comportamiento): Promise<boolean> {
-		const existingCompt = this.comportRepo.findOne({ id: compt.id }, { relations: ['subModels'] });
+		const existingCompt = await this.comportRepo.findOne({ id: compt.id }, { relations: ['subModels'] });
 		if (!existingCompt) {
 			throw new NotFoundException('No existe un comportamiento con ese id');
 		}

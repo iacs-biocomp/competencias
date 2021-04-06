@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
 import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
 import { environment as cnf } from '../../../../../environments/environment';
 
@@ -22,25 +21,30 @@ export class CompetenciasService {
 			.toPromise();
 	}
 
-	async borrarCompt(id: string) {
+	/**
+	 * Metodo que borra una competencia del backend
+	 *
+	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
+	 */
+	async borrarCompt(id: string): Promise<boolean> {
 		var borrado = false;
 		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${id}`).toPromise();
+			borrado = await this.httpClient
+				.delete<boolean>(`${cnf.apiURL}/competencias/${id}`)
+				.toPromise();
 		} catch (error) {
 			console.log(error);
 			alert(
 				'No se ha podido borrar esa competencia, contacte con un administrador.'
 			);
 		}
-
 		return borrado;
 	}
 
 	/** POST: add a new competencia to the server */
-	addComp(comp: ICompetencia): Observable<ICompetencia> {
-		return this.httpClient.post<ICompetencia>(
-			(`${cnf.apiURL}/competencias`),
-			comp
-		);
+	addComp(comp: ICompetencia): Promise<ICompetencia> {
+		return this.httpClient
+			.post<ICompetencia>(`${cnf.apiURL}/competencias`, comp)
+			.toPromise();
 	}
 }

@@ -16,3 +16,5 @@ export interface IMaster {
 	from_dt: Date;
 	to_dt: Date;
 }
+
+//TODO: Codigo de inves.js borrar cuando no se use mas como ejemplo

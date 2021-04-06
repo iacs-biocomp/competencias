@@ -4,7 +4,8 @@ import { TableComportComponent } from './table-comport/table-comport.component';
 import { ComportamientosAdminComponent } from './comp-admin/comportamientos-admin.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ComportamientosService } from './services/comport.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComportService } from './services/comport.service';
 
 /** Rutas relacionadas con el modulo de comportamientos */
 export const comportRoutes: Routes = [
@@ -15,7 +16,14 @@ export const comportRoutes: Routes = [
 ];
 @NgModule({
 	declarations: [ComportamientosAdminComponent, TableComportComponent],
-	imports: [CommonModule, SharedModule, RouterModule],
-	providers: [ComportamientosService],
+	imports: [
+		CommonModule,
+		SharedModule,
+		RouterModule,
+		// TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
+		FormsModule,
+		ReactiveFormsModule,
+	],
+	providers: [ComportService],
 })
 export class ComportamientosAdminModule {}
