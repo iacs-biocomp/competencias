@@ -8,9 +8,16 @@
 	border: transparent;
 }
 
-.fa-edit::before{
-	content: "\0270d";
-	color: black;
+.linkEditar{
+	padding: 1%;
+	background-color: aliceblue;
+	border: #09548D 0.1em solid;
+	margin-left: 2%;
+	float: left;
+}
+
+.linkEditar:hover{
+	box-shadow: 1px 1px 1px black;
 }
 
 .table{

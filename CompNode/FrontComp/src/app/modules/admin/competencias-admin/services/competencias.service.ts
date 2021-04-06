@@ -10,7 +10,6 @@ import { environment as cnf } from '../../../../../environments/environment';
 })
 export class CompetenciasService {
 
-
 	constructor(private httpClient: HttpClient) {}
 
 	/**
@@ -28,11 +27,10 @@ export class CompetenciasService {
 		const url = cnf.apiURL+'delete'+id;
 
 		return this.httpClient.delete<ICompetencia>(url);
-
 	}
 
 	/** POST: add a new competencia to the server */
 	addComp(comp: ICompetencia): Observable<ICompetencia> {
-		return this.httpClient.post<ICompetencia>(cnf.apiURL, comp);
+		return this.httpClient.post<ICompetencia>(cnf.apiURL+`/nest/competencias/delete`, comp);
 	}
 }
