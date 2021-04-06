@@ -1,15 +1,16 @@
 {
-   "compilerOptions": {
-      "lib": [
-         "es5",
-         "es6"
-      ],
-      "target": "es5",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./dist",
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "sourceMap": true
-   }
+	"compilerOptions": {
+		"lib": ["es5", "es6"],
+		"target": "ES2020",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"declaration": true,
+		"outDir": "./dist",
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"baseUrl": "./",
+		"sourceMap": true,
+		"incremental": true
+	}
 }

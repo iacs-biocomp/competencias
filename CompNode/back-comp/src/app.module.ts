@@ -16,6 +16,8 @@ import { FrontendMiddleware } from './middlewares/frontend.middleware';
 import { UserModule } from './modules/users/user.module';
 import { EvaluacionesModule } from './modules/evaluaciones/evaluaciones.module';
 import { CompetenciasModule } from './modules/competencias/competencias.module';
+import { NivelesModule } from './modules/niveles/niveles.module';
+import { ComportamientosModule } from './modules/comportamientos/comportamientos.module';
 
 @Module({
 	imports: [
@@ -27,6 +29,8 @@ import { CompetenciasModule } from './modules/competencias/competencias.module';
 		}),
 		EvaluacionesModule,
 		CompetenciasModule,
+		NivelesModule,
+		ComportamientosModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AuthGuard, ConfigService],

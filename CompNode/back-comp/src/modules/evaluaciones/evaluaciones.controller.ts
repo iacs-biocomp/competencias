@@ -8,9 +8,7 @@ import { EvRepository } from './evaluaciones.repository';
 
 @Controller('nest/evaluaciones')
 export class EvaluacionesController {
-	constructor(
-		@InjectRepository(EvRepository) private readonly evRepo: EvRepository,
-	) {}
+	constructor(@InjectRepository(EvRepository) private readonly evRepo: EvRepository) {}
 
 	@Get(':username')
 	async getEvsOfUser(@Param('username') username: string) {
@@ -30,25 +28,8 @@ export class EvaluacionesController {
 		});
 		var evs: Ev[] = [];
 		//Esto recoge las evaluaciones de cada periodo y las añade a un array vacío
-		worker.periodos.forEach((periodo) =>
-			evs.push.apply(evs, periodo.catComp.evaluaciones),
-		);
+		worker.periodos.forEach((periodo) => evs.push.apply(evs, periodo.catComp.evaluaciones));
 		return evs;
-		// return this.evRepo.find({
-		// 	where: {
-		// 		catComp: await CatComp.findOne({
-		// 			where: {
-		// 				periodosTrab: await PeriodoTrab.find({
-		// 					where: {
-		// 						trabajador: await Trabajador.findOne({
-		// 							where: { user: { username: username } },
-		// 						}),
-		// 					},
-		// 				}),
-		// 			},
-		// 		}),
-		// 	},
-		// });
 	}
 
 	@Get('insert')
