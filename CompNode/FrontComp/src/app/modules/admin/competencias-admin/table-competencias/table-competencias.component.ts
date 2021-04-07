@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
 import { CompetenciasService } from '../services/competencias.service';
 
+interface IComptEdit extends ICompetencia {
+	editing?: boolean;
+}
 @Component({
 	selector: 'table-competencias',
 	templateUrl: './table-competencias.component.html',
@@ -9,8 +12,9 @@ import { CompetenciasService } from '../services/competencias.service';
 })
 export class TableCompetenciasComponent implements OnInit {
 	constructor(private comptService: CompetenciasService) {}
+
 	compeToAdd: ICompetencia[] = [];
-	compets: ICompetencia[] = [];
+	compets: IComptEdit[] = [];
 	hoy: Date = new Date();
 	OneWeekAgo!: Date;
 
@@ -44,6 +48,20 @@ export class TableCompetenciasComponent implements OnInit {
 		});
 	}
 
+	/**
+	 *
+	 * @param compet La competencia a editar/mandar
+	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
+	 * @param send	`true` si se quiere mandar esa competencia al backend `false` si no
+	 */
+	editingCompt(compet: IComptEdit, editing: boolean, send: boolean): void {
+		compet.editing = editing;
+		if (send) {
+			delete compet.editing;
+			this.comptService.editCompt(compet);
+		}
+	}
+
 	async persistCompe(competencia: ICompetencia): Promise<void> {
 		const guardado = await this.comptService.addCompeten(competencia);
 		if (guardado) {
@@ -59,9 +77,5 @@ export class TableCompetenciasComponent implements OnInit {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			await this.updateCompeView();
 		}
-	}
-
-	async modifyCompe(descripcion: string, competencia: ICompetencia) {
-
 	}
 }

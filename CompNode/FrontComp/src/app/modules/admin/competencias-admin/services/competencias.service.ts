@@ -41,4 +41,12 @@ export class CompetenciasService {
 	addCompeten(comp: ICompetencia): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();
 	}
+	/**
+	 *
+	 * @param comp La competencia a editar en la base de datos
+	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 */
+	editCompt(comp: ICompetencia): Promise<boolean> {
+		return this.httpClient.put<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();
+	}
 }

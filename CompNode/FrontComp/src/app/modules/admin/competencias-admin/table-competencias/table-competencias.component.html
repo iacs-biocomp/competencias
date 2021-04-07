@@ -45,16 +45,22 @@
 
 			<tr *ngFor="let compet of compets">
 				<td>{{ compet.id }}</td>
-				<td>{{ compet.descripcion }}</td>
+				<td *ngIf="!compet.editing">{{ compet.descripcion }}</td>
+				<td *ngIf="compet.editing">
+					<input type="text" class="form-control" [(ngModel)]="compet.descripcion" />
+				</td>
 
-				<td *ngIf="canDelete(compet)">
-					<div class="btn btn-danger">
+				<td>
+					<div *ngIf="canDelete(compet)" class="btn btn-danger">
 						<span class="material-icons" (click)="deleteCompe(compet)"> delete </span>
 					</div>
+					<div class="btn btn-success">
+						<span class="material-icons" (click)="editingCompt(compet, true, false)"> edit </span>
+					</div>
+					<div class="btn btn-primary" (click)="editingCompt(compet, false, true)">
+						<span class="material-icons"> done </span>
+					</div>
 				</td>
-				<div class="btn btn-success">
-					<span class="material-icons" (click)="modifyCompe(compet)"> edit </span>
-				</div>
 			</tr>
 		</tbody>
 	</table>
