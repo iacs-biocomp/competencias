@@ -1,29 +1,7 @@
-.fa-clean::before{
-	content: "\02716";
-	color: black;
-}
-
-.link{
-	background-color: transparent;
-	border: transparent;
-}
-
-.linkEditar{
-	padding: 1%;
-	background-color: aliceblue;
-	border: #09548D 0.1em solid;
-	margin-left: 2%;
-	float: left;
-}
-
-.linkEditar:hover{
-	box-shadow: 1px 1px 1px black;
-}
-
-.table{
-	display: table;
-	width: 80%;
-	max-width: 80%;
-	margin: auto;
+.tablewrapper {
+	margin-left: auto;
+	margin-top: 0.25rem;
+	margin-right: auto;
+	max-width: 95%;
 }
 
