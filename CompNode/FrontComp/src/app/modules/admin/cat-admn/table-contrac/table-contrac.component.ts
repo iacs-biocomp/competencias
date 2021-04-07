@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ICatContr } from '../../../../../../../interfaces/ICategorias';
+import { CatContractService } from '../services/CatContractuales.service';
 
 @Component({
 	selector: 'app-table-contrac',
@@ -6,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./table-contrac.component.css'],
 })
 export class TableContracComponent implements OnInit {
-	constructor() {}
+	constructor(private catContractService: CatContractService) {}
+	catContracts: ICatContr[] = [];
 
 	ngOnInit(): void {}
+	canDelete(catContract: ICatContr): boolean {
+		return true;
+	}
+
+	deleteCatContract(catContract: ICatContr): boolean {
+		this.catContractService.delCatContract(catContract.id);
+		return true;
+	}
 }

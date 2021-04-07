@@ -18,7 +18,7 @@ export class TableComportComponent implements OnInit {
 		// setInterval(() => {
 		// 	console.log(this.comportToAdd);
 		// }, 2500);
-		this.updateComportView();
+		await this.updateComportView();
 	}
 	async updateComportView(): Promise<void> {
 		this.comports = await this.comportService.getAllComport();
@@ -44,7 +44,7 @@ export class TableComportComponent implements OnInit {
 	async persistComport(comport: IComportamiento): Promise<void> {
 		const guardado = await this.comportService.addComport(comport);
 		if (guardado) {
-			this.updateComportView();
+			await this.updateComportView();
 			this.deleteComptToAdd(comport);
 		}
 	}
@@ -53,7 +53,7 @@ export class TableComportComponent implements OnInit {
 		const borrado = await this.comportService.delete(comport);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateComportView();
+			await this.updateComportView();
 		}
 	}
 }

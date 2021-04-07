@@ -42,7 +42,7 @@ export class TableCompetComponent implements OnInit {
 		const guardado = await this.catCompService.addCatComp(catComp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateCatCompView();
+			await this.updateCatCompView();
 			this.deleteCatCompToAdd(catComp);
 		}
 	}
@@ -51,7 +51,7 @@ export class TableCompetComponent implements OnInit {
 		const borrado = await this.catCompService.delete(catComp);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateCatCompView();
+			await this.updateCatCompView();
 		}
 	}
 }

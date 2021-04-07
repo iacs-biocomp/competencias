@@ -24,6 +24,7 @@ export class TableCompetenciasComponent implements OnInit {
 
 	async updateCompeView(): Promise<void> {
 		this.compets = await this.comptService.getAllCompt();
+		console.log('update');
 	}
 
 	canDelete(competencia: ICompetencia): boolean {
@@ -47,8 +48,8 @@ export class TableCompetenciasComponent implements OnInit {
 		const guardado = await this.comptService.addCompeten(competencia);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateCompeView();
 			this.deleteCompeToAdd(competencia);
+			await this.updateCompeView();
 		}
 	}
 
@@ -56,7 +57,7 @@ export class TableCompetenciasComponent implements OnInit {
 		const borrado = await this.comptService.delete(competencia);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateCompeView();
+			await this.updateCompeView();
 		}
 	}
 

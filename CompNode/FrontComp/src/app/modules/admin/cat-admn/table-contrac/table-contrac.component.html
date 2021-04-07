@@ -1,1 +1,17 @@
-<p>table-contrac works!</p>
+<div class="tablewrapper">
+	<h1 class="title">Lista de todos las competencias</h1>
+	<table aria-label="Lista competencias" class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">CAT.CONTRACTUAL</th>
+				<th scope="col">CAT.COMPETENCIAL</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let catContrac of catContracts">
+				<td>{{ catContrac.id }}</td>
+				<td>{{ catContrac.description }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
