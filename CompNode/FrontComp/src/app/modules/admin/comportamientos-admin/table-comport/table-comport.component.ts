@@ -12,13 +12,14 @@ export class TableComportComponent implements OnInit {
 	comportToAdd: IComportamiento[] = [];
 	comports: IComportamiento[] = [];
 
+	//TODO: Añadir tsdoc a los metodos y atributos de la clase
+
 	async ngOnInit(): Promise<void> {
 		// setInterval(() => {
 		// 	console.log(this.comportToAdd);
 		// }, 2500);
 		this.updateComportView();
 	}
-	//TODO: Añadir tsdoc al archivo entero
 	async updateComportView(): Promise<void> {
 		this.comports = await this.comportService.getAllComport();
 	}
@@ -37,8 +38,7 @@ export class TableComportComponent implements OnInit {
 	}
 
 	canDelete(comport: IComportamiento): boolean {
-		//TODO: Completar
-		return false;
+		return true;
 	}
 
 	async persistComport(comport: IComportamiento): Promise<void> {
@@ -49,7 +49,11 @@ export class TableComportComponent implements OnInit {
 		}
 	}
 
-	deleteComport(comport: IComportamiento) {
-		this.comportService.delete(comport);
+	async deleteComport(comport: IComportamiento) {
+		const borrado = await this.comportService.delete(comport);
+		if (borrado) {
+			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			this.updateComportView();
+		}
 	}
 }

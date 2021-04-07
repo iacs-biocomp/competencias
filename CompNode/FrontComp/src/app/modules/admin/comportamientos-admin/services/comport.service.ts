@@ -9,7 +9,7 @@ export class ComportService {
 
 	async delete(comport: IComportamiento): Promise<boolean> {
 		await this.httpClient
-			.delete(`${cnf.apiURL}/comportamiento/${comport.id}`)
+			.delete(`${cnf.apiURL}/comportamientos/${comport.id}`)
 			.toPromise();
 		return true;
 	}

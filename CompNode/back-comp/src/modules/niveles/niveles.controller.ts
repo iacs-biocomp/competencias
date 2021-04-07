@@ -13,7 +13,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Nivel } from 'src/entity/Nivel.entity';
 import { NivelRepository } from './nivel.repository';
-@Controller('niveles')
+@Controller('nest/niveles')
 export class NivelesController {
 	constructor(
 		@InjectRepository(NivelRepository)

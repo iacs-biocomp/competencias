@@ -61,9 +61,11 @@
 				<td>{{ compet.descripcion }}</td>
 
 				<td *ngIf="canDelete(compet)">
-					<button type="button" class="link" (click)="deleteCompe(compet)">
-						<em class="fa fa-clean"></em>
-					</button>
+					<div class="btn btn-danger">
+						<span class="material-icons" (click)="deleteCompe(compet)">
+							delete
+						</span>
+					</div>
 				</td>
 			</tr>
 		</tbody>
