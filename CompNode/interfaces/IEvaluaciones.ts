@@ -60,5 +60,5 @@ export interface IComportamiento {
 export interface ICompetencia {
   id: string;
   descripcion: string;
-  createdAt: Date;
+  createdAt: Date | undefined;
 }

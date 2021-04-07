@@ -5,6 +5,7 @@ import { CompetenciasAdminComponent } from './competencias-admin.component';
 import { TableCompetenciasComponent } from './table-competencias/table-competencias.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 /** Rutas relacionadas con el modulo de competencias */
 export const compRoutes: Routes = [
@@ -15,7 +16,7 @@ export const compRoutes: Routes = [
 ];
 @NgModule({
 	declarations: [CompetenciasAdminComponent, TableCompetenciasComponent],
-	imports: [CommonModule, SharedModule, RouterModule],
+	imports: [CommonModule, FormsModule, RouterModule, SharedModule],
 	providers: [CompetenciasService],
 })
 /** Modulo que recoge todos los compontentes relacionados con las competencias */

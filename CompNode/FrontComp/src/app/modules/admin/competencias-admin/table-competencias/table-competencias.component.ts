@@ -27,7 +27,7 @@ export class TableCompetenciasComponent implements OnInit {
 	}
 
 	canDelete(competencia: ICompetencia): boolean {
-		return competencia.createdAt <= this.OneWeekAgo ? false : true;
+		return competencia.createdAt! <= this.OneWeekAgo ? false : true;
 	}
 
 	deleteCompeToAdd(row: ICompetencia): void {
@@ -39,19 +39,24 @@ export class TableCompetenciasComponent implements OnInit {
 		this.compeToAdd.push({
 			id: '',
 			descripcion: '',
-			createdAt: new Date(0), //poner en null una Date?
+			createdAt: undefined,
 		});
 	}
 
 	async persistCompe(competencia: ICompetencia): Promise<void> {
 		const guardado = await this.comptService.addCompeten(competencia);
 		if (guardado) {
+			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.updateCompeView();
 			this.deleteCompeToAdd(competencia);
 		}
 	}
 
-	deleteCompe(competencia: ICompetencia) {
-		this.comptService.delete(competencia);
+	async deleteCompe(competencia: ICompetencia) {
+		const borrado = await this.comptService.delete(competencia);
+		if (borrado) {
+			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			this.updateCompeView();
+		}
 	}
 }

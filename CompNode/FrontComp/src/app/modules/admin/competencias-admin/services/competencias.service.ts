@@ -9,7 +9,7 @@ export class CompetenciasService {
 
 	async delete(compet: ICompetencia): Promise<boolean> {
 		await this.httpClient
-			.delete(`${cnf.apiURL}/competencia/${compet.id}`)
+			.delete(`${cnf.apiURL}/competencias/${compet.id}`)
 			.toPromise();
 		return true;
 	}

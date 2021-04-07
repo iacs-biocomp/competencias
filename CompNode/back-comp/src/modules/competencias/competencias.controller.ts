@@ -43,7 +43,7 @@ export class CompetenciasController {
 
 	@Post('')
 	async createCompt(@Body() compt: Competencia): Promise<boolean> {
-		const existingCompt = this.comptRepo.findOne({ id: compt.id });
+		const existingCompt = await this.comptRepo.findOne({ id: compt.id });
 		if (existingCompt) {
 			throw new ConflictException('Competencia ya creada');
 		}
@@ -55,7 +55,7 @@ export class CompetenciasController {
 	}
 	@Put('')
 	async updateCompt(@Body() compt: Competencia): Promise<boolean> {
-		const existingCompt = this.comptRepo.findOne({ id: compt.id });
+		const existingCompt = await this.comptRepo.findOne({ id: compt.id });
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');
 		}
