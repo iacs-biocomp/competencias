@@ -8,47 +8,50 @@ import { CompetenciasService } from '../services/competencias.service';
 	styleUrls: ['./table-competencias.component.css'],
 })
 export class TableCompetenciasComponent implements OnInit {
-	comptToAdd: ICompetencia[] = [];
-
-	competencias: ICompetencia[] | undefined;
-
+	constructor(private comptService: CompetenciasService) {}
+	compeToAdd: ICompetencia[] = [];
+	compets: ICompetencia[] = [];
 	hoy: Date = new Date();
 	OneWeekAgo!: Date;
 
 	//TODO: Añadir tsdoc a los metodos y atributos de la clase
-	//TODO: Cambiar nombres funciones a ingles para acortar, p.ej sePuedeBorrar() => canDel()
-
-	constructor(private comptService: CompetenciasService) {}
 
 	async ngOnInit(): Promise<void> {
 		this.OneWeekAgo = new Date();
 		this.OneWeekAgo.setDate(this.hoy.getDate() - 7);
-
-		this.competencias = await this.comptService.getAllCompt();
+		this.updateCompeView();
 	}
 
-	sePuedeBorrar(competencia: ICompetencia): boolean {
+	async updateCompeView(): Promise<void> {
+		this.compets = await this.comptService.getAllCompt();
+	}
+
+	canDelete(competencia: ICompetencia): boolean {
 		return competencia.createdAt <= this.OneWeekAgo ? false : true;
 	}
 
-	async borrarCompt(competencia: ICompetencia) {
-		const borrado = await this.comptService.borrarCompt(competencia.id);
-		if (borrado) {
-			const indx = this.comptToAdd.indexOf(competencia);
-			this.comptToAdd.splice(indx, 1);
+	deleteCompeToAdd(row: ICompetencia): void {
+		const indx = this.compeToAdd.indexOf(row);
+		this.compeToAdd.splice(indx, 1);
+	}
+
+	newEmptyCompe(): void {
+		this.compeToAdd.push({
+			id: '',
+			descripcion: '',
+			createdAt: new Date(0), //poner en null una Date?
+		});
+	}
+
+	async persistCompe(competencia: ICompetencia): Promise<void> {
+		const guardado = await this.comptService.addCompeten(competencia);
+		if (guardado) {
+			this.updateCompeView();
+			this.deleteCompeToAdd(competencia);
 		}
 	}
 
-	async addComp(competencia: ICompetencia): Promise<void> {
-		if (!competencia) {
-			return;
-		}
-		//TODO: Excepción aqui casi seguro q mete, solucionar
-		await this.comptService.addComp(competencia);
-	}
-
-	onAddRow() {
-		var currentElement = this.competencias?.length;
-		this.competencias?.splice(this.competencias?.length, 0);
+	deleteCompe(competencia: ICompetencia) {
+		this.comptService.delete(competencia);
 	}
 }

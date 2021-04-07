@@ -40,7 +40,7 @@ export class ComportService {
 			console.log(error);
 			//TODO: Excepción si hay error lanzar a controlador (Componente)
 			alert(
-				'No se ha podido borrar esa comportamiento, contacte con un administrador.'
+				'No se ha podido borrar ese comportamiento, contacte con un administrador.'
 			);
 		}
 		return borrado;

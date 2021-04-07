@@ -1,23 +1,8 @@
-.fa-clean::before{
-	content: "\02716";
-	color: black;
+.tablewrapper {
+	margin-left: auto;
+	margin-top: 0.25rem;
+	margin-right: auto;
+	max-width: 95%;
 }
 
-.link{
-	text-decoration: none;
-	padding: 20px;
-}
-
-.fa-edit::before{
-	content: "\0270d";
-	color: black;
-}
-
-.table{
-	display: table;
-	width: 80%;
-	max-width: 80%;
-	margin: auto;
-
-}
 

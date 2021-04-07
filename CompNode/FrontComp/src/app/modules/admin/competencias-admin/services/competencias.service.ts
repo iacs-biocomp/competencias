@@ -1,14 +1,18 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
+import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from '../../../../../environments/environment';
+import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable({	providedIn: 'root'})
 export class CompetenciasService {
 	constructor(private httpClient: HttpClient) {}
+
+	async delete(compet: ICompetencia): Promise<boolean> {
+		await this.httpClient
+			.delete(`${cnf.apiURL}/competencia/${compet.id}`)
+			.toPromise();
+		return true;
+	}
 
 	/**
 	 * Metodo que obtiene todas las competencias del backend, usado solo para el ADMIN
@@ -17,7 +21,7 @@ export class CompetenciasService {
 	 */
 	public getAllCompt(): Promise<ICompetencia[]> {
 		return this.httpClient
-			.get<ICompetencia[]>(cnf.apiURL + `/competencias/all`)
+			.get<ICompetencia[]>(`${cnf.apiURL}/competencias/all`)
 			.toPromise();
 	}
 
@@ -26,7 +30,7 @@ export class CompetenciasService {
 	 *
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
-	async borrarCompt(id: string): Promise<boolean> {
+	async borrarCompeten(id: string): Promise<boolean> {
 		var borrado = false;
 		try {
 			borrado = await this.httpClient
@@ -42,9 +46,9 @@ export class CompetenciasService {
 	}
 
 	/** POST: add a new competencia to the server */
-	addComp(comp: ICompetencia): Promise<ICompetencia> {
+	addCompeten(comp: ICompetencia): Promise<boolean> {
 		return this.httpClient
-			.post<ICompetencia>(`${cnf.apiURL}/competencias`, comp)
+			.post<boolean>(`${cnf.apiURL}/competencias`, comp)
 			.toPromise();
 	}
 }
