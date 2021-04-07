@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-list-ev',
-  templateUrl: './list-ev.component.html',
-  styleUrls: ['./list-ev.component.css']
+	selector: 'app-list-ev',
+	templateUrl: './list-ev.component.html',
+	styleUrls: ['./list-ev.component.css'],
 })
 export class ListEvComponent implements OnInit {
+	constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+	ngOnInit(): void {}
 }

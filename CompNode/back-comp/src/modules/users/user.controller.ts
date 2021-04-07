@@ -1,14 +1,4 @@
-import {
-	Controller,
-	Get,
-	Param,
-	Post,
-	Body,
-	Patch,
-	Delete,
-	ParseIntPipe,
-	UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../../entity/user.entity';
 import { Trabajador } from '../../entity/Trabajador.entity';
@@ -23,9 +13,7 @@ export class UserController {
 		return users;
 	}
 	@Get('allinfo/:username')
-	async getAllUserInfo(
-		@Param('username') username: string,
-	): Promise<Trabajador> {
+	async getAllUserInfo(@Param('username') username: string): Promise<Trabajador> {
 		var worker = await Trabajador.findOne({
 			where: { user: username },
 			relations: ['superiores', 'inferiores', 'pares'],
@@ -59,10 +47,7 @@ export class UserController {
 	}
 
 	@Post('setRole/:userId/:roleId')
-	async setRoleToUser(
-		@Param('userId', ParseIntPipe) userId: number,
-		@Param('roleId', ParseIntPipe) roleId: number,
-	) {
+	async setRoleToUser(@Param('userId', ParseIntPipe) userId: number, @Param('roleId', ParseIntPipe) roleId: number) {
 		return this._userService.setRoleToUser(userId, roleId);
 	}
 }

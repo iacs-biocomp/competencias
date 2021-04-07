@@ -13,19 +13,19 @@ export class SubModel extends BaseEntity {
 	id: number;
 
 	@ApiProperty()
-	@ManyToMany((type) => EvModel, (model) => model.subModels)
+	@ManyToMany(type => EvModel, model => model.subModels)
 	modelos: EvModel[];
 
 	@ApiProperty()
-	@ManyToOne((type) => Nivel, (n) => n.subModels)
+	@ManyToOne(type => Nivel, n => n.subModels)
 	nivel: Nivel;
 
 	@ApiProperty()
-	@ManyToOne((type) => Competencia, (comp) => comp.subModels)
+	@ManyToOne(type => Competencia, comp => comp.subModels)
 	competencia: Competencia;
 
 	@ApiProperty()
-	@ManyToMany((type) => Comportamiento, (comport) => comport.subModels)
+	@ManyToMany(type => Comportamiento, comport => comport.subModels)
 	@JoinTable()
 	comportamientos: Comportamiento[];
 }

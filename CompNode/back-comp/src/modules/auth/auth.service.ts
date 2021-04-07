@@ -1,8 +1,4 @@
-import {
-	ConflictException,
-	Injectable,
-	UnauthorizedException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hashSync } from 'bcrypt';
 import { UserRepository } from '../users/user.repository';
@@ -74,7 +70,7 @@ export class AuthService {
 			email: user.email,
 			username: user.username,
 			password: user.password,
-			roles: user.roles.map((r) => r.name as RoleType),
+			roles: user.roles.map(r => r.name as RoleType),
 		};
 
 		const token = this._jwtService.sign(payload);

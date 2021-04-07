@@ -9,12 +9,7 @@ import { MaterialModule } from './mat.module';
 const routes: Routes = [{ path: '', component: CatalogComponent }];
 
 @NgModule({
-	imports: [
-		CommonModule,
-		RouterModule.forChild(routes),
-		SharedModule,
-		MaterialModule,
-	],
+	imports: [CommonModule, RouterModule.forChild(routes), SharedModule, MaterialModule],
 	exports: [],
 	declarations: [CatalogComponent],
 	providers: [OrientService],

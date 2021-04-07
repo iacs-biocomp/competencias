@@ -10,8 +10,6 @@ export class EvaluacionesService {
 	constructor(private httpClient: HttpClient) {}
 
 	public evaluacionesUsr(usr: string): Promise<IEvaluacion[]> {
-		return this.httpClient
-			.get<IEvaluacion[]>(cnf.apiURL + `/evaluaciones/${usr}`)
-			.toPromise();
+		return this.httpClient.get<IEvaluacion[]>(cnf.apiURL + `/evaluaciones/${usr}`).toPromise();
 	}
 }

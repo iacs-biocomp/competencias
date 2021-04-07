@@ -32,10 +32,10 @@ export class Trabajador extends BaseEntity {
 	@Column({ type: 'varchar', length: 50, nullable: true })
 	departamento: string;
 
-	@OneToMany((type) => PeriodoTrab, (periodoTrab) => periodoTrab.trabajador)
+	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.trabajador)
 	periodos: PeriodoTrab[];
 
-	@OneToOne((type) => User, (usr) => usr.trabajador)
+	@OneToOne(type => User, usr => usr.trabajador)
 	@JoinColumn()
 	user: User;
 }

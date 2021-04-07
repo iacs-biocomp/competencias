@@ -15,10 +15,7 @@ import { JWT_NAME } from '../modules/auth/auth.service';
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
 	constructor() {}
-	intercept(
-		request: HttpRequest<any>,
-		next: HttpHandler
-	): Observable<HttpEvent<any>> {
+	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		console.log('Interceptor');
 		const token: string = localStorage.getItem(JWT_NAME)!;
 
@@ -49,15 +46,12 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 			catchError((error: HttpErrorResponse) => {
 				let data = {};
 				data = {
-					reason:
-						error && error.error && error.error.reason
-							? error.error.reason
-							: '',
+					reason: error && error.error && error.error.reason ? error.error.reason : '',
 					status: error.status,
 				};
 				console.log(data);
 				return throwError(error);
-			})
+			}),
 		);
 	}
 }

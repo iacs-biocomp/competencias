@@ -9,8 +9,6 @@ import { environment as cnf } from 'src/environments/environment';
 export class UserDataService {
 	constructor(private httpClient: HttpClient) {}
 	getUserData(username: string): Promise<IUserJson> {
-		return this.httpClient
-			.get<IUserJson>(cnf.apiURL + '/users/' + username)
-			.toPromise();
+		return this.httpClient.get<IUserJson>(cnf.apiURL + '/users/' + username).toPromise();
 	}
 }

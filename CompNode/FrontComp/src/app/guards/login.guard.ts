@@ -29,9 +29,8 @@ export class LoginGuard implements CanLoad {
 			return false;
 		}
 		if (
-			this.jwtService
-				.decodeToken<IJwtToken>(token)
-				.roles.filter((role) => route.data!.roles.includes(role)).length > 0
+			this.jwtService.decodeToken<IJwtToken>(token).roles.filter(role => route.data!.roles.includes(role))
+				.length > 0
 		) {
 			return true;
 		}

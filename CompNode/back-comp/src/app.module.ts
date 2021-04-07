@@ -1,10 +1,5 @@
 import { CompressionMiddleware } from '@nest-middlewares/compression';
-import {
-	MiddlewareConsumer,
-	Module,
-	NestModule,
-	RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
@@ -39,8 +34,6 @@ export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 		//Modulo que comprime las request con gzip
 		CompressionMiddleware.configure({ level: 8 });
-		consumer
-			.apply(FrontendMiddleware, CompressionMiddleware)
-			.forRoutes({ path: '**', method: RequestMethod.ALL });
+		consumer.apply(FrontendMiddleware, CompressionMiddleware).forRoutes({ path: '**', method: RequestMethod.ALL });
 	}
 }

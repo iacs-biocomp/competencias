@@ -20,13 +20,11 @@ const routes: Routes = [
 		data: {
 			roles: ['ADMIN'],
 		},
-		loadChildren: () =>
-			import('./modules/admin/admin.module').then((mod) => mod.AdminModule),
+		loadChildren: () => import('./modules/admin/admin.module').then(mod => mod.AdminModule),
 	},
 	{
 		path: 'auth',
-		loadChildren: () =>
-			import('./modules/auth/auth.module').then((mod) => mod.AuthModule),
+		loadChildren: () => import('./modules/auth/auth.module').then(mod => mod.AuthModule),
 	},
 	{
 		//?: Nombre correcto?
@@ -35,10 +33,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
-		loadChildren: () =>
-			import('./modules/usuario/usuario.module').then(
-				(mod) => mod.UsuarioModule
-			),
+		loadChildren: () => import('./modules/usuario/usuario.module').then(mod => mod.UsuarioModule),
 	},
 	{
 		path: 'competencias',
@@ -47,9 +42,7 @@ const routes: Routes = [
 			roles: ['PUBLIC'],
 		},
 		loadChildren: () =>
-			import('./modules/competencias/competencias.module').then(
-				(mod) => mod.CompetenciasModule
-			),
+			import('./modules/competencias/competencias.module').then(mod => mod.CompetenciasModule),
 	},
 	{
 		path: 'resultados',
@@ -57,10 +50,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
-		loadChildren: () =>
-			import('./modules/resultados/resultados.module').then(
-				(mod) => mod.ResultadosModule
-			),
+		loadChildren: () => import('./modules/resultados/resultados.module').then(mod => mod.ResultadosModule),
 	},
 	{
 		path: 'evaluaciones',
@@ -70,9 +60,7 @@ const routes: Routes = [
 			roles: ['PUBLIC'],
 		},
 		loadChildren: () =>
-			import('./modules/evaluaciones/evaluaciones.module').then(
-				(mod) => mod.EvaluacionesModule
-			),
+			import('./modules/evaluaciones/evaluaciones.module').then(mod => mod.EvaluacionesModule),
 	},
 	{
 		path: 'catalog',
@@ -81,10 +69,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
-		loadChildren: () =>
-			import('./modules/catalogs/catalog.module').then(
-				(mod) => mod.CatalogModule
-			),
+		loadChildren: () => import('./modules/catalogs/catalog.module').then(mod => mod.CatalogModule),
 	},
 	{
 		//?: Nombre correcto?
@@ -98,8 +83,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
-		loadChildren: () =>
-			import('./modules/public/public.module').then((mod) => mod.PublicModule),
+		loadChildren: () => import('./modules/public/public.module').then(mod => mod.PublicModule),
 	},
 	//*Redireccionar a public en caso de ruta erronea
 	/* {
@@ -115,11 +99,7 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],
-	providers: [
-		LoginGuard,
-		JwtHelperService,
-		{ provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-	],
+	providers: [LoginGuard, JwtHelperService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

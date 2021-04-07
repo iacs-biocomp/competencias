@@ -17,24 +17,24 @@ export class PeriodoTrab extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ManyToOne((type) => Trabajador, (trabajador) => trabajador.periodos)
+	@ManyToOne(type => Trabajador, trabajador => trabajador.periodos)
 	trabajador: Trabajador;
 
-	@ManyToOne((type) => CatContr, (catContr) => catContr.periodos)
+	@ManyToOne(type => CatContr, catContr => catContr.periodos)
 	catContr: CatContr;
 
-	@ManyToOne((type) => CatComp, (cComp) => cComp.periodosTrab)
+	@ManyToOne(type => CatComp, cComp => cComp.periodosTrab)
 	catComp: CatComp;
 
-	@ManyToMany((type) => Trabajador, (sup) => sup)
+	@ManyToMany(type => Trabajador, sup => sup)
 	@JoinTable()
 	superiores: Trabajador[];
 
-	@ManyToMany((type) => Trabajador, (par) => par)
+	@ManyToMany(type => Trabajador, par => par)
 	@JoinTable()
 	pares: Trabajador[];
 
-	@ManyToMany((type) => Trabajador, (inf) => inf)
+	@ManyToMany(type => Trabajador, inf => inf)
 	@JoinTable()
 	inferiores: Trabajador[];
 

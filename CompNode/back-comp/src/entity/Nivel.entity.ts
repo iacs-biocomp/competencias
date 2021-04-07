@@ -9,7 +9,7 @@ export class Nivel extends BaseEntity {
 	@Column({ type: 'float8', unique: true, nullable: false })
 	valor: number;
 
-	@OneToMany((type) => SubModel, (subm) => subm.nivel)
+	@OneToMany(type => SubModel, subm => subm.nivel)
 	subModels: SubModel[];
 	// TODO: Elegir un nombre correcto
 }

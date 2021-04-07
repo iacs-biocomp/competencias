@@ -17,6 +17,6 @@ export class Competencia extends BaseEntity {
 	createdAt: Date;
 
 	@ApiProperty()
-	@OneToMany((type) => SubModel, (subm) => subm.nivel)
+	@OneToMany(type => SubModel, subm => subm.nivel)
 	subModels: SubModel[];
 }

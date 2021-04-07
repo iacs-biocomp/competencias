@@ -20,9 +20,9 @@ export const nivRoutes: Routes = [
 	imports: [
 		CommonModule,
 		SharedModule,
-	  // TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
+		// TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
 		FormsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
 	],
 	providers: [NivelService],
 })

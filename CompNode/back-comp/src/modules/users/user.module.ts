@@ -7,12 +7,8 @@ import { AuthModule } from '../auth/auth.module';
 import { RoleRepository } from '../role/role.repository';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UserRepository, RoleRepository]),
-    AuthModule,
-  ],
-  providers: [UserService],
-  controllers: [UserController],
-  
+	imports: [TypeOrmModule.forFeature([UserRepository, RoleRepository]), AuthModule],
+	providers: [UserService],
+	controllers: [UserController],
 })
 export class UserModule {}

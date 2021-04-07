@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ICatComp } from '../../../../../../../interfaces/ICategorias';
 import { CatCompetencialesService } from '../services/CatCompetenciales.service';
 
-
 @Component({
-  selector: 'app-table-compet',
-  templateUrl: './table-compet.component.html',
-  styleUrls: ['./table-compet.component.css']
+	selector: 'app-table-compet',
+	templateUrl: './table-compet.component.html',
+	styleUrls: ['./table-compet.component.css'],
 })
 export class TableCompetComponent implements OnInit {
-  constructor(private catCompService: CatCompetencialesService) {}
+	constructor(private catCompService: CatCompetencialesService) {}
 	catCompToAdd: ICatComp[] = [];
 	catComps: ICatComp[] = [];
 

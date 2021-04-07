@@ -24,11 +24,7 @@ export class RegisterComponent implements OnInit {
 	/**Formulario bindeado con la vista */
 	signupForm!: FormGroup;
 
-	constructor(
-		private authService: AuthService,
-		private router: Router,
-		private fb: FormBuilder
-	) {}
+	constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {}
 	async sendForm() {
 		let registerReq: IRegisterRequest;
 		const value: form = this.signupForm.value;
@@ -59,10 +55,7 @@ export class RegisterComponent implements OnInit {
 			name: ['', Validators.required],
 			surnames: ['', Validators.required],
 			DNI: ['', Validators.required],
-			phone: [
-				'',
-				[Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')],
-			],
+			phone: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]],
 			institution: ['', Validators.required],
 		});
 

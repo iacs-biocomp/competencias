@@ -15,13 +15,7 @@ export class CatalogComponent implements OnInit {
 	master!: Array<IMaster>;
 	dataSource!: Array<IDataset>;
 	displayedColumns = ['name', 'description', 'from_dt', 'to_dt', 'recNumber'];
-	titles: string[] = [
-		'Nombre',
-		'Descripción',
-		'N° Registros',
-		'Desde',
-		'Hasta',
-	];
+	titles: string[] = ['Nombre', 'Descripción', 'N° Registros', 'Desde', 'Hasta'];
 	testData: IDataset[] = [
 		{
 			name: 'mf_cias_zona',
@@ -42,7 +36,7 @@ export class CatalogComponent implements OnInit {
 	myTable!: MatTable<any>;
 
 	ngOnInit(): void {
-		this.orient.getPublicCatalogs().then((catalogs) => {
+		this.orient.getPublicCatalogs().then(catalogs => {
 			this.catalogs = catalogs;
 			this.dataset = catalogs.dataset;
 			this.master = catalogs.master;

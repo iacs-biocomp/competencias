@@ -36,14 +36,14 @@ export class User extends BaseEntity {
 	@UpdateDateColumn({ type: 'timestamp', name: 'updated_at', nullable: true })
 	updatedAt: Date;
 
-	@ManyToMany((type) => Role, (role) => role.users, { eager: true })
+	@ManyToMany(type => Role, role => role.users, { eager: true })
 	@JoinTable({ name: 'user_roles' })
 	roles: Role[];
 
 	@Column({ type: 'varchar', default: 'INACTIVE', length: 8 })
 	status: 'ACTIVE' | 'INACTIVE';
 
-	@OneToOne((type) => Trabajador, (t) => t.user)
+	@OneToOne(type => Trabajador, t => t.user)
 	trabajador: Trabajador;
 
 	/**

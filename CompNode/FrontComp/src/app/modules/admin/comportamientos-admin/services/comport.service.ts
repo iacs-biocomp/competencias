@@ -8,9 +8,7 @@ export class ComportService {
 	constructor(private httpClient: HttpClient) {}
 
 	async delete(comport: IComportamiento): Promise<boolean> {
-		await this.httpClient
-			.delete(`${cnf.apiURL}/comportamientos/${comport.id}`)
-			.toPromise();
+		await this.httpClient.delete(`${cnf.apiURL}/comportamientos/${comport.id}`).toPromise();
 		return true;
 	}
 
@@ -20,9 +18,7 @@ export class ComportService {
 	 * @returns Un `Array` de todos los comportamientos
 	 */
 	public getAllComport(): Promise<IComportamiento[]> {
-		return this.httpClient
-			.get<IComportamiento[]>(`${cnf.apiURL}/comportamientos/all`)
-			.toPromise();
+		return this.httpClient.get<IComportamiento[]>(`${cnf.apiURL}/comportamientos/all`).toPromise();
 	}
 
 	/**
@@ -33,23 +29,17 @@ export class ComportService {
 	async borrarComportort(id: string): Promise<boolean> {
 		var borrado = false;
 		try {
-			borrado = await this.httpClient
-				.delete<boolean>(`${cnf.apiURL}/comportamientos/${id}`)
-				.toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${id}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			//TODO: Excepción si hay error lanzar a controlador (Componente)
-			alert(
-				'No se ha podido borrar ese comportamiento, contacte con un administrador.'
-			);
+			alert('No se ha podido borrar ese comportamiento, contacte con un administrador.');
 		}
 		return borrado;
 	}
 
 	/** POST: add a new comportamiento to the server */
 	addComport(comp: IComportamiento): Promise<boolean> {
-		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/comportamientos`, comp)
-			.toPromise();
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/comportamientos`, comp).toPromise();
 	}
 }

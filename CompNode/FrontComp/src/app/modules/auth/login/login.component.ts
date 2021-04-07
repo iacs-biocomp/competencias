@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 		private authService: AuthService,
 		private router: Router,
 		private route: ActivatedRoute,
-		private fb: FormBuilder
+		private fb: FormBuilder,
 	) {
 		this.returnUrl = '/';
 	}

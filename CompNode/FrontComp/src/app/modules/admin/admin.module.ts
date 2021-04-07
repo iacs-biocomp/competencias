@@ -3,23 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { OrganigramaAdminComponent } from './organigrama-admin/organigrama-admin.component';
-import {
-	CompetenciasAdminModule,
-	compRoutes,
-} from './competencias-admin/competencias-admin.module';
+import { CompetenciasAdminModule, compRoutes } from './competencias-admin/competencias-admin.module';
 import {
 	ComportamientosAdminModule,
 	comportRoutes,
 } from './comportamientos-admin/comportamientos-admin.module';
-import {
-	NivelesAdminModule,
-	nivRoutes,
-} from './niveles-admin/niveles-admin.module';
+import { NivelesAdminModule, nivRoutes } from './niveles-admin/niveles-admin.module';
 import { CatAdmnModule, catRoutes } from './cat-admn/cat-admn.module';
-import {
-	EvaluacionesAdmnModule,
-	evRoutes,
-} from './evaluaciones-admn/evaluaciones-admn.module';
+import { EvaluacionesAdmnModule, evRoutes } from './evaluaciones-admn/evaluaciones-admn.module';
 
 const routes: Routes = [
 	{ path: 'comportamientos', children: comportRoutes },

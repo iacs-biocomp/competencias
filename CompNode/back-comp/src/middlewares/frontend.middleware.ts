@@ -11,10 +11,7 @@ import { AuthGuard } from '../guards/auth/auth.guard';
  */
 @Injectable()
 export class FrontendMiddleware implements NestMiddleware {
-	constructor(
-		private authGuard: AuthGuard,
-		private cnfService: ConfigService,
-	) {}
+	constructor(private authGuard: AuthGuard, private cnfService: ConfigService) {}
 	use(req: Request, res: Response, next: Function) {
 		const URL = req.baseUrl;
 		const TOKEN_NAME = this.cnfService.get(cnf.JWT_NAME);

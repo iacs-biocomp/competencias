@@ -9,6 +9,6 @@ export class Comportamiento extends BaseEntity {
 	@Column({ type: 'varchar', nullable: false })
 	descripcion: string;
 
-	@ManyToMany((type) => SubModel, (subm) => subm.comportamientos)
+	@ManyToMany(type => SubModel, subm => subm.comportamientos)
 	subModels: SubModel[];
 }

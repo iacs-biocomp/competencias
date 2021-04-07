@@ -28,7 +28,7 @@ export class EvaluacionesController {
 		});
 		var evs: Ev[] = [];
 		//Esto recoge las evaluaciones de cada periodo y las añade a un array vacío
-		worker.periodos.forEach((periodo) => evs.push.apply(evs, periodo.catComp.evaluaciones));
+		worker.periodos.forEach(periodo => evs.push.apply(evs, periodo.catComp.evaluaciones));
 		return evs;
 	}
 

@@ -9,6 +9,6 @@ export class CatContr extends BaseEntity {
 	@Column({ type: 'varchar', nullable: false })
 	description: string;
 
-	@OneToMany((type) => PeriodoTrab, (periodo) => periodo.catContr)
+	@OneToMany(type => PeriodoTrab, periodo => periodo.catContr)
 	periodos: PeriodoTrab[];
 }

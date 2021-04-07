@@ -8,9 +8,7 @@ export class NivelService {
 	constructor(private httpClient: HttpClient) {}
 
 	async delete(nivel: INivel): Promise<boolean> {
-		await this.httpClient
-			.delete(`${cnf.apiURL}/niveles/${nivel.id}`)
-			.toPromise();
+		await this.httpClient.delete(`${cnf.apiURL}/niveles/${nivel.id}`).toPromise();
 		return true;
 	}
 
@@ -20,9 +18,7 @@ export class NivelService {
 	 * @returns Un `Array` de todos los niveles
 	 */
 	public getAllNiveles(): Promise<INivel[]> {
-		return this.httpClient
-			.get<INivel[]>(`${cnf.apiURL}/niveles/all`)
-			.toPromise();
+		return this.httpClient.get<INivel[]>(`${cnf.apiURL}/niveles/all`).toPromise();
 	}
 
 	/**
@@ -33,23 +29,17 @@ export class NivelService {
 	async borrarNivel(id: string): Promise<boolean> {
 		var borrado = false;
 		try {
-			borrado = await this.httpClient
-				.delete<boolean>(`${cnf.apiURL}/niveles/${id}`)
-				.toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${id}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			//TODO: Excepción si hay error lanzar a controlador (Componente)
-			alert(
-				'No se ha podido borrar ese nivel, contacte con un administrador.'
-			);
+			alert('No se ha podido borrar ese nivel, contacte con un administrador.');
 		}
 		return borrado;
 	}
 
 	/** POST: add a new nivel to the server */
 	addNivel(nivel: INivel): Promise<boolean> {
-		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/niveles`, nivel)
-			.toPromise();
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
 }

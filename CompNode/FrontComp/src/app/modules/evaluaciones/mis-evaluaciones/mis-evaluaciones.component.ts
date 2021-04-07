@@ -21,9 +21,6 @@ export class MisEvaluacionesComponent implements OnInit {
 		this.buttonEvaluar = true;
 		this.buttonCalcular = true;
 
-		console.log(
-			this.evaluacionData,
-			await this.evService.evaluacionesUsr('TEST')
-		);
+		console.log(this.evaluacionData, await this.evService.evaluacionesUsr('TEST'));
 	}
 }

@@ -3,18 +3,18 @@ import { INivel } from '../../../../../../../interfaces/IEvaluaciones';
 import { NivelService } from '../services/nivel.service';
 
 @Component({
-  selector: 'app-niv-table',
-  templateUrl: './niv-table.component.html',
-  styleUrls: ['./niv-table.component.css']
+	selector: 'app-niv-table',
+	templateUrl: './niv-table.component.html',
+	styleUrls: ['./niv-table.component.css'],
 })
 export class NivTableComponent implements OnInit {
 	constructor(private nivelService: NivelService) {}
 	nivelToAdd: INivel[] = [];
 	niveles: INivel[] = [];
 
-  async ngOnInit(): Promise<void> {
+	async ngOnInit(): Promise<void> {
 		this.updateNivelView();
-  }
+	}
 
 	//TODO: Añadir tsdoc al archivo entero
 	async updateNivelView(): Promise<void> {
@@ -50,7 +50,7 @@ export class NivTableComponent implements OnInit {
 
 	async deleteNivel(nivel: INivel) {
 		const borrado = await this.nivelService.delete(nivel);
-		if(borrado){
+		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.updateNivelView();
 		}
