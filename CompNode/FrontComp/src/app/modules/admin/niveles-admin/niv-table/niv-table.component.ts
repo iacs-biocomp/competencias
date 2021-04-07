@@ -55,4 +55,8 @@ export class NivTableComponent implements OnInit {
 			this.updateNivelView();
 		}
 	}
+
+
+
+
 }

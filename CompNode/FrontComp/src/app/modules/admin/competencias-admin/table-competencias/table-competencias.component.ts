@@ -59,4 +59,8 @@ export class TableCompetenciasComponent implements OnInit {
 			this.updateCompeView();
 		}
 	}
+
+	async modifyCompe(descripcion: string, competencia: ICompetencia) {
+
+	}
 }
