@@ -11,6 +11,7 @@ import {
 import { NivelesAdminModule, nivRoutes } from './niveles-admin/niveles-admin.module';
 import { CatAdmnModule, catRoutes } from './cat-admn/cat-admn.module';
 import { EvaluacionesAdmnModule, evRoutes } from './evaluaciones-admn/evaluaciones-admn.module';
+import { TrabajadoresModule, trabRoutes } from './trabajadores/trabajadores.module';
 
 const routes: Routes = [
 	{ path: 'comportamientos', children: comportRoutes },
@@ -18,6 +19,7 @@ const routes: Routes = [
 	{ path: 'niveles', children: nivRoutes },
 	{ path: 'categorias', children: catRoutes },
 	{ path: 'evaluaciones', children: evRoutes },
+	{ path: 'trabajadores', children: trabRoutes },
 	{ path: '', redirectTo: '/' },
 
 	// { path: '', component: CompetenciasAdminComponent },
@@ -33,6 +35,7 @@ const routes: Routes = [
 		CatAdmnModule,
 		EvaluacionesAdmnModule,
 		NivelesAdminModule,
+		TrabajadoresModule,
 	],
 	exports: [SharedModule],
 })

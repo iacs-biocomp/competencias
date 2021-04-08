@@ -7,9 +7,8 @@ import { INivel } from '../../../../../../../interfaces/IEvaluaciones';
 export class NivelService {
 	constructor(private httpClient: HttpClient) {}
 
-	async delete(nivel: INivel): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/niveles/${nivel.id}`).toPromise();
-		return true;
+	delete(nivel: INivel): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${nivel.id}`).toPromise();
 	}
 
 	/**
@@ -17,7 +16,7 @@ export class NivelService {
 	 *
 	 * @returns Un `Array` de todos los niveles
 	 */
-	public getAllNiveles(): Promise<INivel[]> {
+	getAllNiveles(): Promise<INivel[]> {
 		return this.httpClient.get<INivel[]>(`${cnf.apiURL}/niveles/all`).toPromise();
 	}
 
@@ -38,6 +37,7 @@ export class NivelService {
 		return borrado;
 	}
 
+	//TODO: Tsdoc
 	/** POST: add a new nivel to the server */
 	addNivel(nivel: INivel): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
@@ -47,9 +47,7 @@ export class NivelService {
 	 * @param comp El nivel a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-	 editNivel(nivel: INivel): Promise<boolean> {
+	editNivel(nivel: INivel): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
-
-
 }

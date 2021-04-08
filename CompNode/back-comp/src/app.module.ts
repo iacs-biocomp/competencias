@@ -15,6 +15,7 @@ import { NivelesModule } from './modules/niveles/niveles.module';
 import { ComportamientosModule } from './modules/comportamientos/comportamientos.module';
 import { CatContractModule } from './modules/cat-contract/cat-contract.module';
 import { CatCompModule } from './modules/cat-comp/cat-comp.module';
+import { TrabajadoresModule } from './modules/trabajadores/trabajadores.module';
 
 @Module({
 	imports: [
@@ -30,6 +31,7 @@ import { CatCompModule } from './modules/cat-comp/cat-comp.module';
 		ComportamientosModule,
 		CatContractModule,
 		CatCompModule,
+		TrabajadoresModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AuthGuard, ConfigService],
