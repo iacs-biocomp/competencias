@@ -12,11 +12,11 @@ export class SubModel extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ApiProperty()
+	@ApiProperty({ type: () => EvModel })
 	@ManyToMany(type => EvModel, model => model.subModels)
 	modelos: EvModel[];
 
-	@ApiProperty()
+	@ApiProperty({ type: () => Nivel })
 	@ManyToOne(type => Nivel, n => n.subModels)
 	nivel: Nivel;
 

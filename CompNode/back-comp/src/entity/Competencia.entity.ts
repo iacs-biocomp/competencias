@@ -16,7 +16,7 @@ export class Competencia extends BaseEntity {
 	@CreateDateColumn({ type: 'timestamp', name: 'created_at' })
 	createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({ type: () => SubModel })
 	@OneToMany(type => SubModel, subm => subm.nivel)
 	subModels: SubModel[];
 }

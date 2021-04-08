@@ -51,8 +51,10 @@ registerLocaleData(localeEs);
 export class AppModule {
 	constructor(private m: NgModuleRef<AppModule>) {}
 
-	/**Destruye el modulo de app y sus childrens, usar solo para el logout */
-	destory() {
-		this.m.destroy();
-	}
+	/**
+	 * Destruye el modulo de app y sus childrens, usar solo para el logout
+	 */
+	// destory() {
+	// 	this.m.destroy();
+	// }
 }

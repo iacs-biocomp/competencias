@@ -24,7 +24,7 @@ export class CatCompetencialesService {
 	/**
 	 * Metodo que borra una categoria competencial del backend
 	 *
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
+	 * @returns Una promesa que es `true` si se ha borrado `false` en caso contrario
 	 */
 	async borrarCatComp(id: string): Promise<boolean> {
 		var borrado = false;

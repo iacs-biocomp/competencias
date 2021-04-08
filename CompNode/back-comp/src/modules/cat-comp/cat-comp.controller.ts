@@ -9,6 +9,8 @@ export class CatCompController {
 		@InjectRepository(CatCompRepo)
 		private readonly catCompRepo: CatCompRepo,
 	) {}
+	// TODO: Añadir tsdoc restante
+
 	@Get('all')
 	getAllCompt(): Promise<CatComp[]> {
 		return this.catCompRepo.find();
@@ -16,41 +18,55 @@ export class CatCompController {
 
 	@Delete(':id')
 	async deleteCompt(@Param('id') id: string): Promise<boolean> {
-		const compt = await this.catCompRepo.findOne({ id: id });
-		if (!compt) {
+		const catComp = await this.catCompRepo.findOne({ id: id });
+		if (!catComp) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
 		var oneWeekAgo: Date = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-		// if (oneWeekAgo >= compt.createdAt) {
+		// if (oneWeekAgo >= catComp.createdAt) {
 		// 	throw new UnauthorizedException('No puedes borrar esa competencia');
 		// }
-		compt.remove();
+		catComp.remove();
 		return true;
 	}
 
+	/**
+	 *
+	 * @param catComp La nueva catComp, no ha de existir en la base de datos
+	 * @returns	`true` si se ha creado `Exception` si ya existe
+	 * @throws //TODO: Complete
+	 */
 	@Post('')
-	async createCompt(@Body() compt: CatComp): Promise<boolean> {
-		const existingCompt = await this.catCompRepo.findOne({ id: compt.id });
+	async createCompt(@Body() catComp: CatComp): Promise<boolean> {
+		const existingCompt = await this.catCompRepo.findOne({ id: catComp.id });
 		if (existingCompt) {
 			throw new ConflictException('CatComp ya creada');
 		}
-		// if (compt.createdAt != undefined && compt.descripcion === undefined) {
+		// if (catComp.createdAt != undefined && catComp.descripcion === undefined) {
 		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		// }
-		this.catCompRepo.save(compt);
+		this.catCompRepo.save(catComp);
 		return true;
 	}
+
+	/**
+	 * metodo para actualizar una catComp
+	 * @param catComp La catComp con los nuevos datos, el id ha de ser el de la catComp a actualizar
+	 * @returns `true` si se ha actualizado `false caso contrario`
+	 * @throws {Error}
+	 */
 	@Put('')
-	async updateCompt(@Body() compt: CatComp): Promise<boolean> {
-		const existingCompt = await this.catCompRepo.findOne({ id: compt.id });
+	async updateCompt(@Body() catComp: CatComp): Promise<boolean> {
+		const existingCompt = await this.catCompRepo.findOne({ id: catComp.id });
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');
 		}
-		// if (compt.createdAt != undefined && compt.descripcion === undefined) {
+		//? Preguntar a vega si se puede modificar una catComp si tiene alguna evaluación anterior o en curso
+		// if (catComp.createdAt != undefined && catComp.descripcion === undefined) {
 		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		// }
-		this.catCompRepo.save(compt);
+		this.catCompRepo.save(catComp);
 		return true;
 	}
 }

@@ -12,37 +12,48 @@ import {
 import { Role } from './role.entity';
 import { SignupDto } from '../modules/auth/dto';
 import { Trabajador } from './Trabajador.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('user')
 export class User extends BaseEntity {
+	@ApiProperty()
 	@PrimaryColumn({ type: 'varchar', unique: true, length: 40, nullable: false })
 	username: string;
 
+	@ApiProperty()
 	@Column({ type: 'varchar', nullable: false })
 	password: string;
 
+	@ApiProperty()
 	@Column({ type: 'varchar', nullable: true })
 	email: string;
 
+	@ApiProperty()
 	@Column({ type: 'varchar', nullable: true })
 	name: string;
 
+	@ApiProperty()
 	@Column({ type: 'varchar', nullable: false })
 	lastname: string;
 
+	@ApiProperty()
 	@CreateDateColumn({ type: 'timestamp', name: 'created_at', nullable: true })
 	createdAt: Date;
 
+	@ApiProperty()
 	@UpdateDateColumn({ type: 'timestamp', name: 'updated_at', nullable: true })
 	updatedAt: Date;
 
+	@ApiProperty({ type: () => Role })
 	@ManyToMany(type => Role, role => role.users, { eager: true })
 	@JoinTable({ name: 'user_roles' })
 	roles: Role[];
 
+	@ApiProperty()
 	@Column({ type: 'varchar', default: 'INACTIVE', length: 8 })
 	status: 'ACTIVE' | 'INACTIVE';
 
+	@ApiProperty({ type: () => Trabajador })
 	@OneToOne(type => Trabajador, t => t.user)
 	trabajador: Trabajador;
 
