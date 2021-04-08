@@ -53,7 +53,7 @@ export class NivelesController {
 
 	@Post('')
 	async createNivel(@Body() nivel: Nivel): Promise<boolean> {
-		const existingNivel = this.nivRepo.findOne({ id: nivel.id });
+		const existingNivel = await this.nivRepo.findOne({ id: nivel.id });
 		if (existingNivel) {
 			throw new ConflictException('Nivel ya creada');
 		}
@@ -62,7 +62,7 @@ export class NivelesController {
 	}
 	@Put('')
 	async updateNiv(@Body() nivel: Nivel): Promise<boolean> {
-		const existingNivel = this.nivRepo.findOne({ id: nivel.id }, { relations: ['subModels'] });
+		const existingNivel = await this.nivRepo.findOne({ id: nivel.id }, { relations: ['subModels'] });
 		if (!existingNivel) {
 			throw new NotFoundException('No existe un nivel con ese id');
 		}

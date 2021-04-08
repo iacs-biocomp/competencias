@@ -62,7 +62,7 @@ export class CompetenciasController {
 		if (compt.createdAt != undefined && compt.descripcion === undefined) {
 			throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		}
-		this.comptRepo.save(compt);
+		await this.comptRepo.save(compt);
 		return true;
 	}
 }

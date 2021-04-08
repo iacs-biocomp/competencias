@@ -66,7 +66,7 @@ export class CatCompController {
 		// if (catComp.createdAt != undefined && catComp.descripcion === undefined) {
 		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		// }
-		this.catCompRepo.save(catComp);
+		await this.catCompRepo.save(catComp);
 		return true;
 	}
 }
