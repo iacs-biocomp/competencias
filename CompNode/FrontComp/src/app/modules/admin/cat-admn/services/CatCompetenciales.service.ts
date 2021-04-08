@@ -8,7 +8,7 @@ export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient) {}
 
 	async delete(catComp: ICatComp): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/catCompetenciales/${catComp.id}`).toPromise();
+		await this.httpClient.delete(`${cnf.apiURL}/catcomp/${catComp.id}`).toPromise();
 		return true;
 	}
 
@@ -18,7 +18,7 @@ export class CatCompetencialesService {
 	 * @returns Un `Array` de todas las categorias competenciales
 	 */
 	public getAllCatComp(): Promise<ICatComp[]> {
-		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catCompetenciales/all`).toPromise();
+		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
 	/**
@@ -29,7 +29,7 @@ export class CatCompetencialesService {
 	async borrarCatComp(id: string): Promise<boolean> {
 		var borrado = false;
 		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catCompetenciales/${id}`).toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${id}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			alert('No se ha podido borrar esa categoría competencial, contacte con un administrador.');
@@ -39,6 +39,6 @@ export class CatCompetencialesService {
 
 	/** POST: add a new categoria competencial to the server */
 	addCatComp(catComp: ICatComp): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/catCompetenciales`, catComp).toPromise();
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 }
