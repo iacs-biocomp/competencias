@@ -7,9 +7,9 @@ import { ICatComp } from '../../../../../../../interfaces/ICategorias';
 export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient) {}
 
-	async delete(catComp: ICatComp): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/catcomp/${catComp.id}`).toPromise();
-		return true;
+	public delete(catComp: ICatComp): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catComp.id}`).toPromise();
+
 	}
 
 	/**
@@ -24,7 +24,7 @@ export class CatCompetencialesService {
 	/**
 	 * Metodo que borra una categoria competencial del backend
 	 *
-	 * @returns Una promesa que es `true` si se ha borrado `false` en caso contrario
+	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
 	async borrarCatComp(id: string): Promise<boolean> {
 		var borrado = false;
@@ -42,13 +42,12 @@ export class CatCompetencialesService {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 
-	/**
+		/**
 	 *
-	 * @param comport La categoria competencial a editar en la base de datos
-	 * @returns Una promesa que es `true` si se ha editado `false` en caso contrario
+	 * @param comp La competencia a editar en la base de datos
+	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-	 editCompt(catComp: ICatComp): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
-	}
-
+		 editCompt(catComp: ICatComp): Promise<boolean> {
+			return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+		}
 }

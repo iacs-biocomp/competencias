@@ -7,9 +7,8 @@ import { IComportamiento } from '../../../../../../../interfaces/IEvaluaciones';
 export class ComportService {
 	constructor(private httpClient: HttpClient) {}
 
-	async delete(comport: IComportamiento): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/comportamientos/${comport.id}`).toPromise();
-		return true;
+	public delete(comport: IComportamiento): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${comport.id}`).toPromise();
 	}
 
 	/**

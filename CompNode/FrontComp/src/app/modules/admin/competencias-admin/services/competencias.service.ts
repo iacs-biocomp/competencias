@@ -7,9 +7,8 @@ import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
 export class CompetenciasService {
 	constructor(private httpClient: HttpClient) {}
 
-	async delete(compet: ICompetencia): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/competencias/${compet.id}`).toPromise();
-		return true;
+	public delete(compet: ICompetencia): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${compet.id}`).toPromise();
 	}
 
 	/**

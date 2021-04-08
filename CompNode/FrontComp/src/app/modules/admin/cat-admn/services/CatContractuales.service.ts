@@ -7,9 +7,8 @@ import { ICatContr } from '../../../../../../../interfaces/ICategorias';
 export class CatContractService {
 	constructor(private httpClient: HttpClient) {}
 
-	async delete(catContract: ICatContr): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/catcontr/${catContract.id}`).toPromise();
-		return true;
+	public delete(catContract: ICatContr): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${catContract.id}`).toPromise();
 	}
 
 	/**
