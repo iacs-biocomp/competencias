@@ -1,9 +1,6 @@
 <div class="tablewrapper">
 	<h1 class="title">Lista de todos los niveles</h1>
-	<table
-		aria-label="Listado de todos los niveles existentes"
-		class="table table-hover"
-	>
+	<table aria-label="Listado de todos los niveles existentes" class="table table-hover">
 		<thead>
 			<tr>
 				<th scope="col">CÓDIGO</th>
@@ -20,18 +17,10 @@
 		<tbody>
 			<tr *ngFor="let row of nivelToAdd">
 				<td>
-					<input
-						type="text"
-						class="form-control"
-						[(ngModel)]="row.id"
-					/>
+					<input type="text" class="form-control" [(ngModel)]="row.id" />
 				</td>
 				<td>
-					<input
-						type="text"
-						class="form-control"
-						[(ngModel)]="row.valor"
-					/>
+					<input type="text" class="form-control" [(ngModel)]="row.valor" />
 				</td>
 				<td>
 					<!-- <button
@@ -46,11 +35,7 @@
 							delete
 						</span>
 					</div>
-					<div
-						class="btn btn-success"
-						(click)="persistNiv(row)"
-						*ngIf="row.valor !== 0 && row.id !== ''"
-					>
+					<div class="btn btn-success" (click)="persistNiv(row)" *ngIf="row.valor !== 0 && row.id !== ''">
 						<span class="material-icons"> add </span>
 					</div>
 				</td>
@@ -58,12 +43,20 @@
 
 			<tr *ngFor="let nivel of niveles">
 				<td>{{ nivel.id }}</td>
-				<td>{{ nivel.valor }}</td>
-				<td *ngIf="canDelete(nivel)">
-					<div class="btn btn-danger">
-						<span class="material-icons" (click)="deleteNivel(nivel)">
-							delete
-						</span>
+				<td *ngIf="!nivel.editing">{{ nivel.valor }}</td>
+				<td *ngIf="nivel.editing">
+					<input type="text" class="form-control" [(ngModel)]="nivel.valor" />
+				</td>
+
+				<td>
+					<div *ngIf="canDelete(nivel)" class="btn btn-danger">
+						<span class="material-icons" (click)="deleteNivel(nivel)"> delete </span>
+					</div>
+					<div class="btn btn-success">
+						<span class="material-icons" (click)="editingNivel(nivel, true, false)"> edit </span>
+					</div>
+					<div class="btn btn-primary" (click)="editingNivel(nivel, false, true)">
+						<span class="material-icons"> done </span>
 					</div>
 				</td>
 			</tr>

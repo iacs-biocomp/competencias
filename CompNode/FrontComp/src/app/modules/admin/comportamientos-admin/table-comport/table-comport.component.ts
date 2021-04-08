@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { IComportamiento } from '../../../../../../../interfaces/IEvaluaciones';
 import { ComportService } from '../services/comport.service';
 
+interface IComportEdit extends IComportamiento {
+	editing?: boolean;
+}
+
 @Component({
 	selector: 'app-table-comport',
 	templateUrl: './table-comport.component.html',
@@ -10,7 +14,7 @@ import { ComportService } from '../services/comport.service';
 export class TableComportComponent implements OnInit {
 	constructor(private comportService: ComportService) {}
 	comportToAdd: IComportamiento[] = [];
-	comports: IComportamiento[] = [];
+	comports: IComportEdit[] = [];
 
 	//TODO: Añadir tsdoc a los metodos y atributos de la clase
 
@@ -36,6 +40,21 @@ export class TableComportComponent implements OnInit {
 			subModels: undefined,
 		});
 	}
+
+	/**
+	 *
+	 * @param compet La competencia a editar/mandar
+	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
+	 * @param send	`true` si se quiere mandar esa competencia al backend `false` si no
+	 */
+	 editingComport(comport: IComportEdit, editing: boolean, send: boolean): void {
+		comport.editing = editing;
+		if (send) {
+			delete comport.editing;
+			this.comportService.editCompt(comport);
+		}
+	}
+
 
 	canDelete(comport: IComportamiento): boolean {
 		return true;

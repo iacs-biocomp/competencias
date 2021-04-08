@@ -54,16 +54,22 @@
 
 			<tr *ngFor="let comport of comports">
 				<td>{{ comport.id }}</td>
-				<td>{{ comport.descripcion }}</td>
-
-				<td *ngIf="canDelete(comport)">
-					<div class="btn btn-danger">
-						<span class="material-icons" (click)="deleteComport(comport)">
-							delete
-						</span>
-					</div>
+				<td *ngIf="!comport.editing">{{ comport.descripcion }}</td>
+				<td *ngIf="comport.editing">
+					<input type="text" class="form-control" [(ngModel)]="comport.descripcion" />
 				</td>
 
+				<td>
+					<div *ngIf="canDelete(comport)" class="btn btn-danger">
+						<span class="material-icons" (click)="deleteComport(comport)"> delete </span>
+					</div>
+					<div class="btn btn-success">
+						<span class="material-icons" (click)="editingComport(comport, true, false)"> edit </span>
+					</div>
+					<div class="btn btn-primary" (click)="editingComport(comport, false, true)">
+						<span class="material-icons"> done </span>
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>

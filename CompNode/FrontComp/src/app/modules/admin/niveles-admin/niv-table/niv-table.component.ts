@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { INivel } from '../../../../../../../interfaces/IEvaluaciones';
 import { NivelService } from '../services/nivel.service';
 
+interface INivelEdit extends INivel {
+	editing?: boolean;
+}
+
 @Component({
 	selector: 'app-niv-table',
 	templateUrl: './niv-table.component.html',
@@ -10,7 +14,7 @@ import { NivelService } from '../services/nivel.service';
 export class NivTableComponent implements OnInit {
 	constructor(private nivelService: NivelService) {}
 	nivelToAdd: INivel[] = [];
-	niveles: INivel[] = [];
+	niveles: INivelEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
 		this.updateNivelView();
@@ -37,6 +41,20 @@ export class NivTableComponent implements OnInit {
 			valor: 0,
 			subModels: undefined,
 		});
+	}
+
+	/**
+	 *
+	 * @param compet El nivel a editar/mandar
+	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
+	 * @param send	`true` si se quiere mandar ese nivel al backend `false` si no
+	 */
+	 editingNivel(nivel: INivelEdit, editing: boolean, send: boolean): void {
+		nivel.editing = editing;
+		if (send) {
+			delete nivel.editing;
+			this.nivelService.editNivel(nivel);
+		}
 	}
 
 	async persistNiv(nivel: INivel): Promise<void> {

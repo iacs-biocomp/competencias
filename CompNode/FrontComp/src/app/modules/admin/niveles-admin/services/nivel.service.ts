@@ -42,4 +42,14 @@ export class NivelService {
 	addNivel(nivel: INivel): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
+	/**
+	 *
+	 * @param comp El nivel a editar en la base de datos
+	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 */
+	 editNivel(nivel: INivel): Promise<boolean> {
+		return this.httpClient.put<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
+	}
+
+
 }

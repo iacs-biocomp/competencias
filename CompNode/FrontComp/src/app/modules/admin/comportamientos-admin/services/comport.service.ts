@@ -42,4 +42,13 @@ export class ComportService {
 	addComport(comp: IComportamiento): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/comportamientos`, comp).toPromise();
 	}
+
+	/**
+	 *
+	 * @param comport El comportamiento a editar en la base de datos
+	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 */
+		 editCompt(comport: IComportamiento): Promise<boolean> {
+			return this.httpClient.put<boolean>(`${cnf.apiURL}/comportamientos`, comport).toPromise();
+		}
 }
