@@ -50,8 +50,8 @@ export class User extends BaseEntity {
 	roles: Role[];
 
 	@ApiProperty()
-	@Column({ type: 'varchar', default: 'INACTIVE', length: 8 })
-	status: 'ACTIVE' | 'INACTIVE';
+	@Column({ type: 'bool', default: false })
+	active: boolean;
 
 	@ApiProperty({ type: () => Trabajador })
 	@OneToOne(type => Trabajador, t => t.user)

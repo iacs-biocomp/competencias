@@ -53,4 +53,8 @@ export class PeriodoTrab extends BaseEntity {
 	@ApiProperty()
 	@Column({ type: 'timestamp', nullable: true })
 	endAt: Date;
+
+	@ApiProperty()
+	@Column({ type: 'bool', default: false, nullable: false })
+	actual: boolean;
 }

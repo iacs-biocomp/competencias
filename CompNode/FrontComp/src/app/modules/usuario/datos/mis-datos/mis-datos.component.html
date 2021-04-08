@@ -16,10 +16,10 @@
 				<label class="col-sm-4 control-label">Email:</label>
 				{{ userData?.email }}
 			</h3>
-			<h3>
-				<label class="col-sm-4 control-label">Status:</label>
-				{{ userData?.status }}
-			</h3>
+			<!-- <h3>
+				<label class="col-sm-4 control-label">Activo:</label>
+				{{ userData?.active }}
+			</h3> -->
 			<h3>
 				<label class="col-sm-4 control-label">Mis roles son:</label>
 				<span *ngFor="let role of userData.roles">{{ role.name }} </span>

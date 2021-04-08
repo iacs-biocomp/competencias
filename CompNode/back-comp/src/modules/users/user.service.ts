@@ -21,7 +21,7 @@ export class UserService {
 		}
 
 		const user: User = await this._userRepository.findOne(username, {
-			where: { status: 'ACTIVE' },
+			where: { active: true },
 		});
 
 		if (!user) {
@@ -33,7 +33,7 @@ export class UserService {
 
 	async getAll(): Promise<User[]> {
 		const users: User[] = await this._userRepository.find({
-			where: { status: 'ACTIVE' },
+			where: { active: true },
 		});
 
 		return users;
@@ -57,19 +57,19 @@ export class UserService {
 
 	async delete(id: number): Promise<void> {
 		const userExist = await this._userRepository.findOne(id, {
-			where: { status: 'ACTIVE' },
+			where: { active: true },
 		});
 
 		if (!userExist) {
 			throw new NotFoundException();
 		}
 
-		await this._userRepository.update(id, { status: 'INACTIVE' });
+		await this._userRepository.update(id, { active: true });
 	}
 
 	async setRoleToUser(userId: number, roleId: number) {
 		const userExist = await this._userRepository.findOne(userId, {
-			where: { status: 'ACTIVE' },
+			where: { active: true },
 		});
 
 		if (!userExist) {
@@ -77,7 +77,7 @@ export class UserService {
 		}
 
 		const roleExist = await this._roleRepository.findOne(roleId, {
-			where: { status: 'ACTIVE' },
+			where: { active: true },
 		});
 
 		if (!roleExist) {

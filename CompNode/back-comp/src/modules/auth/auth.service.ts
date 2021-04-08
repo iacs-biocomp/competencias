@@ -53,7 +53,7 @@ export class AuthService {
 		if (!user) {
 			throw new UnauthorizedException(errMsg);
 		}
-		if (user.status != 'ACTIVE') {
+		if (!user.active) {
 			throw new UnauthorizedException('User not verified');
 		}
 		var isMatch;

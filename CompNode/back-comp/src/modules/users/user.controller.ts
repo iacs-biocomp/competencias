@@ -16,7 +16,7 @@ export class UserController {
 	async getAllUserInfo(@Param('username') username: string): Promise<Trabajador> {
 		var worker = await Trabajador.findOne({
 			where: { user: username },
-			relations: ['superiores', 'inferiores', 'pares'],
+			relations: ['periodos', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
 		});
 
 		return worker;
