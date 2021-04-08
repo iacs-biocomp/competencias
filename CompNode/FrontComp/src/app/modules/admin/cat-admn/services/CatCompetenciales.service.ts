@@ -41,4 +41,14 @@ export class CatCompetencialesService {
 	addCatComp(catComp: ICatComp): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
+
+	/**
+	 *
+	 * @param comport La categoria competencial a editar en la base de datos
+	 * @returns Una promesa que es `true` si se ha editado `false` en caso contrario
+	 */
+	 editCompt(catComp: ICatComp): Promise<boolean> {
+		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+	}
+
 }

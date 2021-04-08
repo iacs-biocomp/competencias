@@ -10,8 +10,8 @@
 				<th scope="col">DESCRIPCIÓN</th>
 				<th scope="col">BORRAR/AÑADIR</th>
 				<th scope="col" style="max-width: 1rem">
-					<button class="btn btn-primary" (click)="newEmptyCompt()">
-						<span class="material-icons"> add </span>
+					<button class="btn btn-primary" (click)="newEmptyCompt()" title="Añadir comportamiento">
+						<span class="material-icons" title="Añadir comportamiento"> add </span>
 					</button>
 				</th>
 			</tr>
@@ -47,7 +47,7 @@
 						(click)="persistComport(row)"
 						*ngIf="row.descripcion !== '' && row.id !== ''"
 					>
-						<span class="material-icons"> add </span>
+						<span data-tooltip="Añadir" class="material-icons" > add </span>
 					</div>
 				</td>
 			</tr>

@@ -8,8 +8,7 @@ export class CatContractService {
 	constructor(private httpClient: HttpClient) {}
 
 	async delete(catContract: ICatContr): Promise<boolean> {
-		//TODO: Cambiar url a la correcta
-		await this.httpClient.delete(`${cnf.apiURL}/changeme/${catContract.id}`).toPromise();
+		await this.httpClient.delete(`${cnf.apiURL}/catcontr/${catContract.id}`).toPromise();
 		return true;
 	}
 
@@ -19,8 +18,7 @@ export class CatContractService {
 	 * @returns Un `Array` de todas las categorias competenciales
 	 */
 	public getAllCatContract(): Promise<ICatContr[]> {
-		//TODO: Cambiar url a la correcta
-		return this.httpClient.get<ICatContr[]>(`${cnf.apiURL}/changeme/all`).toPromise();
+		return this.httpClient.get<ICatContr[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
 	}
 
 	/**
@@ -29,10 +27,9 @@ export class CatContractService {
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
 	async delCatContract(id: string): Promise<boolean> {
-		//TODO: Cambiar url a la correcta
 		var borrado = false;
 		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/changeme/${id}`).toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${id}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			alert('No se ha podido borrar esa categoría competencial, contacte con un administrador.');
@@ -42,7 +39,6 @@ export class CatContractService {
 
 	/** POST: add a new categoria competencial to the server */
 	addCatContract(catContract: ICatContr): Promise<boolean> {
-		//TODO: Cambiar url a la correcta
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/changeme`, catContract).toPromise();
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 }

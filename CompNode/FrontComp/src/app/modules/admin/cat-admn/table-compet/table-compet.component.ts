@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ICatComp } from '../../../../../../../interfaces/ICategorias';
 import { CatCompetencialesService } from '../services/CatCompetenciales.service';
 
+interface ICatCompetEdit extends ICatComp {
+	editing?: boolean;
+}
+
 @Component({
 	selector: 'app-table-compet',
 	templateUrl: './table-compet.component.html',
@@ -10,7 +14,7 @@ import { CatCompetencialesService } from '../services/CatCompetenciales.service'
 export class TableCompetComponent implements OnInit {
 	constructor(private catCompService: CatCompetencialesService) {}
 	catCompToAdd: ICatComp[] = [];
-	catComps: ICatComp[] = [];
+	catComps: ICatCompetEdit[] = [];
 
 	//TODO: Añadir tsdoc a los metodos y atributos de la clase
 
@@ -37,6 +41,21 @@ export class TableCompetComponent implements OnInit {
 			description: '',
 		});
 	}
+
+	/**
+	 *
+	 * @param compet La categoria competencial a editar/mandar
+	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
+	 * @param send	`true` si se quiere mandar esa categoria competencia al backend `false` si no
+	 */
+	 editingCatComp(catComp: ICatCompetEdit, editing: boolean, send: boolean): void {
+		catComp.editing = editing;
+		if (send) {
+			delete catComp.editing;
+			this.catCompService.editCompt(catComp);
+		}
+	}
+
 
 	async persistCatComp(catComp: ICatComp): Promise<void> {
 		const guardado = await this.catCompService.addCatComp(catComp);

@@ -58,13 +58,20 @@
 
 			<tr *ngFor="let catComp of catComps">
 				<td>{{ catComp.id }}</td>
-				<td>{{ catComp.description }}</td>
+				<td *ngIf="!catComp.editing">{{ catComp.description }}</td>
+				<td *ngIf="catComp.editing">
+					<input type="text" class="form-control" [(ngModel)]="catComp.description" />
+				</td>
 
-				<td *ngIf="canDelete(catComp)">
-					<div class="btn btn-danger">
-						<span class="material-icons" (click)="deleteCatComp(catComp)">
-							delete
-						</span>
+				<td>
+					<div *ngIf="canDelete(catComp)" class="btn btn-danger">
+						<span class="material-icons" (click)="deleteCatComp(catComp)"> delete </span>
+					</div>
+					<div class="btn btn-success">
+						<span class="material-icons" (click)="editingCatComp(catComp, true, false)"> edit </span>
+					</div>
+					<div class="btn btn-primary" (click)="editingCatComp(catComp, false, true)">
+						<span class="material-icons"> done </span>
 					</div>
 				</td>
 			</tr>
