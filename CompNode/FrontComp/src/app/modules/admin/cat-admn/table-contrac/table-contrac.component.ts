@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ICatContr } from '../../../../../../../interfaces/ICategorias';
 import { CatContractService } from '../services/CatContractuales.service';
 
+interface IContracEdit extends ICatContr {
+	editing?: boolean;
+}
+
 @Component({
 	selector: 'app-table-contrac',
 	templateUrl: './table-contrac.component.html',
@@ -10,10 +14,18 @@ import { CatContractService } from '../services/CatContractuales.service';
 export class TableContracComponent implements OnInit {
 	constructor(private catContractService: CatContractService) {}
 	catContracts: ICatContr[] = [];
+	contracts: IContracEdit[] = [];
 
-	ngOnInit(): void {}
+	async ngOnInit(): Promise<void> {
+		await this.updateContractView();
+	}
+
+	async updateContractView(): Promise<void> {
+		this.contracts = await this.catContractService.getAllCatContract();
+	}
+
 	canDelete(catContract: ICatContr): boolean {
-		return true;
+		return false;
 	}
 
 	deleteCatContract(catContract: ICatContr): boolean {
