@@ -32,7 +32,7 @@ export class CatContractService {
 			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${id}`).toPromise();
 		} catch (error) {
 			console.log(error);
-			alert('No se ha podido borrar esa categoría competencial, contacte con un administrador.');
+			alert('No se ha podido borrar esa categoría contractual, contacte con un administrador.');
 		}
 		return borrado;
 	}

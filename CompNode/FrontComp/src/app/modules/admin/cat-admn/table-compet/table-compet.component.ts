@@ -5,7 +5,6 @@ import { CatCompetencialesService } from '../services/CatCompetenciales.service'
 interface ICatCompetEdit extends ICatComp {
 	editing?: boolean;
 }
-
 @Component({
 	selector: 'app-table-compet',
 	templateUrl: './table-compet.component.html',
@@ -13,6 +12,7 @@ interface ICatCompetEdit extends ICatComp {
 })
 export class TableCompetComponent implements OnInit {
 	constructor(private catCompService: CatCompetencialesService) {}
+
 	catCompToAdd: ICatComp[] = [];
 	catComps: ICatCompetEdit[] = [];
 
@@ -24,10 +24,11 @@ export class TableCompetComponent implements OnInit {
 
 	async updateCatCompView(): Promise<void> {
 		this.catComps = await this.catCompService.getAllCatComp();
+		console.log('update')
 	}
 
 	canDelete(catComp: ICatComp): boolean {
-		return false;
+		return true;
 	}
 
 	deleteCatCompToAdd(row: ICatComp): void {
@@ -61,8 +62,8 @@ export class TableCompetComponent implements OnInit {
 		const guardado = await this.catCompService.addCatComp(catComp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			await this.updateCatCompView();
 			this.deleteCatCompToAdd(catComp);
+			await this.updateCatCompView();
 		}
 	}
 
