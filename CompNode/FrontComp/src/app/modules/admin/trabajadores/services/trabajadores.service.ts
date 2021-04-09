@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ITrabajador } from '../../../../../../../interfaces/IUser';
 import { environment as cnf } from '../../../../../environments/environment';
+import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+	providedIn: 'root',
+})
 export class TrabajadoresService {
 	constructor(private httpClient: HttpClient) {}
-	async delete(worker: ITrabajador): Promise<boolean> {
-		await this.httpClient.delete(`${cnf.apiURL}/CHANGEME/${worker.dni}`).toPromise();
-		return true;
+
+	delete(worker: ITrabajadorDTO): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
 	}
 
 	/**
@@ -16,8 +18,8 @@ export class TrabajadoresService {
 	 *
 	 * @returns Un `Array` de todos los CHANGEME
 	 */
-	public getAllTrabajadores(): Promise<ITrabajador[]> {
-		return this.httpClient.get<ITrabajador[]>(`${cnf.apiURL}/CHANGEME/all`).toPromise();
+	public getAllTrabajadores(): Promise<ITrabajadorDTO[]> {
+		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
 	}
 
 	/**
@@ -28,7 +30,7 @@ export class TrabajadoresService {
 	async borrarTrabajador(id: string): Promise<boolean> {
 		var borrado = false;
 		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/CHANGEME/${id}`).toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${id}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			//TODO: Excepción si hay error lanzar a controlador (Componente)
@@ -38,15 +40,15 @@ export class TrabajadoresService {
 	}
 
 	/** POST: add a new worker to the server */
-	addTrabajador(worker: ITrabajador): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/CHANGEME`, worker).toPromise();
+	addTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 	/**
 	 *
 	 * @param comp El worker a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-	editTrabajador(worker: ITrabajador): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/CHANGEME`, worker).toPromise();
+	editTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
+		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 }
