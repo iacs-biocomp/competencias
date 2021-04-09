@@ -49,7 +49,7 @@ export class NivTableComponent implements OnInit {
 	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
 	 * @param send	`true` si se quiere mandar ese nivel al backend `false` si no
 	 */
-	 editingNivel(nivel: INivelEdit, editing: boolean, send: boolean): void {
+	editingNivel(nivel: INivelEdit, editing: boolean, send: boolean): void {
 		nivel.editing = editing;
 		if (send) {
 			delete nivel.editing;
@@ -61,7 +61,7 @@ export class NivTableComponent implements OnInit {
 		const guardado = await this.nivelService.addNivel(nivel);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateNivelView();
+			await this.updateNivelView();
 			this.deleteNivToAdd(nivel);
 		}
 	}
@@ -70,11 +70,7 @@ export class NivTableComponent implements OnInit {
 		const borrado = await this.nivelService.delete(nivel);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.updateNivelView();
+			await this.updateNivelView();
 		}
 	}
-
-
-
-
 }

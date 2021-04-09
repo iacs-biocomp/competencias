@@ -1,16 +1,23 @@
 <div class="main">
 	<h1>Mi organigrama</h1>
 	<div class="row">
-    <div class="column">
-      <div class="card">
-				<!-- <p>Nombre: {{miOrganigramaData.nombre}}</p>
-				<p>Apellidos: {{miOrganigramaData.apellidos}}</p> -->
-				<p>Lista de mis superiores: {{miOrganigramaData.superiores}}</p>
-				<p>Lista de mis pares: {{miOrganigramaData.pares}}</p>
-				<p>Lista de mis inferiores: {{miOrganigramaData.inferiores}}</p>
-  	  </div>
-  	</div>
+		<div class="column">
+			<div class="card">
+				<h2>Mis Superiores:</h2>
+				<p *ngIf="miOrganigramaData.superiores.length == 0">No tienes superiores</p>
+				<p *ngFor="let superior of miOrganigramaData.superiores">{{ superior.nombre }}</p>
+			</div>
+			<div class="card">
+				<h2>Mis Pares:</h2>
+				<p *ngIf="miOrganigramaData.pares.length == 0">No tienes pares</p>
+				<p *ngFor="let par of miOrganigramaData.pares">{{ par.nombre }}</p>
+			</div>
+
+			<div class="card">
+				<h2>Mis Inferiores:</h2>
+				<p *ngIf="miOrganigramaData.inferiores.length == 0">No tienes inferiores</p>
+				<p *ngFor="let inferior of miOrganigramaData.inferiores">{{ inferior.nombre }}</p>
+			</div>
+		</div>
 	</div>
-
-
 </div>
