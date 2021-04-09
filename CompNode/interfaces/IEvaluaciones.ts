@@ -3,7 +3,7 @@ import { ICatComp } from './ICategorias';
 /**
  * Interfaz que representa la información basica de una evaluación.
  *
- * Endpoints disponibles: /nest/evaluaciones/$USER (Username como parametro)
+ * @param Url /nest/evaluaciones/$USER (Username como parametro)
  */
 export interface IEvaluacion {
   /** El id como integer de la evaluación */

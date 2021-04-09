@@ -17,7 +17,7 @@ export interface ITrabajador {
 
   departamento: string;
 
-  periodos: IPeriodoTrab[];
+  periodos: IPeriodoTrab[] | undefined;
 
   user: IUserJson;
 }

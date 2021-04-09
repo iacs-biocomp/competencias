@@ -42,9 +42,9 @@ export class CatCompetencialesService {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 
-		/**
+	/**
 	 *
-	 * @param comp La competencia a editar en la base de datos
+	 * @param catComp La competencia a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
 		 editCompt(catComp: ICatComp): Promise<boolean> {
