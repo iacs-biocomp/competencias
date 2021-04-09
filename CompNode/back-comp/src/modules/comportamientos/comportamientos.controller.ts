@@ -48,7 +48,7 @@ export class ComportamientosController {
 		if (compt.subModels.length !== 0) {
 			throw new UnauthorizedException('Ese comportamiento esta asociado a un submodelo, no se puede borrar');
 		}
-		compt.remove();
+		await compt.remove();
 		return true;
 	}
 
@@ -61,7 +61,7 @@ export class ComportamientosController {
 		if (compt.descripcion === undefined || compt.subModels !== undefined) {
 			throw new UnprocessableEntityException('Descripción nula o subModelos no nulos');
 		}
-		this.comportRepo.save(compt);
+		await this.comportRepo.save(compt);
 		return true;
 	}
 
@@ -74,7 +74,7 @@ export class ComportamientosController {
 		if (compt.subModels.length !== 0) {
 			throw new UnauthorizedException('Ese comportamiento esta asociado a un submodelo, no se puede actualizar');
 		}
-		this.comportRepo.save(compt);
+		await this.comportRepo.save(compt);
 		return true;
 	}
 }

@@ -9,7 +9,6 @@ export class CatCompetencialesService {
 
 	public delete(catComp: ICatComp): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catComp.id}`).toPromise();
-
 	}
 
 	/**
@@ -17,8 +16,8 @@ export class CatCompetencialesService {
 	 *
 	 * @returns Un `Array` de todas las categorias competenciales
 	 */
-	public getAllCatComp(): Promise<ICatComp[]> {
-		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
+	public async getAllCatComp(): Promise<ICatComp[]> {
+		return await this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
 	/**
@@ -47,7 +46,7 @@ export class CatCompetencialesService {
 	 * @param catComp La competencia a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-		 editCompt(catComp: ICatComp): Promise<boolean> {
-			return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
-		}
+	editCompt(catComp: ICatComp): Promise<boolean> {
+		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+	}
 }

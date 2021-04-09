@@ -24,7 +24,8 @@ export class TableCompetComponent implements OnInit {
 
 	async updateCatCompView(): Promise<void> {
 		this.catComps = await this.catCompService.getAllCatComp();
-		console.log('update')
+		console.log('update');
+		console.log(this.catComps);
 	}
 
 	canDelete(catComp: ICatComp): boolean {
@@ -49,21 +50,20 @@ export class TableCompetComponent implements OnInit {
 	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
 	 * @param send	`true` si se quiere mandar esa categoria competencia al backend `false` si no
 	 */
-	 editingCatComp(catComp: ICatCompetEdit, editing: boolean, send: boolean): void {
+	async editingCatComp(catComp: ICatCompetEdit, editing: boolean, send: boolean): Promise<void> {
 		catComp.editing = editing;
 		if (send) {
 			delete catComp.editing;
-			this.catCompService.editCompt(catComp);
+			await this.catCompService.editCompt(catComp);
 		}
 	}
-
 
 	async persistCatComp(catComp: ICatComp): Promise<void> {
 		const guardado = await this.catCompService.addCatComp(catComp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.deleteCatCompToAdd(catComp);
-			await this.updateCatCompView();
+			return await this.updateCatCompView();
 		}
 	}
 
@@ -71,7 +71,7 @@ export class TableCompetComponent implements OnInit {
 		const borrado = await this.catCompService.delete(catComp);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			await this.updateCatCompView();
+			return await this.updateCatCompView();
 		}
 	}
 }

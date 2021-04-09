@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Trabajador } from 'src/entity/Trabajador.entity';
 import { TrabajadorRepo } from './trabajador.repository';
 
-@Controller('trabajadores')
+@Controller('nest/trabajadores')
 export class TrabajadoresController {
 	constructor(
 		@InjectRepository(TrabajadorRepo)
@@ -37,7 +37,7 @@ export class TrabajadoresController {
 		// if (worker.subModels.length !== 0) {
 		// 	throw new UnauthorizedException('Ese worker esta asociado a un submodelo, no se puede borrar');
 		// }
-		worker.remove();
+		await worker.remove();
 		return true;
 	}
 
@@ -47,7 +47,7 @@ export class TrabajadoresController {
 		if (existingTrabajador) {
 			throw new ConflictException('Trabajador ya creada');
 		}
-		this.nivRepo.save(worker);
+		await this.nivRepo.save(worker);
 		return true;
 	}
 	@Put('')
@@ -60,7 +60,7 @@ export class TrabajadoresController {
 		// if (worker.subModels.length !== 0) {
 		// 	throw new UnauthorizedException('Ese worker esta asociado a un submodelo, no se puede modificar');
 		// }
-		this.nivRepo.save(worker);
+		await this.nivRepo.save(worker);
 		return true;
 	}
 }

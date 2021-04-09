@@ -47,7 +47,7 @@ export class ComportService {
 	 * @param comport El comportamiento a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-		 editCompt(comport: IComportamiento): Promise<boolean> {
-			return this.httpClient.put<boolean>(`${cnf.apiURL}/comportamientos`, comport).toPromise();
-		}
+	editCompt(comport: IComportamiento): Promise<boolean> {
+		return this.httpClient.put<boolean>(`${cnf.apiURL}/comportamientos`, comport).toPromise();
+	}
 }

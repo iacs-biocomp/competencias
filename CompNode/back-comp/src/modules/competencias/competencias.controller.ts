@@ -37,7 +37,7 @@ export class CompetenciasController {
 		if (oneWeekAgo >= compt.createdAt) {
 			throw new UnauthorizedException('No puedes borrar esa competencia');
 		}
-		compt.remove();
+		await compt.remove();
 		return true;
 	}
 
@@ -50,7 +50,7 @@ export class CompetenciasController {
 		if (compt.createdAt != undefined && compt.descripcion === undefined) {
 			throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		}
-		this.comptRepo.save(compt);
+		await this.comptRepo.save(compt);
 		return true;
 	}
 	@Put('')

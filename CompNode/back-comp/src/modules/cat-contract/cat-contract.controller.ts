@@ -25,7 +25,7 @@ export class CatContractController {
 		// if (oneWeekAgo >= compt.createdAt) {
 		// 	throw new UnauthorizedException('No puedes borrar esa competencia');
 		// }
-		compt.remove();
+		await compt.remove();
 		return true;
 	}
 
@@ -38,7 +38,7 @@ export class CatContractController {
 		// if (compt.createdAt != undefined && compt.descripcion === undefined) {
 		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		// }
-		this.contrRepo.save(compt);
+		await this.contrRepo.save(compt);
 		return true;
 	}
 	@Put('')
@@ -50,7 +50,7 @@ export class CatContractController {
 		// if (compt.createdAt != undefined && compt.descripcion === undefined) {
 		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
 		// }
-		this.contrRepo.save(compt);
+		await this.contrRepo.save(compt);
 		return true;
 	}
 }

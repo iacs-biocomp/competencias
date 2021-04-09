@@ -39,7 +39,10 @@ export class AuthService {
 		}
 		return true;
 	}
-
+	/**
+	 * Guarda un token en el localStorage `key:value` La key (nombre del token) viene dado por env variable
+	 * @param token El token jwt firmado
+	 */
 	setToken(token: string): void {
 		localStorage.setItem(JWT_NAME, token);
 	}

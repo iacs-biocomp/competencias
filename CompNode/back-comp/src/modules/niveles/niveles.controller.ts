@@ -47,7 +47,7 @@ export class NivelesController {
 		if (nivel.subModels.length !== 0) {
 			throw new UnauthorizedException('Ese nivel esta asociado a un submodelo, no se puede borrar');
 		}
-		nivel.remove();
+		await nivel.remove();
 		return true;
 	}
 
@@ -57,7 +57,7 @@ export class NivelesController {
 		if (existingNivel) {
 			throw new ConflictException('Nivel ya creada');
 		}
-		this.nivRepo.save(nivel);
+		await this.nivRepo.save(nivel);
 		return true;
 	}
 	@Put('')
@@ -70,7 +70,7 @@ export class NivelesController {
 		if (nivel.subModels.length !== 0) {
 			throw new UnauthorizedException('Ese nivel esta asociado a un submodelo, no se puede modificar');
 		}
-		this.nivRepo.save(nivel);
+		await this.nivRepo.save(nivel);
 		return true;
 	}
 }
