@@ -5,7 +5,7 @@ import { TrabajadoresLayoutComponent } from './trabajadores-layout/trabajadores-
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TrabTableComponent } from './trab-table/trab-table.component';
 import { TrabajadoresService } from './services/trabajadores.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /** Rutas relacionadas con el modulo de trabajadores */
 export const trabRoutes: Routes = [
@@ -17,7 +17,7 @@ export const trabRoutes: Routes = [
 
 @NgModule({
 	declarations: [TrabajadoresLayoutComponent, TrabTableComponent],
-	imports: [CommonModule, RouterModule, SharedModule, FormsModule],
+	imports: [CommonModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule],
 	providers: [TrabajadoresService],
 })
 export class TrabajadoresModule {}

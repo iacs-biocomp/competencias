@@ -9,68 +9,95 @@
 				<th scope="col">ÁREA </th>
 				<th scope="col">UNIDAD </th>
 				<th scope="col">DEPARTAMENTO </th>
+				<th scope="col">CAT.COMPETENCIAL </th>
+				<th scope="col">CAT.CONTRACTUAL </th>
 				<th scope="col" style="max-width: 1rem">
 					<button class="btn btn-primary" (click)="newEmptyWorker()">
 						<span class="material-icons" title="Añadir trabajador"> add </span>
 					</button>
-				</th>
 			</tr>
 		</thead>
 
 		<tbody>
-			<p *ngIf="listaTraba.length == 0">No hay trabajadores.</p>
-			<tr *ngFor="let trab of listaTraba">
+			<p *ngIf="listaTrabaToAdd.length == 0">No hay trabajadores.</p>
+			<tr *ngFor="let trab of listaTrabaToAdd">
 				<td>
-					<input type="text" class="form-control" [(ngModel)]="trab.dni" />
+					<input type="text" class="form-control"	[(ngModel)]="trab.dni"/>
 				</td>
 				<td>
-					<input type="text" class="form-control" [(ngModel)]="trab.nombre" />
+					<input type="text" class="form-control" [(ngModel)]="trab.nombre"/>
 				</td>
 				<td>
-					<input type="text" class="form-control" [(ngModel)]="trab.apellidos" />
+					<input type="text" class="form-control"	[(ngModel)]="trab.apellidos"/>
 				</td>
 				<td>
-					<input type="text" class="form-control" [(ngModel)]="trab.area" />
+					<input type="text" class="form-control"	[(ngModel)]="trab.area"/>
 				</td>
 				<td>
-					<input type="text" class="form-control" [(ngModel)]="trab.unidad" />
+					<input type="text" class="form-control"	[(ngModel)]="trab.unidad"/>
 				</td>
 				<td>
-					<input type="text" class="form-control" [(ngModel)]="trab.departamento" />
+					<input type="text" class="form-control"	[(ngModel)]="trab.departamento"/>
 				</td>
+				<td>
+					<select id="catCompetencial">
+						<option *ngFor="let catComp of catComps" [value]="catComp">{{catComp.id}}</option>
+					</select>
+				</td>
+				<td>
+					<select id="catContractual">
+						<option *ngFor="let catContrac of catContracts" [value]="catContrac">{{catContrac.id}}</option>
+					</select>
+				</td>
+
 				<td>
 					<div class="btn btn-danger" (click)="deleteWorkerToAdd(trab)">
 						<span class="material-icons">
 							delete
 						</span>
 					</div>
-
-					<div class="btn btn-success" (click)="persistWorker(trab)" *ngIf="trab.dni !== ''">
+					<div class="btn btn-success" (click)="persistWorker(trab)" *ngIf="trab.dni !== '' && trab.nombre !== '' && trab.apellidos !== ''">
 						<span class="material-icons"> add </span>
 					</div>
-			</td>
-		</tr>
+				</td>
+			</tr>
 
-		<label *ngFor="let trab of trabajadores">dni
-			<option value={{ trab.dni }}>{{ trab.dni }}</option>
-			<td *ngIf="!trab.editing">{{ trab.dni }}</td>
-			<td *ngIf="trab.editing">
-				<input type="text" class="form-control" [(ngModel)]="trab.dni" />
-			</td>
+			<tr *ngFor="let trab of trabajadores">
+				<td>{{trab.dni}}</td>
+				<td *ngIf="!trab.editing"> {{ trab.nombre }} </td>
+				<td>{{ trab.apellidos }} </td>
+				<td>{{ trab.area }} </td>
+				<td>{{ trab.unidad }} </td>
+				<td>{{ trab.departamento }} </td>
+				<td>{{ trab.catComp }} </td>
+				<td>{{ trab.catContr }} </td>
+				<td *ngIf="trab.editing">
+					<input type="text" class="form-control" [(ngModel)]="trab.dni"/>
+					<input type="text" class="form-control" [(ngModel)]="trab.nombre" />
+					<input type="text" class="form-control" [(ngModel)]="trab.apellidos" />
+					<input type="text" class="form-control" [(ngModel)]="trab.area" />
+					<input type="text" class="form-control" [(ngModel)]="trab.departamento" />
+					<select id="catContrac">
+						<option [value]="trab.catComp" selected>{{trab.catComp}}</option>
+					</select>
+					<select id="catCompeten">
+						<option [value]="trab.catContr">{{trab.catContr}}</option>
+					</select>
+				</td>
 
 
-			<td>
-				<div *ngIf="canDelete(trab)" class="btn btn-danger" (click)="deleteWorker(trab)">
-					<span class="material-icons" > delete </span>
-				</div>
-				<div class="btn btn-success" (click)="editingWorker()" >
-					<span class="material-icons" > edit </span>
-				</div>
-				<div class="btn btn-primary" (click)="editingWorker()">
-					<span class="material-icons"> done </span>
-				</div>
-			</td>
-		</label>
-	</tbody>
-</table>
+				<td>
+					<div *ngIf="canDelete(trab)" class="btn btn-danger" (click)="deleteWorker(trab)">
+						<span class="material-icons"> delete </span>
+					</div>
+					<div class="btn btn-success" (click)="editingWorker(trab, true, false)">
+						<span class="material-icons"> edit </span>
+					</div>
+					<div class="btn btn-primary" (click)="editingWorker(trab, false, true)">
+						<span class="material-icons"> done </span>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>

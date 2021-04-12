@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TrabajadoresService } from '../services/trabajadores.service';
 import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
+import { ICatComp, ICatContr } from '../../../../../../../interfaces/ICategorias';
 
 interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 	editing?: boolean;
@@ -13,7 +14,11 @@ interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 })
 export class TrabTableComponent implements OnInit {
 	constructor(private trabService: TrabajadoresService) {}
-	listaTraba: ITrabajadorDTO[] = [
+
+	catComps!: ICatComp[];
+	catContracts!: ICatContr[];
+
+	listaTrabaToAdd: ITrabajadorDTOEdit[] = [
 		{
 			dni: '132DF',
 			nombre: 'jORGE',
@@ -22,7 +27,8 @@ export class TrabTableComponent implements OnInit {
 			unidad: 'BI',
 			departamento: 'BIOC',
 			catComp: 'GR1',
-			catContr: "INV-SENIOR"
+			catContr: 'INV-SENIOR',
+			editing: true,
 		},
 		{
 			dni: 'DSFDSF5',
@@ -32,19 +38,22 @@ export class TrabTableComponent implements OnInit {
 			unidad: 'DFDF',
 			departamento: 'BIOC',
 			catComp: 'GR2',
-			catContr: "INV-SENIOR"
+			catContr: 'INV-ju',
+			editing: true,
 		},
 	];
 	trabajadores: ITrabajadorDTOEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
-		// this.listaTraba = await this.trabService.getAllTrabajadores();
-		// this.listaTraba = await this.trabService.getCatCompeten();
+		await this.updateWorkerView();
+		this.catComps = await this.trabService.getAllCatComp();
+		this.catContracts = await this.trabService.getAllCatContrac();
 	}
 
 	//TODO: Añadir tsdoc al archivo entero
 	async updateWorkerView(): Promise<void> {
 		this.trabajadores = await this.trabService.getAllTrabajadores();
+		console.log('update');
 	}
 
 	canDelete(trab: ITrabajadorDTO): boolean {
@@ -53,12 +62,12 @@ export class TrabTableComponent implements OnInit {
 	}
 
 	deleteWorkerToAdd(row: ITrabajadorDTO): void {
-		const indx = this.listaTraba.indexOf(row);
-		this.listaTraba.splice(indx, 1);
+		const indx = this.listaTrabaToAdd.indexOf(row);
+		this.listaTrabaToAdd.splice(indx, 1);
 	}
 
 	newEmptyWorker(): void {
-		this.listaTraba.push({
+		this.listaTrabaToAdd.push({
 			dni: '',
 			nombre: '',
 			apellidos: '',
@@ -66,7 +75,7 @@ export class TrabTableComponent implements OnInit {
 			unidad: '',
 			departamento: '',
 			catComp: '',
-			catContr: ""
+			catContr: '',
 		});
 	}
 

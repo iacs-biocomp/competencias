@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from '../../../../../environments/environment';
 import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
+import { ICatComp, ICatContr } from '../../../../../../../interfaces/ICategorias';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,9 +15,9 @@ export class TrabajadoresService {
 	}
 
 	/**
-	 * Metodo que obtiene todas los CHANGEME del backend, usado solo para el ADMIN
+	 * Metodo que obtiene todas los trabajadores del backend, usado solo para el ADMIN
 	 *
-	 * @returns Un `Array` de todos los CHANGEME
+	 * @returns Un `Array` de todos los trabajadores
 	 */
 	public getAllTrabajadores(): Promise<ITrabajadorDTO[]> {
 		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
@@ -50,5 +51,13 @@ export class TrabajadoresService {
 	 */
 	editTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
+	}
+
+	public getAllCatComp(): Promise<ICatComp[]> {
+		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
+	}
+
+	public getAllCatContrac(): Promise<ICatContr[]> {
+		return this.httpClient.get<ICatContr[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
 	}
 }
