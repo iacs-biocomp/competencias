@@ -5,12 +5,6 @@
 	box-sizing: border-box;
 }
 
-.column {
-	float: left;
-	width: 25%;
-	padding: 10px 10px 10px;
-}
-
 .card {
 	height: 100%;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
@@ -23,15 +17,4 @@
 
 .card:hover {
 	box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.6);
-}
-
-h1 {
-	/* Ojo */
-	font-size: 36px;
-	padding-top: 0.5em;
-	padding-left: 0.2em;
-	font-family: inherit;
-	font-weight: 500;
-	line-height: 1.1;
-	color: inherit;
 }

@@ -8,6 +8,18 @@
 	min-height: 100vh;
 }
 
+.layout-title {
+	/* Ojo */
+	font-size: 36px;
+	padding-top: 0.5em;
+	padding-left: 0.2em;
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+}
+
+
 @media (max-width: 768px) {
 	.main {
 		margin-left: 0px;
