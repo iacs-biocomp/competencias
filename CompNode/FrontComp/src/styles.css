@@ -1,6 +1,6 @@
 /* *Añadir aqui los estilos globales (bootstrap por ejemplo) */
 /* Bootstrap */
-@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 .main {
 	padding: 0.25rem;
 	background-color: #f5f5f5;

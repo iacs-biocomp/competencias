@@ -1,4 +1,5 @@
-::after, ::before {
+::after,
+::before {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -14,7 +15,8 @@
 	width: 60%;
 }
 
-.col-md-12, .col-sm-4{
+.col-md-12,
+.col-sm-4 {
 	position: relative;
 	min-height: 1px;
 	padding-right: 15px;
@@ -27,25 +29,26 @@
 
 .panel {
 	margin-bottom: 20px;
-	background-color: rgba(187, 243, 240, 0.150);
-	border: 1px solid #09548D;
+	background-color: rgba(187, 243, 240, 0.15);
+	border: 1px solid #09548d;
 	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
-	box-shadow: 15px 15px rgba(0,0,0,.05);
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: 15px 15px rgba(0, 0, 0, 0.05);
 	margin-bottom: 25px;
 }
 
 .panel-default > .panel-heading {
 	color: #505050;
 	background-color: #fff;
-	border-color: #09548D;
+	border-color: #09548d;
 }
 
 .panel-heading {
 	padding: 12px 24px;
 }
 
-.panel-heading, .panel-group .panel {
+.panel-heading,
+.panel-group .panel {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	-ms-border-radius: 0;
@@ -72,14 +75,15 @@ h1 {
 	padding-left: 0.2em;
 }
 
-h1,h3{
+h1,
+h3 {
 	font-weight: 300;
-	font-family: "Source Sans Pro", sans-serif;
+	font-family: 'Source Sans Pro', sans-serif;
 	margin: 0 0 15px;
-
 }
 
-.h1, .h3{
+.h1,
+.h3 {
 	font-family: inherit;
 	font-weight: 500;
 	line-height: 1.1;
@@ -96,14 +100,13 @@ h3 {
 	margin-bottom: 10px;
 }
 
-h1, h3{
-	font-family: "Source Sans Pro", sans-serif;
+h1,
+h3 {
+	font-family: 'Source Sans Pro', sans-serif;
 	margin: 0 0 15px;
-  margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
-.control-label{
+.control-label {
 	font-weight: bold;
 }
-
-

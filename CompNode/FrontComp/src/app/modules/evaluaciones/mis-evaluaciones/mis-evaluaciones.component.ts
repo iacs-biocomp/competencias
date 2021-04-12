@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtService } from 'src/app/services/jwt.service';
 import { IEvaluacion } from '../../../../../../interfaces/IEvaluaciones';
 import { EvaluacionesService } from '../evaluaciones.service';
 
@@ -14,13 +15,12 @@ export class MisEvaluacionesComponent implements OnInit {
 	buttonEvaluar = true;
 	buttonCalcular = true;
 
-	constructor(private evService: EvaluacionesService) {}
+	constructor(private evService: EvaluacionesService, private jwtSv: JwtService) {}
 
 	async ngOnInit(): Promise<void> {
-		this.evaluacionData = await this.evService.evaluacionesUsr('TEST');
+		const decodedToken = this.jwtSv.getDecodedToken();
+		this.evaluacionData = await this.evService.evaluacionesUsr(decodedToken.username);
 		this.buttonEvaluar = true;
 		this.buttonCalcular = true;
-
-		console.log(this.evaluacionData, await this.evService.evaluacionesUsr('TEST'));
 	}
 }
