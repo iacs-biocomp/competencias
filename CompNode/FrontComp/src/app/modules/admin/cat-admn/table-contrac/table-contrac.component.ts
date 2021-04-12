@@ -21,7 +21,8 @@ export class TableContracComponent implements OnInit {
 	}
 
 	async updateContractView(): Promise<void> {
-		this.contracts = await this.catContractService.getAllCatContract();
+		this.catContracts = await this.catContractService.getAllCatContract();
+		console.log(this.contracts);
 	}
 
 	canDelete(catContract: ICatContr): boolean {

@@ -11,4 +11,9 @@ export interface ICatContr {
   // periodos: PeriodoTrab[];
 }
 
+export interface ICategoriesRelation {
+  catContr: ICatContr;
+  catComp: ICatComp;
+}
+
 //TODO: Añadir jsdoc

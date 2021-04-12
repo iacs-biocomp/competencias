@@ -20,7 +20,7 @@ export class PeriodoTrab extends BaseEntity {
 	id: number;
 
 	@ApiProperty({ type: () => Trabajador })
-	@ManyToOne(type => Trabajador, trabajador => trabajador.periodos)
+	@ManyToOne(type => Trabajador, trabajador => trabajador.periodos, { nullable: false })
 	trabajador: Trabajador;
 
 	@ApiProperty({ type: () => CatContr })

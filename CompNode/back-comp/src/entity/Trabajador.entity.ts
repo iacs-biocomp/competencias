@@ -30,7 +30,7 @@ export class Trabajador extends BaseEntity {
 	departamento: string;
 
 	@ApiProperty({ type: () => PeriodoTrab })
-	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.trabajador)
+	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.trabajador, { nullable: false })
 	periodos: PeriodoTrab[];
 
 	@ApiProperty({ type: () => User })
