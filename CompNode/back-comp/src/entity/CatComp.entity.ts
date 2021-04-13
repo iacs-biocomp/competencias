@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, BaseEntity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Entity, Column, BaseEntity, OneToMany, PrimaryColumn, OneToOne } from 'typeorm';
+import { CatContr } from './CatContr.entity';
 import { Ev } from './Ev.entity';
 import { EvModel } from './EvModel.entity';
 import { PeriodoTrab } from './PeriodoTrab.entity';
@@ -25,4 +26,8 @@ export class CatComp extends BaseEntity {
 	@ApiProperty({ type: () => Ev })
 	@OneToMany(type => Ev, ev => ev.catComp)
 	evaluaciones: Ev[];
+
+	@ApiProperty({ type: () => CatContr })
+	@OneToOne(type => CatContr)
+	catContr: CatContr;
 }
