@@ -6,11 +6,11 @@
 # No es necesario instalar dependencias para generar el contenedor, para compilar angular si
 # Estando posicionado en la carpeta CompNode:
 cd back-comp && \
-npm i \
-sudo ./dkbuild.sh \
+npm i ;\
+sudo ./dkbuild.sh ;\
 cd ..
 # Cuando este la imagen correr este comando para desplegarlo, en el volumen ha de estar la carpeta del compilado de angular
-# Crear la carpeta primero para que el owner no sea root sino el usuario 
+# Crear la carpeta primero para que el owner no sea root sino el usuario
 mkdir /app/ngDist
 
 sudo docker run --restart=always \
@@ -23,7 +23,7 @@ npm i
 yarn install
 # Luego ir a la carpeta y compilar
 cd FrontComp && \
-npm i && \
+npm i ; \
 sudo ./buildCpToVolume.sh; cd ..
 ```
 
