@@ -1,14 +1,16 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CatComp } from 'src/entity/CatComp.entity';
 import { CatContr } from '../../entity/CatContr.entity';
 import { CatContrRepo } from './catContr.repository';
-
+// import { ICategoriesRelation } from '../../../../interfaces/ICategorias';
 @Controller('nest/catcontr')
 export class CatContractController {
 	constructor(
 		@InjectRepository(CatContrRepo)
 		private readonly contrRepo: CatContrRepo,
 	) {}
+
 	@Get('all')
 	getAllCompt(): Promise<CatContr[]> {
 		return this.contrRepo.find();
@@ -22,9 +24,7 @@ export class CatContractController {
 		}
 		var oneWeekAgo: Date = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-		// if (oneWeekAgo >= compt.createdAt) {
-		// 	throw new UnauthorizedException('No puedes borrar esa competencia');
-		// }
+
 		await compt.remove();
 		return true;
 	}
@@ -35,9 +35,6 @@ export class CatContractController {
 		if (existingCompt) {
 			throw new ConflictException('CatContr ya creada');
 		}
-		// if (compt.createdAt != undefined && compt.descripcion === undefined) {
-		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
-		// }
 		await this.contrRepo.save(compt);
 		return true;
 	}
@@ -47,9 +44,6 @@ export class CatContractController {
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');
 		}
-		// if (compt.createdAt != undefined && compt.descripcion === undefined) {
-		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
-		// }
 		await this.contrRepo.save(compt);
 		return true;
 	}

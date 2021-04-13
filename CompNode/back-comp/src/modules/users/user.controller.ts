@@ -36,12 +36,14 @@ export class UserController {
 
 	@Patch(':id')
 	async updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: User) {
+		//TODO: Terminar el metodo
 		const updatedUser = await this._userService.update(id, user);
 		return true;
 	}
 
 	@Delete(':id')
 	async deleteUser(@Param('id', ParseIntPipe) id: number) {
+		//TODO: Terminar el metodo
 		await this._userService.delete(id);
 		return true;
 	}
