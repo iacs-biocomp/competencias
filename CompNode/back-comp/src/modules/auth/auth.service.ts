@@ -12,7 +12,7 @@ import { RoleType } from '../role/roletype.enum';
 export class AuthService {
 	constructor(
 		private readonly _jwtService: JwtService,
-		@InjectRepository(UserRepository) private userRepository: UserRepository,
+		@InjectRepository(UserRepository) private readonly userRepository: UserRepository,
 	) {}
 
 	async signup(signupDto: SignupDto) {

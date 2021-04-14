@@ -3,13 +3,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CatComp } from '../../entity/CatComp.entity';
 import { CatCompRepo } from './catComp.repository';
 
+type CatCompWithNoModels = {
+	/**El numero de modelos en los que aparece esa categoría competencial */
+	nModels: number;
+} & Pick<CatComp, 'id' | 'description'>;
+
 @Controller('nest/catcomp')
 export class CatCompController {
 	constructor(
 		@InjectRepository(CatCompRepo)
 		private readonly catCompRepo: CatCompRepo,
 	) {}
-	// TODO: Añadir tsdoc restante
+
+	/**
+	 *
+	 * @returns El DTO que contiene el id, descripcion y N°Modelos que usan una catComp
+	 */
+	@Get('withmodels')
+	async getWithNumberOfModels() {
+		//TODO: Refactor del metodo, buscar como usar Record y Omit, o una manera mas eficiente de convertir clases a interfaces/tipos DTO.
+		var catCompsDTO: CatCompWithNoModels[] = [];
+		const catComps = await this.catCompRepo.find({ relations: ['models'] });
+		catComps.forEach(cat => {
+			catCompsDTO.push({ id: cat.id, description: cat.description, nModels: cat.models.length });
+		});
+		return catCompsDTO;
+	}
 
 	@Get('all')
 	getAllCompt(): Promise<CatComp[]> {

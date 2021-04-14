@@ -11,13 +11,15 @@ export class CatComp extends BaseEntity {
 	@PrimaryColumn('varchar')
 	id: string;
 
+	/** La descripción de la categoría competencial */
 	@ApiProperty()
 	@Column({ type: 'varchar', unique: true, length: 25, nullable: false })
 	description: string;
 
+	/** Los periodos en los que aparece esa categoria competencial, según la petición puede ser undefined */
 	@ApiProperty({ type: () => PeriodoTrab })
 	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.catComp)
-	periodosTrab: PeriodoTrab[];
+	periodosTrab: PeriodoTrab[] | undefined;
 
 	@ApiProperty({ type: () => EvModel })
 	@OneToMany(type => EvModel, model => model.catComp)

@@ -10,6 +10,9 @@ interface Organigrama {
 	superiores: Trabajador[];
 	pares: Trabajador[];
 }
+interface UsrWithOrgani extends Organigrama {
+	trabajador: Trabajador;
+}
 
 @Controller('nest/organigrama')
 export class OrganigramaController {
@@ -19,6 +22,31 @@ export class OrganigramaController {
 		@InjectRepository(UserRepository)
 		private readonly usrRepo: UserRepository,
 	) {}
+
+	@Get('all')
+	async getAll(): Promise<UsrWithOrgani[]> {
+		var workers = await this.trabRepo.find({
+			relations: ['periodos', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
+		});
+		var fullOrgani: UsrWithOrgani[] = [];
+
+		//Filtro los periodos de cada trabajador y me quedo solo con el actual (Como array)
+		workers.forEach(wrk => {
+			wrk.periodos = wrk.periodos.filter(per => per.actual);
+			fullOrgani.push({
+				inferiores: wrk.periodos[0].inferiores,
+				superiores: wrk.periodos[0].superiores,
+				pares: wrk.periodos[0].pares,
+				//Añado undefined para luego quitarle el campo periodos
+				trabajador: undefined,
+			});
+		});
+		for (const i in fullOrgani) {
+			delete workers[i].periodos;
+			fullOrgani[i].trabajador = workers[i];
+		}
+		return fullOrgani;
+	}
 
 	//TODO: Completar para añadir los parametros como queryparams y no como el dni tal que :dni
 	@Get(':username')

@@ -1,0 +1,47 @@
+<app-menu></app-menu>
+<div class="main">
+	<app-session></app-session>
+	<div class="contrainer-fluid p-3">
+		<h1>Listado de los trabajadores y su organigrama</h1>
+		<div class="accordion" id="accordionExample">
+			<div *ngFor="let trab of fullOrgani" class="accordion-item">
+				<h2 class="accordion-header" id="headingOne">
+					<button
+						class="accordion-button"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#collapseOne"
+						aria-expanded="true"
+						aria-controls="collapseOne"
+					>
+						{{ trab.trabajador.nombre }}
+					</button>
+				</h2>
+				<div
+					id="collapseOne"
+					class="accordion-collapse collapse show"
+					aria-labelledby="headingOne"
+					data-bs-parent="#accordionExample"
+				>
+					<div class="accordion-body">
+						Inferiores:
+						<div *ngFor="let inferior of trab.inferiores">
+							{{ inferior.nombre + ',' + inferior.apellidos }}
+						</div>
+						<br />
+						Pares:
+						<div *ngFor="let par of trab.pares">
+							{{ par.nombre + ',' + par.apellidos }}
+						</div>
+						<br />
+
+						Superiores:
+						<div *ngFor="let sup of trab.superiores">
+							{{ sup.nombre + ',' + sup.apellidos }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

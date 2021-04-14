@@ -8,11 +8,7 @@ export interface ICatComp {
 export interface ICatContr {
   id: string;
   description: string;
-  // periodos: PeriodoTrab[];
-}
-
-export interface ICategoriesRelation {
-  catContr: ICatContr;
+  /**Es la categoria competencial "Por defecto". Es decir a que categoría competencial corresponde esta contractual en ESTE MOMENTO*/
   catComp: ICatComp;
 }
 

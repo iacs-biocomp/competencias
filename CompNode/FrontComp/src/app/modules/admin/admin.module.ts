@@ -2,16 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { OrganigramaAdminComponent } from './organigrama-admin/organigrama-admin.component';
 import { CompetenciasAdminModule, compRoutes } from './competencias-admin/competencias-admin.module';
-import {
-	ComportamientosAdminModule,
-	comportRoutes,
-} from './comportamientos-admin/comportamientos-admin.module';
+import { comportRoutes } from './comportamientos-admin/comportamientos-admin.module';
 import { NivelesAdminModule, nivRoutes } from './niveles-admin/niveles-admin.module';
 import { CatAdmnModule, catRoutes } from './cat-admn/cat-admn.module';
 import { EvaluacionesAdmnModule, evRoutes } from './evaluaciones-admn/evaluaciones-admn.module';
 import { TrabajadoresModule, trabRoutes } from './trabajadores/trabajadores.module';
+import { OrganiAdmnModule, organiRoutes } from './organigrama-admin/organi-admin.module';
 
 const routes: Routes = [
 	{ path: 'comportamientos', children: comportRoutes },
@@ -20,13 +17,14 @@ const routes: Routes = [
 	{ path: 'categorias', children: catRoutes },
 	{ path: 'evaluaciones', children: evRoutes },
 	{ path: 'trabajadores', children: trabRoutes },
+	{ path: 'organigrama', children: organiRoutes },
 	{ path: '', redirectTo: '/' },
 
 	// { path: '', component: CompetenciasAdminComponent },
 ];
 
 @NgModule({
-	declarations: [OrganigramaAdminComponent],
+	declarations: [],
 	imports: [
 		CommonModule,
 		RouterModule.forChild(routes),
@@ -36,6 +34,7 @@ const routes: Routes = [
 		EvaluacionesAdmnModule,
 		NivelesAdminModule,
 		TrabajadoresModule,
+		OrganiAdmnModule,
 	],
 	exports: [SharedModule],
 })

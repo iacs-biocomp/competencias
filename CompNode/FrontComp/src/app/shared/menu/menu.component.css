@@ -13,7 +13,8 @@
 	background-color: #1663a1;
 }
 .active-route {
-	background-color: #297fc5;
+	/* background-color: #297fc5; */
+	background-color: #297fc5 !important;
 }
 
 .page-sidebar {
@@ -176,7 +177,7 @@ ul.main-menu li em {
 }
 
 li::before {
-	content: "\003E";
+	content: '\003E';
 	color: #ebebeb;
 	/*display: inline-block;*/
 	float: right;
@@ -188,7 +189,7 @@ li::before {
 }
 
 .site-header::before {
-	content: "\2630";
+	content: '\2630';
 	color: #ebebeb;
 	float: right;
 	font-size: 20px;

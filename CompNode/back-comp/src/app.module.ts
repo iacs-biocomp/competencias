@@ -17,6 +17,7 @@ import { CatContractModule } from './modules/cat-contract/cat-contract.module';
 import { CatCompModule } from './modules/cat-comp/cat-comp.module';
 import { TrabajadoresModule } from './modules/trabajadores/trabajadores.module';
 import { OrganigramaModule } from './modules/organigrama/organigrama.module';
+import { ModelosModule } from './modules/modelos/modelos.module';
 
 @Module({
 	imports: [
@@ -34,6 +35,7 @@ import { OrganigramaModule } from './modules/organigrama/organigrama.module';
 		CatCompModule,
 		TrabajadoresModule,
 		OrganigramaModule,
+		ModelosModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AuthGuard, ConfigService],
