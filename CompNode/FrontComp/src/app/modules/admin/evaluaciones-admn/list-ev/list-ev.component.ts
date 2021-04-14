@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtService } from 'src/app/services/jwt.service';
-
+import { IEvaluacion } from '../../../../../../../interfaces/IEvaluaciones';
+import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 
 @Component({
 	selector: 'app-list-ev',
@@ -8,7 +8,15 @@ import { JwtService } from 'src/app/services/jwt.service';
 	styleUrls: ['./list-ev.component.css'],
 })
 export class ListEvComponent implements OnInit {
-	constructor() {}
+	evalToAdd: IEvaluacion[] = [{id: 1, description: 'ff', model: undefined, catComp:{id:'GR1', description:'f'}}];
 
-	ngOnInit(): void {}
+	constructor(private evalService: EvaluacionesAdmService) {}
+
+	async ngOnInit(): Promise<void> {
+		await this.updateEvalView();
+	}
+
+	async updateEvalView(): Promise<void> {
+		// this.evalToAdd = await this.evalService.getAllEval();
+	}
 }

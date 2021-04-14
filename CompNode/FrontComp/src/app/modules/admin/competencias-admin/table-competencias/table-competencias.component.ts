@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
 import { CompetenciasService } from '../services/competencias.service';
 

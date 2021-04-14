@@ -11,7 +11,7 @@ export interface IEvaluacion {
   /** La descripción de la evaluación */
   description: string;
   /** El modelo que usa la evaluación (Donde se indican competencias comportamientos y niveles) */
-  model: IEvModel;
+  model: IEvModel | undefined;
   /** La categoría competencial de la evaluación */
   catComp: ICatComp;
 }

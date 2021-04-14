@@ -1,0 +1,27 @@
+<div class="tablewrapper">
+	<h1 class="title">Modelo</h1>
+	<table
+		aria-label="Listado de todos los modelos existentes"
+		class="table table-hover"
+	>
+
+	<thead>
+		<tr>
+			<th scope="col">ID CAT.COMPETENCIAL</th>
+			<th scope="col">DESCRIPCION</th>
+			<th scope="col">NUMERO DE MODELOS</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr *ngFor="let row of subModelToAdd">
+			<td>
+				<input type="text" class="form-control" [(ngModel)]="subModelToAdd.competencia" />
+			</td>
+			<td>
+				<input type="text" class="form-control" [(ngModel)]="subModelToAdd.modelos" />
+			</td>
+		</tr>
+	</tbody>
+
+

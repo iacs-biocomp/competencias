@@ -2,22 +2,30 @@
 <div class="main">
 	<app-session></app-session>
 	<h1 class="layout-title">Evaluaciones</h1>
-	<!--
 	<div class="container-fluid">
 		<div class="row gy-4">
-			<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let evaluacion of evaluacionData">
+			<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let row of evalToAdd">
 				<div class="card">
+					<h2 class="card-title">Id evaluación: {{ row.id }}</h2>
 					<div class="card-body">
-
-						<h2 class="card-title">Evaluación: {{ evaluacion.id }}</h2>
-						<p>Categoría competencial: {{ evaluacion.catComp.id }}</p>
-						<p>Descripcion de categoría competencial: {{ evaluacion.catComp.description }}</p>
-						<p>Descripción de la evaluación: {{ evaluacion.description }}</p>
-
+						<p>Descripción: {{ row.description }}</p>
+						<p>Id del modelo: {{ row.model }}</p>
+						<p>Id del la Cat. competencial: {{ row.catComp.id }}</p>
+						<!-- <p>Inicio propuestas: {{row}} </p>
+						<p>Fin propuestas: {{row}} </p>
+						<p>Inicio validacion: {{row}} </p>
+						<p>Fin validacion: {{row}} </p>
+						<p>Inicio valoracion: {{row}} </p>
+						<p>Fin valoracion: {{row}} </p>
+						<p>Inicio período evaluado: {{row}} </p>
+						<p>Fin período evaluado: {{row}} </p> -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-		-->
 </div>
+
+
+
+
