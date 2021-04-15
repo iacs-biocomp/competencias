@@ -3,7 +3,7 @@
 		<div class="panel-heading clearfix">
 			<h1>Mis datos</h1>
 		</div>
-		<div class="panel-body">
+		<div class="panel-body" *ngIf="userData">
 			<h3>
 				<label class="col-sm-4 control-label">Nombre:</label>
 				{{ userData?.name }}

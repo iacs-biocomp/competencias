@@ -1,6 +1,11 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CatComp } from 'src/entity/CatComp.entity';
+import { CatContr } from 'src/entity/CatContr.entity';
+import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
 import { Trabajador } from 'src/entity/Trabajador.entity';
+import { CatCompRepo } from '../cat-comp/catComp.repository';
+import { CatContrRepo } from '../cat-contract/catContr.repository';
 import { TrabajadorRepo } from './trabajador.repository';
 
 @Controller('nest/trabajadores')
@@ -8,6 +13,10 @@ export class TrabajadoresController {
 	constructor(
 		@InjectRepository(TrabajadorRepo)
 		private readonly trabRepo: TrabajadorRepo,
+		@InjectRepository(CatCompRepo)
+		private readonly catCompRepo: CatCompRepo,
+		@InjectRepository(CatContrRepo)
+		private readonly catContrRepo: CatContrRepo,
 	) {}
 
 	@Get('all')
@@ -30,7 +39,6 @@ export class TrabajadoresController {
 				unidad: trab.unidad,
 			}),
 		);
-		// trabajadores.map(t => t.periodos.filter(p => p.actual === true));
 		return trabDto;
 	}
 
@@ -48,43 +56,81 @@ export class TrabajadoresController {
 
 	@Delete(':dni')
 	async deleteWorker(@Param('dni') dni: string): Promise<boolean> {
-		const worker = await this.trabRepo.findOne({ dni: dni }, { relations: ['subModels'] });
-
+		const worker = await this.trabRepo.findOne({ dni: dni }, { relations: [''] });
 		if (!worker) {
 			throw new NotFoundException('No existe ningun worker con ese dni');
 		}
-		// if (worker.subModels.length !== 0) {
-		// 	throw new UnauthorizedException('Ese worker esta asociado a un submodelo, no se puede borrar');
-		// }
 		await worker.remove();
 		return true;
 	}
 
 	@Post('')
-	async createTrabajador(@Body() worker: Trabajador): Promise<boolean> {
-		const existingTrabajador = this.trabRepo.findOne({ dni: worker.dni });
+	async createTrabajador(@Body() worker: ITrabajadorDTO): Promise<boolean> {
+		const existingTrabajador = await this.trabRepo.findOne({ dni: worker.dni });
 		if (existingTrabajador) {
-			throw new ConflictException('Trabajador ya creada');
+			throw new ConflictException('Trabajador ya creado');
 		}
-		await this.trabRepo.save(worker);
+		var catComp: CatComp;
+		var catContr: CatContr;
+		try {
+			catComp = await this.catCompRepo.findOne({ id: worker.catComp });
+			catContr = await this.catContrRepo.findOne({ id: worker.catContr });
+		} catch (error) {
+			throw new NotFoundException(
+				`No existe una catComp con este id: ${worker.catComp} o una catContr con este: ${worker.catContr}`,
+			);
+		}
+		const trabajador = Trabajador.buildFromPost(worker);
+		trabajador.periodos[0].catComp = catComp;
+		trabajador.periodos[0].catContr = catContr;
+		trabajador.periodos[0].trabajador = trabajador;
+		await this.trabRepo.save(trabajador);
+		await trabajador.periodos[0].save();
 		return true;
 	}
+
 	@Put('')
-	async updateWorker(@Body() worker: Trabajador): Promise<boolean> {
-		const existingTrabajador = this.trabRepo.findOne({ dni: worker.dni }, { relations: ['subModels'] });
-		if (!existingTrabajador) {
+	async updateWorker(@Body() worker: ITrabajadorDTO): Promise<boolean> {
+		const promises = await Promise.all([
+			this.trabRepo.findOne(
+				{ dni: worker.dni },
+				{ relations: ['periodos', 'periodos.catContr', 'periodos.catComp', 'user'] },
+			),
+			this.catContrRepo.findOne({ id: worker.catContr }),
+			this.catCompRepo.findOne({ id: worker.catComp }),
+		]);
+		const trab = promises[0];
+		const catContr = promises[1];
+		const catComp = promises[2];
+
+		if (!trab) {
 			throw new NotFoundException('No existe un worker con ese dni');
 		}
-		//? Se pueden modificar los workeres asociados a un submodelo usado en una evaluación?
-		// if (worker.subModels.length !== 0) {
-		// 	throw new UnauthorizedException('Ese worker esta asociado a un submodelo, no se puede modificar');
-		// }
-		await this.trabRepo.save(worker);
+		//Si estan actualizando la catComp o catContr y han pasado mas de 7 dias desde la creación del anterior periodo,
+		//creo un nuevo periodo y cierro el actual
+		var perActual = trab.periodos.find(p => p.actual);
+		if (worker.catComp !== perActual.catComp.id || worker.catContr !== perActual.catContr.id) {
+			const todayMinus7 = new Date(new Date().setDate(-7));
+			if (perActual.createdAt < todayMinus7) {
+				const latestPeriod = perActual;
+				perActual.actual = false;
+				perActual.save();
+				delete latestPeriod.id;
+				latestPeriod.catComp = catComp;
+				latestPeriod.catContr = catContr;
+				latestPeriod.save();
+			} else {
+				perActual.catComp = catComp;
+				perActual.catContr = catContr;
+				perActual.save();
+			}
+		}
+		await this.trabRepo.save(trab);
 		return true;
 	}
 }
 
-interface ITrabajadorDTO {
+export interface ITrabajadorDTO {
 	dni: string;
 
 	nombre: string;

@@ -40,24 +40,19 @@ export class TrabajadoresService {
 		return borrado;
 	}
 
-	/** POST: add a new worker to the server */
+	/**
+	 * Manda una petición de tipo post al servidor intentando añadir el trabajador.
+	 * @returns Una promise que se puede resolver como `true` si se ha añadido el trabajador y `false`/Excepción si no se ha podido añadir
+	 */
 	addTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 	/**
 	 *
-	 * @param comp El worker a editar en la base de datos
+	 * @param comp El worker con los datos editados
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
 	editTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
-	}
-
-	public getAllCatComp(): Promise<ICatComp[]> {
-		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
-	}
-
-	public getAllCatContrac(): Promise<ICatContr[]> {
-		return this.httpClient.get<ICatContr[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
 	}
 }

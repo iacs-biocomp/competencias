@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TrabajadoresService } from '../services/trabajadores.service';
 import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
 import { ICatComp, ICatContr } from '../../../../../../../interfaces/ICategorias';
+import { CatContractService } from '../../cat-admn/services/CatContractuales.service';
+import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 
 interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 	editing?: boolean;
@@ -13,52 +15,27 @@ interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 	styleUrls: ['./trab-table.component.css'],
 })
 export class TrabTableComponent implements OnInit {
-	constructor(private trabService: TrabajadoresService) {}
+	constructor(
+		private trabService: TrabajadoresService,
+		private cCompSv: CatCompetencialesService,
+		private cContrSv: CatContractService,
+	) {}
 
 	catComps!: ICatComp[];
 	catContracts!: ICatContr[];
 
-	listaTrabaToAdd: ITrabajadorDTOEdit[] = [
-		{
-			dni: '132DF',
-			nombre: 'jORGE',
-			apellidos: 'PEREZ',
-			area: 'BIOC',
-			unidad: 'BI',
-			departamento: 'BIOC',
-			catComp: 'GR1',
-			catContr: 'INV-SENIOR',
-			editing: true,
-		},
-		{
-			dni: 'DSFDSF5',
-			nombre: 'GDD',
-			apellidos: 'PEFDFDREZ',
-			area: 'DFDF',
-			unidad: 'DFDF',
-			departamento: 'BIOC',
-			catComp: 'GR2',
-			catContr: 'INV-ju',
-			editing: true,
-		},
-	];
+	listaTrabaToAdd: ITrabajadorDTOEdit[] = [];
 	trabajadores: ITrabajadorDTOEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
 		await this.updateWorkerView();
-		this.catComps = await this.trabService.getAllCatComp();
-		this.catContracts = await this.trabService.getAllCatContrac();
+		this.catComps = await this.cCompSv.getAllCatComp();
+		this.catContracts = await this.cContrSv.getAllCatContract();
 	}
 
 	//TODO: Añadir tsdoc al archivo entero
 	async updateWorkerView(): Promise<void> {
 		this.trabajadores = await this.trabService.getAllTrabajadores();
-		console.log('update');
-	}
-
-	canDelete(trab: ITrabajadorDTO): boolean {
-		//TODO: Completar
-		return true;
 	}
 
 	deleteWorkerToAdd(row: ITrabajadorDTO): void {
@@ -76,6 +53,7 @@ export class TrabTableComponent implements OnInit {
 			departamento: '',
 			catComp: '',
 			catContr: '',
+			deleteable: true,
 		});
 	}
 
@@ -99,14 +77,6 @@ export class TrabTableComponent implements OnInit {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			await this.updateWorkerView();
 			this.deleteWorkerToAdd(trab);
-		}
-	}
-
-	async deleteWorker(trab: ITrabajadorDTO) {
-		const borrado = await this.trabService.delete(trab);
-		if (borrado) {
-			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			await this.updateWorkerView();
 		}
 	}
 }

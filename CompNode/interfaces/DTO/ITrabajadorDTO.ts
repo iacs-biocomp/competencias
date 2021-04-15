@@ -16,6 +16,8 @@ export interface ITrabajadorDTO {
   catComp: string;
 
   catContr: string;
+
+  deleteable: boolean;
 }
 
 interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {}

@@ -7,6 +7,7 @@ import { ConfigService } from './config/config.service';
 const cnfService = new ConfigService();
 
 async function bootstrap() {
+	require('source-map-support').install();
 	//TODO: revisar lo del cors, posibles ataques csrf si está en true (Para producción en false?)
 	const app = await NestFactory.create(AppModule, { cors: true });
 

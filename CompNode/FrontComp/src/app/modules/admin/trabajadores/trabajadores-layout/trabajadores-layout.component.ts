@@ -7,7 +7,7 @@ import { TrabajadoresService } from '../services/trabajadores.service';
 	styleUrls: ['./trabajadores-layout.component.css'],
 })
 export class TrabajadoresLayoutComponent implements OnInit {
-	constructor(private trabService: TrabajadoresService) {}
+	constructor() {}
 
 	ngOnInit(): void {}
 }

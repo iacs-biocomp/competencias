@@ -2,6 +2,7 @@ import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinCol
 import { User } from './user.entity';
 import { PeriodoTrab } from './PeriodoTrab.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { ITrabajadorDTO } from '../modules/trabajadores/trabajadores.controller';
 
 @Entity('trabajador')
 export class Trabajador extends BaseEntity {
@@ -37,4 +38,24 @@ export class Trabajador extends BaseEntity {
 	@OneToOne(type => User, usr => usr.trabajador)
 	@JoinColumn()
 	user: User;
+
+	/**
+	 * Funcion que instancia un Trabajador (Patrón builder) Es necesario añadir la catComp y catContr al unico periodo que tiene.
+	 * @param workerDto El dto con la información del trabajador a crear
+	 * @returns Retorna una instancia de tipo Trabajador, no guardada en la base de datos
+	 */
+	public static buildFromPost(workerDto: ITrabajadorDTO): Trabajador {
+		const trabajador = new Trabajador();
+		trabajador.dni = workerDto.dni;
+		trabajador.nombre = workerDto.nombre;
+		trabajador.apellidos = workerDto.apellidos;
+		trabajador.area = workerDto.area;
+		trabajador.unidad = workerDto.unidad;
+		trabajador.departamento = workerDto.departamento;
+		const periodo = new PeriodoTrab();
+		periodo.actual = true;
+		trabajador.periodos = [periodo];
+
+		return trabajador;
+	}
 }
