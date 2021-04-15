@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { flattenDiagnosticMessageText } from 'typescript';
 import { IEvaluacion } from '../../../../../../../interfaces/IEvaluaciones';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 
@@ -8,7 +9,18 @@ import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 	styleUrls: ['./list-ev.component.css'],
 })
 export class ListEvComponent implements OnInit {
-	evalToAdd: IEvaluacion[] = [{id: 1, description: 'ff', model: undefined, catComp:{id:'GR1', description:'f'}}];
+	evalToAdd: IEvaluacion[] = [
+		{
+			id: 1,
+			description: 'ff',
+			model: undefined,
+			catComp:
+			{
+				id:'GR1',
+				description:'f'
+			}
+		}
+	];
 
 	constructor(private evalService: EvaluacionesAdmService) {}
 
@@ -19,4 +31,10 @@ export class ListEvComponent implements OnInit {
 	async updateEvalView(): Promise<void> {
 		// this.evalToAdd = await this.evalService.getAllEval();
 	}
+
+	public loadMForm = true;
+	loadModelForm(){
+		this.loadMForm = true;
+	}
+
 }

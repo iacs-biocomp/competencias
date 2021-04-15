@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EvaluacionesAdmService } from './services/evaluaciones-adm.service';
+import { ModelosComponent } from '../modelos/modelos.component';
 
 /** Rutas relacionadas con el subModulo de comportamientos */
 export const evRoutes: Routes = [
@@ -16,13 +17,16 @@ export const evRoutes: Routes = [
 ];
 
 @NgModule({
-	declarations: [ListEvComponent],
+	declarations: [ListEvComponent, ModelosComponent],
 	imports: [CommonModule,
 		RouterModule,
 		SharedModule,
 		// TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
 		FormsModule,
-		ReactiveFormsModule,],
+		ReactiveFormsModule,
+
+	],
 	providers: [HttpClient, EvaluacionesAdmService],
 })
+
 export class EvaluacionesAdmnModule {}

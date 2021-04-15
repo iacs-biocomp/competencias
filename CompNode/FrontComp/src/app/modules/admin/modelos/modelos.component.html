@@ -1,4 +1,4 @@
-<div class="tablewrapper">
+<!-- <div class="tablewrapper">
 	<h1 class="title">Modelo</h1>
 	<table
 		aria-label="Listado de todos los modelos existentes"
@@ -12,7 +12,6 @@
 			<th scope="col">NUMERO DE MODELOS</th>
 		</tr>
 	</thead>
-
 	<tbody>
 		<tr *ngFor="let row of subModelToAdd">
 			<td>
@@ -25,3 +24,70 @@
 	</tbody>
 
 
+	<div id="accordion">
+		<div class="panel accordion-group">
+			<div class="accordion-heading">
+				<h4 class="title">
+				Elija una categoría competencial para comenzar el modelo
+				</h4>
+				<a class="accordion-toggle collapsed" data-toggle="collapse"
+					 data-parent="#accordion" aria-expanded="false">
+					<div class="card-body" *ngFor="let catComp of catComps">
+						<td>{{ catComp.id }} - {{ catComp.description }}</td>
+					</div>
+				</a>
+ -->
+
+
+<div>
+	<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
+	<div class="accordion" id="accordionExample">
+		<div *ngFor="let catComp of catComps" class="accordion-item">
+			<button (click)="scrollToButton(target)" class="accordion-button" type="button" data-bs-toggle="collapse"
+				data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				{{ catComp.id }} - {{ catComp.description}}
+			</button>
+		</div>
+	</div>
+</div>
+<br> <!-- Espacio en blanco para dejar espacio entre el ultimo seleccionable y el boton -->
+<button #target class="btn btn-success btn-lg" type="button" name="submit" [disabled]="!selectedOption==true"> SIGUIENTE
+</button>
+
+<!--
+<div class="accordion" id="accordionExample">
+	<div *ngFor="let competen of competen" class="accordion-item">
+		<button (click)="scrollToButton(target)" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+		aria-expanded="true" aria-controls="collapseOne">
+		{{ competen.id }} - {{ competen.descripcion}}
+	</button>
+</div>
+</div>
+
+	<div class="accordion" id="accordionExample">
+		<div *ngFor="let competen of competen" class="accordion-item">
+			<button (click)="scrollToButton(target)" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+			aria-expanded="true" aria-controls="collapseOne">
+			{{ competen.id }} - {{ competen.descripcion}}
+		</button>
+	</div>
+</div>
+
+		<div class="accordion" id="accordionExample">
+			<div *ngFor="let model of subModel" class="accordion-item">
+				<button (click)="scrollToButton(target)" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+				aria-expanded="true" aria-controls="collapseOne">
+				{{ model.competencia.descripcion }} - {{ model.competencia.id}}
+			</button>
+		</div>
+	</div>
+
+			<div class="accordion" id="accordionExample">
+				<div *ngFor="let model of subModel" class="accordion-item">
+					<button (click)="scrollToButton(target)" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+					aria-expanded="true" aria-controls="collapseOne">
+					{{ model.comportamientos }} - {{ competen.descripcion}}
+				</button>
+			</div>
+		</div>
+ -->

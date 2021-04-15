@@ -22,10 +22,11 @@
 					</div>
 				</div>
 			</div>
+			<!--Al pulsar el boton se carga el modulo del MODELO-->
+			<button (click)="loadModelForm();" type="button" style="width: 50%; height: 50%;">Nuevo
+				modelo</button>
+			<app-modelos *ngIf="loadMForm"></app-modelos>
+
 		</div>
 	</div>
 </div>
-
-
-
-
