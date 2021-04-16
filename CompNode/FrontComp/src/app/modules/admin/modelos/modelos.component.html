@@ -39,20 +39,21 @@
  -->
 
 
-<div>
-	<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
-	<div class="accordion" id="accordionExample">
-		<div *ngFor="let catComp of catComps" class="accordion-item">
-			<button (click)="scrollToButton(target)" class="accordion-button" type="button" data-bs-toggle="collapse"
-				data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-				{{ catComp.id }} - {{ catComp.description}}
-			</button>
+
+
+<div class="inline">
+	<div [ngClass]="bntStyle">
+		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
+		<div>
+			<div *ngFor="let catComp of catComps">
+				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
+					{{ catComp.id }} - {{ catComp.description}}
+				</button>
+			</div>
 		</div>
+		<button #target class="btn btn-success btn-lg" type="button" name="submit" [disabled]="!selectedOption==true"
+			(click)="submit()"> SIGUIENTE </button>
 	</div>
-</div>
-<br> <!-- Espacio en blanco para dejar espacio entre el ultimo seleccionable y el boton -->
-<button #target class="btn btn-success btn-lg" type="button" name="submit" [disabled]="!selectedOption==true"> SIGUIENTE
-</button>
 
 <!--
 <div class="accordion" id="accordionExample">
@@ -63,6 +64,7 @@
 	</button>
 </div>
 </div>
+
 
 	<div class="accordion" id="accordionExample">
 		<div *ngFor="let competen of competen" class="accordion-item">
@@ -90,4 +92,4 @@
 				</button>
 			</div>
 		</div>
- -->
+  -->

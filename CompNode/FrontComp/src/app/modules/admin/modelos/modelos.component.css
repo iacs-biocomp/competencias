@@ -3,10 +3,23 @@
 	color: white;
 }
 
-.button{
-	text-align: center;
-	margin: auto;
+.btn-default {
+	width: 100%;
+	height: 100%;
 }
+
+
+ .btn-change{
+	/* Transition */
+  transform: translateX(-120%);
+  transition: all .75s ease-in;
+ }
+
+
+.inline{
+	display: inline;
+}
+
 
 
 

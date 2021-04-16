@@ -30,7 +30,7 @@ export class ListEvComponent implements OnInit {
 		// this.evalToAdd = await this.evalService.getAllEval();
 	}
 
-	public loadMForm = true;
+	public loadMForm = false;
 	loadModelForm() {
 		this.loadMForm = true;
 	}

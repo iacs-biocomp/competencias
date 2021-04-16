@@ -4,12 +4,12 @@ import { ICompetencia, ISubModel } from '../../../../../../interfaces/IEvaluacio
 import { ModelosService } from './services/modelos.service'
 
 @Component({
-  selector: 'app-modelos',
-  templateUrl: './modelos.component.html',
-  styleUrls: ['./modelos.component.css']
+	selector: 'app-modelos',
+	templateUrl: './modelos.component.html',
+	styleUrls: ['./modelos.component.css'],
 })
 export class ModelosComponent implements OnInit {
-  constructor(private modelService: ModelosService) {}
+	constructor(private modelService: ModelosService) {}
 
 	subModelToAdd!: ISubModel;
 
@@ -18,12 +18,14 @@ export class ModelosComponent implements OnInit {
 	subModel!: ISubModel[];
 	public selectedOption!: boolean;
 
-  async ngOnInit(): Promise<void> {
+	/* Estilo por defecto del boton*/
+	bntStyle: string = 'btn-default';
+
+	async ngOnInit(): Promise<void> {
 		this.listCatComp();
 		this.listCompeten();
 		this.listSubModel();
-		this.selectedOption = false;
-  }
+	}
 
 	async listCatComp(): Promise<void> {
 		this.catComps = await this.modelService.getAllCatComp();
@@ -39,7 +41,12 @@ export class ModelosComponent implements OnInit {
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'*/
 	scrollToButton(element: HTMLElement) {
-    element.scrollIntoView();
+		element.scrollIntoView();
 		this.selectedOption = true;
+	}
+
+	/* Funcion para que cuando se haga click, cambie el estilo de los botones y haga la transición */
+	submit() {
+		this.bntStyle = 'btn-change';
 	}
 }
