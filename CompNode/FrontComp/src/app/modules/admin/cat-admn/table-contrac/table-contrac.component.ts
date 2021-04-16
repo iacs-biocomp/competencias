@@ -22,27 +22,29 @@ export class TableContracComponent implements OnInit {
 	contracts: IContracEdit[] = [];
 	catComps: ICatComp[] = [];
 
+	alert(msg: string) {
+		alert(msg);
+	}
+
 	async ngOnInit(): Promise<void> {
-		await this.updateContractView();
-		this.catComps = await this.cCompSv.getAllCatComp();
-		console.log(this.catComps);
+		await this.updateContrView();
+		this.catComps = await this.cCompSv.getAll();
 
-		// setInterval(() => {
-		// 	console.log(this.catContracts);
-		// }, 3500);
+		setInterval(() => {
+			console.log(this.catContracts);
+		}, 3500);
 	}
 
-	async updateContractView(): Promise<void> {
-		this.catContracts = await this.catContractService.getAllCatContract();
-		console.log(this.contracts);
+	async updateContrView(): Promise<void> {
+		this.catContracts = await this.catContractService.getAll();
 	}
 
-	canDelete(catContract: ICatContr): boolean {
-		return false;
+	updateCContr() {
+		// this.catContractService.update();
 	}
 
-	deleteCatContract(catContract: ICatContr): boolean {
-		this.catContractService.delCatContract(catContract.id);
+	deleteCContr(catContract: ICatContr): boolean {
+		this.catContractService.delete(catContract.id);
 		return true;
 	}
 }

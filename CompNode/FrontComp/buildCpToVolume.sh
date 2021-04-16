@@ -1,2 +1,2 @@
-ng build --prod
+npm run build
 cp -r dist/FrontComp/. /app/ngDist

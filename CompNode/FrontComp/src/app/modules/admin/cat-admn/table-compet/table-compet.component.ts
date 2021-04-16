@@ -23,7 +23,7 @@ export class TableCompetComponent implements OnInit {
 	}
 
 	async updateCatCompView(): Promise<void> {
-		this.catComps = await this.catCompService.getAllCatComp();
+		this.catComps = await this.catCompService.getAll();
 		console.log('update');
 		console.log(this.catComps);
 	}
@@ -50,12 +50,12 @@ export class TableCompetComponent implements OnInit {
 		catComp.editing = editing;
 		if (send) {
 			delete catComp.editing;
-			await this.catCompService.editCompt(catComp);
+			await this.catCompService.edit(catComp);
 		}
 	}
 
 	async persistCatComp(catComp: ICatComp): Promise<void> {
-		const guardado = await this.catCompService.addCatComp(catComp);
+		const guardado = await this.catCompService.add(catComp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.deleteCatCompToAdd(catComp);

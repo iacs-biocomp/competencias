@@ -55,7 +55,7 @@ export class CatCompController {
 		if (!catComp) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
-		if (catComp.catContr) {
+		if (catComp.catContr.length !== 0) {
 			throw new BadRequestException('No se puede borrar una catComp que tiene una catContr asociada');
 		}
 		var oneWeekAgo: Date = new Date();

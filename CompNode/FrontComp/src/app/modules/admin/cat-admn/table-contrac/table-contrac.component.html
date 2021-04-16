@@ -4,6 +4,7 @@
 		<thead>
 			<tr>
 				<th scope="col">CAT.CONTRACTUAL</th>
+				<th scope="col">Descripción</th>
 				<th scope="col">CAT.COMPETENCIAL</th>
 			</tr>
 		</thead>
@@ -12,8 +13,11 @@
 				<td>{{ catContr.id }}</td>
 				<td>{{ catContr.description }}</td>
 				<td>
-					<select id="catCompetencial" [(ngModel)]="catContr.catComp.id">
-						<option *ngFor="let catComp of catComps" [value]="catComp.id">
+					<select [(ngModel)]="catContr.catComp" (change)="alert('Cambiado valor pero no en bbdd')">
+						<option selected disabled hidden [value]="catContr.catComp">
+							{{ catContr.catComp.id }}
+						</option>
+						<option *ngFor="let catComp of catComps" [ngValue]="catComp">
 							{{ catComp.id }}
 						</option>
 					</select>

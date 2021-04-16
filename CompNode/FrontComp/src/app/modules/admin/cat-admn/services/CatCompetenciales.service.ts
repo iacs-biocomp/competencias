@@ -16,7 +16,7 @@ export class CatCompetencialesService {
 	 *
 	 * @returns Un `Array` de todas las categorias competenciales
 	 */
-	public async getAllCatComp(): Promise<ICatComp[]> {
+	public async getAll(): Promise<ICatComp[]> {
 		return await this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
@@ -36,8 +36,11 @@ export class CatCompetencialesService {
 		return borrado;
 	}
 
-	/** POST: add a new categoria competencial to the server */
-	addCatComp(catComp: ICatComp): Promise<boolean> {
+	/**
+	 * Añade una nueva categoría competencial a la base de datos
+	 * @param catComp La categoría competencial a añadir
+	 */
+	add(catComp: ICatComp): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 
@@ -46,7 +49,7 @@ export class CatCompetencialesService {
 	 * @param catComp La competencia a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-	editCompt(catComp: ICatComp): Promise<boolean> {
+	edit(catComp: ICatComp): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 }

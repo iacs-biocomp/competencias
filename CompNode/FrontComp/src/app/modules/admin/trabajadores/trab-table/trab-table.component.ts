@@ -16,24 +16,26 @@ interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 })
 export class TrabTableComponent implements OnInit {
 	constructor(
+		/** Servicio para obtener los datos de los trabajadores */
 		private trabService: TrabajadoresService,
+		/** Servicio para obtener los datos de las catCompetenciales */
 		private cCompSv: CatCompetencialesService,
+		/** Servicio para obtener los datos de las catContractuales */
 		private cContrSv: CatContractService,
 	) {}
-
+	//TODO: Tsdoc a variables
 	catComps!: ICatComp[];
 	catContracts!: ICatContr[];
-
 	listaTrabaToAdd: ITrabajadorDTOEdit[] = [];
 	trabajadores: ITrabajadorDTOEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
 		await this.updateWorkerView();
-		this.catComps = await this.cCompSv.getAllCatComp();
-		this.catContracts = await this.cContrSv.getAllCatContract();
+		this.catComps = await this.cCompSv.getAll();
+		this.catContracts = await this.cContrSv.getAll();
 	}
 
-	//TODO: Añadir tsdoc al archivo entero
+	//TODO: Añadir tsdoc a los metodos
 	async updateWorkerView(): Promise<void> {
 		this.trabajadores = await this.trabService.getAllTrabajadores();
 	}

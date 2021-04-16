@@ -31,5 +31,5 @@ export class CatComp extends BaseEntity {
 
 	@ApiProperty({ type: () => CatContr })
 	@OneToMany(type => CatContr, catContr => catContr.catComp)
-	catContr: CatContr;
+	catContr: CatContr[];
 }
