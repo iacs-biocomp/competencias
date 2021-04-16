@@ -5,7 +5,7 @@
 			<tr>
 				<th scope="col">ID</th>
 				<th scope="col">DESCRIPCIÓN</th>
-				<th scope="col">BORRAR/AÑADIR</th>
+				<th scope="col">BORRAR/MODIFICAR</th>
 				<th scope="col" style="max-width: 1rem">
 					<button class="btn btn-primary" (click)="newEmptyCatComp()">
 						<span class="material-icons" title="Añadir categoría competencial"> add </span>
@@ -18,9 +18,6 @@
 			<tr *ngFor="let row of catCompToAdd">
 				<td>
 					<input type="text" class="form-control" [(ngModel)]="row.id" />
-				</td>
-				<td>
-					<input type="text" class="form-control" [(ngModel)]="row.description" />
 				</td>
 				<td>
 					<input type="text" class="form-control" [(ngModel)]="row.description" />
@@ -41,9 +38,7 @@
 
 			<tr *ngFor="let catComp of catComps">
 				<td>{{ catComp.id }}</td>
-				<td *ngIf="!catComp.editing">
-					{{ catComp.description }}
-				</td>
+				<td *ngIf="!catComp.editing">{{ catComp.description }}</td>
 				<td *ngIf="catComp.editing">
 					<input type="text" class="form-control" [(ngModel)]="catComp.description" />
 				</td>
@@ -55,7 +50,7 @@
 					<div class="btn btn-success" (click)="editingCatComp(catComp, true, false)">
 						<span class="material-icons"> edit </span>
 					</div>
-					<div class="btn btn-primary" (click)="editingCatComp(catComp, false, true)">
+					<div class="btn btn-primary" *ngIf="catComp.editing" (click)="editingCatComp(catComp, false, true)">
 						<span class="material-icons"> done </span>
 					</div>
 				</td>

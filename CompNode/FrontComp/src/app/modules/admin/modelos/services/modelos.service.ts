@@ -24,9 +24,4 @@ export class ModelosService {
 	public async getAllSubModel(): Promise<ISubModel[]> {
 		return await this.httpClient.get<ISubModel[]>(`${cnf.apiURL}/subModel/all`).toPromise();
 	}
-
-
-
-
-
 }
