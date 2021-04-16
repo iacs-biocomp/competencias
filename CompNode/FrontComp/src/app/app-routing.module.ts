@@ -4,6 +4,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AppComponent } from './app.component';
 import { LoginGuard } from './guards/login.guard';
 import { Error404Component } from './modules/app/error404/error404.component';
+import { BaseLayoutComponent } from './shared/layout/base/base-layout.component';
 // export interface RouteData {
 // 	roles: 'PUBLIC' | 'ADMIN ';
 // 	ShowSideBar: boolean;
@@ -20,6 +21,7 @@ const routes: Routes = [
 		data: {
 			roles: ['ADMIN'],
 		},
+		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/admin/admin.module').then(mod => mod.AdminModule),
 	},
 	{
@@ -33,6 +35,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
+		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/usuario/usuario.module').then(mod => mod.UsuarioModule),
 	},
 	{
@@ -41,6 +44,8 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
+		component: BaseLayoutComponent,
+
 		loadChildren: () =>
 			import('./modules/competencias/competencias.module').then(mod => mod.CompetenciasModule),
 	},
@@ -50,6 +55,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
+		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/resultados/resultados.module').then(mod => mod.ResultadosModule),
 	},
 	{
@@ -59,6 +65,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
+		component: BaseLayoutComponent,
 		loadChildren: () =>
 			import('./modules/evaluaciones/evaluaciones.module').then(mod => mod.EvaluacionesModule),
 	},
@@ -69,13 +76,14 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
+		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/catalogs/catalog.module').then(mod => mod.CatalogModule),
 	},
-	{
-		//?: Nombre correcto?
-		path: 'test',
-		component: AppComponent,
-	},
+	// {
+	// 	//?: Nombre correcto?
+	// 	path: 'test',
+	// 	component: AppComponent,
+	// },
 	{
 		path: '',
 		canLoad: [LoginGuard],
@@ -83,6 +91,7 @@ const routes: Routes = [
 		data: {
 			roles: ['PUBLIC'],
 		},
+		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/public/public.module').then(mod => mod.PublicModule),
 	},
 	//*Redireccionar a public en caso de ruta erronea

@@ -5,9 +5,10 @@ import { RouterModule } from '@angular/router';
 import { LoginGuard } from '../guards/login.guard';
 import { SessionComponent } from './session/session.component';
 import { JwtService } from '../services/jwt.service';
+import { BaseLayoutComponent } from './layout/base/base-layout.component';
 
 @NgModule({
-	declarations: [MenuComponent, SessionComponent],
+	declarations: [MenuComponent, SessionComponent, BaseLayoutComponent],
 	//Importar RouterModule sino el menu no funciona
 	imports: [CommonModule, RouterModule],
 	exports: [MenuComponent, SessionComponent],

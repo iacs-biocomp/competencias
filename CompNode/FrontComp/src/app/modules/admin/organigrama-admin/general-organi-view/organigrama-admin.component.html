@@ -1,45 +1,41 @@
-<app-menu></app-menu>
-<div class="main">
-	<app-session></app-session>
-	<div class="contrainer-fluid p-3">
-		<h1>Listado de los trabajadores y su organigrama</h1>
-		<div class="accordion" id="accordionExample">
-			<div class="accordion-body">
-				<div class="accordion-item" *ngFor="let trab of fullOrgani; let i = index">
-					<h2 class="accordion-header" [id]="'headingWorker ' + i">
-						<button
-							class="accordion-button collapsed"
-							type="button"
-							data-bs-toggle="collapse"
-							[attr.data-bs-target]="'#collWorker' + i"
-							aria-expanded="false"
-							[attr.aria-controls]="'collWorker' + i"
-						>
-							{{ trab.trabajador.nombre }}
-						</button>
-					</h2>
-					<div
-						[id]="'collWorker' + i"
-						class="accordion-collapse collapse"
-						[attr.aria-labelledby]="'headingWorker' + i"
-						data-bs-parent="#accordionExample"
+<div class="contrainer-fluid p-3">
+	<h1>Listado de los trabajadores y su organigrama</h1>
+	<div class="accordion" id="accordionExample">
+		<div class="accordion-body">
+			<div class="accordion-item" *ngFor="let trab of fullOrgani; let i = index">
+				<h2 class="accordion-header" [id]="'headingWorker ' + i">
+					<button
+						class="accordion-button collapsed"
+						type="button"
+						data-bs-toggle="collapse"
+						[attr.data-bs-target]="'#collWorker' + i"
+						aria-expanded="false"
+						[attr.aria-controls]="'collWorker' + i"
 					>
-						<div class="accordion-body">
-							Inferiores:
-							<div *ngFor="let inferior of trab.inferiores">
-								{{ inferior.nombre + ',' + inferior.apellidos }}
-							</div>
-							<br />
-							Pares:
-							<div *ngFor="let par of trab.pares">
-								{{ par.nombre + ',' + par.apellidos }}
-							</div>
-							<br />
+						{{ trab.trabajador.nombre }}
+					</button>
+				</h2>
+				<div
+					[id]="'collWorker' + i"
+					class="accordion-collapse collapse"
+					[attr.aria-labelledby]="'headingWorker' + i"
+					data-bs-parent="#accordionExample"
+				>
+					<div class="accordion-body">
+						Inferiores:
+						<div *ngFor="let inferior of trab.inferiores">
+							{{ inferior.nombre + ',' + inferior.apellidos }}
+						</div>
+						<br />
+						Pares:
+						<div *ngFor="let par of trab.pares">
+							{{ par.nombre + ',' + par.apellidos }}
+						</div>
+						<br />
 
-							Superiores:
-							<div *ngFor="let sup of trab.superiores">
-								{{ sup.nombre + ',' + sup.apellidos }}
-							</div>
+						Superiores:
+						<div *ngFor="let sup of trab.superiores">
+							{{ sup.nombre + ',' + sup.apellidos }}
 						</div>
 					</div>
 				</div>

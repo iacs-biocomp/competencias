@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComportComponent } from './table-comport/table-comport.component';
-import { ComportamientosAdminComponent } from './comp-admin/comportamientos-admin.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,11 +10,11 @@ import { ComportService } from './services/comport.service';
 export const comportRoutes: Routes = [
 	{
 		path: '',
-		component: ComportamientosAdminComponent,
+		component: TableComportComponent,
 	},
 ];
 @NgModule({
-	declarations: [ComportamientosAdminComponent, TableComportComponent],
+	declarations: [TableComportComponent],
 	imports: [
 		CommonModule,
 		SharedModule,

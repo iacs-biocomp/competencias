@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewContractComponent } from './view-contract/view-contract.component';
 import { CatCompetencialesService } from './services/CatCompetenciales.service';
-import { ViewCompetComponent } from './view-compet/view-compet.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TableContracComponent } from './table-contrac/table-contrac.component';
@@ -12,20 +10,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export const catRoutes: Routes = [
 	{
 		path: 'competenciales',
-		component: ViewCompetComponent,
+		component: TableCompetComponent,
 	},
 	{
 		path: 'contractuales',
-		component: ViewContractComponent,
+		component: TableContracComponent,
 	},
-	// {
-	// 	path: '',
-	// 	component: ViewContractComponent,
-	// },
 ];
 
 @NgModule({
-	declarations: [ViewContractComponent, ViewCompetComponent, TableContracComponent, TableCompetComponent],
+	declarations: [TableContracComponent, TableCompetComponent],
 	imports: [
 		CommonModule,
 		RouterModule,

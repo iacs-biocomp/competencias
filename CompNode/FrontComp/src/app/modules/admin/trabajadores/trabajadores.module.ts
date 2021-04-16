@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { TrabajadoresLayoutComponent } from './trabajadores-layout/trabajadores-layout.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TrabTableComponent } from './trab-table/trab-table.component';
 import { TrabajadoresService } from './services/trabajadores.service';
@@ -11,12 +10,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export const trabRoutes: Routes = [
 	{
 		path: '',
-		component: TrabajadoresLayoutComponent,
+		component: TrabTableComponent,
 	},
 ];
 
 @NgModule({
-	declarations: [TrabajadoresLayoutComponent, TrabTableComponent],
+	declarations: [TrabTableComponent],
 	imports: [CommonModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule],
 	providers: [TrabajadoresService],
 })

@@ -1,17 +1,14 @@
-<app-menu></app-menu>
-<div class="main">
-	<app-session></app-session>
-	<h1 class="layout-title">Evaluaciones</h1>
-	<div class="container-fluid">
-		<div class="row gy-4">
-			<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let row of evalToAdd">
-				<div class="card">
-					<h2 class="card-title">Id evaluación: {{ row.id }}</h2>
-					<div class="card-body">
-						<p>Descripción: {{ row.description }}</p>
-						<p>Id del modelo: {{ row.model }}</p>
-						<p>Id del la Cat. competencial: {{ row.catComp.id }}</p>
-						<!-- <p>Inicio propuestas: {{row}} </p>
+<h1 class="layout-title">Evaluaciones</h1>
+<div class="container-fluid">
+	<div class="row gy-4">
+		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let row of evalToAdd">
+			<div class="card">
+				<h2 class="card-title">Id evaluación: {{ row.id }}</h2>
+				<div class="card-body">
+					<p>Descripción: {{ row.description }}</p>
+					<p>Id del modelo: {{ row.model }}</p>
+					<p>Id del la Cat. competencial: {{ row.catComp.id }}</p>
+					<!-- <p>Inicio propuestas: {{row}} </p>
 						<p>Fin propuestas: {{row}} </p>
 						<p>Inicio validacion: {{row}} </p>
 						<p>Fin validacion: {{row}} </p>
@@ -19,14 +16,11 @@
 						<p>Fin valoracion: {{row}} </p>
 						<p>Inicio período evaluado: {{row}} </p>
 						<p>Fin período evaluado: {{row}} </p> -->
-					</div>
 				</div>
 			</div>
-			<!--Al pulsar el boton se carga el modulo del MODELO-->
-			<button (click)="loadModelForm();" type="button" style="width: 50%; height: 50%;">Nuevo
-				modelo</button>
-			<app-modelos *ngIf="loadMForm"></app-modelos>
-
 		</div>
+		<!--Al pulsar el boton se carga el modulo del MODELO-->
+		<button (click)="loadModelForm()" type="button" style="width: 50%; height: 50%">Nuevo modelo</button>
+		<app-modelos *ngIf="loadMForm"></app-modelos>
 	</div>
 </div>

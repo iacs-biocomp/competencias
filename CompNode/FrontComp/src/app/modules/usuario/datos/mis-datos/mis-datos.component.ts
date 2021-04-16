@@ -11,6 +11,7 @@ import { UserDataService } from '../user-data.service';
 export class MisDatosComponent implements OnInit {
 	//TODO: Hay que esperar a cargar los datos y entonces mostrarlos sino tira una excepción en consola (Aunque funciona)
 	userData!: IUserJson;
+	vistas: number[] = [1, 2, 3];
 
 	constructor(private usrDataService: UserDataService, private jwtServ: JwtService) {}
 
