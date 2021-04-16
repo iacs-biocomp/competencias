@@ -27,9 +27,13 @@
 				</td>
 				<td>
 					<div class="btn btn-danger" (click)="deleteCatCompToAdd(row)">
-						<span class="material-icons">	delete </span>
+						<span class="material-icons"> delete </span>
 					</div>
-					<div class="btn btn-success" (click)="persistCatComp(row)" *ngIf="row.description !== '' && row.id !== ''">
+					<div
+						class="btn btn-success"
+						(click)="persistCatComp(row)"
+						*ngIf="row.description !== '' && row.id !== ''"
+					>
 						<span class="material-icons"> add </span>
 					</div>
 				</td>
@@ -38,14 +42,14 @@
 			<tr *ngFor="let catComp of catComps">
 				<td>{{ catComp.id }}</td>
 				<td *ngIf="!catComp.editing">
-						{{ catComp.description }}
+					{{ catComp.description }}
 				</td>
 				<td *ngIf="catComp.editing">
 					<input type="text" class="form-control" [(ngModel)]="catComp.description" />
 				</td>
 
 				<td>
-					<div *ngIf="canDelete(catComp)" class="btn btn-danger" (click)="deleteCatComp(catComp)">
+					<div *ngIf="catComp.catContr!.length === 0" class="btn btn-danger" (click)="deleteCatComp(catComp)">
 						<span class="material-icons"> delete </span>
 					</div>
 					<div class="btn btn-success" (click)="editingCatComp(catComp, true, false)">

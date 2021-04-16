@@ -11,6 +11,13 @@
 			<tr *ngFor="let catContr of catContracts">
 				<td>{{ catContr.id }}</td>
 				<td>{{ catContr.description }}</td>
+				<td>
+					<select id="catCompetencial" [(ngModel)]="catContr.catComp.id">
+						<option *ngFor="let catComp of catComps" [value]="catComp.id">
+							{{ catComp.id }}
+						</option>
+					</select>
+				</td>
 			</tr>
 		</tbody>
 	</table>

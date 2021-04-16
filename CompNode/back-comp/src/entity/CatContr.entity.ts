@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { CatComp } from './CatComp.entity';
 import { PeriodoTrab } from './PeriodoTrab.entity';
 
@@ -24,7 +24,7 @@ export class CatContr extends BaseEntity {
 	 * la nueva competencial asignada por defecto
 	 */
 	@ApiProperty({ type: () => CatComp })
-	@OneToOne(type => CatComp)
+	@ManyToOne(type => CatComp)
 	@JoinColumn()
 	catComp: CatComp;
 }

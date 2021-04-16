@@ -28,10 +28,6 @@ export class TableCompetComponent implements OnInit {
 		console.log(this.catComps);
 	}
 
-	canDelete(catComp: ICatComp): boolean {
-		return true;
-	}
-
 	deleteCatCompToAdd(row: ICatComp): void {
 		const indx = this.catCompToAdd.indexOf(row);
 		this.catCompToAdd.splice(indx, 1);

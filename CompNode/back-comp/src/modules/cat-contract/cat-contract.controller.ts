@@ -1,6 +1,5 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CatComp } from 'src/entity/CatComp.entity';
 import { CatContr } from '../../entity/CatContr.entity';
 import { CatContrRepo } from './catContr.repository';
 // import { ICategoriesRelation } from '../../../../interfaces/ICategorias';
@@ -12,12 +11,12 @@ export class CatContractController {
 	) {}
 
 	@Get('all')
-	getAllCompt(): Promise<CatContr[]> {
-		return this.contrRepo.find();
+	async allContr(): Promise<CatContr[]> {
+		return this.contrRepo.find({ relations: ['catComp'] });
 	}
 
 	@Delete(':id')
-	async deleteCompt(@Param('id') id: string): Promise<boolean> {
+	async deleteContr(@Param('id') id: string): Promise<boolean> {
 		const compt = await this.contrRepo.findOne({ id: id });
 		if (!compt) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');

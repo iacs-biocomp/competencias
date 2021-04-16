@@ -1,4 +1,15 @@
-import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import {
+	BadRequestException,
+	Body,
+	ConflictException,
+	Controller,
+	Delete,
+	Get,
+	NotFoundException,
+	Param,
+	Post,
+	Put,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CatComp } from '../../entity/CatComp.entity';
 import { CatCompRepo } from './catComp.repository';
@@ -16,7 +27,6 @@ export class CatCompController {
 	) {}
 
 	/**
-	 *
 	 * @returns El DTO que contiene el id, descripcion y N°Modelos que usan una catComp
 	 */
 	@Get('withmodels')
@@ -30,22 +40,26 @@ export class CatCompController {
 		return catCompsDTO;
 	}
 
+	/**
+	 * Busca todas las catCompetenciales y su Categoria contractual asociada por defecto.
+	 * @returns Promesa con las catcomps
+	 */
 	@Get('all')
 	getAllCompt(): Promise<CatComp[]> {
-		return this.catCompRepo.find();
+		return this.catCompRepo.find({ relations: ['catContr'] });
 	}
 
 	@Delete(':id')
 	async deleteCompt(@Param('id') id: string): Promise<boolean> {
-		const catComp = await this.catCompRepo.findOne({ id: id });
+		const catComp = await this.catCompRepo.findOne({ id: id }, { relations: ['catContr'] });
 		if (!catComp) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
+		if (catComp.catContr) {
+			throw new BadRequestException('No se puede borrar una catComp que tiene una catContr asociada');
+		}
 		var oneWeekAgo: Date = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-		// if (oneWeekAgo >= catComp.createdAt) {
-		// 	throw new UnauthorizedException('No puedes borrar esa competencia');
-		// }
 		await catComp.remove();
 		return true;
 	}

@@ -14,12 +14,11 @@ export class ListEvComponent implements OnInit {
 			id: 1,
 			description: 'ff',
 			model: undefined,
-			catComp:
-			{
-				id:'GR1',
-				description:'f'
-			}
-		}
+			catComp: {
+				id: 'GR1',
+				description: 'f',
+			},
+		},
 	];
 
 	constructor(private evalService: EvaluacionesAdmService) {}
@@ -33,8 +32,7 @@ export class ListEvComponent implements OnInit {
 	}
 
 	public loadMForm = true;
-	loadModelForm(){
+	loadModelForm() {
 		this.loadMForm = true;
 	}
-
 }

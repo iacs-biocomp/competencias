@@ -3,11 +3,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Configuration as cnf } from './config/config.keys';
 import { ConfigService } from './config/config.service';
+// import 'source-map-support/register';
+import { install } from 'source-map-support';
 
 const cnfService = new ConfigService();
 
 async function bootstrap() {
-	require('source-map-support').install();
+	install();
+	// require('source-map-support').install();
 	//TODO: revisar lo del cors, posibles ataques csrf si está en true (Para producción en false?)
 	const app = await NestFactory.create(AppModule, { cors: true });
 
