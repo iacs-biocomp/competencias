@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as cnf } from 'src/environments/environment';
-import { ICompetencia, IEvaluacion, ISubModel } from '../../../../../../../interfaces/IEvaluaciones';
+import { ICompetencia, IEvaluacion, IEvModel, ISubModel } from '../../../../../../../interfaces/IEvaluaciones';
 import { ICatComp } from '../../../../../../../interfaces/ICategorias';
 
 @Injectable({ providedIn: 'root' })
@@ -17,11 +17,12 @@ export class ModelosService {
 		return await this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
-	public async getAllCompeten(): Promise<ICompetencia[]> {
-		return await this.httpClient.get<ICompetencia[]>(`${cnf.apiURL}/competencias/all`).toPromise();
+	public async getAllCompeten(): Promise<IEvModel[]> {
+		return await this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/competencias/all`).toPromise();
 	}
 
-	public async getAllSubModel(): Promise<ISubModel[]> {
-		return await this.httpClient.get<ISubModel[]>(`${cnf.apiURL}/subModel/all`).toPromise();
+	public async getAllNiveles(): Promise<IEvModel[]> {
+		return await this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/niveles/all`).toPromise();
 	}
+
 }
