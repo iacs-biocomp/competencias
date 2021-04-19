@@ -12,15 +12,42 @@ export class OrganiGeneralView implements OnInit {
 	fullOrgani!: IOrganigramaUsrDTO[];
 	/** Lista de los trabajadores que hay en el fullOrgani*/
 	trabajadores!: ITrabOrgani[];
+	trabajadoresFiltered!: ITrabOrgani[];
 	myControl = new FormControl();
+	orgFilter = '';
+	showall = false;
 	constructor(private orgSv: OrganiService) {}
 
 	async ngOnInit(): Promise<void> {
 		this.fullOrgani = await this.orgSv.getFullOrgani();
 		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
+		this.trabajadoresFiltered = this.trabajadores;
+		setInterval(() => {
+			console.log(this.orgFilter);
+		}, 3500);
 	}
-	// ?private _filter(value: string): string[] {
-	// const filterValue = value.toLowerCase();
-	// return this.options.filter(option => option.toLowerCase().includes(filterValue));
+	// filterTrabList(value: string): void {
+	// 	const filterValue = value.toLowerCase();
+	// 	this.trabajadoresFiltered = this.trabajadoresFiltered.filter(
+	// 		trab =>
+	// 			trab.nombre.toLowerCase().includes(filterValue) || trab.apellidos.toLowerCase().includes(filterValue),
+	// 	);
 	// }
+
+	scroll(id: string) {
+		const element = document.getElementById(id);
+		element?.classList.add('highlight');
+		element?.scrollIntoView();
+		setTimeout(() => {
+			element?.classList.remove('highlight');
+		}, 1500);
+	}
+	filterOrgani(value: string): IOrganigramaUsrDTO[] {
+		const filterValue = value.toLowerCase();
+		return this.fullOrgani?.filter(
+			org =>
+				org.trabajador.nombre.toLowerCase().includes(filterValue) ||
+				org.trabajador.apellidos.toLowerCase().includes(filterValue),
+		);
+	}
 }

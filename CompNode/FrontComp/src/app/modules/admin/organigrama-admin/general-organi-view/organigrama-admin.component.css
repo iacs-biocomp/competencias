@@ -1,0 +1,30 @@
+.ipf {
+	background-color: #e7f1ff;
+	display: inline-block;
+	cursor: pointer;
+	border: 0.1rem solid #297fc5;
+	border-radius: 0.2rem;
+	padding: 0.1rem;
+	transition: ease 0.25s;
+}
+.ipf-title {
+	font-size: 1.1rem;
+}
+.parsupinf:hover {
+	background-color: #297fc5;
+}
+.highlight {
+	background-color: rgb(74, 154, 228);
+	transition: ease 0.5s;
+}
+.highlight > h2 > button {
+	transition: ease 0.5s;
+	background-color: rgb(74, 154, 228);
+}
+.show-all-btn {
+	margin: 0.25rem;
+	background-color: #297fc5;
+	color: #fff;
+	/* border: 0.1rem solid #297fc5; */
+	/* border-radius: 0.2rem; */
+}

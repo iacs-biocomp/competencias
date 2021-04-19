@@ -1,48 +1,59 @@
 <div class="contrainer-fluid p-3">
-	<input type="text" placeholder="Trabajadores" aria-label="Number" matInput [matAutocomplete]="auto" />
-	<mat-autocomplete #auto="matAutocomplete">
-		<mat-option *ngFor="let option of trabajadores">
-			{{ option.nombre + ' ' + option.apellidos }}
-		</mat-option>
-	</mat-autocomplete>
 	<h1>Listado de los trabajadores y su organigrama</h1>
 
+	<input type="text" #filterOrg (keyup)="orgFilter = filterOrg.value" placeholder="Filtrar trabajadores" />
+	<button (click)="showall = !showall" class="btn show-all-btn">Mostrar todos</button>
 	<div class="accordion" id="accordionExample">
 		<div class="accordion-body">
-			<div class="accordion-item" *ngFor="let trab of fullOrgani; let i = index">
+			<div
+				class="accordion-item"
+				[id]="trab.trabajador.dni"
+				*ngFor="let trab of filterOrgani(orgFilter); let i = index"
+			>
 				<h2 class="accordion-header" [id]="'headingWorker ' + i">
 					<button
 						class="accordion-button collapsed"
 						type="button"
+						[ngClass]="{ collapsed: !showall }"
 						data-bs-toggle="collapse"
 						[attr.data-bs-target]="'#collWorker' + i"
 						aria-expanded="false"
 						[attr.aria-controls]="'collWorker' + i"
 					>
-						{{ trab.trabajador.nombre }}
+						{{ trab.trabajador.nombre }} {{ trab.trabajador.apellidos }}
 					</button>
 				</h2>
 				<div
 					[id]="'collWorker' + i"
 					class="accordion-collapse collapse"
+					[ngClass]="{ show: showall }"
 					[attr.aria-labelledby]="'headingWorker' + i"
 					data-bs-parent="#accordionExample"
 				>
 					<div class="accordion-body">
-						Inferiores:
-						<div *ngFor="let inferior of trab.inferiores">
-							{{ inferior.nombre + ',' + inferior.apellidos }}
+						<button class="btn btn-primary me-2">
+							<span class="material-icons" title="Añadir inferior"> add </span>
+						</button>
+						<span class="ipf-title">Inferiores: </span>
+						<div (click)="scroll(inferior.dni)" class="ipf" *ngFor="let inferior of trab.inferiores">
+							{{ inferior.nombre + ' ' + inferior.apellidos }}
 						</div>
-						<br />
-						Pares:
-						<div *ngFor="let par of trab.pares">
-							{{ par.nombre + ',' + par.apellidos }}
-						</div>
-						<br />
 
-						Superiores:
-						<div *ngFor="let sup of trab.superiores">
-							{{ sup.nombre + ',' + sup.apellidos }}
+						<hr />
+						<button class="btn btn-primary me-2">
+							<span class="material-icons" title="Añadir par"> add </span>
+						</button>
+						<span class="ipf-title">Pares: </span>
+						<div (click)="scroll(par.dni)" class="ipf" *ngFor="let par of trab.pares">
+							{{ par.nombre + ' ' + par.apellidos }}
+						</div>
+						<hr />
+						<button class="btn btn-primary me-2">
+							<span class="material-icons" title="Añadir superior"> add </span>
+						</button>
+						<span class="ipf-title">Superiores: </span>
+						<div (click)="scroll(sup.dni)" class="ipf" *ngFor="let sup of trab.superiores">
+							{{ sup.nombre + ' ' + sup.apellidos }}
 						</div>
 					</div>
 				</div>
