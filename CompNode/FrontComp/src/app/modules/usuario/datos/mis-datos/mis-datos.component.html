@@ -1,25 +1,26 @@
-<div class="col-md-12 col-center">
-	<div class="panel panel-default">
-		<div class="panel-heading clearfix">
-			<h1>Mis datos</h1>
-		</div>
-		<div class="panel-body" *ngIf="userData">
-			<h3>
-				<label class="col-sm-4 control-label">Nombre:</label>
-				{{ userData.name }}
-			</h3>
-			<h3>
-				<label class="col-sm-4 control-label">Apellidos:</label>
-				{{ userData.lastname }}
-			</h3>
-			<h3>
-				<label class="col-sm-4 control-label">Email:</label>
-				{{ userData.email }}
-			</h3>
-			<h3>
-				<label class="col-sm-4 control-label">Mis roles son:</label>
-				<span *ngFor="let role of userData.roles">{{ role.name }} </span>
-			</h3>
+<h1 class="layout-title">Mis datos</h1>
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="col-md-5">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Mis datos:</h2>
+					<h3>
+						<label class="col-sm-4 control-label">Nombre:</label>
+						{{ userData.name }}
+					</h3>
+					<h3>
+						<label class="col-sm-4 control-label">Apellidos:</label>
+						{{ userData.lastname }}
+					</h3>
+					<h3>
+						<label class="col-sm-4 control-label">Email:</label>
+						{{ userData.email }}
+					</h3>
+					<label class="col-sm-4 control-label">Mis roles son:</label>
+					<span *ngFor="let role of userData.roles">{{ role.name }} </span>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
