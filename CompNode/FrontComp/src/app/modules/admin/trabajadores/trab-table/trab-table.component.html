@@ -99,15 +99,14 @@
 
 				<td *ngIf="!trab.editing">{{ trab.catComp }}</td>
 				<td *ngIf="trab.editing">
-					<select id="catCompetencial" [(ngModel)]="trab.catComp">
+					<select [(ngModel)]="trab.catComp">
 						<option *ngFor="let catComp of catComps" [value]="catComp.id">{{ catComp.id }}</option>
 					</select>
 				</td>
 
 				<td *ngIf="!trab.editing">{{ trab.catContr }}</td>
 				<td *ngIf="trab.editing">
-					<!-- Todo: Cambiar id, debería ser unico para cada item del dom -->
-					<select id="catContractual" [(ngModel)]="trab.catContr">
+					<select [(ngModel)]="trab.catContr">
 						<option *ngFor="let catContrac of catContracts" [value]="catContrac.id">
 							{{ catContrac.id }}
 						</option>

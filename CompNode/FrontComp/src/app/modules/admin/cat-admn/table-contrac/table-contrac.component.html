@@ -13,7 +13,7 @@
 				<td>{{ catContr.id }}</td>
 				<td>{{ catContr.description }}</td>
 				<td>
-					<select [(ngModel)]="catContr.catComp" (change)="alert('Cambiado valor pero no en bbdd')">
+					<select [(ngModel)]="catContr.catComp" (change)="updateCContr(catContr)">
 						<option selected disabled hidden [value]="catContr.catComp">
 							{{ catContr.catComp.id }}
 						</option>

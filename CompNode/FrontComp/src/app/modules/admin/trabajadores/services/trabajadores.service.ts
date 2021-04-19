@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment as cnf } from '../../../../../environments/environment';
+import { environment as cnf } from 'src/environments/environment';
 import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
 import { ICatComp, ICatContr } from '../../../../../../../interfaces/ICategorias';
 
@@ -26,17 +26,13 @@ export class TrabajadoresService {
 	/**
 	 * Metodo que borra un worker del backend
 	 *
+	 * @throws Excepción http si la petición sale mal
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
 	async borrarTrabajador(id: string): Promise<boolean> {
 		var borrado = false;
-		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${id}`).toPromise();
-		} catch (error) {
-			console.log(error);
-			//TODO: Excepción si hay error lanzar a controlador (Componente)
-			alert('No se ha podido borrar ese worker, contacte con un administrador.');
-		}
+		borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${id}`).toPromise();
+		//Si la petición delete sale mal lanza excepción
 		return borrado;
 	}
 

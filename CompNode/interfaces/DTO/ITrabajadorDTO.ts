@@ -20,7 +20,7 @@ export interface ITrabajadorDTO {
   deleteable: boolean;
 }
 
-interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {}
+export interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {}
 export interface IOrganigramaUsrDTO {
   /** Representa el trabajador del cual se listan sus inferiores superiores y pares */
   trabajador: ITrabOrgani;

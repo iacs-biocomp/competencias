@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule, NgModuleRef } from '@angular/core';
+import { NgModule, NgModuleRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +24,6 @@ registerLocaleData(localeEs);
 // 			},
 // 			loadUserProfileAtStartUp: false,
 // 			initOptions: {
-// 				// TODO: Ver la web
 // 				// https://www.npmjs.com/package/keycloak-angular
 // 				// onLoad: 'check-sso',
 // 				silentCheckSsoRedirectUri:

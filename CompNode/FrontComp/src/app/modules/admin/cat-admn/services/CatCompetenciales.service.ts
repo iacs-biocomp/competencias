@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment as cnf } from '../../../../../environments/environment';
+import { environment as cnf } from 'src/environments/environment';
 import { ICatComp } from '../../../../../../../interfaces/ICategorias';
 
 @Injectable({ providedIn: 'root' })

@@ -1,5 +1,12 @@
 <div class="contrainer-fluid p-3">
+	<input type="text" placeholder="Trabajadores" aria-label="Number" matInput [matAutocomplete]="auto" />
+	<mat-autocomplete #auto="matAutocomplete">
+		<mat-option *ngFor="let option of trabajadores">
+			{{ option.nombre + ' ' + option.apellidos }}
+		</mat-option>
+	</mat-autocomplete>
 	<h1>Listado de los trabajadores y su organigrama</h1>
+
 	<div class="accordion" id="accordionExample">
 		<div class="accordion-body">
 			<div class="accordion-item" *ngFor="let trab of fullOrgani; let i = index">

@@ -4,26 +4,16 @@
 			<a routerLink="/">
 				<div class="login-branding">
 					<div id="logo">
-						<img
-							src="/../../../assets/images/iacsLogo.png"
-							class="login-logo"
-							alt="IACS"
-						/>
+						<img src="/../../../assets/images/iacsLogo.png" class="login-logo" alt="IACS" />
 					</div>
 				</div>
 			</a>
 		</div>
-		<!-- TODO: Corregir layout del login page -->
 		<div id="formDiv" class="col-lg-6 offset-2 pe-sm-5 col-sm-12">
 			<div class="login-content">
 				<h2><strong>Bienvenido</strong>. Por favor, identifícate</h2>
 
-				<form
-					id="formLogin"
-					name="formLogin"
-					(ngSubmit)="sendForm()"
-					[formGroup]="loginForm"
-				>
+				<form id="formLogin" name="formLogin" (ngSubmit)="sendForm()" [formGroup]="loginForm">
 					<div class="form-group">
 						<input
 							type="text"
@@ -49,9 +39,7 @@
 					</div>
 
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary btn-block">
-							Acceder
-						</button>
+						<button type="submit" class="btn btn-primary btn-block">Acceder</button>
 					</div>
 					<div id="banner">
 						<h2 class="login-banner">

@@ -23,10 +23,13 @@ export class TrabTableComponent implements OnInit {
 		/** Servicio para obtener los datos de las catContractuales */
 		private cContrSv: CatContractService,
 	) {}
-	//TODO: Tsdoc a variables
+	/** Lista de todas las categorías competenciales */
 	catComps!: ICatComp[];
+	/** Lista de todas las categorías contractuales */
 	catContracts!: ICatContr[];
+	/** Lista de todas las categorías contractuales */
 	listaTrabaToAdd: ITrabajadorDTOEdit[] = [];
+	/** Lista de todas las categorías contractuales */
 	trabajadores: ITrabajadorDTOEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
@@ -35,16 +38,17 @@ export class TrabTableComponent implements OnInit {
 		this.catContracts = await this.cContrSv.getAll();
 	}
 
-	//TODO: Añadir tsdoc a los metodos
 	async updateWorkerView(): Promise<void> {
 		this.trabajadores = await this.trabService.getAllTrabajadores();
 	}
 
+	/** Metodo que borra un trabajador de los que se iban a añadir y aun no se habian mandado al backend */
 	deleteWorkerToAdd(row: ITrabajadorDTO): void {
 		const indx = this.listaTrabaToAdd.indexOf(row);
 		this.listaTrabaToAdd.splice(indx, 1);
 	}
 
+	/** Añade a la lista listaTrabaToAdd uno nuevo  */
 	newEmptyWorker(): void {
 		this.listaTrabaToAdd.push({
 			dni: '',
@@ -76,7 +80,7 @@ export class TrabTableComponent implements OnInit {
 	async persistWorker(trab: ITrabajadorDTO): Promise<void> {
 		const guardado = await this.trabService.addTrabajador(trab);
 		if (guardado) {
-			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			//TODO: Modificar para añadir el trabajador a la lista sin pedir todos los trabajadores
 			await this.updateWorkerView();
 			this.deleteWorkerToAdd(trab);
 		}

@@ -69,16 +69,6 @@ const routes: Routes = [
 		loadChildren: () =>
 			import('./modules/evaluaciones/evaluaciones.module').then(mod => mod.EvaluacionesModule),
 	},
-	{
-		path: 'catalog',
-		canLoad: [LoginGuard],
-
-		data: {
-			roles: ['PUBLIC'],
-		},
-		component: BaseLayoutComponent,
-		loadChildren: () => import('./modules/catalogs/catalog.module').then(mod => mod.CatalogModule),
-	},
 	// {
 	// 	//?: Nombre correcto?
 	// 	path: 'test',

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IEvaluacion } from '../../../../../interfaces/IEvaluaciones';
-import { environment as cnf } from '../../../environments/environment';
+import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root',

@@ -39,8 +39,8 @@ export class TableContracComponent implements OnInit {
 		this.catContracts = await this.catContractService.getAll();
 	}
 
-	updateCContr() {
-		// this.catContractService.update();
+	updateCContr(cContr: ICatContr) {
+		this.catContractService.update(cContr);
 	}
 
 	deleteCContr(catContract: ICatContr): boolean {

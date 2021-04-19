@@ -20,9 +20,9 @@ export class NivTableComponent implements OnInit {
 		this.updateNivelView();
 	}
 
-	//TODO: Añadir tsdoc al archivo entero
+	/** Metodo que sincroniza los niveles de la vista con los del backend */
 	async updateNivelView(): Promise<void> {
-		this.niveles = await this.nivelService.getAllNiveles();
+		this.niveles = await this.nivelService.getAll();
 	}
 
 	canDelete(nivel: INivel): boolean {
@@ -30,6 +30,10 @@ export class NivTableComponent implements OnInit {
 		return true;
 	}
 
+	/**
+	 *  Elimina un nivel de la listta nivelToAdd
+	 * @param row El nivel a eliminar
+	 */
 	deleteNivToAdd(row: INivel): void {
 		const indx = this.nivelToAdd.indexOf(row);
 		this.nivelToAdd.splice(indx, 1);
@@ -58,7 +62,7 @@ export class NivTableComponent implements OnInit {
 	}
 
 	async persistNiv(nivel: INivel): Promise<void> {
-		const guardado = await this.nivelService.addNivel(nivel);
+		const guardado = await this.nivelService.add(nivel);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			await this.updateNivelView();

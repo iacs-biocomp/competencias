@@ -17,33 +17,33 @@ export class CatContractController {
 
 	@Delete(':id')
 	async deleteContr(@Param('id') id: string): Promise<boolean> {
-		const compt = await this.contrRepo.findOne({ id: id });
-		if (!compt) {
+		const catContr = await this.contrRepo.findOne({ id: id });
+		if (!catContr) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
 		var oneWeekAgo: Date = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-		await compt.remove();
+		await catContr.remove();
 		return true;
 	}
 
 	@Post('')
-	async createCompt(@Body() compt: CatContr): Promise<boolean> {
-		const existingCompt = await this.contrRepo.findOne({ id: compt.id });
+	async createCompt(@Body() catContr: CatContr): Promise<boolean> {
+		const existingCompt = await this.contrRepo.findOne({ id: catContr.id });
 		if (existingCompt) {
 			throw new ConflictException('CatContr ya creada');
 		}
-		await this.contrRepo.save(compt);
+		await this.contrRepo.save(catContr);
 		return true;
 	}
 	@Put('')
-	async updateCompt(@Body() compt: CatContr): Promise<boolean> {
-		const existingCompt = await this.contrRepo.findOne({ id: compt.id });
+	async updateCompt(@Body() catContr: CatContr): Promise<boolean> {
+		const existingCompt = await this.contrRepo.findOne({ id: catContr.id });
 		if (!existingCompt) {
-			throw new NotFoundException('No existe una competencia con ese id');
+			throw new NotFoundException('No existe una catContractual con ese id');
 		}
-		await this.contrRepo.save(compt);
+		await this.contrRepo.save(catContr);
 		return true;
 	}
 }

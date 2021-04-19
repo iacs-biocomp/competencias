@@ -16,16 +16,15 @@ export class TableComportComponent implements OnInit {
 	comportToAdd: IComportamiento[] = [];
 	comports: IComportEdit[] = [];
 
-	//TODO: Añadir tsdoc a los metodos y atributos de la clase
-
 	async ngOnInit(): Promise<void> {
 		// setInterval(() => {
 		// 	console.log(this.comportToAdd);
 		// }, 2500);
 		await this.updateComportView();
 	}
+	/** Metodo que sincroniza la vista con el backend (La lista de comportamiento) */
 	async updateComportView(): Promise<void> {
-		this.comports = await this.comportService.getAllComport();
+		this.comports = await this.comportService.getAll();
 	}
 
 	deleteComptToAdd(row: IComportamiento): void {
@@ -33,6 +32,7 @@ export class TableComportComponent implements OnInit {
 		this.comportToAdd.splice(indx, 1);
 	}
 
+	/** Añade un nuevo comportamiento al array de comportToAdd */
 	newEmptyCompt(): void {
 		this.comportToAdd.push({
 			id: '',
@@ -47,14 +47,13 @@ export class TableComportComponent implements OnInit {
 	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
 	 * @param send	`true` si se quiere mandar esa competencia al backend `false` si no
 	 */
-	 editingComport(comport: IComportEdit, editing: boolean, send: boolean): void {
+	editingComport(comport: IComportEdit, editing: boolean, send: boolean): void {
 		comport.editing = editing;
 		if (send) {
 			delete comport.editing;
 			this.comportService.editCompt(comport);
 		}
 	}
-
 
 	canDelete(comport: IComportamiento): boolean {
 		return true;

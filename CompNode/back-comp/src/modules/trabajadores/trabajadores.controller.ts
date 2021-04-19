@@ -125,7 +125,7 @@ export class TrabajadoresController {
 				perActual.save();
 			}
 		}
-		await this.trabRepo.save(trab);
+		await this.trabRepo.save(worker);
 		return true;
 	}
 }
