@@ -31,21 +31,31 @@ export class OrganigramaController {
 		var fullOrgani: UsrWithOrgani[] = [];
 
 		//Filtro los periodos de cada trabajador y me quedo solo con el actual (Como array)
-		workers.forEach(wrk => {
+		const organiFull: UsrWithOrgani[] = workers.map(wrk => {
 			wrk.periodos = wrk.periodos.filter(per => per.actual);
-			fullOrgani.push({
+			return {
 				inferiores: wrk.periodos[0].inferiores,
 				superiores: wrk.periodos[0].superiores,
 				pares: wrk.periodos[0].pares,
-				//Añado undefined para luego quitarle el campo periodos
-				trabajador: undefined,
-			});
+				trabajador: wrk,
+			};
 		});
-		for (const i in fullOrgani) {
-			delete workers[i].periodos;
-			fullOrgani[i].trabajador = workers[i];
-		}
-		return fullOrgani;
+		organiFull.forEach(org => delete org.trabajador.periodos);
+		// workers.forEach(wrk => {
+		// 	wrk.periodos = wrk.periodos.filter(per => per.actual);
+		// 	fullOrgani.push({
+		// 		inferiores: wrk.periodos[0].inferiores,
+		// 		superiores: wrk.periodos[0].superiores,
+		// 		pares: wrk.periodos[0].pares,
+		// 		//Añado undefined para luego quitarle el campo periodos
+		// 		trabajador: undefined,
+		// 	});
+		// });
+		// for (const i in fullOrgani) {
+		// 	delete workers[i].periodos;
+		// 	fullOrgani[i].trabajador = workers[i];
+		// }
+		return organiFull;
 	}
 
 	//TODO: Completar para añadir los parametros como queryparams y no como el dni tal que :dni

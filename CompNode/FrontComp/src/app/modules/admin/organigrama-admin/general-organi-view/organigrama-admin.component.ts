@@ -19,8 +19,8 @@ export class OrganiGeneralView implements OnInit {
 		this.fullOrgani = await this.orgSv.getFullOrgani();
 		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
 	}
-	// private _filter(value: string): string[] {
-	// 	const filterValue = value.toLowerCase();
-	// 	return this.options.filter(option => option.toLowerCase().includes(filterValue));
+	// ?private _filter(value: string): string[] {
+	// const filterValue = value.toLowerCase();
+	// return this.options.filter(option => option.toLowerCase().includes(filterValue));
 	// }
 }

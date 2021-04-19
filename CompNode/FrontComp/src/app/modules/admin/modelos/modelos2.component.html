@@ -1,0 +1,11 @@
+<div class="inline">
+	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">1</div>
+	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">2</div>
+	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">3</div>
+</div>
+<div class="btn" (click)="move(false)">
+	<span class="material-icons"> arrow_back </span>
+</div>
+<div class="btn" (click)="move(true)">
+	<span class="material-icons"> arrow_forward </span>
+</div>

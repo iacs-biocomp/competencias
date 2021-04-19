@@ -1,59 +1,53 @@
-<!-- <div class="tablewrapper">
-	<h1 class="title">Modelo</h1>
-	<table
-		aria-label="Listado de todos los modelos existentes"
-		class="table table-hover"
-	>
-
-	<thead>
-		<tr>
-			<th scope="col">ID CAT.COMPETENCIAL</th>
-			<th scope="col">DESCRIPCION</th>
-			<th scope="col">NUMERO DE MODELOS</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr *ngFor="let row of subModelToAdd">
-			<td>
-				<input type="text" class="form-control" [(ngModel)]="subModelToAdd.competencia" />
-			</td>
-			<td>
-				<input type="text" class="form-control" [(ngModel)]="subModelToAdd.modelos" />
-			</td>
-		</tr>
-	</tbody>
-
-
-	<div id="accordion">
-		<div class="panel accordion-group">
-			<div class="accordion-heading">
-				<h4 class="title">
-				Elija una categoría competencial para comenzar el modelo
-				</h4>
-				<a class="accordion-toggle collapsed" data-toggle="collapse"
-					 data-parent="#accordion" aria-expanded="false">
-					<div class="card-body" *ngFor="let catComp of catComps">
-						<td>{{ catComp.id }} - {{ catComp.description }}</td>
-					</div>
-				</a>
- -->
-
-
-
-
 <div class="inline">
-	<div [ngClass]="bntStyle">
+	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
 		<div>
 			<div *ngFor="let catComp of catComps">
 				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-					{{ catComp.id }} - {{ catComp.description}}
+					{{ catComp.id }} - {{ catComp.description }}
 				</button>
 			</div>
 		</div>
-		<button #target class="btn btn-success btn-lg" type="button" name="submit" [disabled]="!selectedOption==true"
-			(click)="submit()"> SIGUIENTE </button>
+		<div #target class="btn" (click)="move(false)">
+			<span class="material-icons"> arrow_back </span>
+		</div>
+		<div #target class="btn" (click)="move(true)">
+			<span class="material-icons"> arrow_forward </span>
+		</div>
 	</div>
+	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
+		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
+		<div>
+			<div *ngFor="let catComp of catComps">
+				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
+					{{ catComp.id }} - {{ catComp.description }}
+				</button>
+			</div>
+		</div>
+		<div #target class="btn" (click)="move(false)">
+			<span class="material-icons"> arrow_back </span>
+		</div>
+		<div #target class="btn" (click)="move(true)">
+			<span class="material-icons"> arrow_forward </span>
+		</div>
+	</div>
+	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
+		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
+		<div>
+			<div *ngFor="let catComp of catComps">
+				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
+					{{ catComp.id }} - {{ catComp.description }}
+				</button>
+			</div>
+		</div>
+		<div #target class="btn" (click)="move(false)">
+			<span class="material-icons"> arrow_back </span>
+		</div>
+		<div #target class="btn" (click)="move(true)">
+			<span class="material-icons"> arrow_forward </span>
+		</div>
+	</div>
+</div>
 
 <!--
 <div class="accordion" id="accordionExample">

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ICatComp } from '../../../../../../interfaces/ICategorias';
-import { ICompetencia, ISubModel } from '../../../../../../interfaces/IEvaluaciones'
-import { ModelosService } from './services/modelos.service'
+import { ICompetencia, ISubModel } from '../../../../../../interfaces/IEvaluaciones';
+import { ModelosService } from './services/modelos.service';
 
 @Component({
 	selector: 'app-modelos',
@@ -11,8 +11,8 @@ import { ModelosService } from './services/modelos.service'
 export class ModelosComponent implements OnInit {
 	constructor(private modelService: ModelosService) {}
 
+	current = 0;
 	subModelToAdd!: ISubModel;
-
 	catComps!: ICatComp[];
 	competen!: ICompetencia[];
 	subModel!: ISubModel[];
@@ -21,6 +21,14 @@ export class ModelosComponent implements OnInit {
 	/* Estilo por defecto del boton*/
 	bntStyle: string = 'btn-default';
 
+	move(derecha: boolean) {
+		if (derecha && this.current < 2) {
+			this.current++;
+		}
+		if (!derecha && this.current > 0) {
+			this.current--;
+		}
+	}
 	async ngOnInit(): Promise<void> {
 		this.listCatComp();
 		this.listCompeten();

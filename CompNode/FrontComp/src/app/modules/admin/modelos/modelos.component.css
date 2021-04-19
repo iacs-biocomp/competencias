@@ -1,5 +1,5 @@
 .accordion-button:focus {
-	background-color: #297FC5 !important;
+	background-color: #297fc5 !important;
 	color: white;
 }
 
@@ -8,20 +8,26 @@
 	height: 100%;
 }
 
-
- .btn-change{
+.btn-change {
 	/* Transition */
-  transform: translateX(-120%);
-  transition: all .75s ease-in;
- }
-
-
-.inline{
-	display: inline;
+	transform: translateX(-120%);
+	transition: all 0.75s ease-in;
 }
 
-
-
-
-
-
+.inline {
+	height: 100%;
+	width: 100%;
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+.block {
+	width: 100%;
+	height: 100%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+	padding: 1rem;
+	border: 0.15rem solid #09548d;
+	border-radius: 1.25rem;
+	background-color: rgb(186, 241, 248);
+	display: inline-block;
+	transition: ease 0.5s;
+}

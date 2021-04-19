@@ -79,3 +79,11 @@ Luego enlazar el debugger a este proceso, para vscode crear una configuración e
     }
   ]
 ```
+
+## Herramientas para la programación
+
+[Bcrypt generator](https://bcrypthashgenerator.tool-kit.dev/) seleccionar prefijo 2b y rounds 10 para generar el hash de la contraseña
+
+[Json2TS](http://www.json2ts.com/) Web para generar interfaces de typescript a partir de un Json
+
+[Angular material](https://material.angular.io/) Componentes ya hechos de angular
