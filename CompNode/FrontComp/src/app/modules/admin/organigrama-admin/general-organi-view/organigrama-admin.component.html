@@ -1,20 +1,20 @@
 <div class="contrainer-fluid p-3">
 	<h1>Listado de los trabajadores y su organigrama</h1>
 
-	<input type="text" #filterOrg (keyup)="orgFilter = filterOrg.value" placeholder="Filtrar trabajadores" />
-	<button (click)="showall = !showall" class="btn show-all-btn">Mostrar todos</button>
+	<input type="text" #filterOrg (keyup)="cv.orgFilter = filterOrg.value" placeholder="Filtrar trabajadores" />
+	<button (click)="cv.showall = !cv.showall" class="btn show-all-btn">Mostrar todos</button>
 	<div class="accordion" id="accordionExample">
 		<div class="accordion-body">
 			<div
 				class="accordion-item"
 				[id]="trab.trabajador.dni"
-				*ngFor="let trab of filterOrgani(orgFilter); let i = index"
+				*ngFor="let trab of filterOrgani(cv.orgFilter); let i = index"
 			>
 				<h2 class="accordion-header" [id]="'headingWorker ' + i">
 					<button
 						class="accordion-button collapsed"
 						type="button"
-						[ngClass]="{ collapsed: !showall }"
+						[ngClass]="{ collapsed: !cv.showall }"
 						data-bs-toggle="collapse"
 						[attr.data-bs-target]="'#collWorker' + i"
 						aria-expanded="false"
@@ -26,12 +26,17 @@
 				<div
 					[id]="'collWorker' + i"
 					class="accordion-collapse collapse"
-					[ngClass]="{ show: showall }"
+					[ngClass]="{ show: cv.showall }"
 					[attr.aria-labelledby]="'headingWorker' + i"
 					data-bs-parent="#accordionExample"
 				>
 					<div class="accordion-body">
-						<button class="btn btn-primary me-2">
+						<button
+							class="btn btn-primary me-2"
+							data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							(click)="cv.modalWorker = trab; cv.modalTitle = 'Inferior'"
+						>
 							<span class="material-icons" title="Añadir inferior"> add </span>
 						</button>
 						<span class="ipf-title">Inferiores: </span>
@@ -40,7 +45,12 @@
 						</div>
 
 						<hr />
-						<button class="btn btn-primary me-2">
+						<button
+							class="btn btn-primary me-2"
+							data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							(click)="cv.modalWorker = trab; cv.modalTitle = 'Par'"
+						>
 							<span class="material-icons" title="Añadir par"> add </span>
 						</button>
 						<span class="ipf-title">Pares: </span>
@@ -48,7 +58,12 @@
 							{{ par.nombre + ' ' + par.apellidos }}
 						</div>
 						<hr />
-						<button class="btn btn-primary me-2">
+						<button
+							class="btn btn-primary me-2"
+							data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							(click)="cv.modalWorker = trab; cv.modalTitle = 'Superior'"
+						>
 							<span class="material-icons" title="Añadir superior"> add </span>
 						</button>
 						<span class="ipf-title">Superiores: </span>
@@ -57,6 +72,51 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL -->
+<div
+	class="modal fade"
+	id="exampleModal"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title" id="exampleModalLabel">Añadir un {{ cv.modalTitle }}</h2>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input
+					type="text"
+					#addRelation
+					(keyup)="cv.modalFilter = addRelation.value"
+					placeholder="Filtrar trabajadores"
+				/>
+				<hr />
+				<ul class="list-group">
+					<li
+						[id]="'newRel' + i"
+						class="list-group-item p-3"
+						aria-current="true"
+						*ngFor="
+							let org of filterNewRelation(filterOrgani(cv.modalFilter), cv.modalWorker!);
+							let i = index
+						"
+						(click)="selectRelation(org.trabajador, 'newRel' + i)"
+					>
+						{{ org.trabajador.nombre }} {{ org.trabajador.apellidos }}
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 	</div>

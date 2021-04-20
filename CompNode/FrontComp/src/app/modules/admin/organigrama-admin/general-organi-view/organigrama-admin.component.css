@@ -28,3 +28,9 @@
 	/* border: 0.1rem solid #297fc5; */
 	/* border-radius: 0.2rem; */
 }
+
+.list-group-item {
+	padding: 0.25rem;
+	text-align: center;
+	cursor: pointer;
+}

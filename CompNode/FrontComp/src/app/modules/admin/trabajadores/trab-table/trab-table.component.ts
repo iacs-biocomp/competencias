@@ -15,14 +15,6 @@ interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 	styleUrls: ['./trab-table.component.css'],
 })
 export class TrabTableComponent implements OnInit {
-	constructor(
-		/** Servicio para obtener los datos de los trabajadores */
-		private trabService: TrabajadoresService,
-		/** Servicio para obtener los datos de las catCompetenciales */
-		private cCompSv: CatCompetencialesService,
-		/** Servicio para obtener los datos de las catContractuales */
-		private cContrSv: CatContractService,
-	) {}
 	/** Lista de todas las categorías competenciales */
 	catComps!: ICatComp[];
 	/** Lista de todas las categorías contractuales */
@@ -31,6 +23,15 @@ export class TrabTableComponent implements OnInit {
 	listaTrabaToAdd: ITrabajadorDTOEdit[] = [];
 	/** Lista de todas las categorías contractuales */
 	trabajadores: ITrabajadorDTOEdit[] = [];
+
+	constructor(
+		/** Servicio para obtener los datos de los trabajadores */
+		private trabService: TrabajadoresService,
+		/** Servicio para obtener los datos de las catCompetenciales */
+		private cCompSv: CatCompetencialesService,
+		/** Servicio para obtener los datos de las catContractuales */
+		private cContrSv: CatContractService,
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		await this.updateWorkerView();
