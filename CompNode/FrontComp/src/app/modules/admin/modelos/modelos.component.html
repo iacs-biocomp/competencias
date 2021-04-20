@@ -4,7 +4,7 @@
 		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
 		<div>
 			<div *ngFor="let catComp of catComps">
-				<button (click)="scrollToButton(target); addCatComp(catComp)" class="accordion-button" type="button">
+				<button (click)="scrollToButton(target); setCatComp(catComp)" class="accordion-button" type="button">
 					{{ catComp.id }} - {{ catComp.description }}
 				</button>
 			</div>
@@ -19,11 +19,22 @@
 
 
 	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1>Haga click en las <strong>competencias</strong> que tendrá esta categoría competencial</h1>
+		<h1>Haga click en las <strong>competencias</strong> que tendrá esta categoría competencial y asocie un nivel a cada una</h1>
 		<div>
 			<div *ngFor="let compete of competencs">
-				<button (click)="scrollToButton(target); setCompe(compete)" class="accordion-button" type="button">
+				<button (click)="scrollToButton(target); 	setCompetencias(compete)" class="accordion-button" type="button">
 					{{ compete.id }} - {{ compete.descripcion}}
+					<tr>
+						<td>
+							<div *ngFor="let nivel of niveles">
+								<select [(ngModel)]="nivel.valor">
+									<option selected disabled hidden>
+										{{ nivel.valor }}
+									</option>
+								</select>
+							</div>
+						</td>
+					</tr>
 				</button>
 			</div>
 		</div>
@@ -37,21 +48,12 @@
 
 
 	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1> Haga click en los <strong> comportamientos </strong> que tendrá este modelo y asocie un nivel a cada uno</h1>
+		<h1> Haga click en los <strong> comportamientos </strong> que tendrá este modelo</h1>
 		<div>
 			<div *ngFor="let compor of comports">
-				<div *ngFor="let nivel of niveles">
-					<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-						{{ compor.id }} - {{ compor.descripcion }}
-						<tr>
-							<select [(ngModel)]="nivel.valor">
-								<option selected disabled hidden [value]="nivel.valor">
-									{{ nivel.valor }}
-								</option>
-							</select>
-						</tr>
-					</button>
-				</div>
+				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
+					{{ compor.id }} - {{ compor.descripcion }}
+				</button>
 			</div>
 		</div>
 		<div #target class="btn" (click)="move(false)">
@@ -61,9 +63,3 @@
 			<span class="material-icons"> arrow_forward </span>
 		</div>
 	</div>
-
-
-</div>
-
-
-

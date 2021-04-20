@@ -16,16 +16,15 @@
 
 .inline {
 	height: 100%;
-	height: auto;
+	height: 100%;
 	white-space: nowrap;
 	overflow-x: hidden;
 	margin-top: 0 auto;
-
 }
+
 .block {
 	width: 100%;
-	height: auto;
-	margin-top: 0 auto;
+	height: 100%;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
 	padding: 1rem;
 	border: 0.15rem solid #09548d;
@@ -35,7 +34,4 @@
 	transition: ease 0.5s;
 }
 
-.select-nivel{
-	float: right;
 
-}

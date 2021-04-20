@@ -27,7 +27,16 @@ export class ModelosComponent implements OnInit {
 	comports!: IComportamiento[];
 	niveles!: INivel[];
 	enviado: boolean = false;
-	addModelo!: IModelDTO;
+	addModelo: IModelDTO =
+	{
+		catComp: {
+			id: 'CR6',
+			description: 'f',
+		},
+		subModels: [],
+	};
+
+	subModel!: ISubModel;
 
 	public selectedOption!: boolean;
 	/* Estilo por defecto del boton*/
@@ -41,24 +50,20 @@ export class ModelosComponent implements OnInit {
 		this.comports = await this.comportamiService.getAll();
 	}
 
-	addCatComp(catComp: ICatComp): boolean {
+	setCatComp(catComp: ICatComp): boolean {
 		if (catComp) {
-
-			console.log();
+			this.addModelo.catComp = catComp;
+			console.log(this.addModelo.catComp);
 			return true;
 		}
 		return false;
 	}
 
 
-	setCompe(competen: ICompetencia[]): boolean{
-		if (competen){
-			for(var i = 0; i >= competen.length; i++)
-			this.competencs.push(competen[i]);
-			console.log('Guardada' + this.competencs[i].descripcion);
-			return true;
-		}
-		return false;
+	setCompetencias(competencias: ICompetencia[]){
+		for(var i = 0; i >= competencias.length; i++)
+			this.subModel.competencia[i] = competencias;
+			console.log(this.subModel)
 	}
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'*/
