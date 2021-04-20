@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ICatComp } from '../../../../../../interfaces/ICategorias';
 import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from '../../../../../../interfaces/IEvaluaciones';
+import { IModelDTO } from "../../../../../../interfaces/DTO/IModelDTO";
 import { CatCompetencialesService } from '../cat-admn/services/CatCompetenciales.service';
 import { CompetenciasService } from '../competencias-admin/services/competencias.service';
 import { ComportService } from '../comportamientos-admin/services/comport.service';
@@ -18,14 +19,15 @@ export class ModelosComponent implements OnInit {
 		private catCompService: CatCompetencialesService,
 		private competenciasService: CompetenciasService,
 		private nivelesService: NivelService,
-		private comportamiService: ComportService
+		private comportamiService: ComportService,
 	) {}
 
 	catComps!: ICatComp[];
 	competencs!: ICompetencia[];
 	comports!: IComportamiento[];
 	niveles!: INivel[];
-
+	enviado: boolean = false;
+	addModelo!: IModelDTO;
 
 	public selectedOption!: boolean;
 	/* Estilo por defecto del boton*/
@@ -39,8 +41,24 @@ export class ModelosComponent implements OnInit {
 		this.comports = await this.comportamiService.getAll();
 	}
 
-	setCatComp(catComp: ICatComp){
+	addCatComp(catComp: ICatComp): boolean {
+		if (catComp) {
 
+			console.log();
+			return true;
+		}
+		return false;
+	}
+
+
+	setCompe(competen: ICompetencia[]): boolean{
+		if (competen){
+			for(var i = 0; i >= competen.length; i++)
+			this.competencs.push(competen[i]);
+			console.log('Guardada' + this.competencs[i].descripcion);
+			return true;
+		}
+		return false;
 	}
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'*/
@@ -55,11 +73,12 @@ export class ModelosComponent implements OnInit {
 	}
 
 	move(derecha: boolean) {
-		if (derecha && this.current < 3) {
+		if (derecha && this.current < 2) {
 			this.current++;
 		}
 		if (!derecha && this.current > 0) {
 			this.current--;
 		}
 	}
+
 }

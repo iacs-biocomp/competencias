@@ -4,7 +4,7 @@
 		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
 		<div>
 			<div *ngFor="let catComp of catComps">
-				<button (click)="scrollToButton(target); setCatComp(catComp)" class="accordion-button" type="button">
+				<button (click)="scrollToButton(target); addCatComp(catComp)" class="accordion-button" type="button">
 					{{ catComp.id }} - {{ catComp.description }}
 				</button>
 			</div>
@@ -17,12 +17,13 @@
 		</div>
 	</div>
 
+
 	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<h1>Haga click en las <strong>competencias</strong> que tendrá esta categoría competencial</h1>
 		<div>
 			<div *ngFor="let compete of competencs">
-				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-					{{ compete.id }} - 	{{ compete.descripcion}}
+				<button (click)="scrollToButton(target); setCompe(compete)" class="accordion-button" type="button">
+					{{ compete.id }} - {{ compete.descripcion}}
 				</button>
 			</div>
 		</div>
@@ -34,30 +35,23 @@
 		</div>
 	</div>
 
-	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1>Haga click en los <strong>niveles</strong> que tendrá este modelo</h1>
-		<div>
-			<div *ngFor="let nivel of niveles">
-				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-					{{ nivel.id }} - {{ nivel.valor }}
-				</button>
-			</div>
-		</div>
-		<div #target class="btn" (click)="move(false)">
-			<span class="material-icons"> arrow_back </span>
-		</div>
-		<div #target class="btn" (click)="move(true)">
-			<span class="material-icons"> arrow_forward </span>
-		</div>
-	</div>
 
 	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1>Haga click en la <strong>comportamientos</strong> que tendrá este modelo</h1>
+		<h1> Haga click en los <strong> comportamientos </strong> que tendrá este modelo y asocie un nivel a cada uno</h1>
 		<div>
 			<div *ngFor="let compor of comports">
-				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-					{{ compor.id }} - {{ compor.descripcion }}
-				</button>
+				<div *ngFor="let nivel of niveles">
+					<button (click)="scrollToButton(target)" class="accordion-button" type="button">
+						{{ compor.id }} - {{ compor.descripcion }}
+						<tr>
+							<select [(ngModel)]="nivel.valor">
+								<option selected disabled hidden [value]="nivel.valor">
+									{{ nivel.valor }}
+								</option>
+							</select>
+						</tr>
+					</button>
+				</div>
 			</div>
 		</div>
 		<div #target class="btn" (click)="move(false)">
@@ -67,4 +61,9 @@
 			<span class="material-icons"> arrow_forward </span>
 		</div>
 	</div>
+
+
 </div>
+
+
+

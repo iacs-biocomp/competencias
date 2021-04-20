@@ -34,3 +34,8 @@
 	display: inline-block;
 	transition: ease 0.5s;
 }
+
+.select-nivel{
+	float: right;
+
+}

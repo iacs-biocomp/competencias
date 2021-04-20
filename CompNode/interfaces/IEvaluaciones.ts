@@ -18,10 +18,6 @@ export interface IEvaluacion {
 
 export interface IEvModel {
   id: string;
-  // TODO: Comprobar si el modelo tambien tiene las evaluaciones,
-  // la interfaz cambiará lo mas probable
-  //!No usar hasta completarla
-
   // evs: Ev[];
   catComp: ICatComp;
   /**
@@ -33,9 +29,8 @@ export interface IEvModel {
 }
 /** El submodelo representa el array de comportamientos que un nivel de una competencia posee */
 export interface ISubModel {
-  id: number;
   /** Los modelos a los que pertenece este SubModelo, puede ser undefined si la petición es desde el modelo o no se carga la relación del modelo */
-  modelos: IEvModel[] | undefined;
+  modelos?: IEvModel[];
 
   nivel: INivel;
 
