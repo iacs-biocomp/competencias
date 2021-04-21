@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IOrganigramaUsrDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
+import { IOrganigramaUsrDTO, ITrabOrgani } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({
@@ -13,5 +13,19 @@ export class OrganiService {
 	 */
 	getFullOrgani(): Promise<IOrganigramaUsrDTO[]> {
 		return this.httpClient.get<IOrganigramaUsrDTO[]>(`${cnf.apiURL}/organigrama/all`).toPromise();
+	}
+
+	setInferiores(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
+		return this.httpClient
+			.post<boolean>(`${cnf.apiURL}/organigrama/inferiores/${wrk.dni}`, relations)
+			.toPromise();
+	}
+	setSuperiores(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
+		return this.httpClient
+			.post<boolean>(`${cnf.apiURL}/organigrama/superiores/${wrk.dni}`, relations)
+			.toPromise();
+	}
+	setPares(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/organigrama/pares/${wrk.dni}`, relations).toPromise();
 	}
 }

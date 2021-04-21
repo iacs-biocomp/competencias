@@ -3,13 +3,15 @@ import { FormControl } from '@angular/forms';
 import { IOrganigramaUsrDTO, ITrabOrgani } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
 import { OrganiService } from '../services/organi.service';
 
+type modalTitles = 'Inferior' | 'Superior' | 'Par';
 type ctlView = {
 	/** El trabajador sobre el que se abre el modal al cual se le añadirá una relacion */
 	modalWorker?: IOrganigramaUsrDTO;
 	/** Los trabajadores que se quieren añadir como relación del modalWorker,
 	 *  del modalTitle se obtiene que tipo de relación se añadirá */
 	modalRelations: ITrabOrgani[];
-	modalTitle: 'Inferior' | 'Superior' | 'Par';
+	/** Strings permitidos como titulo del modal, usado también para saber que es lo que se quiere añadir (inf/sup/par) */
+	modalTitle: modalTitles;
 	[key: string]: any;
 };
 @Component({
@@ -18,16 +20,20 @@ type ctlView = {
 	styleUrls: ['./organigrama-admin.component.css'],
 })
 export class OrganiGeneralView implements OnInit {
+	/** El organigrama completo, cada elemento tiene el trabajador y sus (pares/inf/sup) */
 	fullOrgani!: IOrganigramaUsrDTO[];
 	/** Lista de los trabajadores que hay en el fullOrgani*/
 	trabajadores!: ITrabOrgani[];
 	trabajadoresFiltered!: ITrabOrgani[];
 	myControl = new FormControl();
+
 	/** Control View, objeto que tiene variables unicamente para la vista y se usan poco en el modelo */
 	cv: ctlView = {
 		orgFilter: '',
+		/** Usada para hacer collapse de todos los accordion o mostrarlos */
 		showall: false,
 		modalTitle: 'Par',
+		/** El filtro a aplicar sobre el organigrama, dado por el usuario en un <input> */
 		modalFilter: '',
 		modalWorker: undefined,
 		modalRelations: [],
@@ -36,12 +42,21 @@ export class OrganiGeneralView implements OnInit {
 	constructor(private orgSv: OrganiService) {}
 
 	async ngOnInit(): Promise<void> {
-		this.fullOrgani = await this.orgSv.getFullOrgani();
-		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
-		this.trabajadoresFiltered = this.trabajadores;
+		await this.syncView();
 		setInterval(() => {
 			console.log(this.cv.modalRelations);
-		}, 3000);
+		}, 5000);
+	}
+
+	/**
+	 *
+	 * @param modalWorker
+	 * @param modalTitle El titulo del modal, de tipo modalTitles
+	 */
+	setCtrlView(modalWorker: IOrganigramaUsrDTO, modalTitle: modalTitles) {
+		this.cv.modalRelations = [];
+		this.cv.modalWorker = modalWorker;
+		this.cv.modalTitle = modalTitle;
 	}
 
 	selectRelation(wrk: ITrabOrgani, listItemId: string) {
@@ -51,13 +66,42 @@ export class OrganiGeneralView implements OnInit {
 			return;
 		}
 		const index = this.cv.modalRelations.indexOf(wrk);
+
 		if (index == -1) {
-			listItem.classList.add('active');
 			this.cv.modalRelations.push(wrk);
 		} else {
-			listItem.classList.remove('active');
 			this.cv.modalRelations.splice(index, 1);
 		}
+	}
+	async syncView(): Promise<void> {
+		this.fullOrgani = await this.orgSv.getFullOrgani();
+		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
+		this.trabajadoresFiltered = this.trabajadores;
+	}
+	/**
+	 * Guarda las relaciones de un trabajador de un tipo determinado (par/inf/sup)
+	 */
+	async saveRelations() {
+		let saved = false;
+		try {
+			switch (this.cv.modalTitle) {
+				case 'Inferior':
+					saved = await this.orgSv.setInferiores(this.cv.modalWorker!.trabajador, this.cv.modalRelations);
+					break;
+				case 'Par':
+					saved = await this.orgSv.setPares(this.cv.modalWorker!.trabajador, this.cv.modalRelations);
+					break;
+				case 'Superior':
+					saved = await this.orgSv.setSuperiores(this.cv.modalWorker!.trabajador, this.cv.modalRelations);
+					break;
+			}
+		} catch (error) {
+			alert('Contacte con un programador');
+		}
+		if (saved) {
+			alert('Guardado correctamente');
+		}
+		this.syncView();
 	}
 
 	/**

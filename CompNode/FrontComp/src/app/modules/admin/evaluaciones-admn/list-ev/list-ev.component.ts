@@ -8,6 +8,8 @@ import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 	styleUrls: ['./list-ev.component.css'],
 })
 export class ListEvComponent implements OnInit {
+	public loadMForm = false;
+
 	evalToAdd: IEvaluacion[] = [
 		{
 			id: 1,
@@ -30,7 +32,6 @@ export class ListEvComponent implements OnInit {
 		// this.evalToAdd = await this.evalService.getAllEval();
 	}
 
-	public loadMForm = false;
 	loadModelForm() {
 		this.loadMForm = true;
 	}

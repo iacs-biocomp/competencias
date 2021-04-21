@@ -35,7 +35,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="cv.modalWorker = trab; cv.modalTitle = 'Inferior'"
+							(click)="setCtrlView(trab, 'Inferior')"
 						>
 							<span class="material-icons" title="Añadir inferior"> add </span>
 						</button>
@@ -49,7 +49,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="cv.modalWorker = trab; cv.modalTitle = 'Par'"
+							(click)="setCtrlView(trab, 'Par')"
 						>
 							<span class="material-icons" title="Añadir par"> add </span>
 						</button>
@@ -62,7 +62,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="cv.modalWorker = trab; cv.modalTitle = 'Superior'"
+							(click)="setCtrlView(trab, 'Superior')"
 						>
 							<span class="material-icons" title="Añadir superior"> add </span>
 						</button>
@@ -103,6 +103,7 @@
 					<li
 						[id]="'newRel' + i"
 						class="list-group-item p-3"
+						[ngClass]="{ active: cv.modalRelations.includes(org.trabajador) }"
 						aria-current="true"
 						*ngFor="
 							let org of filterNewRelation(filterOrgani(cv.modalFilter), cv.modalWorker!);
@@ -115,8 +116,8 @@
 				</ul>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" (click)="saveRelations()">Guardar cambios</button>
 			</div>
 		</div>
 	</div>
