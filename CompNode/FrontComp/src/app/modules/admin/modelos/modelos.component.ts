@@ -7,6 +7,7 @@ import { CompetenciasService } from '../competencias-admin/services/competencias
 import { ComportService } from '../comportamientos-admin/services/comport.service';
 import { NivelService } from '../niveles-admin/services/nivel.service';
 import { ModelosService } from './services/modelos.service';
+import { select } from 'd3-selection';
 
 @Component({
 	selector: 'app-modelos',
@@ -50,27 +51,33 @@ export class ModelosComponent implements OnInit {
 		this.comports = await this.comportamiService.getAll();
 	}
 
-	setCatComp(catComp: ICatComp): boolean {
-		if (catComp) {
+	selectCatComp(catComp: ICatComp, listItemId: string) {
+		const listItem = document.getElementById(listItemId);
+		if (listItem == null){
+			console.log('Contacte con un adminstrador');
+			return;
+		}
+		const index = this.catComps.indexOf(catComp);
+
+		if (index == -1) {
+			listItem.classList.add('active');
 			this.addModelo.catComp = catComp;
 			console.log(this.addModelo.catComp);
-			return true;
+		} else {
+			listItem.classList.remove('active');
 		}
-		return false;
+
+
 	}
 
 
-	setCompetencias(competencias: ICompetencia[]){
-		for(var i = 0; i >= competencias.length; i++)
-			this.subModel.competencia[i] = competencias;
-			console.log(this.subModel)
-	}
-
-	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'*/
+		 /* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
 	scrollToButton(element: HTMLElement) {
 		element.scrollIntoView();
 		this.selectedOption = true;
 	}
+
+
 
 	/* Funcion para que cuando se haga click, cambie el estilo de los botones y haga la transición */
 	submit() {
@@ -78,7 +85,7 @@ export class ModelosComponent implements OnInit {
 	}
 
 	move(derecha: boolean) {
-		if (derecha && this.current < 2) {
+		if (derecha && this.current < 2 ) {
 			this.current++;
 		}
 		if (!derecha && this.current > 0) {
