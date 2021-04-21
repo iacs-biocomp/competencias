@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ICatComp } from '../../../../../../interfaces/ICategorias';
-import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from '../../../../../../interfaces/IEvaluaciones';
-import { IModelDTO } from "../../../../../../interfaces/DTO/IModelDTO";
+import {
+	ICompetencia,
+	IComportamiento,
+	IEvModel,
+	INivel,
+	ISubModel,
+} from '../../../../../../interfaces/IEvaluaciones';
+import { IModelDTO } from '../../../../../../interfaces/DTO/IModelDTO';
 import { CatCompetencialesService } from '../cat-admn/services/CatCompetenciales.service';
 import { CompetenciasService } from '../competencias-admin/services/competencias.service';
 import { ComportService } from '../comportamientos-admin/services/comport.service';
 import { NivelService } from '../niveles-admin/services/nivel.service';
 import { ModelosService } from './services/modelos.service';
-import { select } from 'd3-selection';
 
 @Component({
 	selector: 'app-modelos',
@@ -28,8 +33,7 @@ export class ModelosComponent implements OnInit {
 	comports!: IComportamiento[];
 	niveles!: INivel[];
 	enviado: boolean = false;
-	addModelo: IModelDTO =
-	{
+	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
 			description: 'f',
@@ -37,7 +41,7 @@ export class ModelosComponent implements OnInit {
 		subModels: [],
 	};
 
-	subModel!: ISubModel;
+	subModel!: ISubModel[];
 
 	public selectedOption!: boolean;
 	/* Estilo por defecto del boton*/
@@ -51,33 +55,39 @@ export class ModelosComponent implements OnInit {
 		this.comports = await this.comportamiService.getAll();
 	}
 
-	selectCatComp(catComp: ICatComp, listItemId: string) {
+	selectCatComp(catComp: ICatComp) {
+		if (catComp) {
+			this.addModelo.catComp = catComp;
+			console.log(this.addModelo);
+		}
+	}
+
+	selectCompet(compete: ICompetencia, listItemId: string) {
 		const listItem = document.getElementById(listItemId);
-		if (listItem == null){
-			console.log('Contacte con un adminstrador');
+		if (listItem == null) {
+			console.log('Error, contacte con un programador');
 			return;
 		}
-		const index = this.catComps.indexOf(catComp);
+		const index = this.competencs.indexOf(compete);
+		console.log(index);
+		var arrayCompetencias!: ICompetencia[];
 
 		if (index == -1) {
 			listItem.classList.add('active');
-			this.addModelo.catComp = catComp;
-			console.log(this.addModelo.catComp);
+			arrayCompetencias.push(compete);
+			console.log(arrayCompetencias);
 		} else {
 			listItem.classList.remove('active');
+			arrayCompetencias.splice(index, 1);
+			console.log(arrayCompetencias);
 		}
-
-
 	}
 
-
-		 /* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
+	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
 	scrollToButton(element: HTMLElement) {
 		element.scrollIntoView();
 		this.selectedOption = true;
 	}
-
-
 
 	/* Funcion para que cuando se haga click, cambie el estilo de los botones y haga la transición */
 	submit() {
@@ -85,12 +95,11 @@ export class ModelosComponent implements OnInit {
 	}
 
 	move(derecha: boolean) {
-		if (derecha && this.current < 2 ) {
+		if (derecha && this.current < 2) {
 			this.current++;
 		}
 		if (!derecha && this.current > 0) {
 			this.current--;
 		}
 	}
-
 }
