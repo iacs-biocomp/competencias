@@ -37,3 +37,7 @@
 	text-align: center;
 	cursor: pointer;
 }
+
+.accordion-item {
+	margin-bottom: 0.35rem;
+}

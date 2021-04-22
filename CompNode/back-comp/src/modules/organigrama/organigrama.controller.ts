@@ -4,7 +4,6 @@ import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
 import { Trabajador } from 'src/entity/Trabajador.entity';
 import { TrabajadorRepo } from '../trabajadores/trabajador.repository';
 import { UserRepository } from '../users/user.repository';
-
 interface Organigrama {
 	inferiores: Trabajador[];
 	superiores: Trabajador[];
@@ -26,6 +25,8 @@ interface ITrabajador {
 
 	departamento: string;
 }
+
+type Reltype = 'addinferior' | 'addsuperior' | 'addpar';
 
 @Controller('nest/organigrama')
 export class OrganigramaController {
@@ -252,5 +253,80 @@ export class OrganigramaController {
 			);
 		}
 		return true;
+	}
+	private async methodExtraction(dni: string, relations: ITrabajador[], relType: Reltype): Promise<boolean> {
+		/** Dates de utilidad en el metodo */
+		const d8s = {
+			/** Fecha limite, (now - dias permitidos para no crear nuevos periodos) */
+			deadline: new Date(new Date().setDate(-30)),
+			now: new Date(),
+		};
+		const trab = await this.trabRepo.findOne(
+			{ dni: dni },
+			{
+				relations: ['periodos', 'periodos.pares', 'periodos.catContr', 'periodos.catComp'],
+			},
+		);
+		const repoRelation = () => {
+			switch (relType) {
+				case 'addinferior':
+					return 'periodos.superior';
+				case 'addpar':
+					return 'periodos.par';
+				case 'addsuperior':
+					return 'periodos.inferior';
+			}
+		};
+		if (!trab) {
+			return false;
+		}
+		/** Periodo actual de `trab` */
+		const actualPeri = trab.periodos.filter(p => p.actual)[0];
+		if (!actualPeri) {
+			return false;
+		}
+		// TODO: Seguir refactorizando el resto =>
+		if (actualPeri.createdAt < d8s.deadline) {
+			actualPeri.actual = false;
+			actualPeri.endAt = d8s.now;
+			await actualPeri.save();
+			['id', 'endAt', 'createdAt'].forEach(p => delete actualPeri[p]);
+			actualPeri.actual = true;
+			delete trab.periodos;
+			actualPeri.trabajador = trab;
+			/** Las relaciones (inf/par/sup) del `trab` */
+			const rels = await Promise.all(
+				relations.map(r => this.trabRepo.findOne({ dni: r.dni }, { relations: ['periodos', repoRelation()] })),
+			);
+			actualPeri.pares = rels;
+			await actualPeri.save();
+			rels.forEach(async rel => {
+				rel.periodos.filter(p => p.actual)[0].inferiores.push(trab);
+				await rel.periodos[0].save();
+			});
+		} else {
+			const paresPromise = Promise.all(
+				relations.map(r => this.trabRepo.findOne({ dni: r.dni }, { relations: ['periodos', repoRelation()] })),
+			);
+			const pares = await paresPromise;
+			actualPeri.pares = pares;
+			await actualPeri.save();
+			// Añadir a cada par el trabajador como par de estos.
+			await Promise.all(
+				//See: https://is.gd/6l0wZi
+				pares.map(async par => {
+					const perActual = par.periodos.filter(p => p.actual)[0];
+					perActual.pares.push(trab);
+					perActual.save();
+				}),
+			);
+		}
+		return true;
+	}
+	/** Función de ayuda para remover multiples keys de un objeto en una linea */
+	private deleteProps(obj, prop) {
+		for (const p of prop) {
+			p in obj && delete obj[p];
+		}
 	}
 }

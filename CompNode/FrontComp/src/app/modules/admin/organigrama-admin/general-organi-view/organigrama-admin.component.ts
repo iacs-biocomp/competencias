@@ -74,6 +74,7 @@ export class OrganiGeneralView implements OnInit {
 	}
 	async syncView(): Promise<void> {
 		this.fullOrgani = await this.orgSv.getFullOrgani();
+		this.fullOrgani.sort((a, b) => a.trabajador.nombre.localeCompare(b.trabajador.nombre));
 		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
 		this.trabajadoresFiltered = this.trabajadores;
 	}
