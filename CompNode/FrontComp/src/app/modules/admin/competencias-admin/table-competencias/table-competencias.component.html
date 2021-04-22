@@ -5,7 +5,7 @@
 			<tr>
 				<th scope="col">CÓDIGO</th>
 				<th scope="col">DESCRIPCIÓN</th>
-				<th scope="col">BORRAR/MODIFICAR</th>
+				<th scope="col">EDITAR/ELIMINAR</th>
 				<th scope="col" style="max-width: 1rem">
 					<button class="btn btn-primary" (click)="newEmptyCompe()">
 						<span class="material-icons" title="Añadir competencia"> add </span>
@@ -44,14 +44,14 @@
 				</td>
 
 				<td>
-					<div *ngIf="canDelete(compet)" class="btn btn-danger" (click)="deleteCompe(compet)">
-						<span class="material-icons"> delete </span>
-					</div>
 					<div class="btn btn-success" (click)="editingCompt(compet, true, false)">
 						<span class="material-icons"> edit </span>
 					</div>
 					<div class="btn btn-primary" *ngIf="compet.editing" (click)="editingCompt(compet, false, true)">
 						<span class="material-icons"> done </span>
+					</div>
+					<div *ngIf="canDelete(compet)" class="btn btn-danger" (click)="deleteCompe(compet)">
+						<span class="material-icons"> delete </span>
 					</div>
 				</td>
 			</tr>

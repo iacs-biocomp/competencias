@@ -55,33 +55,14 @@ export class ModelosComponent implements OnInit {
 		this.comports = await this.comportamiService.getAll();
 	}
 
-	selectCatComp(catComp: ICatComp) {
-		if (catComp) {
+	selectCatComp(catComp: ICatComp, listItemId: string) {
+		var index = this.addModelo.catComp;
+		if(index){
 			this.addModelo.catComp = catComp;
-			console.log(this.addModelo);
+			console.log(this.addModelo.catComp );
 		}
 	}
 
-	selectCompet(compete: ICompetencia, listItemId: string) {
-		const listItem = document.getElementById(listItemId);
-		if (listItem == null) {
-			console.log('Error, contacte con un programador');
-			return;
-		}
-		const index = this.competencs.indexOf(compete);
-		console.log(index);
-		var arrayCompetencias!: ICompetencia[];
-
-		if (index == -1) {
-			listItem.classList.add('active');
-			arrayCompetencias.push(compete);
-			console.log(arrayCompetencias);
-		} else {
-			listItem.classList.remove('active');
-			arrayCompetencias.splice(index, 1);
-			console.log(arrayCompetencias);
-		}
-	}
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
 	scrollToButton(element: HTMLElement) {

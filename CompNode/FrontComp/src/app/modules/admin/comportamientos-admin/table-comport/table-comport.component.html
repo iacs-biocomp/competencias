@@ -5,7 +5,7 @@
 			<tr>
 				<th scope="col">CÓDIGO</th>
 				<th scope="col">DESCRIPCIÓN</th>
-				<th scope="col">BORRAR/MODIFICAR</th>
+				<th scope="col">EDITAR/ELIMINAR</th>
 				<th scope="col" style="max-width: 1rem">
 					<button class="btn btn-primary" (click)="newEmptyCompt()" title="Añadir comportamiento">
 						<span class="material-icons" title="Añadir comportamiento"> add </span>
@@ -44,14 +44,14 @@
 				</td>
 
 				<td>
-					<div *ngIf="canDelete(comport)" class="btn btn-danger" (click)="deleteComport(comport)">
-						<span class="material-icons"> delete </span>
-					</div>
 					<div class="btn btn-success" (click)="editingComport(comport, true, false)">
 						<span class="material-icons"> edit </span>
 					</div>
 					<div class="btn btn-primary" *ngIf="comport.editing" (click)="editingComport(comport, false, true)">
 						<span class="material-icons"> done </span>
+					</div>
+					<div *ngIf="canDelete(comport)" class="btn btn-danger" (click)="deleteComport(comport)">
+						<span class="material-icons"> delete </span>
 					</div>
 				</td>
 			</tr>

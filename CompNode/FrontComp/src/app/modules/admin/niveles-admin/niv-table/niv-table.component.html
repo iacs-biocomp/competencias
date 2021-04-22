@@ -5,7 +5,7 @@
 			<tr>
 				<th scope="col">CÓDIGO</th>
 				<th scope="col">VALOR</th>
-				<th scope="col">BORRAR/MODIFICAR</th>
+				<th scope="col">EDITAR/ELIMINAR</th>
 				<th scope="col" style="max-width: 1rem">
 					<button class="btn btn-primary" (click)="newEmptyNivel()">
 						<span class="material-icons" title="Añadir nivel"> add </span>
@@ -40,14 +40,14 @@
 				</td>
 
 				<td>
-					<div *ngIf="canDelete(nivel)" class="btn btn-danger" (click)="deleteNivel(nivel)">
-						<span class="material-icons"> delete </span>
-					</div>
 					<div class="btn btn-success" (click)="editingNivel(nivel, true, false)">
 						<span class="material-icons"> edit </span>
 					</div>
 					<div class="btn btn-primary" *ngIf="nivel.editing" (click)="editingNivel(nivel, false, true)">
 						<span class="material-icons"> done </span>
+					</div>
+					<div *ngIf="canDelete(nivel)" class="btn btn-danger" (click)="deleteNivel(nivel)">
+						<span class="material-icons"> delete </span>
 					</div>
 				</td>
 			</tr>

@@ -88,11 +88,18 @@
 					<hr />
 					<ul class="list-group">
 						<li
+						[ngClass]="{active: catComp === addModelo.catComp}"
 							[id]="'catComp' + i"
 							class="list-group-item p-3"
 							aria-current="true"
-							*ngFor="let catComp of catComps let i = index"
-							(click)="scrollToButton(target); selectCatComp(catComp)">
+							*ngFor="
+								let catComp of catComps
+								let i = index
+							"
+							(click)="
+								scrollToButton(target);
+								selectCatComp(catComp, 'catComp' + i)
+							">
 							{{ catComp.id }} {{ catComp.description}}
 						</li>
 					</ul>
@@ -127,7 +134,7 @@
 							class="list-group-item p-3"
 							aria-current="true"
 							*ngFor="let compete of competencs let i = index"
-							(click)="scrollToButton(target); selectCompet(compete, 'compete' + i)">
+							(click)="scrollToButton(target)">
 							{{ compete.id }} {{ compete.descripcion}}
 						</li>
 					</ul>
