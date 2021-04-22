@@ -1,81 +1,6 @@
-<!--
 <div class="inline">
 
-
-	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1>Haga click en la <strong>categoría competencial</strong> que tendrá este modelo</h1>
-		<div>
-			<ul class="list-group list-group-flush" *ngFor="let catComp of catComps">
-				<li class="list-group-item" (click)="scrollToButton(target); setCatComp(catComp)">
-					{{ catComp.id }} - {{ catComp.description }}
-				</li>
-			</ul>
-		</div>
-
-		<div #target class="btn" (click)="move(false)">
-			<span class="material-icons"> arrow_back </span>
-		</div>
-		<div #target class="btn" (click)="move(true)">
-			<span class="material-icons"> arrow_forward </span>
-		</div>
-
-
-	</div>
-
-
-	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1>Haga click en las <strong>competencias</strong> que tendrá esta categoría competencial y asocie un nivel a cada una</h1>
-		<div>
-			<div *ngFor="let compete of competencs">
-				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-					{{ compete.id }} - {{ compete.descripcion}}
-					<tr>
-						<td>
-							<div *ngFor="let nivel of niveles">
-								<select [(ngModel)]="nivel.valor">
-									<option selected disabled hidden>
-										{{ nivel.valor }}
-									</option>
-								</select>
-							</div>
-						</td>
-					</tr>	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-
-				</button>
-			</div>
-		</div>
-		<div #target class="btn" (click)="move(false)">
-			<span class="material-icons"> arrow_back </span>
-		</div>
-		<div #target class="btn" (click)="move(true)">
-			<span class="material-icons"> arrow_forward </span>
-		</div>
-	</div>
-
-
-	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<h1> Haga click en los <strong> comportamientos </strong> que tendrá este modelo</h1>
-		<div>
-			<div *ngFor="let compor of comports">
-				<button (click)="scrollToButton(target)" class="accordion-button" type="button">
-					{{ compor.id }} - {{ compor.descripcion }}
-				</button>
-			</div>
-		</div>
-		<div #target class="btn" (click)="move(false)">
-			<span class="material-icons"> arrow_back </span>
-		</div>
-		<div #target class="btn" (click)="move(true)">
-			<span class="material-icons"> arrow_forward </span>
-		</div>
-
-
-	</div>
-	-->
-
-
-<div class="inline">
-
+	<!--Categorias competenciales-->
 	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -87,18 +12,13 @@
 				<div class="modal-body">
 					<hr />
 					<ul class="list-group">
-						<li
-						[ngClass]="{active: catComp === addModelo.catComp}"
-							[id]="'catComp' + i"
-							class="list-group-item p-3"
-							aria-current="true"
-							*ngFor="
+						<li [ngClass]="{active: catComp === addModelo.catComp}" [id]="'catComp' + i" class="list-group-item p-3"
+							aria-current="true" *ngFor="
 								let catComp of catComps
 								let i = index
-							"
-							(click)="
+							" (click)="
 								scrollToButton(target);
-								selectCatComp(catComp, 'catComp' + i)
+								selectCatComp(catComp)
 							">
 							{{ catComp.id }} {{ catComp.description}}
 						</li>
@@ -108,73 +28,7 @@
 					<div #target class="btn" (click)="move(false)">
 						<span class="material-icons"> arrow_back </span>
 					</div>
-					<div #target class="btn" (click)="move(true)">
-						<span class="material-icons"> arrow_forward </span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel">
-						Haga click en las competencias que tendrá esta categoría competencial y asocie un nivel a cada una.
-					</h2>
-				</div>
-				<div class="modal-body">
-					<hr />
-					<ul class="list-group">
-						<li
-							[id]="'compete' + i"
-							class="list-group-item p-3"
-							aria-current="true"
-							*ngFor="let compete of competencs let i = index"
-							(click)="scrollToButton(target)">
-							{{ compete.id }} {{ compete.descripcion}}
-						</li>
-					</ul>
-				</div>
-				<div class="modal-footer">
-					<div #target class="btn" (click)="move(false)">
-						<span class="material-icons"> arrow_back </span>
-					</div>
-					<div #target class="btn" (click)="move(true)">
-						<span class="material-icons"> arrow_forward </span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel">
-						Haga click en los comportamientos que tendrá esta competencia.
-					</h2>
-				</div>
-				<div class="modal-body">
-					<hr />
-					<ul class="list-group">
-						<li class="list-group-item p-3" aria-current="true" *ngFor="let compete of competencs"
-							(click)="scrollToButton(target)">
-							{{ compete.id }} {{ compete.descripcion}}
-						</li>
-					</ul>
-				</div>
-				<div class="modal-footer">
-					<div #target class="btn" (click)="move(false)">
-						<span class="material-icons" > arrow_back </span>
-					</div>
-					<div #target class="btn" (click)="move(true)">
+					<div #target class="btn" (click)="move(true)" routerLink="./modelo-compet/modelo-compet.component.html">
 						<span class="material-icons"> arrow_forward </span>
 					</div>
 				</div>
@@ -183,4 +37,3 @@
 	</div>
 
 </div>
-

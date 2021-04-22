@@ -3,7 +3,6 @@ import { ICatComp } from '../../../../../../interfaces/ICategorias';
 import {
 	ICompetencia,
 	IComportamiento,
-	IEvModel,
 	INivel,
 	ISubModel,
 } from '../../../../../../interfaces/IEvaluaciones';
@@ -12,8 +11,6 @@ import { CatCompetencialesService } from '../cat-admn/services/CatCompetenciales
 import { CompetenciasService } from '../competencias-admin/services/competencias.service';
 import { ComportService } from '../comportamientos-admin/services/comport.service';
 import { NivelService } from '../niveles-admin/services/nivel.service';
-import { ModelosService } from './services/modelos.service';
-
 @Component({
 	selector: 'app-modelos',
 	templateUrl: './modelos.component.html',
@@ -21,7 +18,6 @@ import { ModelosService } from './services/modelos.service';
 })
 export class ModelosComponent implements OnInit {
 	constructor(
-		private modelService: ModelosService,
 		private catCompService: CatCompetencialesService,
 		private competenciasService: CompetenciasService,
 		private nivelesService: NivelService,
@@ -33,6 +29,7 @@ export class ModelosComponent implements OnInit {
 	comports!: IComportamiento[];
 	niveles!: INivel[];
 	enviado: boolean = false;
+	competeFilter: string = '';
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
@@ -55,14 +52,13 @@ export class ModelosComponent implements OnInit {
 		this.comports = await this.comportamiService.getAll();
 	}
 
-	selectCatComp(catComp: ICatComp, listItemId: string) {
+	selectCatComp(catComp: ICatComp) {
 		var index = this.addModelo.catComp;
-		if(index){
+		if (index) {
 			this.addModelo.catComp = catComp;
-			console.log(this.addModelo.catComp );
+			console.log(this.addModelo.catComp);
 		}
 	}
-
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
 	scrollToButton(element: HTMLElement) {
@@ -83,4 +79,22 @@ export class ModelosComponent implements OnInit {
 			this.current--;
 		}
 	}
+
+	selectCompet(compete: ICompetencia[], listItemId: string) {
+		const listItem = document.getElementById(listItemId);
+		if (listItem == null) {
+			console.log('Contacte con un programador');
+			return;
+		}
+		//TODO: Refactor
+		for(let i = 0; i <= compete.length; i++){
+			const index = this.competencs.indexOf(compete[i]);
+			if (index == -1) {
+				compete.join;
+			}
+		}
+	}
+
+
+
 }
