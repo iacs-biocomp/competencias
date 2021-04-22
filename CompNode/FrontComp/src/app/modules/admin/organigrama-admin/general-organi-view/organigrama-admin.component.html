@@ -39,8 +39,8 @@
 						>
 							<span class="material-icons" title="Añadir inferior"> add </span>
 						</button>
-						<span class="ipf-title">Inferiores: </span>
-						<div (click)="scroll(inferior.dni)" class="ipf" *ngFor="let inferior of trab.inferiores">
+						<span class="ips-title">Inferiores: </span>
+						<div (click)="scroll(inferior.dni)" class="ips" *ngFor="let inferior of trab.inferiores">
 							{{ inferior.nombre + ' ' + inferior.apellidos }}
 						</div>
 
@@ -53,8 +53,8 @@
 						>
 							<span class="material-icons" title="Añadir par"> add </span>
 						</button>
-						<span class="ipf-title">Pares: </span>
-						<div (click)="scroll(par.dni)" class="ipf" *ngFor="let par of trab.pares">
+						<span class="ips-title">Pares: </span>
+						<div (click)="scroll(par.dni)" class="ips" *ngFor="let par of trab.pares">
 							{{ par.nombre + ' ' + par.apellidos }}
 						</div>
 						<hr />
@@ -66,8 +66,8 @@
 						>
 							<span class="material-icons" title="Añadir superior"> add </span>
 						</button>
-						<span class="ipf-title">Superiores: </span>
-						<div (click)="scroll(sup.dni)" class="ipf" *ngFor="let sup of trab.superiores">
+						<span class="ips-title">Superiores: </span>
+						<div (click)="scroll(sup.dni)" class="ips" *ngFor="let sup of trab.superiores">
 							{{ sup.nombre + ' ' + sup.apellidos }}
 						</div>
 					</div>
@@ -116,7 +116,7 @@
 				</ul>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 				<button type="button" class="btn btn-primary" (click)="saveRelations()">Guardar cambios</button>
 			</div>
 		</div>

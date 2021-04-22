@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IOrganigramaUsrDTO, ITrabOrgani } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
 import { OrganiService } from '../services/organi.service';
@@ -20,6 +20,8 @@ type ctlView = {
 	styleUrls: ['./organigrama-admin.component.css'],
 })
 export class OrganiGeneralView implements OnInit {
+	@ViewChild('closeModal') closeModal!: ElementRef;
+
 	/** El organigrama completo, cada elemento tiene el trabajador y sus (pares/inf/sup) */
 	fullOrgani!: IOrganigramaUsrDTO[];
 	/** Lista de los trabajadores que hay en el fullOrgani*/
@@ -43,9 +45,6 @@ export class OrganiGeneralView implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		await this.syncView();
-		setInterval(() => {
-			console.log(this.cv.modalRelations);
-		}, 5000);
 	}
 
 	/**
@@ -65,8 +64,8 @@ export class OrganiGeneralView implements OnInit {
 			console.log('Contacte con un programador');
 			return;
 		}
+		//TODO: Refactor
 		const index = this.cv.modalRelations.indexOf(wrk);
-
 		if (index == -1) {
 			this.cv.modalRelations.push(wrk);
 		} else {
@@ -83,25 +82,34 @@ export class OrganiGeneralView implements OnInit {
 	 */
 	async saveRelations() {
 		let saved = false;
+		var relations: ITrabOrgani[];
 		try {
 			switch (this.cv.modalTitle) {
 				case 'Inferior':
-					saved = await this.orgSv.setInferiores(this.cv.modalWorker!.trabajador, this.cv.modalRelations);
+					relations = this.cv.modalRelations.concat(this.cv.modalWorker?.inferiores!);
+					relations = relations.filter((rel, index) => relations.indexOf(rel) === index);
+					saved = await this.orgSv.setInferiores(this.cv.modalWorker!.trabajador, relations);
 					break;
 				case 'Par':
-					saved = await this.orgSv.setPares(this.cv.modalWorker!.trabajador, this.cv.modalRelations);
+					relations = this.cv.modalRelations.concat(this.cv.modalWorker?.pares!);
+					relations = relations.filter((rel, index) => relations.indexOf(rel) === index);
+					saved = await this.orgSv.setPares(this.cv.modalWorker!.trabajador, relations);
 					break;
 				case 'Superior':
-					saved = await this.orgSv.setSuperiores(this.cv.modalWorker!.trabajador, this.cv.modalRelations);
+					relations = this.cv.modalRelations.concat(this.cv.modalWorker?.superiores!);
+					relations = relations.filter((rel, index) => relations.indexOf(rel) === index);
+					saved = await this.orgSv.setSuperiores(this.cv.modalWorker!.trabajador, relations);
 					break;
 			}
 		} catch (error) {
 			alert('Contacte con un programador');
 		}
 		if (saved) {
-			alert('Guardado correctamente');
+			console.log('Guardado correctamente');
+			// alert('Guardado correctamente');
 		}
-		this.syncView();
+		this.closeModal.nativeElement.click();
+		await this.syncView();
 	}
 
 	/**

@@ -1,4 +1,5 @@
-.ipf {
+/*Inferiores pares superiores*/
+.ips {
 	background-color: #e7f1ff;
 	display: inline-block;
 	cursor: pointer;
@@ -6,8 +7,10 @@
 	border-radius: 0.2rem;
 	padding: 0.1rem;
 	transition: ease 0.25s;
+	margin-right: 0.3rem;
 }
-.ipf-title {
+/*Inferiores pares superiores title*/
+.ips-title {
 	font-size: 1.1rem;
 }
 .parsupinf:hover {

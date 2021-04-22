@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { AppComponent } from './app.component';
 import { LoginGuard } from './guards/login.guard';
 import { Error404Component } from './modules/app/error404/error404.component';
 import { BaseLayoutComponent } from './shared/layout/base/base-layout.component';
@@ -69,11 +68,6 @@ const routes: Routes = [
 		loadChildren: () =>
 			import('./modules/evaluaciones/evaluaciones.module').then(mod => mod.EvaluacionesModule),
 	},
-	// {
-	// 	//?: Nombre correcto?
-	// 	path: 'test',
-	// 	component: AppComponent,
-	// },
 	{
 		path: '',
 		canLoad: [LoginGuard],
