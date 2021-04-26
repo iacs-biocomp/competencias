@@ -46,7 +46,6 @@ export class ModelosComponent implements OnInit {
 				subModels: undefined
 				}
 			],
-
 			competencia:
 			{
 				id: 'C2',
@@ -74,11 +73,13 @@ export class ModelosComponent implements OnInit {
 
 
 	subModel!: ISubModel[];
+	fullModel!: IModelDTO[];
 
 	public selectedOption!: boolean;
 	/* Estilo por defecto del boton*/
 	bntStyle: string = 'btn-default';
 	current = 0;
+
 
 	async ngOnInit(): Promise<void> {
 		this.catComps = await this.catCompService.getAll();
@@ -139,7 +140,5 @@ export class ModelosComponent implements OnInit {
 			}
 		}
 	}
-
-
 
 }

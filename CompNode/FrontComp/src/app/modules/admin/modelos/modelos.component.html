@@ -19,7 +19,7 @@
 							*ngFor="let catComp of catComps; let i = index"
 							(click)="scrollToButton(target); selectCatComp(catComp)"
 						>
-							{{ catComp.id }} {{ catComp.description }}
+							{{ catComp.id }} - {{ catComp.description}}
 						</li>
 					</ul>
 				</div>
@@ -73,7 +73,8 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
-									<input type="text" #addRelation placeholder="Filtrar competencias" />
+									<input type="text"
+										placeholder="Filtrar competencias" />
 									<hr />
 									<ul class="list-group">
 										<li
@@ -83,13 +84,11 @@
 											*ngFor="let compete of competencs; let i = index"
 											(click)="selectCompe()"
 										>
-											{{ compete.id }} {{ compete.id }}
+											{{ compete.id }} - {{ compete.descripcion }}
 
 											<td>
-												<select id="compete" [(ngModel)]="compete.id">
-													<option *ngFor="let nivel of niveles" [value]="nivel.valor">
-														{{ nivel.valor }}
-													</option>
+												<select id="compete">
+													<option *ngFor="let nivel of niveles" [value]="nivel.valor">{{ nivel.valor }}</option>
 												</select>
 											</td>
 										</li>
@@ -105,7 +104,10 @@
 								</div>
 							</div>
 						</div>
-						<!-- FIN MODAL -->
+					</div>
+					<!-- FIN MODAL -->
+
+
 					</div>
 					<div class="modal-footer">
 						<div #target class="btn" (click)="move(false)">
@@ -115,9 +117,8 @@
 							<span class="material-icons"> arrow_forward </span>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 	</div>
-	<!--FIN COMPETENCIAS Y NIVELES  -->
+			<!--FIN COMPETENCIAS Y NIVELES  -->
 </div>
