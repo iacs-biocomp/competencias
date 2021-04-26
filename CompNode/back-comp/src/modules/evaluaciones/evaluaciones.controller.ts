@@ -1,9 +1,7 @@
 import { Body, ConflictException, UnprocessableEntityException } from '@nestjs/common';
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CatComp } from '../../entity/CatComp.entity';
 import { Ev } from '../../entity/Ev.entity';
-import { EvModel } from '../../entity/EvModel.entity';
 import { Trabajador } from '../../entity/Trabajador.entity';
 import { EvRepository } from './evaluaciones.repository';
 
@@ -40,7 +38,8 @@ export class EvaluacionesController {
 		if (!ev.model) {
 			throw new UnprocessableEntityException('La evaluación no tiene un modelo que exista en la bbdd');
 		}
-		this.evRepo.save(ev);
+		ev.description = 'Default description';
+		await this.evRepo.save(ev);
 		return true;
 	}
 }

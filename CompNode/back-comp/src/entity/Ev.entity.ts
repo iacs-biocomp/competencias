@@ -9,8 +9,9 @@ export class Ev extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: string;
 
+	//? Nullable?
 	@ApiProperty()
-	@Column({ type: 'varchar', unique: true, length: 25, nullable: false })
+	@Column({ type: 'varchar', length: 35, nullable: true })
 	description: string;
 
 	/**

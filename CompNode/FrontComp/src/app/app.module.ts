@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { HttpConfigInterceptor } from './guards/httpconfig.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { Error404Component } from './modules/app/error404/error404.component';
@@ -33,7 +33,7 @@ registerLocaleData(localeEs);
 // }
 @NgModule({
 	declarations: [AppComponent, Error404Component],
-	imports: [BrowserModule, AppRoutingModule, HttpClientModule, SharedModule],
+	imports: [BrowserModule, AppRoutingModule, HttpClientModule, SharedModule, BrowserAnimationsModule],
 	providers: [
 		// HttpConfigInterceptor
 		// KeycloakService,

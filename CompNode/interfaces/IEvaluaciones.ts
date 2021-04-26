@@ -13,7 +13,19 @@ export interface IEvaluacion {
   /** El modelo que usa la evaluación (Donde se indican competencias comportamientos y niveles) */
   model: IEvModel | undefined;
   /** La categoría competencial de la evaluación */
-  catComp: ICatComp;
+  catComp?: ICatComp;
+
+  iniDate?: Date;
+  finPropuestas?: Date;
+
+  iniValidacion?: Date;
+  endValidacion?: Date;
+
+  iniValoracion?: Date;
+  endValoracion?: Date;
+
+  iniPerEvaluado?: Date;
+  endPerEvaluado?: Date;
 }
 
 export interface IEvModel {
@@ -34,7 +46,7 @@ export interface ISubModel {
 
   nivel: INivel | undefined;
 
-  competencia: ICompetencia| undefined;
+  competencia: ICompetencia | undefined;
 
   comportamientos?: IComportamiento[];
 }

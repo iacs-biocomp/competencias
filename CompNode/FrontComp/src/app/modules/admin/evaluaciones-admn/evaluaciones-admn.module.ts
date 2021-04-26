@@ -9,6 +9,9 @@ import { EvaluacionesAdmService } from './services/evaluaciones-adm.service';
 import { ModelosComponent } from '../modelos/modelos.component';
 import { NewEvModalComponent } from './new-ev-modal/new-ev-modal.component';
 import { MaterialEvModule } from './MatModule/materialev.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 /** Rutas relacionadas con el subModulo de comportamientos */
 export const evRoutes: Routes = [
@@ -28,6 +31,9 @@ export const evRoutes: Routes = [
 		FormsModule,
 		ReactiveFormsModule,
 		MaterialEvModule,
+		MatDatepickerModule,
+		MatFormFieldModule,
+		MatNativeDateModule,
 	],
 	providers: [HttpClient, EvaluacionesAdmService],
 })

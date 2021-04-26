@@ -14,17 +14,84 @@
 			<div class="modal-body">
 				<input type="text" class="form-control" #addRelation placeholder="Nombre evaluación" />
 				<hr />
+				<mat-form-field appearance="fill">
+					<mat-label>Periodo propuesta evaluadores</mat-label>
+					<mat-date-range-input [formGroup]="periodos.rangePropuesta" [rangePicker]="picker1">
+						<input matStartDate formControlName="start" placeholder="Fecha inicio" />
+						<input matEndDate formControlName="end" placeholder="Fecha final" />
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+					<mat-date-range-picker #picker1></mat-date-range-picker>
+
+					<mat-error *ngIf="periodos.rangePropuesta.controls.start.hasError('matStartDateInvalid')"
+						>Invalid Fecha inicio</mat-error
+					>
+					<mat-error *ngIf="periodos.rangePropuesta.controls.end.hasError('matEndDateInvalid')"
+						>Invalid Fecha final</mat-error
+					>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Periodo Validación evaluadores</mat-label>
+					<mat-date-range-input [formGroup]="periodos.rangeValidacion" [rangePicker]="pickerValidacion">
+						<input matStartDate formControlName="start" placeholder="Fecha inicio" />
+						<input matEndDate formControlName="end" placeholder="Fecha final" />
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="pickerValidacion"></mat-datepicker-toggle>
+					<mat-date-range-picker #pickerValidacion></mat-date-range-picker>
+
+					<mat-error *ngIf="periodos.rangeValidacion.controls.start.hasError('matStartDateInvalid')"
+						>Invalid Fecha inicio</mat-error
+					>
+					<mat-error *ngIf="periodos.rangeValidacion.controls.end.hasError('matEndDateInvalid')"
+						>Invalid Fecha final</mat-error
+					>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Periodo valoraciones</mat-label>
+					<mat-date-range-input [formGroup]="periodos.rangeValoracion" [rangePicker]="pickerValoracion">
+						<input matStartDate formControlName="start" placeholder="Fecha inicio" />
+						<input matEndDate formControlName="end" placeholder="Fecha final" />
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="pickerValoracion"></mat-datepicker-toggle>
+					<mat-date-range-picker #pickerValoracion></mat-date-range-picker>
+
+					<mat-error *ngIf="periodos.rangeValoracion.controls.start.hasError('matStartDateInvalid')"
+						>Invalid Fecha inicio</mat-error
+					>
+					<mat-error *ngIf="periodos.rangeValoracion.controls.end.hasError('matEndDateInvalid')"
+						>Invalid Fecha final</mat-error
+					>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Periodo Evaluado</mat-label>
+					<mat-date-range-input [formGroup]="periodos.rangeEvaluacion" [rangePicker]="pickerEvPeriodo">
+						<input matStartDate formControlName="start" placeholder="Fecha inicio" />
+						<input matEndDate formControlName="end" placeholder="Fecha final" />
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="pickerEvPeriodo"></mat-datepicker-toggle>
+					<mat-date-range-picker #pickerEvPeriodo></mat-date-range-picker>
+
+					<mat-error *ngIf="periodos.rangeEvaluacion.controls.start.hasError('matStartDateInvalid')"
+						>Invalid Fecha inicio</mat-error
+					>
+					<mat-error *ngIf="periodos.rangeEvaluacion.controls.end.hasError('matEndDateInvalid')"
+						>Invalid Fecha final</mat-error
+					>
+				</mat-form-field>
 				<select class="form-select mb-2" [(ngModel)]="catCompSelected">
-					<option selected disabled hidden>Seleccione la Categoria competencial</option>
+					<option selected hidden disabled [value]="evModelSelected">
+						Seleccione la Categoria competencial
+					</option>
 					<option *ngFor="let catComp of catComps" [ngValue]="catComp">{{ catComp.id }}</option>
 				</select>
 				<select class="form-select mb-2" [(ngModel)]="evModelSelected">
-					<option selected disabled hidden>Seleccione el modelo a usar</option>
+					<option selected hidden disabled [value]="evModelSelected">Seleccione el modelo a usar</option>
 					<option *ngFor="let evModel of filterEvModels()" [ngValue]="evModel">
 						{{ evModel.id }}
 					</option>
 				</select>
 			</div>
+
 			<div class="modal-footer">
 				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 				<button type="button" (click)="save()" class="btn btn-primary">Guardar cambios</button>
