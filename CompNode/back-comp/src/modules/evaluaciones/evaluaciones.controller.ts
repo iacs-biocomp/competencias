@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, ConflictException, UnprocessableEntityException } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CatComp } from '../../entity/CatComp.entity';
 import { Ev } from '../../entity/Ev.entity';
@@ -31,15 +32,15 @@ export class EvaluacionesController {
 		return evs;
 	}
 
-	@Get('insert')
-	async insertEvsTes() {
-		// return await CatComp.find();
-		const cattComp = await CatComp.findOne({ where: { id: 'GR1' } });
-		var lel: Ev = Ev.create();
-		lel.catComp = cattComp;
-		lel.description = 'Descripción de evaluación';
-		lel.id = 'Ev2';
-		lel.model = await EvModel.findOne({ where: { catComp: cattComp } });
-		return lel;
+	@Post('')
+	async createEv(@Body() ev: Ev): Promise<boolean> {
+		if (await this.evRepo.findOne({ id: ev.id })) {
+			throw new ConflictException(`Existe una ev con el id:${ev.id}`);
+		}
+		if (!ev.model) {
+			throw new UnprocessableEntityException('La evaluación no tiene un modelo que exista en la bbdd');
+		}
+		this.evRepo.save(ev);
+		return true;
 	}
 }

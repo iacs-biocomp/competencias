@@ -188,9 +188,9 @@ li::before {
 	margin-right: 12px;
 }
 
-.site-header::before {
-	content: '\2630';
+.toggle-menu-icon {
 	color: #ebebeb;
 	float: right;
 	font-size: 20px;
+	cursor: pointer;
 }

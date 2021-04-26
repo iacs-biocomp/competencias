@@ -17,6 +17,6 @@ import { ModeloCompetComponent } from './modelo-compet/modelo-compet.component';
 		FormsModule,
 		ReactiveFormsModule,
 	],
-	providers: [ModelosService]
+	providers: [ModelosService],
 })
 export class ModelosModule {}

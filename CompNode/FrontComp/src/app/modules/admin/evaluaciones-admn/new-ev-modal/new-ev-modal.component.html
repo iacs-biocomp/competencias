@@ -1,0 +1,34 @@
+<div
+	class="modal fade"
+	id="exampleModal"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title" id="exampleModalLabel">Crear nueva evaluación</h2>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="text" class="form-control" #addRelation placeholder="Nombre evaluación" />
+				<hr />
+				<select class="form-select mb-2" [(ngModel)]="catCompSelected">
+					<option selected disabled hidden>Seleccione la Categoria competencial</option>
+					<option *ngFor="let catComp of catComps" [ngValue]="catComp">{{ catComp.id }}</option>
+				</select>
+				<select class="form-select mb-2" [(ngModel)]="evModelSelected">
+					<option selected disabled hidden>Seleccione el modelo a usar</option>
+					<option *ngFor="let evModel of filterEvModels()" [ngValue]="evModel">
+						{{ evModel.id }}
+					</option>
+				</select>
+			</div>
+			<div class="modal-footer">
+				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" (click)="save()" class="btn btn-primary">Guardar cambios</button>
+			</div>
+		</div>
+	</div>
+</div>

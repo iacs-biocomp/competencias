@@ -15,8 +15,16 @@ export class ModelosController {
 
 	@Get(':cComp')
 	async modelsCatComp(@Param('cComp') catCompId: string) {
-		console.log(catCompId);
-		return await this.modelRepo.find();
+		return await this.modelRepo.find({
+			where: { catComp: catCompId },
+			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
+		});
+	}
+	@Get('')
+	async allModels() {
+		return await this.modelRepo.find({
+			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
+		});
 	}
 
 	@Post('')

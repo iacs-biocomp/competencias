@@ -1,5 +1,9 @@
 <h1 class="layout-title">Evaluaciones</h1>
 <div class="container-fluid">
+	<button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" id="newEvButton">
+		Nueva evaluación
+	</button>
+	<!-- TODO: Cambiar identificadores del modal nueva evalución -->
 	<div class="row gy-4">
 		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let row of evalToAdd">
 			<div class="card">
@@ -20,11 +24,9 @@
 			</div>
 		</div>
 
-
-
-
 		<!--Al pulsar el boton se carga el modulo del MODELO-->
 		<button (click)="loadModelForm()" type="button" style="width: 50%; height: 50%">Nuevo modelo</button>
 		<app-modelos *ngIf="loadMForm"></app-modelos>
 	</div>
 </div>
+<app-new-ev-modal></app-new-ev-modal>
