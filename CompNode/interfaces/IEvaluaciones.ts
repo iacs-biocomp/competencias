@@ -19,7 +19,7 @@ export interface IEvaluacion {
 export interface IEvModel {
   id: string;
   // evs: Ev[];
-  catComp: ICatComp;
+  catComp: ICatComp | undefined;
   /**
    * Representa los submodelos de el modelo que utiliza la evaluación
    * @see {ISubModel}
@@ -32,11 +32,11 @@ export interface ISubModel {
   /** Los modelos a los que pertenece este SubModelo, puede ser undefined si la petición es desde el modelo o no se carga la relación del modelo */
   modelos?: IEvModel[];
 
-  nivel: INivel;
+  nivel: INivel | undefined;
 
-  competencia: ICompetencia;
+  competencia: ICompetencia| undefined;
 
-  comportamientos: IComportamiento[];
+  comportamientos?: IComportamiento[];
 }
 export interface INivel {
   id: string;

@@ -30,13 +30,48 @@ export class ModelosComponent implements OnInit {
 	niveles!: INivel[];
 	enviado: boolean = false;
 	competeFilter: string = '';
+
+
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
-			description: 'f',
+			description: 'CatComp 6',
 		},
-		subModels: [],
+		subModels: [{
+			modelos:
+			[
+				{
+				id: 'M1',
+				catComp: undefined,
+				subModels: undefined
+				}
+			],
+
+			competencia:
+			{
+				id: 'C2',
+				descripcion: 'Liderazgo',
+				createdAt: undefined,
+			},
+			comportamientos:
+			[
+				{
+				id: 'c04',
+				descripcion: 'ooo',
+				subModels: undefined
+				}
+			],
+			nivel:
+			{
+				id: 'N1',
+				valor: 1,
+				subModels: undefined,
+			},
+			}
+		]
 	};
+
+
 
 	subModel!: ISubModel[];
 
@@ -50,6 +85,7 @@ export class ModelosComponent implements OnInit {
 		this.competencs = await this.competenciasService.getAllCompt();
 		this.niveles = await this.nivelesService.getAll();
 		this.comports = await this.comportamiService.getAll();
+
 	}
 
 	selectCatComp(catComp: ICatComp) {
@@ -58,6 +94,10 @@ export class ModelosComponent implements OnInit {
 			this.addModelo.catComp = catComp;
 			console.log(this.addModelo.catComp);
 		}
+	}
+
+	selectCompetenc(compete: ICompetencia){
+		var index = this.addModelo.subModels
 	}
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
@@ -79,6 +119,11 @@ export class ModelosComponent implements OnInit {
 			this.current--;
 		}
 	}
+
+	newAsociacionCompeNivel(){}
+	selectRelation(){}
+	saveRelations(){}
+	selectCompe(){}
 
 	selectCompet(compete: ICompetencia[], listItemId: string) {
 		const listItem = document.getElementById(listItemId);
