@@ -23,7 +23,7 @@ import { UserRepository } from '../users/user.repository';
 				return {
 					secret: config.get(Configuration.JWT_SECRET),
 					signOptions: {
-						expiresIn: 3600,
+						expiresIn: 600,
 					},
 				};
 			},

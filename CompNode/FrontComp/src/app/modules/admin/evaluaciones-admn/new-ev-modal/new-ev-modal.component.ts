@@ -45,17 +45,22 @@ export class NewEvModalComponent implements OnInit {
 			console.log(this.periodos);
 		}, 2000);
 	}
-	//TODO: Añadir tsdoc y dateRangePicker con angular material
+
+	/**
+	 * Filtra de this.evModels y elimina los que no tengan una catComp igual a this.catCompSelected
+	 * Devuelve [] en caso de que este undefined cualquiera de estos dos.
+	 * @returns El array de modelos de evaluaciones filtrado
+	 */
 	filterEvModels(): IEvModel[] {
 		if (!this.catCompSelected || !this.evModels) {
 			return [];
 		}
 		return this.evModels.filter(evModel => evModel.catComp?.id == this.catCompSelected?.id);
 	}
+
 	save() {
-		console.log(this.evModelSelected);
 		this.evToAdd = {
-			id: -1,
+			id: 'none',
 			description: 'test',
 			catComp: this.catCompSelected!,
 			model: this.evModelSelected,

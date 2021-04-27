@@ -6,4 +6,5 @@ export interface IJwtPayload {
 	password: string;
 	roles: RoleType[];
 	iat?: Date;
+	exp?: Date;
 }

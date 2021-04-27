@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { IAuthLogin, IRegisterRequest } from './auth.intefaces';
 
-interface IAuthTokenRes {
+export type IAuthTokenRes = {
 	token: string;
-}
+};
 export const JWT_NAME = 'login-token';
 
 @Injectable()
@@ -39,6 +39,7 @@ export class AuthService {
 		}
 		return true;
 	}
+	//TODO: Refactor, usar el servicio jwt.service para tema del token
 	/**
 	 * Guarda un token en el localStorage `key:value` La key (nombre del token) viene dado por env variable
 	 * @param token El token jwt firmado

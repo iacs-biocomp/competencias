@@ -3,12 +3,11 @@ import { CanLoad, Route, Router } from '@angular/router';
 import { JWT_NAME } from '../modules/auth/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IJwtToken } from '../modules/auth/JWTlocal.interface';
-import { Role } from '../../../../interfaces/IUser';
 
 @Injectable()
 export class LoginGuard implements CanLoad {
 	//En caso de usar una ruta varias veces guardarla en una variable, si son mas en un objeto.
-	static loginRoute = '/auth/login';
+	public static readonly loginRoute = '/auth/login';
 
 	constructor(private jwtService: JwtHelperService, private router: Router) {}
 

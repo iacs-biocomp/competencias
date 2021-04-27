@@ -21,8 +21,8 @@ export class AuthController {
 		// return this._authService.signin(signinDto);
 		return await this._authService.signin(signinDto);
 	}
-	// @Get('testt')
-	// async test() {
-	//   return this.kCloak.test();
-	// }
+	@Post('jwtrefresh')
+	async jwtRefresh(@Body() tokenJson: { tokenStr: string }) {
+		return await this._authService.renewToken(tokenJson.tokenStr);
+	}
 }

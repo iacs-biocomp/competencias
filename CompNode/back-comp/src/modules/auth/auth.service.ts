@@ -76,4 +76,23 @@ export class AuthService {
 		const token = this._jwtService.sign(payload);
 		return { token };
 	}
+	/**
+	 *	Verifica si el token mandando como string es valido, de ser asi renueva
+	 *	la fecha de expiración y de expedición de este
+	 * @param tokenStr El jwt como string
+	 * @returns Retorna un token con el mismo payload pero distinto exp y iat.
+	 */
+	async renewToken(tokenStr: string): Promise<{ token: string }> {
+		if (!tokenStr || tokenStr == null) {
+			return;
+		}
+		if (!this._jwtService.verify(tokenStr)) {
+			return;
+		}
+		let tokenObj: IJwtPayload = <IJwtPayload>this._jwtService.decode(tokenStr);
+		delete tokenObj.iat;
+		delete tokenObj.exp;
+		const token = this._jwtService.sign(tokenObj);
+		return { token };
+	}
 }

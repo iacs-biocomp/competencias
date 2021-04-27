@@ -5,8 +5,8 @@
 			<div class="card">
 				<div class="card-body">
 					<h2 class="card-title">Evaluación: {{ evaluacion.id }}</h2>
-					<p>Categoría competencial: {{ evaluacion.catComp.id }}</p>
-					<p>Descripcion de categoría competencial: {{ evaluacion.catComp.description }}</p>
+					<p>Categoría competencial: {{ evaluacion.catComp?.id }}</p>
+					<p>Descripcion de categoría competencial: {{ evaluacion.catComp?.description }}</p>
 					<p>Descripción de la evaluación: {{ evaluacion.description }}</p>
 				</div>
 				<button type="button" class="btn btn-primary">Evaluar</button>

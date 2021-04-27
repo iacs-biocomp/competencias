@@ -12,7 +12,7 @@ export class ListEvComponent implements OnInit {
 
 	evalToAdd: IEvaluacion[] = [
 		{
-			id: 1,
+			id: '1',
 			description: 'ff',
 			model: undefined,
 			catComp: {
