@@ -109,6 +109,7 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
+selectCompet(compete: ICompetencia, listItemId: string){};
 	/* 	selectCompet(compete: ICompetencia[], listItemId: string) {
 		const listItem = document.getElementById(listItemId);
 		if (listItem == null) {
