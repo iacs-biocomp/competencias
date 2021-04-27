@@ -17,9 +17,6 @@ export class TableComportComponent implements OnInit {
 	comports: IComportEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
-		// setInterval(() => {
-		// 	console.log(this.comportToAdd);
-		// }, 2500);
 		await this.updateComportView();
 	}
 	/** Metodo que sincroniza la vista con el backend (La lista de comportamiento) */

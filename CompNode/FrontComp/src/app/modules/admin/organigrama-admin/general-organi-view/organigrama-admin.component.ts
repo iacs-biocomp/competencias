@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IOrganigramaUsrDTO, ITrabOrgani } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
+import { ICatComp } from 'sharedInterfaces/ICategorias';
 import { OrganiService } from '../services/organi.service';
+import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 
 type modalTitles = 'Inferior' | 'Superior' | 'Par';
 type ctlView = {
@@ -12,6 +14,8 @@ type ctlView = {
 	modalRelations: ITrabOrgani[];
 	/** Strings permitidos como titulo del modal, usado también para saber que es lo que se quiere añadir (inf/sup/par) */
 	modalTitle: modalTitles;
+	/** Categoria competencial usada para filtrar el organigrama */
+	cCompFilter?: ICatComp;
 	[key: string]: any;
 };
 @Component({
@@ -28,6 +32,8 @@ export class OrganiGeneralView implements OnInit {
 	trabajadores!: ITrabOrgani[];
 	trabajadoresFiltered!: ITrabOrgani[];
 	myControl = new FormControl();
+	/** Todas las categorias competenciales */
+	cComps!: ICatComp[];
 
 	/** Control View, objeto que tiene variables unicamente para la vista y se usan poco en el modelo */
 	cv: ctlView = {
@@ -35,16 +41,18 @@ export class OrganiGeneralView implements OnInit {
 		/** Usada para hacer collapse de todos los accordion o mostrarlos */
 		showall: false,
 		modalTitle: 'Par',
+		cCompFilter: undefined,
 		/** El filtro a aplicar sobre el organigrama, dado por el usuario en un <input> */
 		modalFilter: '',
 		modalWorker: undefined,
 		modalRelations: [],
 	};
 
-	constructor(private orgSv: OrganiService) {}
+	constructor(private orgSv: OrganiService, private cCompSv: CatCompetencialesService) {}
 
 	async ngOnInit(): Promise<void> {
-		await this.syncView();
+		const promises = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
+		this.cComps = promises[1];
 	}
 
 	/**
@@ -156,9 +164,13 @@ export class OrganiGeneralView implements OnInit {
 	 */
 	filterOrgani(value: string): IOrganigramaUsrDTO[] {
 		const filterValue = value.toLowerCase().replace(/\s/g, '');
-		return this.fullOrgani?.filter(org => {
+		let nameFilteredOrg = this.fullOrgani?.filter(org => {
 			const trabNames = org.trabajador.nombre.toLowerCase() + org.trabajador.apellidos.toLowerCase();
 			return trabNames.includes(filterValue) ? true : false;
 		});
+		if (!this.cv.cCompFilter) {
+			return nameFilteredOrg;
+		}
+		return nameFilteredOrg.filter(org => org.trabajador.catComp?.id == this.cv.cCompFilter?.id);
 	}
 }

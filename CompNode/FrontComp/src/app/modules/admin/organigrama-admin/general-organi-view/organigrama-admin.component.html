@@ -3,6 +3,13 @@
 
 	<input type="text" #filterOrg (keyup)="cv.orgFilter = filterOrg.value" placeholder="Filtrar trabajadores" />
 	<button (click)="cv.showall = !cv.showall" class="btn show-all-btn">Mostrar todos</button>
+	<select class="mb-2" [(ngModel)]="cv.cCompFilter">
+		<option selected hidden disabled [ngValue]="cv.cCompFilter">Filtrar por Categoria competencial</option>
+		<option [ngValue]="undefined">Todas</option>
+		<option *ngFor="let cComp of cComps" [ngValue]="cComp">
+			{{ cComp.id }}
+		</option>
+	</select>
 	<div class="accordion" id="accordionExample">
 		<div class="accordion-body">
 			<div

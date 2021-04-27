@@ -19,6 +19,8 @@ export interface ITrabajador {
 
   periodos: IPeriodoTrab[] | undefined;
 
+  catComp?: ICatComp;
+
   user: IUserJson;
 }
 export interface IPeriodoTrab {

@@ -29,10 +29,6 @@ export class TableContracComponent implements OnInit {
 	async ngOnInit(): Promise<void> {
 		await this.updateContrView();
 		this.catComps = await this.cCompSv.getAll();
-
-		setInterval(() => {
-			console.log(this.catContracts);
-		}, 3500);
 	}
 
 	async updateContrView(): Promise<void> {

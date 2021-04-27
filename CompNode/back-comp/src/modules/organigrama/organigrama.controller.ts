@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CatComp } from 'src/entity/CatComp.entity';
 import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
 import { Trabajador } from 'src/entity/Trabajador.entity';
 import { TrabajadorRepo } from '../trabajadores/trabajador.repository';
@@ -10,7 +11,7 @@ interface Organigrama {
 	pares: Trabajador[];
 }
 interface UsrWithOrgani extends Organigrama {
-	trabajador: Trabajador;
+	trabajador: Trabajador & { catComp: CatComp };
 }
 interface ITrabajador {
 	dni: string;
@@ -39,7 +40,7 @@ export class OrganigramaController {
 	@Get('all')
 	async getAll(): Promise<UsrWithOrgani[]> {
 		const workers = await this.trabRepo.find({
-			relations: ['periodos', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
+			relations: ['periodos', 'periodos.catComp', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
 		});
 		const organiFull: UsrWithOrgani[] = workers.map(wrk => {
 			//Filtro el periodo al actual
@@ -48,8 +49,9 @@ export class OrganigramaController {
 				inferiores: wrk.periodos[0].inferiores,
 				superiores: wrk.periodos[0].superiores,
 				pares: wrk.periodos[0].pares,
-				trabajador: wrk,
+				trabajador: wrk as Trabajador & { catComp: CatComp },
 			};
+			org.trabajador.catComp = wrk.periodos[0].catComp;
 			//Borro los periodos de cada trabajador (Info no necesaria)
 			delete org.trabajador.periodos;
 			return org;

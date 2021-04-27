@@ -41,9 +41,6 @@ export class NewEvModalComponent implements OnInit {
 		const promises = await Promise.all([this.cCompSv.getAll(), this.evSv.getAllEvModels()]);
 		this.catComps = promises[0].sort((a, b) => a.id.localeCompare(b.id));
 		this.evModels = promises[1];
-		setInterval(() => {
-			console.log(this.periodos);
-		}, 2000);
 	}
 
 	/**

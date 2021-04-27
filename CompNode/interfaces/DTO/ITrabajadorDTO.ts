@@ -1,3 +1,4 @@
+import { ICatComp } from 'sharedInterfaces/ICategorias';
 import { ITrabajador } from '../IUser';
 
 export interface ITrabajadorDTO {
@@ -20,7 +21,10 @@ export interface ITrabajadorDTO {
   deleteable: boolean;
 }
 
-export interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {}
+export interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {
+  /** La categoría competencial actual del trabajador, solo EL TRABAJADOR la tiene no sus sup/inf/pares */
+  catComp?: ICatComp;
+}
 export interface IOrganigramaUsrDTO {
   /** Representa el trabajador del cual se listan sus inferiores superiores y pares */
   trabajador: ITrabOrgani;
