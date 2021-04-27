@@ -31,48 +31,62 @@ export class ModelosComponent implements OnInit {
 	enviado: boolean = false;
 	competeFilter: string = '';
 
-
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
 			description: 'CatComp 6',
 		},
-		subModels: [{
-			modelos:
-			[
-				{
-				id: 'M1',
-				catComp: undefined,
-				subModels: undefined
-				}
-			],
-			competencia:
+		subModels: [
 			{
-				id: 'C2',
-				descripcion: 'Liderazgo',
-				createdAt: undefined,
+				modelos: [
+					{
+						id: 'M1',
+						catComp: undefined,
+						subModels: undefined,
+					},
+				],
+				competencia: {
+					id: 'C2',
+					descripcion: 'Liderazgo',
+					createdAt: undefined,
+				},
+				comportamientos: [
+					{
+						id: 'c04',
+						descripcion: 'ooo',
+						subModels: undefined,
+					},
+				],
+				nivel: {
+					id: 'N1',
+					valor: 1,
+					subModels: undefined,
+				},
 			},
-			comportamientos:
-			[
-				{
-				id: 'c04',
-				descripcion: 'ooo',
-				subModels: undefined
-				}
-			],
-			nivel:
-			{
-				id: 'N1',
-				valor: 1,
-				subModels: undefined,
-			},
-			}
-		]
+		],
 	};
 
+	subModel: ISubModel = {
+		modelos: undefined,
+		nivel: {
+			id: 'N1',
+			valor: 1,
+			subModels: undefined,
+		},
+		competencia: {
+			id: 'C01',
+			descripcion: 'COMP1',
+			createdAt: undefined,
+		},
+		comportamientos: [
+			{
+				id: 'C01',
+				descripcion: 'COMP1',
+				subModels: undefined,
+			},
+		],
+	};
 
-
-	subModel!: ISubModel[];
 	fullModel!: IModelDTO[];
 
 	public selectedOption!: boolean;
@@ -80,13 +94,11 @@ export class ModelosComponent implements OnInit {
 	bntStyle: string = 'btn-default';
 	current = 0;
 
-
 	async ngOnInit(): Promise<void> {
 		this.catComps = await this.catCompService.getAll();
 		this.competencs = await this.competenciasService.getAllCompt();
 		this.niveles = await this.nivelesService.getAll();
 		this.comports = await this.comportamiService.getAll();
-
 	}
 
 	selectCatComp(catComp: ICatComp) {
@@ -97,8 +109,32 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
-	selectCompetenc(compete: ICompetencia){
-		var index = this.addModelo.subModels
+	/* 	selectCompet(compete: ICompetencia[], listItemId: string) {
+		const listItem = document.getElementById(listItemId);
+		if (listItem == null) {
+			console.log('Contacte con un programador');
+			return;
+		}
+
+		for (let i = 0; i <= compete.length; i++) {
+			const index = this.competencs.indexOf(compete[i]);
+
+			if (index == -1) {
+				this.subModel.competencia = compete[i];
+				console.log((this.subModel.competencia = compete[i]));
+			} else {
+				this.addModelo.subModels.splice(index, 1);
+				console.log(this.addModelo.subModels.splice(index, 1));
+			}
+		}
+	} */
+
+	selectNivel(nivel: INivel) {
+		var index = this.subModel.nivel;
+		if (index) {
+			this.subModel.nivel = nivel;
+			console.log(this.subModel.nivel);
+		}
 	}
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
@@ -121,24 +157,8 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
-	newAsociacionCompeNivel(){}
-	selectRelation(){}
-	saveRelations(){}
-	selectCompe(){}
-
-	selectCompet(compete: ICompetencia[], listItemId: string) {
-		const listItem = document.getElementById(listItemId);
-		if (listItem == null) {
-			console.log('Contacte con un programador');
-			return;
-		}
-		//TODO: Refactor
-		for(let i = 0; i <= compete.length; i++){
-			const index = this.competencs.indexOf(compete[i]);
-			if (index == -1) {
-				compete.join;
-			}
-		}
-	}
-
+	newAsociacionCompeNivel() {}
+	selectRelation() {}
+	saveRelations() {}
+	selectCompe() {}
 }

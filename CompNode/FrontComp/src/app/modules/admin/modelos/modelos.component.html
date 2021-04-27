@@ -42,83 +42,82 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h2 class="modal-title" id="exampleModalLabel">
-						Haga click para añadir una competencia y asociar un nivel
+						Haga click para añadir las competencias que tendrá este modelo
 					</h2>
-					<button
-						class="btn btn-primary me-2"
-						data-bs-toggle="modal"
-						data-bs-target="#exampleModal"
-						(click)="newAsociacionCompeNivel()"
-					>
-						<span class="material-icons" title="Añadir competencia y nivel"> add </span>
-					</button>
 				</div>
 				<div class="modal-body">
 					<hr />
+					<ul class="list-group">
+						<li
+							[ngClass]="{ active: subModel.competencia == compete }"
+							[id]="'compete' + i"
+							class="list-group-item p-3"
+							aria-current="true"
+							*ngFor="let compete of competencs; let i = index"
+							(click)="scrollToButton(target);
+							selectCompet(compete, 'compete' +i)"
 
-					<!-- MODAL -->
-					<div
-						class="modal fade"
-						id="exampleModal"
-						tabindex="-1"
-						aria-labelledby="exampleModalLabel"
-						aria-hidden="true"
-					>
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h2 class="modal-title" id="exampleModalLabel">
-										Añada una competencia y asóciele un nivel
-									</h2>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<input type="text"
-										placeholder="Filtrar competencias" />
-									<hr />
-									<ul class="list-group">
-										<li
-											[id]="'newRel' + i"
-											class="list-group-item p-3"
-											aria-current="true"
-											*ngFor="let compete of competencs; let i = index"
-											(click)="selectCompe()"
-										>
-											{{ compete.id }} - {{ compete.descripcion }}
+							>
 
-											<td>
-												<select id="compete">
-													<option *ngFor="let nivel of niveles" [value]="nivel.valor">{{ nivel.valor }}</option>
-												</select>
-											</td>
-										</li>
-									</ul>
-								</div>
-								<div class="modal-footer">
-									<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-										Cerrar
-									</button>
-									<button type="button" class="btn btn-primary" (click)="saveRelations()">
-										Guardar cambios
-									</button>
-								</div>
-							</div>
-						</div>
+							{{ compete.id }} - {{ compete.descripcion }}
+
+						</li>
+					</ul>
+				</div>
+
+				<div class="modal-footer">
+					<div #target class="btn" (click)="move(false)">
+						<span class="material-icons"> arrow_back </span>
 					</div>
-					<!-- FIN MODAL -->
-
-
+					<div #target class="btn" (click)="move(true)">
+						<span class="material-icons"> arrow_forward </span>
 					</div>
-					<div class="modal-footer">
-						<div #target class="btn" (click)="move(false)">
-							<span class="material-icons"> arrow_back </span>
-						</div>
-						<div #target class="btn" (click)="move(true)">
-							<span class="material-icons"> arrow_forward </span>
-						</div>
-					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
-			<!--FIN COMPETENCIAS Y NIVELES  -->
+		<!--FIN COMPETENCIAS Y NIVELES -->
+
+	<!--ASIGNAR NIVELES A ESAS COMPETENCIAS-->
+	<div [ngClass]="bntStyle" class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" id="exampleModalLabel">
+						Asigne el nivel objetivo a cada competencia
+					</h2>
+				</div>
+				<div class="modal-body">
+					<hr />
+					<ul class="list-group">
+						<li
+							[ngClass]="{ active: nivel === subModel.nivel}"
+							[id]="'catComp' + i"
+							class="list-group-item p-3"
+							aria-current="true"
+							*ngFor="let nivel of niveles; let i = index"
+							(click)="scrollToButton(target); selectNivel(nivel)"
+						>
+							{{ nivel.id }} - {{ nivel.valor }}
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<div #target class="btn" (click)="move(false)">
+						<span class="material-icons"> arrow_back </span>
+					</div>
+					<div #target class="btn" (click)="move(true)">
+						<span class="material-icons"> arrow_forward </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--FIN ASIGNAR NIVELES A ESAS COMPETENCIAS-->
+
+
 </div>
+
+
+
