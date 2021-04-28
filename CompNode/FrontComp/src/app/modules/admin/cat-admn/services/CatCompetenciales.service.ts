@@ -26,7 +26,7 @@ export class CatCompetencialesService {
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
 	async borrarCatComp(id: string): Promise<boolean> {
-		var borrado = false;
+		let borrado = false;
 		try {
 			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${id}`).toPromise();
 		} catch (error) {

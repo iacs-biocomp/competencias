@@ -80,7 +80,7 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="cv.cCompFilter && cv.trabCount == 0">
+			<div *ngIf="cv.cCompFilter && cv.orgFilter == '' && cv.trabCount == 0">
 				No hay ningun trabajador con {{ cv.cCompFilter?.id }}
 			</div>
 		</div>

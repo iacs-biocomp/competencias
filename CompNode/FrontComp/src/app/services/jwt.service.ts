@@ -13,11 +13,13 @@ import { LoginGuard } from '../guards/login.guard';
 })
 /** Este servicio contiene todas funciones relacionadas con los jwt, tanto para las cookies como el localStorage */
 export class JwtService {
-	/** Token codificado en base64 */
-	private token = () => localStorage.getItem(JWT_NAME)!;
-
 	private refresh = {
 		eventOcurred: false,
+	};
+	/** Token codificado en base64 */
+	private token = () => {
+		const tkn = localStorage.getItem(JWT_NAME);
+		return tkn === null ? undefined : tkn;
 	};
 
 	constructor(private jwtHelper: JwtHelperService, private httpClient: HttpClient, private router: Router) {}

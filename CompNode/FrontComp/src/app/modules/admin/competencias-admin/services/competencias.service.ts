@@ -26,7 +26,7 @@ export class CompetenciasService {
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
 	async borrarCompeten(id: string): Promise<boolean> {
-		var borrado = false;
+		let borrado = false;
 		try {
 			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${id}`).toPromise();
 		} catch (error) {

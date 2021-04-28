@@ -61,14 +61,14 @@ export class NewEvModalComponent implements OnInit {
 			description: 'test',
 			catComp: this.catCompSelected!,
 			model: this.evModelSelected,
-			iniDate: <Date>this.periodos.rangePropuesta.get('start')!.value,
-			finPropuestas: <Date>this.periodos.rangePropuesta.get('end')!.value,
-			iniValidacion: <Date>this.periodos.rangeValidacion.get('start')!.value,
-			endValidacion: <Date>this.periodos.rangeValidacion.get('end')!.value,
-			iniValoracion: <Date>this.periodos.rangeValoracion.get('start')!.value,
-			endValoracion: <Date>this.periodos.rangeValoracion.get('end')!.value,
-			iniPerEvaluado: <Date>this.periodos.rangeEvaluacion.get('start')!.value,
-			endPerEvaluado: <Date>this.periodos.rangeEvaluacion.get('end')!.value,
+			iniDate: this.periodos.rangePropuesta.get('start')!.value as Date,
+			finPropuestas: this.periodos.rangePropuesta.get('end')!.value as Date,
+			iniValidacion: this.periodos.rangeValidacion.get('start')!.value as Date,
+			endValidacion: this.periodos.rangeValidacion.get('end')!.value as Date,
+			iniValoracion: this.periodos.rangeValoracion.get('start')!.value as Date,
+			endValoracion: this.periodos.rangeValoracion.get('end')!.value as Date,
+			iniPerEvaluado: this.periodos.rangeEvaluacion.get('start')!.value as Date,
+			endPerEvaluado: this.periodos.rangeEvaluacion.get('end')!.value as Date,
 		};
 		console.log(this.evToAdd);
 		this.evSv.save(this.evToAdd);

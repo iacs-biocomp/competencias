@@ -5,17 +5,21 @@ import { ICatComp } from 'sharedInterfaces/ICategorias';
 import { OrganiService } from '../services/organi.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 
-type modalTitles = 'Inferior' | 'Superior' | 'Par';
-type ctlView = {
+type ModalTitles = 'Inferior' | 'Superior' | 'Par';
+type CtlView = {
 	/** El trabajador sobre el que se abre el modal al cual se le añadirá una relacion */
 	modalWorker?: IOrganigramaUsrDTO;
 	/** Los trabajadores que se quieren añadir como relación del modalWorker,
 	 *  del modalTitle se obtiene que tipo de relación se añadirá */
 	modalRelations: ITrabOrgani[];
 	/** Strings permitidos como titulo del modal, usado también para saber que es lo que se quiere añadir (inf/sup/par) */
-	modalTitle: modalTitles;
+	modalTitle: ModalTitles;
 	/** Categoria competencial usada para filtrar el organigrama */
 	cCompFilter?: ICatComp;
+	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+	modalFilter: string;
+	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+	orgFilter: string;
 	[key: string]: any;
 };
 @Component({
@@ -36,13 +40,12 @@ export class OrganiGeneralView implements OnInit {
 	cComps!: ICatComp[];
 
 	/** Control View, objeto que tiene variables unicamente para la vista y se usan poco en el modelo */
-	cv: ctlView = {
+	cv: CtlView = {
 		orgFilter: '',
 		/** Usada para hacer collapse de todos los accordion o mostrarlos */
 		showall: false,
 		modalTitle: 'Par',
 		cCompFilter: undefined,
-		/** El filtro a aplicar sobre el organigrama, dado por el usuario en un <input> */
 		modalFilter: '',
 		modalWorker: undefined,
 		modalRelations: [],
@@ -61,7 +64,7 @@ export class OrganiGeneralView implements OnInit {
 	 * @param modalWorker
 	 * @param modalTitle El titulo del modal, de tipo modalTitles
 	 */
-	setCtrlView(modalWorker: IOrganigramaUsrDTO, modalTitle: modalTitles) {
+	setCtrlView(modalWorker: IOrganigramaUsrDTO, modalTitle: ModalTitles) {
 		this.cv.modalRelations = [];
 		this.cv.modalWorker = modalWorker;
 		this.cv.modalTitle = modalTitle;
@@ -70,7 +73,7 @@ export class OrganiGeneralView implements OnInit {
 	selectRelation(wrk: ITrabOrgani) {
 		//TODO: Refactor
 		const index = this.cv.modalRelations.indexOf(wrk);
-		if (index == -1) {
+		if (index === -1) {
 			this.cv.modalRelations.push(wrk);
 		} else {
 			this.cv.modalRelations.splice(index, 1);
@@ -87,7 +90,7 @@ export class OrganiGeneralView implements OnInit {
 	 */
 	async saveRelations() {
 		let saved = false;
-		var relations: ITrabOrgani[];
+		let relations: ITrabOrgani[];
 		/**Funcion que recibe unos trabajadores y elimina los duplicados */
 		const filterDuplicates = (rels: ITrabOrgani[]) =>
 			rels.filter((rel, index) => rels.indexOf(rel) === index);
@@ -160,7 +163,7 @@ export class OrganiGeneralView implements OnInit {
 	 */
 	filterOrgani(value: string): IOrganigramaUsrDTO[] {
 		const filterValue = value.toLowerCase().replace(/\s/g, '');
-		let nameFilteredOrg = this.fullOrgani?.filter(org => {
+		const nameFilteredOrg = this.fullOrgani?.filter(org => {
 			const trabNames = org.trabajador.nombre.toLowerCase() + org.trabajador.apellidos.toLowerCase();
 			return trabNames.includes(filterValue) ? true : false;
 		});
@@ -169,7 +172,7 @@ export class OrganiGeneralView implements OnInit {
 			return nameFilteredOrg;
 		}
 		const nameAndCCompFiltered = nameFilteredOrg.filter(
-			org => org.trabajador.catComp?.id == this.cv.cCompFilter?.id,
+			org => org.trabajador.catComp?.id === this.cv.cCompFilter?.id,
 		);
 		//TODO: Refactor, mejor usar 2 observables para ver si ha cambiado el string a filtrar o la cComp y cambiar una variable OrgFiltered.
 		this.cv.trabCount = nameAndCCompFiltered.length;

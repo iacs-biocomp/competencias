@@ -30,7 +30,7 @@ export class TrabajadoresService {
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
 	async borrarTrabajador(id: string): Promise<boolean> {
-		var borrado = false;
+		let borrado = false;
 		borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${id}`).toPromise();
 		//Si la petición delete sale mal lanza excepción
 		return borrado;
@@ -38,6 +38,7 @@ export class TrabajadoresService {
 
 	/**
 	 * Manda una petición de tipo post al servidor intentando añadir el trabajador.
+	 *
 	 * @returns Una promise que se puede resolver como `true` si se ha añadido el trabajador y `false`/Excepción si no se ha podido añadir
 	 */
 	addTrabajador(worker: ITrabajadorDTO): Promise<boolean> {

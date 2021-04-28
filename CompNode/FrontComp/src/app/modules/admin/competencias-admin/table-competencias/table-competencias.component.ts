@@ -12,12 +12,12 @@ interface IComptEdit extends ICompetencia {
 	styleUrls: ['./table-competencias.component.css'],
 })
 export class TableCompetenciasComponent implements OnInit {
-	constructor(private comptService: CompetenciasService) {}
-
 	compeToAdd: ICompetencia[] = [];
 	compets: IComptEdit[] = [];
 	hoy: Date = new Date();
 	OneWeekAgo!: Date;
+
+	constructor(private comptService: CompetenciasService) {}
 
 	//TODO: Añadir tsdoc a los metodos y atributos de la clase
 

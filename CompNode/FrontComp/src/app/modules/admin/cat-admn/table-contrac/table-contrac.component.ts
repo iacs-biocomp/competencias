@@ -12,15 +12,16 @@ interface IContracEdit extends ICatContr {
 	styleUrls: ['./table-contrac.component.css'],
 })
 export class TableContracComponent implements OnInit {
+	catContracts: ICatContr[] = [];
+	contracts: IContracEdit[] = [];
+	catComps: ICatComp[] = [];
+
 	constructor(
 		/** Servicio de categorias contractuales */
 		private catContractService: CatContractService,
 		/** Servicio de categorias competenciales */
 		private cCompSv: CatCompetencialesService,
 	) {}
-	catContracts: ICatContr[] = [];
-	contracts: IContracEdit[] = [];
-	catComps: ICatComp[] = [];
 
 	alert(msg: string) {
 		alert(msg);
