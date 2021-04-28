@@ -80,6 +80,9 @@
 					</div>
 				</div>
 			</div>
+			<div *ngIf="cv.cCompFilter && cv.trabCount == 0">
+				No hay ningun trabajador con {{ cv.cCompFilter?.id }}
+			</div>
 		</div>
 	</div>
 </div>
@@ -116,7 +119,7 @@
 							let org of filterNewRelation(filterOrgani(cv.modalFilter), cv.modalWorker!);
 							let i = index
 						"
-						(click)="selectRelation(org.trabajador, 'newRel' + i)"
+						(click)="selectRelation(org.trabajador)"
 					>
 						{{ org.trabajador.nombre }} {{ org.trabajador.apellidos }}
 					</li>

@@ -14,7 +14,7 @@ import { LoginGuard } from '../guards/login.guard';
 /** Este servicio contiene todas funciones relacionadas con los jwt, tanto para las cookies como el localStorage */
 export class JwtService {
 	/** Token codificado en base64 */
-	token = () => localStorage.getItem(JWT_NAME)!;
+	private token = () => localStorage.getItem(JWT_NAME)!;
 
 	private refresh = {
 		eventOcurred: false,
@@ -37,8 +37,8 @@ export class JwtService {
 
 	/**Metodo que borra el token de las cookies y del localStorage */
 	rmToken(): void {
-		localStorage.removeItem(JWT_NAME);
 		cookieRm(JWT_NAME);
+		localStorage.removeItem(JWT_NAME);
 	}
 
 	/** Debe ser llamado cuando ha ocurrido un evento que representa interación del usuario  */
@@ -55,7 +55,6 @@ export class JwtService {
 			return;
 		}
 		if (this.jwtHelper.getTokenExpirationDate(this.token())! < new Date()) {
-			console.log('Inside Exp');
 			this.rmToken();
 			this.router.navigate([LoginGuard.loginRoute], {
 				queryParams: { returnUrl: this.router.url },

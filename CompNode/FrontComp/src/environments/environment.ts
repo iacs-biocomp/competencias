@@ -4,7 +4,10 @@
 
 export const environment = {
 	production: false,
+	/** La url en la que se encuentra el backend */
 	apiURL: 'http://localhost:3000/nest',
+	/** El intervalo de tiempo en `ms` en el cual se renovará el jwt si ha habido interacción del usuario */
+	jwtInterval: 15000,
 };
 
 /*

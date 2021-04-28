@@ -46,6 +46,7 @@ export class OrganiGeneralView implements OnInit {
 		modalFilter: '',
 		modalWorker: undefined,
 		modalRelations: [],
+		trabCount: 0,
 	};
 
 	constructor(private orgSv: OrganiService, private cCompSv: CatCompetencialesService) {}
@@ -66,12 +67,7 @@ export class OrganiGeneralView implements OnInit {
 		this.cv.modalTitle = modalTitle;
 	}
 
-	selectRelation(wrk: ITrabOrgani, listItemId: string) {
-		const listItem = document.getElementById(listItemId);
-		if (listItem == null) {
-			console.log('Contacte con un programador');
-			return;
-		}
+	selectRelation(wrk: ITrabOrgani) {
 		//TODO: Refactor
 		const index = this.cv.modalRelations.indexOf(wrk);
 		if (index == -1) {
@@ -92,21 +88,21 @@ export class OrganiGeneralView implements OnInit {
 	async saveRelations() {
 		let saved = false;
 		var relations: ITrabOrgani[];
+		/**Funcion que recibe unos trabajadores y elimina los duplicados */
+		const filterDuplicates = (rels: ITrabOrgani[]) =>
+			rels.filter((rel, index) => rels.indexOf(rel) === index);
 		try {
 			switch (this.cv.modalTitle) {
 				case 'Inferior':
-					relations = this.cv.modalRelations.concat(this.cv.modalWorker?.inferiores!);
-					relations = relations.filter((rel, index) => relations.indexOf(rel) === index);
+					relations = filterDuplicates(this.cv.modalRelations.concat(this.cv.modalWorker?.inferiores!));
 					saved = await this.orgSv.setInferiores(this.cv.modalWorker!.trabajador, relations);
 					break;
 				case 'Par':
-					relations = this.cv.modalRelations.concat(this.cv.modalWorker?.pares!);
-					relations = relations.filter((rel, index) => relations.indexOf(rel) === index);
+					relations = filterDuplicates(this.cv.modalRelations.concat(this.cv.modalWorker?.pares!));
 					saved = await this.orgSv.setPares(this.cv.modalWorker!.trabajador, relations);
 					break;
 				case 'Superior':
-					relations = this.cv.modalRelations.concat(this.cv.modalWorker?.superiores!);
-					relations = relations.filter((rel, index) => relations.indexOf(rel) === index);
+					relations = filterDuplicates(this.cv.modalRelations.concat(this.cv.modalWorker?.superiores!));
 					saved = await this.orgSv.setSuperiores(this.cv.modalWorker!.trabajador, relations);
 					break;
 			}
@@ -169,8 +165,14 @@ export class OrganiGeneralView implements OnInit {
 			return trabNames.includes(filterValue) ? true : false;
 		});
 		if (!this.cv.cCompFilter) {
+			this.cv.trabCount = nameFilteredOrg?.length;
 			return nameFilteredOrg;
 		}
-		return nameFilteredOrg.filter(org => org.trabajador.catComp?.id == this.cv.cCompFilter?.id);
+		const nameAndCCompFiltered = nameFilteredOrg.filter(
+			org => org.trabajador.catComp?.id == this.cv.cCompFilter?.id,
+		);
+		//TODO: Refactor, mejor usar 2 observables para ver si ha cambiado el string a filtrar o la cComp y cambiar una variable OrgFiltered.
+		this.cv.trabCount = nameAndCCompFiltered.length;
+		return nameAndCCompFiltered;
 	}
 }

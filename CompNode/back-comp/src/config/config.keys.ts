@@ -11,4 +11,5 @@ export enum Configuration {
 	MAIL_PASS = 'MAIL_PASS',
 	MAIL_PORT = 'MAIL_PORT',
 	MAIL_HOST = 'MAIL_HOST',
+	JWT_EXPIRETIME = 'JWT_EXPIRETIME',
 }

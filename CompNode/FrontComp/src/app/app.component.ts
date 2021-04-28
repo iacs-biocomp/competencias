@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Aos from 'aos';
 import { JwtService } from './services/jwt.service';
-// import { environment as cnf } from 'src/environments/environment';
-// import { remove as cookieRm } from 'js-cookie';
+import { environment as cnf } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-root',
@@ -24,7 +23,7 @@ export class AppComponent implements OnInit {
 		});
 		setInterval(() => {
 			this.jwtSv.refreshToken();
-		}, 15000);
+		}, cnf.jwtInterval);
 	}
 
 	/**

@@ -6,7 +6,7 @@ import { ConfigService } from '../../config/config.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '../../config/config.module';
-import { Configuration } from '../../config/config.keys';
+import { Configuration as cnfKeys } from '../../config/config.keys';
 import { UserRepository } from '../users/user.repository';
 
 // TODO: JSDoc
@@ -19,11 +19,11 @@ import { UserRepository } from '../users/user.repository';
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
-			useFactory(config: ConfigService) {
+			useFactory(cnfSv: ConfigService) {
 				return {
-					secret: config.get(Configuration.JWT_SECRET),
+					secret: cnfSv.get(cnfKeys.JWT_SECRET),
 					signOptions: {
-						expiresIn: 600,
+						expiresIn: parseInt(cnfSv.get(cnfKeys.JWT_EXPIRETIME)),
 					},
 				};
 			},
