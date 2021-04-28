@@ -30,14 +30,16 @@ export class EvaluacionesAdmService {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 	/**
-	 * TODO: TSDOC
-	 * @param evalu
+	 *
 	 * @param catComp El identificador de la cat comp como string
-	 * @returns
+	 * @returns Un array de los evModels que tiene una cat competencial
 	 */
 	getEvModels(catComp: string): Promise<IEvModel[]> {
 		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos/${catComp}`).toPromise();
 	}
+	/**
+	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
+	 */
 	getAllEvModels(): Promise<IEvModel[]> {
 		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos`).toPromise();
 	}

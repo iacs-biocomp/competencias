@@ -71,7 +71,6 @@ export class OrganiGeneralView implements OnInit {
 	}
 
 	selectRelation(wrk: ITrabOrgani) {
-		//TODO: Refactor
 		const index = this.cv.modalRelations.indexOf(wrk);
 		if (index === -1) {
 			this.cv.modalRelations.push(wrk);

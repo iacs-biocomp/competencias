@@ -16,23 +16,28 @@ export class TableCompetComponent implements OnInit {
 	catCompToAdd: ICatComp[] = [];
 	catComps: ICatCompetEdit[] = [];
 
-	//TODO: Añadir tsdoc a los metodos y atributos de la clase
-
 	async ngOnInit(): Promise<void> {
-		this.updateCatCompView();
+		await this.updateCatCompView();
 	}
 
+	/**
+	 * Actualiza las categorías competenciales de manera asincrona
+	 */
 	async updateCatCompView(): Promise<void> {
 		this.catComps = await this.catCompService.getAll();
-		console.log('update');
-		console.log(this.catComps);
 	}
 
-	deleteCatCompToAdd(row: ICatComp): void {
-		const indx = this.catCompToAdd.indexOf(row);
-		this.catCompToAdd.splice(indx, 1);
+	/**
+	 * Elimina una Categoria Competencial de la lista temporal catCompToAdd (Las catComp creadas en memoria no persistidas)
+	 * @param row La catComp a borrar
+	 */
+	deleteCatCompToAdd(cComp: ICatComp): void {
+		this.catCompToAdd.splice(this.catCompToAdd.indexOf(cComp), 1);
 	}
 
+	/**
+	 * Anade una categoría competencial a la lista catCompToAdd (cComps no grabadas en la bbdd)
+	 */
 	newEmptyCatComp(): void {
 		this.catCompToAdd.push({
 			id: '',
@@ -54,6 +59,11 @@ export class TableCompetComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * Persiste una categoria competencial
+	 * @param catComp La categoria competencial a persistir
+	 * @returns Una promesa void
+	 */
 	async persistCatComp(catComp: ICatComp): Promise<void> {
 		const guardado = await this.catCompService.add(catComp);
 		if (guardado) {
@@ -63,6 +73,11 @@ export class TableCompetComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * Borra una categoria competencial de la bbdd
+	 * @param catComp La categoria competencial a borrar
+	 * @returns Una promesa de tipo void
+	 */
 	async deleteCatComp(catComp: ICatComp) {
 		const borrado = await this.catCompService.delete(catComp);
 		if (borrado) {

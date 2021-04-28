@@ -28,8 +28,8 @@ export class TableContracComponent implements OnInit {
 	}
 
 	async ngOnInit(): Promise<void> {
-		await this.updateContrView();
-		this.catComps = await this.cCompSv.getAll();
+		const promises = await Promise.all([this.updateContrView(), this.cCompSv.getAll()]);
+		this.catComps = promises[1];
 	}
 
 	async updateContrView(): Promise<void> {

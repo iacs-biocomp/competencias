@@ -20,8 +20,8 @@ type DbData = {
 
 type MiCompetencia = {
 	nivObjetivo?: INivel;
+} & ICompetencia;
 
-} &ICompetencia;
 @Component({
 	selector: 'app-modelos',
 	templateUrl: './modelos.component.html',
@@ -40,6 +40,7 @@ export class ModelosComponent implements OnInit {
 	competenciasSelect: MiCompetencia[] = [];
 	nivelObjetivo: INivel[] = [];
 
+	/** Modelo a guardar en la bbdd, es la 'referencia' */
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
@@ -115,7 +116,7 @@ export class ModelosComponent implements OnInit {
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
-		setInterval(()=>console.log(this.competenciasSelect), 2500)
+		setInterval(() => console.log(this.competenciasSelect), 2500);
 	}
 
 	/** Selecciona la cat competen del modelo */
@@ -159,4 +160,24 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * Añade un comportamiento con un nivel asociado a una competencia
+	 */
+	addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
+		let matchSubModel = this.addModelo.subModels.find(
+			x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
+		);
+		if (!matchSubModel) {
+			matchSubModel = {
+				nivel: niv,
+				competencia: comp,
+				comportamientos: [],
+			};
+		}
+		const comportIndx = matchSubModel.comportamientos?.indexOf(comport);
+		if (comportIndx === -1) {
+			matchSubModel.comportamientos?.push(comport);
+		}
+		return;
+	}
 }

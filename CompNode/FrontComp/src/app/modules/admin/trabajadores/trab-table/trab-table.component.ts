@@ -34,9 +34,13 @@ export class TrabTableComponent implements OnInit {
 	) {}
 
 	async ngOnInit(): Promise<void> {
-		await this.updateWorkerView();
-		this.catComps = await this.cCompSv.getAll();
-		this.catContracts = await this.cContrSv.getAll();
+		const promises = await Promise.all([
+			this.updateWorkerView(),
+			this.cCompSv.getAll(),
+			this.cContrSv.getAll(),
+		]);
+		this.catComps = promises[1];
+		this.catContracts = promises[2];
 	}
 
 	async updateWorkerView(): Promise<void> {

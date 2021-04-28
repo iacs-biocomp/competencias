@@ -26,7 +26,7 @@ export class NivTableComponent implements OnInit {
 	}
 
 	canDelete(nivel: INivel): boolean {
-		//TODO: Completar
+		//TODO: Borrar metodo, generar Una interfaz INivelAdminDto o similar, añadir campo 'borrable' boolean, y hacer que el backend diga si se puede o no borrar
 		return true;
 	}
 
