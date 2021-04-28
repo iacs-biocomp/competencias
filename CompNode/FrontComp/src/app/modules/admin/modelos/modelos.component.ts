@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICatComp } from '../../../../../../interfaces/ICategorias';
-import {
-	ICompetencia,
-	IComportamiento,
-	INivel,
-	ISubModel,
-} from '../../../../../../interfaces/IEvaluaciones';
+import { ICompetencia, IComportamiento, INivel, ISubModel } from '../../../../../../interfaces/IEvaluaciones';
 import { IModelDTO } from '../../../../../../interfaces/DTO/IModelDTO';
 import { CatCompetencialesService } from '../cat-admn/services/CatCompetenciales.service';
 import { CompetenciasService } from '../competencias-admin/services/competencias.service';
@@ -19,9 +14,9 @@ import { NivelService } from '../niveles-admin/services/nivel.service';
 export class ModelosComponent implements OnInit {
 	constructor(
 		private catCompService: CatCompetencialesService,
-		private competenciasService: CompetenciasService,
-		private nivelesService: NivelService,
-		private comportamiService: ComportService,
+		private competSv: CompetenciasService,
+		private nivSv: NivelService,
+		private comportSv: ComportService,
 	) {}
 
 	catComps!: ICatComp[];
@@ -30,7 +25,8 @@ export class ModelosComponent implements OnInit {
 	niveles!: INivel[];
 	enviado: boolean = false;
 	competeFilter: string = '';
-
+	fullModel!: IModelDTO[];
+	competenciasSelect: ICompetencia[] = [];
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
@@ -38,13 +34,6 @@ export class ModelosComponent implements OnInit {
 		},
 		subModels: [
 			{
-				modelos: [
-					{
-						id: 'M1',
-						catComp: undefined,
-						subModels: undefined,
-					},
-				],
 				competencia: {
 					id: 'C2',
 					descripcion: 'Liderazgo',
@@ -87,18 +76,25 @@ export class ModelosComponent implements OnInit {
 		],
 	};
 
-	fullModel!: IModelDTO[];
-
 	public selectedOption!: boolean;
 	/* Estilo por defecto del boton*/
 	bntStyle: string = 'btn-default';
 	current = 0;
 
 	async ngOnInit(): Promise<void> {
-		this.catComps = await this.catCompService.getAll();
-		this.competencs = await this.competenciasService.getAllCompt();
-		this.niveles = await this.nivelesService.getAll();
-		this.comports = await this.comportamiService.getAll();
+		const promises = await Promise.all([
+			this.catCompService.getAll(),
+			this.competSv.getAllCompt(),
+			this.nivSv.getAll(),
+			this.comportSv.getAll(),
+		]);
+		this.catComps = promises[0];
+		this.competencs = promises[1];
+		this.niveles = promises[2];
+		this.comports = promises[3];
+		setInterval(() => {
+			console.log(this.competenciasSelect);
+		}, 2500);
 	}
 
 	selectCatComp(catComp: ICatComp) {
@@ -109,26 +105,14 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
-selectCompet(compete: ICompetencia, listItemId: string){};
-	/* 	selectCompet(compete: ICompetencia[], listItemId: string) {
-		const listItem = document.getElementById(listItemId);
-		if (listItem == null) {
-			console.log('Contacte con un programador');
-			return;
+	selectCompet(compete: ICompetencia) {
+		const index = this.competenciasSelect.indexOf(compete);
+		if (index == -1) {
+			this.competenciasSelect.push(compete);
+		} else {
+			this.competenciasSelect.splice(index, 1);
 		}
-
-		for (let i = 0; i <= compete.length; i++) {
-			const index = this.competencs.indexOf(compete[i]);
-
-			if (index == -1) {
-				this.subModel.competencia = compete[i];
-				console.log((this.subModel.competencia = compete[i]));
-			} else {
-				this.addModelo.subModels.splice(index, 1);
-				console.log(this.addModelo.subModels.splice(index, 1));
-			}
-		}
-	} */
+	}
 
 	selectNivel(nivel: INivel) {
 		var index = this.subModel.nivel;
