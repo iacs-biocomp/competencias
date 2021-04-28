@@ -7,23 +7,28 @@ import { CompetenciasService } from '../competencias-admin/services/competencias
 import { ComportService } from '../comportamientos-admin/services/comport.service';
 import { NivelService } from '../niveles-admin/services/nivel.service';
 
-//Comps = competencias, comports = comportamientos
 type DbData = {
-	//TODO: Tsdoc
+	/** listado de categorias competenciales */
 	catComps: ICatComp[];
-	//TODO: Tsdoc
+	/** listado de competencias */
 	comps: ICompetencia[];
-	//TODO: Tsdoc
+	/** listado de comportamientos */
 	comports: IComportamiento[];
+	/** listado de niveles */
 	niveles: INivel[];
 };
+
+type MiCompetencia = {
+	nivObjetivo?: INivel;
+
+} &ICompetencia;
 @Component({
 	selector: 'app-modelos',
 	templateUrl: './modelos.component.html',
 	styleUrls: ['./modelos.component.css'],
 })
 export class ModelosComponent implements OnInit {
-	//TODO: Tsdoc, objeto que tiene los datos usados para los select etc
+	/** Objeto que tiene los datos usados para los <select> */
 	dbData: DbData = {
 		catComps: [],
 		comps: [],
@@ -31,13 +36,9 @@ export class ModelosComponent implements OnInit {
 		niveles: [],
 	};
 
-	niveles!: INivel[];
-	enviado: boolean = false;
-	competeFilter: string = '';
-	//TODO: Tsdoc
-	fullModel!: IModelDTO[];
-	//TODO: Tsdoc
-	competenciasSelect: ICompetencia[] = [];
+	/** Guarda la lista de competencias seleccionadas */
+	competenciasSelect: MiCompetencia[] = [];
+	nivelObjetivo: INivel[] = [];
 
 	addModelo: IModelDTO = {
 		catComp: {
@@ -91,9 +92,9 @@ export class ModelosComponent implements OnInit {
 	//? ???????
 	public selectedOption!: boolean;
 
-	/* Estilo por defecto del boton*/
+	/* Estilo por defecto del boton */
 	bntStyle: string = 'btn-default';
-	//? ???????
+	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
 	current = 0;
 
 	constructor(
@@ -114,8 +115,10 @@ export class ModelosComponent implements OnInit {
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
+		setInterval(()=>console.log(this.competenciasSelect), 2500)
 	}
 
+	/** Selecciona la cat competen del modelo */
 	selectCatComp(catComp: ICatComp) {
 		var index = this.addModelo.catComp;
 		if (index) {
@@ -124,21 +127,21 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
+	/** Selecciona las competencias del submodelo */
 	selectCompet(compete: ICompetencia) {
 		const index = this.competenciasSelect.indexOf(compete);
 		if (index == -1) {
 			this.competenciasSelect.push(compete);
+			this.dbData.comps[index] = compete;
 		} else {
 			this.competenciasSelect.splice(index, 1);
 		}
 	}
 
-	selectNivel(nivel: INivel) {
-		var index = this.subModel.nivel;
-		if (index) {
-			this.subModel.nivel = nivel;
-			console.log(this.subModel.nivel);
-		}
+	/** Selecciona el nivel objetivo de cada competencia */
+	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
+		const index = this.competenciasSelect.indexOf(compet);
+		this.competenciasSelect[index].nivObjetivo = nivel;
 	}
 
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
@@ -147,14 +150,8 @@ export class ModelosComponent implements OnInit {
 		this.selectedOption = true;
 	}
 
-	//? No se usa, sirve?
-	/* Funcion para que cuando se haga click, cambie el estilo de los botones y haga la transición */
-	submit() {
-		this.bntStyle = 'btn-change';
-	}
-
 	move(derecha: boolean) {
-		if (derecha && this.current < 2) {
+		if (derecha && this.current < 3) {
 			this.current++;
 		}
 		if (!derecha && this.current > 0) {
@@ -162,8 +159,4 @@ export class ModelosComponent implements OnInit {
 		}
 	}
 
-	newAsociacionCompeNivel() {}
-	selectRelation() {}
-	saveRelations() {}
-	selectCompe() {}
 }
