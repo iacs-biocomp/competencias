@@ -90,9 +90,6 @@ export class ModelosComponent implements OnInit {
 		],
 	};
 
-	//? ???????
-	public selectedOption!: boolean;
-
 	/* Estilo por defecto del boton */
 	bntStyle: string = 'btn-default';
 	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
@@ -148,7 +145,6 @@ export class ModelosComponent implements OnInit {
 	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
 	scrollToButton(element: HTMLElement) {
 		element.scrollIntoView();
-		this.selectedOption = true;
 	}
 
 	move(derecha: boolean) {
