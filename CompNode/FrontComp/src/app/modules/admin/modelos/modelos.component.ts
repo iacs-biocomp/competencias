@@ -6,27 +6,39 @@ import { CatCompetencialesService } from '../cat-admn/services/CatCompetenciales
 import { CompetenciasService } from '../competencias-admin/services/competencias.service';
 import { ComportService } from '../comportamientos-admin/services/comport.service';
 import { NivelService } from '../niveles-admin/services/nivel.service';
+
+//Comps = competencias, comports = comportamientos
+type DbData = {
+	//TODO: Tsdoc
+	catComps: ICatComp[];
+	//TODO: Tsdoc
+	comps: ICompetencia[];
+	//TODO: Tsdoc
+	comports: IComportamiento[];
+	niveles: INivel[];
+};
 @Component({
 	selector: 'app-modelos',
 	templateUrl: './modelos.component.html',
 	styleUrls: ['./modelos.component.css'],
 })
 export class ModelosComponent implements OnInit {
-	constructor(
-		private catCompService: CatCompetencialesService,
-		private competSv: CompetenciasService,
-		private nivSv: NivelService,
-		private comportSv: ComportService,
-	) {}
+	//TODO: Tsdoc, objeto que tiene los datos usados para los select etc
+	dbData: DbData = {
+		catComps: [],
+		comps: [],
+		comports: [],
+		niveles: [],
+	};
 
-	catComps!: ICatComp[];
-	competencs!: ICompetencia[];
-	comports!: IComportamiento[];
 	niveles!: INivel[];
 	enviado: boolean = false;
 	competeFilter: string = '';
+	//TODO: Tsdoc
 	fullModel!: IModelDTO[];
+	//TODO: Tsdoc
 	competenciasSelect: ICompetencia[] = [];
+
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
@@ -76,10 +88,20 @@ export class ModelosComponent implements OnInit {
 		],
 	};
 
+	//? ???????
 	public selectedOption!: boolean;
+
 	/* Estilo por defecto del boton*/
 	bntStyle: string = 'btn-default';
+	//? ???????
 	current = 0;
+
+	constructor(
+		private catCompService: CatCompetencialesService,
+		private competSv: CompetenciasService,
+		private nivSv: NivelService,
+		private comportSv: ComportService,
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([
@@ -88,13 +110,10 @@ export class ModelosComponent implements OnInit {
 			this.nivSv.getAll(),
 			this.comportSv.getAll(),
 		]);
-		this.catComps = promises[0];
-		this.competencs = promises[1];
-		this.niveles = promises[2];
-		this.comports = promises[3];
-		setInterval(() => {
-			console.log(this.competenciasSelect);
-		}, 2500);
+		this.dbData.catComps = promises[0];
+		this.dbData.comps = promises[1];
+		this.dbData.niveles = promises[2];
+		this.dbData.comports = promises[3];
 	}
 
 	selectCatComp(catComp: ICatComp) {
@@ -128,6 +147,7 @@ export class ModelosComponent implements OnInit {
 		this.selectedOption = true;
 	}
 
+	//? No se usa, sirve?
 	/* Funcion para que cuando se haga click, cambie el estilo de los botones y haga la transición */
 	submit() {
 		this.bntStyle = 'btn-change';
