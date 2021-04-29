@@ -90,8 +90,7 @@ export class ModelosComponent implements OnInit {
 		],
 	};
 
-	/* Estilo por defecto del boton */
-	bntStyle: string = 'btn-default';
+
 	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
 	current = 0;
 
@@ -147,6 +146,7 @@ export class ModelosComponent implements OnInit {
 		element.scrollIntoView();
 	}
 
+	/** Comprueba que las vistas del modelo pueden moverse izquierda y derecha si existe otra vista contigua */
 	move(derecha: boolean) {
 		if (derecha && this.current < 3) {
 			this.current++;
@@ -176,4 +176,5 @@ export class ModelosComponent implements OnInit {
 		}
 		return;
 	}
+
 }
