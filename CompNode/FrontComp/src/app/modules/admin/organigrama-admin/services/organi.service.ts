@@ -28,4 +28,8 @@ export class OrganiService {
 	setPares(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/organigrama/pares/${wrk.dni}`, relations).toPromise();
 	}
+	//TODO: Completar
+	// removeSuperiores(): Promise<boolean> {
+	// 	return this.httpClient.delete()
+	// }
 }

@@ -57,6 +57,9 @@ export class OrganiGeneralView implements OnInit {
 	async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
 		this.cComps = promises[1];
+		setInterval(() => {
+			console.log(this.cv);
+		}, 1500);
 	}
 
 	/**
@@ -64,8 +67,18 @@ export class OrganiGeneralView implements OnInit {
 	 * @param modalWorker
 	 * @param modalTitle El titulo del modal, de tipo modalTitles
 	 */
-	setCtrlView(modalWorker: IOrganigramaUsrDTO, modalTitle: ModalTitles) {
-		this.cv.modalRelations = [];
+	setCtrlView(modalWorker: IOrganigramaUsrDTO, modalTitle: ModalTitles, addOrRemove: 'remove' | 'add') {
+		const relations = () => {
+			switch (modalTitle) {
+				case 'Inferior':
+					return modalWorker.inferiores;
+				case 'Superior':
+					return modalWorker.superiores;
+				case 'Par':
+					return modalWorker.pares;
+			}
+		};
+		this.cv.modalRelations = addOrRemove === 'add' ? [] : relations();
 		this.cv.modalWorker = modalWorker;
 		this.cv.modalTitle = modalTitle;
 	}

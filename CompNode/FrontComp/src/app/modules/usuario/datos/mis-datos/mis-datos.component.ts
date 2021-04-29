@@ -9,8 +9,7 @@ import { UserDataService } from '../user-data.service';
 	styleUrls: ['./mis-datos.component.css'],
 })
 export class MisDatosComponent implements OnInit {
-	userData!: IUserJson;
-	vistas: number[] = [1, 2, 3];
+	userData?: IUserJson;
 
 	constructor(private usrDataService: UserDataService, private jwtServ: JwtService) {}
 

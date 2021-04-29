@@ -39,10 +39,19 @@
 				>
 					<div class="accordion-body">
 						<button
+							class="btn btn-danger me-2"
+							data-bs-toggle="modal"
+							data-bs-target="#removeModal"
+							[disabled]="trab.inferiores.length === 0"
+							(click)="setCtrlView(trab, 'Inferior', 'remove')"
+						>
+							<span class="material-icons" title="Eliminar inferiores"> remove </span>
+						</button>
+						<button
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Inferior')"
+							(click)="setCtrlView(trab, 'Inferior', 'add')"
 						>
 							<span class="material-icons" title="Añadir inferior"> add </span>
 						</button>
@@ -53,10 +62,19 @@
 
 						<hr />
 						<button
+							class="btn btn-danger me-2"
+							data-bs-toggle="modal"
+							data-bs-target="#removeModal"
+							[disabled]="trab.pares.length === 0"
+							(click)="setCtrlView(trab, 'Par', 'remove')"
+						>
+							<span class="material-icons" title="Eliminar pares"> remove </span>
+						</button>
+						<button
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Par')"
+							(click)="setCtrlView(trab, 'Par', 'add')"
 						>
 							<span class="material-icons" title="Añadir par"> add </span>
 						</button>
@@ -66,10 +84,19 @@
 						</div>
 						<hr />
 						<button
+							class="btn btn-danger me-2"
+							data-bs-toggle="modal"
+							data-bs-target="#removeModal"
+							[disabled]="trab.superiores.length === 0"
+							(click)="setCtrlView(trab, 'Superior', 'remove')"
+						>
+							<span class="material-icons" title="Eliminar superiores"> remove </span>
+						</button>
+						<button
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Superior')"
+							(click)="setCtrlView(trab, 'Superior', 'add')"
 						>
 							<span class="material-icons" title="Añadir superior"> add </span>
 						</button>
@@ -128,6 +155,33 @@
 			<div class="modal-footer">
 				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 				<button type="button" class="btn btn-primary" (click)="saveRelations()">Guardar cambios</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title" id="exampleModalLabel">Borrar {{ cv.modalTitle }}es</h2>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group">
+					<li
+						[id]="'rel' + i"
+						class="list-group-item p-3"
+						aria-current="true"
+						*ngFor="let rel of cv.modalRelations; let i = index"
+					>
+						{{ rel.nombre }} {{ rel.apellidos }}
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" (click)="saveRelations()">Borrar seleccionados</button>
 			</div>
 		</div>
 	</div>
