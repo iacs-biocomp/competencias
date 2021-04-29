@@ -15,7 +15,7 @@
 				<td>
 					<select [(ngModel)]="catContr.catComp" (change)="updateCContr(catContr)">
 						<option selected disabled hidden [value]="catContr.catComp">
-							{{ catContr.catComp.id }}
+							{{ catContr.catComp?.id }}
 						</option>
 						<option *ngFor="let catComp of catComps" [ngValue]="catComp">
 							{{ catComp.id }}

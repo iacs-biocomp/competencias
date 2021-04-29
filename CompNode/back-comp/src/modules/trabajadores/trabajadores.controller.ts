@@ -2,7 +2,6 @@ import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Pa
 import { InjectRepository } from '@nestjs/typeorm';
 import { CatComp } from 'src/entity/CatComp.entity';
 import { CatContr } from 'src/entity/CatContr.entity';
-import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
 import { Trabajador } from 'src/entity/Trabajador.entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';
@@ -106,6 +105,7 @@ export class TrabajadoresController {
 		if (!trab) {
 			throw new NotFoundException('No existe un worker con ese dni');
 		}
+		//TODO: Pasar a un servicio el resto de este metodo https://is.gd/KUSLRU
 		//Si estan actualizando la catComp o catContr y han pasado mas de 7 dias desde la creación del anterior periodo,
 		//creo un nuevo periodo y cierro el actual
 		var perActual = trab.periodos.find(p => p.actual);

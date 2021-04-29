@@ -13,7 +13,7 @@ export class CatComp extends BaseEntity {
 
 	/** La descripción de la categoría competencial */
 	@ApiProperty()
-	@Column({ type: 'varchar', unique: true, length: 25, nullable: false })
+	@Column({ type: 'varchar', unique: true, length: 100, nullable: false })
 	description: string;
 
 	/** Los periodos en los que aparece esa categoria competencial, según la petición puede ser undefined */
