@@ -5,10 +5,10 @@
 	</button>
 	<br>
 	<!--Al pulsar el boton se carga el modulo del MODELO-->
-	<button (click)="loadModelForm() " class="btn btn-success mb-2">
+	<button class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#modalModelo" id="newModelButton">
 		Nuevo modelo
 	</button>
-	<app-modelos *ngIf="loadMForm"></app-modelos>
+
 
 	<!-- TODO: Cambiar identificadores del modal nueva evalución -->
 	<div class="row gy-4">
@@ -33,3 +33,4 @@
 	</div>
 </div>
 <app-new-ev-modal></app-new-ev-modal>
+<app-modelos></app-modelos>
