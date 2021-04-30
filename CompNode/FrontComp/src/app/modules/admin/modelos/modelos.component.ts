@@ -141,7 +141,7 @@ export class ModelosComponent implements OnInit {
 		this.competenciasSelect[index].nivObjetivo = nivel;
 	}
 
-	/* Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente' */
+	/** Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'	*/
 	scrollToButton(element: HTMLElement) {
 		element.scrollIntoView();
 	}

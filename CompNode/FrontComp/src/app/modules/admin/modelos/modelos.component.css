@@ -6,16 +6,28 @@
 .block {
 	width: 100%;
 	height: 100%;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	padding: 1rem;
-	border: 0.15rem solid #09548d;
-	border-radius: 1.25rem;
-	background-color: rgb(186, 241, 248);
 	display: inline-block;
 	transition: ease 0.5s;
 }
 
-.modal-title{
+.modal-dialog{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	border: 0.15rem solid #09548d;
+	border-radius: 1.5%;
+}
+
+.modal-content{
+	background-color: #F4F7F7
+
+}
+
+.btn:hover {
+	color: #0D6EFD;
+}
+
+/* Estilo para que el texto no se salga de su contenedor*/
+*{
 	white-space: initial;
 }
 
@@ -35,6 +47,6 @@
 }
 
 
-::ng-deep .cdk-overlay-container {
-	z-index: 2000;
-}
+
+
+
