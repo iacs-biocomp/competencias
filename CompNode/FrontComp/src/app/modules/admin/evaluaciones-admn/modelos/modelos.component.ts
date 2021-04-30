@@ -22,6 +22,11 @@ type MiCompetencia = {
 	nivObjetivo?: INivel;
 } & ICompetencia;
 
+
+type MiComportamiento = {
+	nivel?: INivel;
+} & IComportamiento;
+
 @Component({
 	selector: 'app-modelos',
 	templateUrl: './modelos.component.html',
@@ -38,7 +43,9 @@ export class ModelosComponent implements OnInit {
 
 	/** Guarda la lista de competencias seleccionadas */
 	competenciasSelect: MiCompetencia[] = [];
-	nivelObjetivo: INivel[] = [];
+	/** Guarda la lista de comportamientos seleccionados */
+	comportamientosSelect: MiComportamiento[] = [];
+
 
 	/** Modelo a guardar en la bbdd, es la 'referencia' */
 	addModelo: IModelDTO = {
@@ -131,6 +138,17 @@ export class ModelosComponent implements OnInit {
 			this.dbData.comps[index] = compete;
 		} else {
 			this.competenciasSelect.splice(index, 1);
+		}
+	}
+
+	/** Selecciona los comportamientos del submodelo */
+	selectComportamiento(comport: IComportamiento){
+		const index = this.comportamientosSelect.indexOf(comport);
+		if (index == -1) {
+			this.comportamientosSelect.push(comport);
+			this.dbData.comports[index] = comport;
+		} else {
+			this.comportamientosSelect.splice(index, 1)
 		}
 	}
 
