@@ -6,12 +6,12 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EvaluacionesAdmService } from './services/evaluaciones-adm.service';
-import { ModelosComponent } from '../modelos/modelos.component';
 import { NewEvModalComponent } from './new-ev-modal/new-ev-modal.component';
 import { MaterialEvModule } from './MatModule/materialev.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ModelosComponent } from './modelos/modelos.component';
 
 /** Rutas relacionadas con el subModulo de comportamientos */
 export const evRoutes: Routes = [

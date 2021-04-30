@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ICatComp } from '../../../../../../interfaces/ICategorias';
-import { ICompetencia, IComportamiento, INivel, ISubModel } from '../../../../../../interfaces/IEvaluaciones';
-import { IModelDTO } from '../../../../../../interfaces/DTO/IModelDTO';
-import { CatCompetencialesService } from '../cat-admn/services/CatCompetenciales.service';
-import { CompetenciasService } from '../competencias-admin/services/competencias.service';
-import { ComportService } from '../comportamientos-admin/services/comport.service';
-import { NivelService } from '../niveles-admin/services/nivel.service';
+import { ICatComp } from 'sharedInterfaces/ICategorias';
+import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/IEvaluaciones';
+import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
+import { CompetenciasService } from '../../competencias-admin/services/competencias.service';
+import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
+import { ComportService } from '../../comportamientos-admin/services/comport.service';
+import { NivelService } from '../../niveles-admin/services/nivel.service';
 
 type DbData = {
 	/** listado de categorias competenciales */
@@ -89,7 +89,6 @@ export class ModelosComponent implements OnInit {
 			},
 		],
 	};
-
 
 	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
 	current = 0;
@@ -176,5 +175,4 @@ export class ModelosComponent implements OnInit {
 		}
 		return;
 	}
-
 }
