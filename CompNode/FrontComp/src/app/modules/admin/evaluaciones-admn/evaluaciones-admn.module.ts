@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EvaluacionesAdmService } from './services/evaluaciones-adm.service';
 import { NewEvModalComponent } from './new-ev-modal/new-ev-modal.component';
-import { MaterialEvModule } from './MatModule/materialev.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -30,11 +29,10 @@ export const evRoutes: Routes = [
 		// TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
 		FormsModule,
 		ReactiveFormsModule,
-		MaterialEvModule,
 		MatDatepickerModule,
 		MatFormFieldModule,
-		MatNativeDateModule,
+		// MatNativeDateModule,
 	],
-	providers: [HttpClient, EvaluacionesAdmService],
+	providers: [EvaluacionesAdmService],
 })
 export class EvaluacionesAdmnModule {}

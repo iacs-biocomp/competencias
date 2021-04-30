@@ -12,6 +12,8 @@ type CtlView = {
 	/** Los trabajadores que se quieren añadir como relación del modalWorker,
 	 *  del modalTitle se obtiene que tipo de relación se añadirá */
 	modalRelations: ITrabOrgani[];
+	/** Relaciones de un trabajador a borrar en la base de datos, el modal las añade a este array al hacer click */
+	modalRelationsDelete: ITrabOrgani[];
 	/** Strings permitidos como titulo del modal, usado también para saber que es lo que se quiere añadir (inf/sup/par) */
 	modalTitle: ModalTitles;
 	/** Categoria competencial usada para filtrar el organigrama */
@@ -49,6 +51,7 @@ export class OrganiGeneralView implements OnInit {
 		modalFilter: '',
 		modalWorker: undefined,
 		modalRelations: [],
+		modalRelationsDelete: [],
 		trabCount: 0,
 	};
 
@@ -91,12 +94,21 @@ export class OrganiGeneralView implements OnInit {
 			this.cv.modalRelations.splice(index, 1);
 		}
 	}
+	selectRelToRm(wrk: ITrabOrgani) {
+		const index = this.cv.modalRelationsDelete.indexOf(wrk);
+		if (index === -1) {
+			this.cv.modalRelationsDelete.push(wrk);
+		} else {
+			this.cv.modalRelationsDelete.splice(index, 1);
+		}
+	}
 	async syncView(): Promise<void> {
 		this.fullOrgani = await this.orgSv.getFullOrgani();
 		this.fullOrgani.sort((a, b) => a.trabajador.nombre.localeCompare(b.trabajador.nombre));
 		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
 		this.trabajadoresFiltered = this.trabajadores;
 	}
+
 	/**
 	 * Guarda las relaciones de un trabajador de un tipo determinado (par/inf/sup)
 	 */
@@ -127,6 +139,28 @@ export class OrganiGeneralView implements OnInit {
 		if (saved) {
 			console.log('Guardado correctamente');
 			// alert('Guardado correctamente');
+		}
+		this.closeModal.nativeElement.click();
+		await this.syncView();
+	}
+
+	async deleteRelations() {
+		let trabajador = this.cv.modalWorker?.trabajador;
+		if (!trabajador) return;
+		try {
+			switch (this.cv.modalTitle) {
+				case 'Inferior':
+					await this.orgSv.deleteInferiores(trabajador, this.cv.modalRelationsDelete);
+					break;
+				case 'Superior':
+					await this.orgSv.deleteSuperiores(trabajador, this.cv.modalRelationsDelete);
+					break;
+				case 'Par':
+					await this.orgSv.deletePares(trabajador, this.cv.modalRelationsDelete);
+					break;
+			}
+		} catch (err) {
+			alert('Contacte con un programador');
 		}
 		this.closeModal.nativeElement.click();
 		await this.syncView();

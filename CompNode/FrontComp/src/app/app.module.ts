@@ -33,7 +33,7 @@ registerLocaleData(localeEs);
 // }
 @NgModule({
 	declarations: [AppComponent, Error404Component],
-	imports: [BrowserModule, AppRoutingModule, HttpClientModule, SharedModule, BrowserAnimationsModule],
+	imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, SharedModule],
 	providers: [
 		// HttpConfigInterceptor
 		// KeycloakService,

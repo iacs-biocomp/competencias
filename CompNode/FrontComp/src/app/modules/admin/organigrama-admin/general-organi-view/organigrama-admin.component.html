@@ -159,7 +159,7 @@
 		</div>
 	</div>
 </div>
-
+<!-- Modal de borrado de relaciones -->
 <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -171,9 +171,13 @@
 				<ul class="list-group">
 					<li
 						[id]="'rel' + i"
+						[ngClass]="{ active: cv.modalRelationsDelete.includes(rel) }"
 						class="list-group-item p-3"
 						aria-current="true"
+						[tabindex]="i"
 						*ngFor="let rel of cv.modalRelations; let i = index"
+						(click)="selectRelToRm(rel)"
+						(keydown.space)="selectRelToRm(rel)"
 					>
 						{{ rel.nombre }} {{ rel.apellidos }}
 					</li>
@@ -181,7 +185,9 @@
 			</div>
 			<div class="modal-footer">
 				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" (click)="saveRelations()">Borrar seleccionados</button>
+				<button type="button" class="btn btn-primary" (click)="deleteRelations()">
+					Borrar seleccionados
+				</button>
 			</div>
 		</div>
 	</div>

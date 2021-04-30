@@ -11,7 +11,7 @@ import { BaseLayoutComponent } from './layout/base/base-layout.component';
 	declarations: [MenuComponent, SessionComponent, BaseLayoutComponent],
 	//Importar RouterModule sino el menu no funciona
 	imports: [CommonModule, RouterModule],
-	exports: [MenuComponent, SessionComponent],
+	exports: [MenuComponent, SessionComponent, BaseLayoutComponent],
 	providers: [LoginGuard, JwtService],
 })
 export class SharedModule {}
