@@ -30,7 +30,8 @@ type CtlView = {
 	styleUrls: ['./organigrama-admin.component.css'],
 })
 export class OrganiGeneralView implements OnInit {
-	@ViewChild('closeModal') closeModal!: ElementRef;
+	@ViewChild('closeModal') closeModalAddRel!: ElementRef;
+	@ViewChild('closeModalDeleteRel') closeModalDeleteRel!: ElementRef;
 
 	/** El organigrama completo, cada elemento tiene el trabajador y sus (pares/inf/sup) */
 	fullOrgani!: IOrganigramaUsrDTO[];
@@ -140,7 +141,7 @@ export class OrganiGeneralView implements OnInit {
 			console.log('Guardado correctamente');
 			// alert('Guardado correctamente');
 		}
-		this.closeModal.nativeElement.click();
+		this.closeModalAddRel.nativeElement.click();
 		await this.syncView();
 	}
 
@@ -162,7 +163,7 @@ export class OrganiGeneralView implements OnInit {
 		} catch (err) {
 			alert('Contacte con un programador');
 		}
-		this.closeModal.nativeElement.click();
+		this.closeModalDeleteRel.nativeElement.click();
 		await this.syncView();
 	}
 

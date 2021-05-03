@@ -3,14 +3,21 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Configuration as cnf } from './config/config.keys';
 import { ConfigService } from './config/config.service';
-// import 'source-map-support/register';
 import { install } from 'source-map-support';
+import { Promise } from 'bluebird';
 
 const cnfService = new ConfigService();
 
 async function bootstrap() {
 	install();
-	// require('source-map-support').install();
+	if (process.env.NODE_ENV !== 'production') {
+		//Las promesas de node no muestran un stacktrace descriptivo, se usan estas,
+		// en producción las nativas ya que tienen mejor rendimiento
+		global.Promise = require('bluebird');
+		Promise.config({
+			longStackTraces: true,
+		});
+	}
 	//TODO: revisar lo del cors, posibles ataques csrf si está en true (Para producción en false?)
 	const app = await NestFactory.create(AppModule, { cors: true });
 

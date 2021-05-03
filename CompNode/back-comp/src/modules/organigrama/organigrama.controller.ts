@@ -1,12 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CatComp } from 'src/entity/CatComp.entity';
 import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
 import { Trabajador } from 'src/entity/Trabajador.entity';
-import { In } from 'typeorm';
 import { PeriodosRepo } from '../trabajadores/periodos.repository';
 import { TrabajadorRepo } from '../trabajadores/trabajador.repository';
 import { UserRepository } from '../users/user.repository';
+import { Transaction } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
 interface Organigrama {
 	inferiores: Trabajador[];
 	superiores: Trabajador[];
@@ -94,111 +94,31 @@ export class OrganigramaController {
 
 	@Post('inferiores/:dni')
 	async setInferiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
-		return this.addRelation(dni, relations, 'addinf');
+		const trab = await this.parseTrab(dni, 'inferiores');
+		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'superiores')));
+		return this.changeRelations(trab, relsOfTrab, true, 'inferiores', 'add');
+		// return this.addRelation(dni, relations, 'addinf');
 	}
 
 	@Post('superiores/:dni')
 	async setSuperiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
-		return this.addRelation(dni, relations, 'addsup');
+		const trab = await this.parseTrab(dni, 'superiores');
+		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'inferiores')));
+		return this.changeRelations(trab, relsOfTrab, true, 'superiores', 'add');
+		// return this.addRelation(dni, relations, 'addsup');
 	}
 
 	@Post('pares/:dni')
 	async setPares(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
-		return this.addRelation(dni, relations, 'addpar');
+		const trab = await this.parseTrab(dni, 'pares');
+		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'pares')));
+		return this.changeRelations(trab, relsOfTrab, true, 'pares', 'add');
+		// return this.addRelation(dni, relations, 'addpar');
 	}
 
-	@Delete('pares/:dni')
-	async deletePares(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
-		return this.removeRelation(dni, relations, 'rmpar');
-	}
-
-	@Delete('inferiores/:dni')
-	async deleteInferiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
-		return this.removeRelation(dni, relations, 'rminf');
-	}
-
-	@Delete('superiores/:dni')
-	async deleteSuperiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
-		return this.removeRelation(dni, relations, 'rmsup');
-	}
-
-	private async removeRelation(dni: string, relations: ITrabajador[], relType: RmReltype): Promise<boolean> {
-		/** Dates de utilidad en el metodo */
-		const d8s = {
-			/** Fecha limite, (now - dias permitidos para no crear nuevos periodos) */
-			deadline: new Date(new Date().setDate(-30)),
-			now: new Date(),
-		};
-		const relKey = (() => {
-			switch (relType) {
-				case 'rminf':
-					return ['inferiores', 'superiores'];
-				case 'rmpar':
-					return ['pares', 'pares'];
-				case 'rmsup':
-					return ['superiores', 'inferiores'];
-			}
-		})();
-		const trab = await this.trabRepo.findOne(
-			{ dni: dni },
-			{
-				relations: ['periodos', 'periodos.catContr', 'periodos.catComp', 'periodos.' + relKey[0]],
-			},
-		);
-		const repoRelation = (() => {
-			switch (relType) {
-				case 'rminf':
-					return 'periodos.superiores';
-				case 'rmpar':
-					return 'periodos.pares';
-				case 'rmsup':
-					return 'periodos.inferiores';
-			}
-		})();
-
-		if (!trab) {
-			return false;
-		}
-		/** Periodo actual de `trab` */
-		const actualPeri = trab.periodos.filter(p => p.actual)[0];
-		if (!actualPeri) {
-			return false;
-		}
-		const rels = await Promise.all(
-			relations.map(r => this.trabRepo.findOne({ dni: r.dni }, { relations: ['periodos', repoRelation] })),
-		);
-		if (actualPeri.createdAt < d8s.deadline) {
-			actualPeri.actual = false;
-			actualPeri.endAt = d8s.now;
-			await actualPeri.save();
-			['id', 'endAt', 'createdAt'].forEach(p => delete actualPeri[p]);
-			actualPeri.actual = true;
-			delete trab.periodos;
-			actualPeri.trabajador = trab;
-			/** Las relaciones (inf/par/sup) del `trab` */
-
-			actualPeri[relKey[0]] = actualPeri[relKey[0]].filter((rel: Trabajador) => !rels.includes(rel));
-			await actualPeri.save();
-			rels.forEach(async rel => {
-				rel.periodos.filter(p => p.actual)[0][relKey[1]].push(trab);
-				await rel.periodos[0].save();
-			});
-		} else {
-			const actualPeriUpdated = actualPeri[relKey[0]].map((rel: Trabajador) =>
-				rels.find(relDelete => relDelete.dni === rel.dni) === undefined ? true : false,
-			);
-			this.periodRepo.save(actualPeriUpdated);
-			await Promise.all(
-				rels.map(async rel => {
-					const perActual = rel.periodos.filter(p => p.actual)[0];
-					const indx = perActual[relKey[1]].indexOf(trab);
-					perActual[relKey[1]].splice(indx, 1);
-					await perActual.save();
-				}),
-			);
-		}
-		return true;
-	}
+	/**
+	 * @deprecated Usar changeRelations
+	 */
 	private async addRelation(dni: string, relations: ITrabajador[], relType: Reltype): Promise<boolean> {
 		/** Dates de utilidad en el metodo */
 		const d8s = {
@@ -274,10 +194,208 @@ export class OrganigramaController {
 		}
 		return true;
 	}
-	/** Función de ayuda para remover multiples keys de un objeto en una linea */
-	private deleteProps(obj, prop) {
-		for (const p of prop) {
-			p in obj && delete obj[p];
+
+	@Delete('pares/:dni')
+	async deletePares(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
+		const trab = await this.parseTrab(dni, 'pares');
+		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'pares')));
+		return this.changeRelations(trab, relsOfTrab, true, 'pares', 'remove');
+		// return this.removeRelations(trab, relsOfTrab, true, 'pares');
+	}
+
+	@Delete('inferiores/:dni')
+	async deleteInferiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
+		const trab = await this.parseTrab(dni, 'inferiores');
+		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'superiores')));
+		return this.changeRelations(trab, relsOfTrab, true, 'inferiores', 'remove');
+		// return this.removeRelations(trab, relsOfTrab, true, 'inferiores');
+	}
+
+	@Delete('superiores/:dni')
+	async deleteSuperiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
+		const trab = await this.parseTrab(dni, 'superiores');
+		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'inferiores')));
+		return this.changeRelations(trab, relsOfTrab, true, 'superiores', 'remove');
+		// return this.removeRelations(trab, relsOfTrab, true, 'superiores');
+	}
+
+	/**
+	 * @param dni El dni con el que se buscará al trabajador en la bbdd
+	 * @param relKey La relación que se quiere cargar de este trabajador (inf|sup|par)
+	 * @returns El trabajador con sus relaciones
+	 */
+	private async parseTrab(dni: string, relKey: 'inferiores' | 'superiores' | 'pares') {
+		const trab = await this.trabRepo.findOne(
+			{ dni: dni },
+			{
+				relations: ['periodos', 'periodos.catContr', 'periodos.catComp', `periodos.${relKey}`],
+			},
+		);
+		if (!trab) throw new BadRequestException();
+		return trab;
+	}
+
+	/**
+	 *  Elimina las relaciones de un trabajador
+	 * @param trab	El trabajador del cual se quieren eliminar esas relaciones
+	 * @param relations Las relaciones a eliminar
+	 * @param relType El tipo de relación que se va a eliminar
+	 * @param recursive `True` si el metodo ha de ejecutarse otra vez para las relaciones del `trab`
+	 * @param relationsType El tipo de relaciones como string
+	 * @deprecated Usar changeRelations
+	 * @returns Una promesa de tipo boolean, `true` si se han eliminado correctamente las relaciones, `false` en caso contrario
+	 */
+	private async removeRelations(
+		trab: Trabajador,
+		relations: Trabajador[],
+		recursive: boolean,
+		relationsType: 'inferiores' | 'superiores' | 'pares',
+	): Promise<boolean> {
+		console.log('hola', trab);
+		/** Dates de utilidad en el metodo */
+		const d8s = {
+			/** Fecha limite, (now - dias permitidos para no crear nuevos periodos) */
+			deadline: new Date(new Date().setDate(-30)),
+			now: new Date(),
+		};
+		const relTypeReversed = (() => {
+			switch (relationsType) {
+				case 'inferiores':
+					return 'superiores';
+				case 'pares':
+					return 'pares';
+				case 'superiores':
+					return 'inferiores';
+			}
+		})();
+		/** Periodo actual de `trab` */
+		const actualPeri = trab.periodos.filter(p => p.actual)[0];
+		if (!actualPeri) {
+			return false;
+		}
+		if (actualPeri.createdAt < d8s.deadline) {
+			//Finalizo periodo actual
+			actualPeri.actual = false;
+			actualPeri.endAt = d8s.now;
+			await this.periodRepo.save(actualPeri);
+			//Actualizo relaciones del trab
+			['id', 'endAt', 'createdAt'].forEach(p => delete actualPeri[p]);
+			actualPeri.actual = true;
+			delete trab.periodos;
+			actualPeri.trabajador = trab;
+			// this.concatenateRelations(false, relations, actualPeri, relationsType);
+			await actualPeri.save();
+			await Promise.all(
+				relations.map(rel => {
+					this.removeRelations(rel, [trab], false, relTypeReversed);
+				}),
+			);
+		} else {
+			actualPeri.actual = true;
+			delete trab.periodos;
+			actualPeri.trabajador = trab;
+			// this.concatenateRelations(false, relations, actualPeri, relationsType);
+			await actualPeri.save();
+			if (!recursive) {
+				return true;
+			}
+			await Promise.all(
+				relations.map(rel => {
+					this.removeRelations(rel, [trab], false, relTypeReversed);
+				}),
+			);
+		}
+
+		return true;
+	}
+
+	//TODO: Creo que funciona sin bugs pero hay que cambiar unas cuantas cosas para que no haya posibilidad a que falle si en la bbdd se modifican los datos a mano.
+	/**
+	 *  Elimina las relaciones de un trabajador
+	 * @param trab	El trabajador del cual se quieren eliminar esas relaciones
+	 * @param relations Las relaciones a eliminar
+	 * @param relType El tipo de relación que se va a eliminar
+	 * @param recursive `True` si el metodo ha de ejecutarse otra vez para las relaciones del `trab`
+	 * @param relationsType El tipo de relaciones como string
+	 * @param addOrRemove Add si se quiere añadir relaciones y remove si se quieren eliminar
+	 * @returns Una promesa de tipo boolean, `true` si se han eliminado correctamente las relaciones, `false` en caso contrario
+	 */
+	private async changeRelations(
+		trab: Trabajador,
+		relations: Trabajador[],
+		recursive: boolean,
+		relationsType: 'inferiores' | 'superiores' | 'pares',
+		addOrRemove: 'add' | 'remove',
+	): Promise<boolean> {
+		/** Dates de utilidad en el metodo */
+		const d8s = {
+			/** Fecha limite, (now - dias permitidos para no crear nuevos periodos) */
+			deadline: new Date(new Date().setDate(-30)),
+			now: new Date(),
+		};
+		const relTypeReversed = (() => {
+			switch (relationsType) {
+				case 'inferiores':
+					return 'superiores';
+				case 'pares':
+					return 'pares';
+				case 'superiores':
+					return 'inferiores';
+			}
+		})();
+		/** Periodo actual de `trab` */
+		const actualPeri = trab.periodos.filter(p => p.actual)[0];
+		if (!actualPeri) {
+			return false;
+		}
+		if (actualPeri.createdAt < d8s.deadline) {
+			//Finalizo periodo actual
+			actualPeri.actual = false;
+			actualPeri.endAt = d8s.now;
+			await this.periodRepo.save(actualPeri);
+			//Actualizo relaciones del trab
+			['id', 'endAt', 'createdAt'].forEach(p => delete actualPeri[p]);
+			actualPeri.actual = true;
+			delete trab.periodos;
+			actualPeri.trabajador = trab;
+			this.concatenateRelations(addOrRemove, relations, actualPeri, relationsType);
+			await actualPeri.save();
+			await Promise.all(relations.map(rel => this.changeRelations(rel, [trab], false, relTypeReversed, addOrRemove)));
+		} else {
+			actualPeri.actual = true;
+			delete trab.periodos;
+			actualPeri.trabajador = trab;
+			this.concatenateRelations(addOrRemove, relations, actualPeri, relationsType);
+			await actualPeri.save();
+			if (!recursive) {
+				return true;
+			}
+			await Promise.all(relations.map(rel => this.changeRelations(rel, [trab], false, relTypeReversed, addOrRemove)));
+		}
+		return true;
+	}
+
+	/**
+	 * Añade o quita los elementos que tiene el array `relations` del Periodo dado como parametro.
+	 * @param add `True` si se quiere añadir al periodo las `relations`
+	 * @param relations Las relaciones a añadir de tipo `Inferiores` `Superiores` `Pares`
+	 * @param wrkPeriodo El periodo del trabajador
+	 * @param relType
+	 */
+	private concatenateRelations(
+		addOrRemove: 'add' | 'remove',
+		relations: Trabajador[],
+		wrkPeriodo: PeriodoTrab,
+		relType: 'inferiores' | 'superiores' | 'pares',
+	): void {
+		if (!wrkPeriodo[relType]) throw new Error('No se han cargado las relaciones correctamente');
+		if (addOrRemove == 'add') {
+			wrkPeriodo[relType] = wrkPeriodo[relType].concat(relations);
+		} else {
+			relations.forEach(rel => {
+				const indx = wrkPeriodo[relType].findIndex(r => r.dni === rel.dni);
+				wrkPeriodo[relType].splice(indx, 1);
+			});
 		}
 	}
 }
