@@ -22,9 +22,9 @@ type MiCompetencia = {
 	nivObjetivo?: INivel;
 } & ICompetencia;
 
-
 type MiComportamiento = {
 	nivel?: INivel;
+	competencia?: ICompetencia
 } & IComportamiento;
 
 @Component({
@@ -119,6 +119,7 @@ export class ModelosComponent implements OnInit {
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
 		setInterval(() => console.log(this.competenciasSelect), 2500);
+		setInterval(() => console.log(this.comportamientosSelect), 2500);
 	}
 
 	/** Selecciona la cat competen del modelo */
@@ -158,6 +159,12 @@ export class ModelosComponent implements OnInit {
 		this.competenciasSelect[index].nivObjetivo = nivel;
 	}
 
+	saveComport(compet: ICompetencia, nivel: INivel, comport: IComportamiento){
+		const index = this.comportamientosSelect.indexOf(comport);
+		this.comportamientosSelect[index].competencia = compet;
+		this.comportamientosSelect[index].nivel = nivel;
+	}
+
 	/** Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'	*/
 	scrollToButton(element: HTMLElement) {
 		element.scrollIntoView();
@@ -193,4 +200,5 @@ export class ModelosComponent implements OnInit {
 		}
 		return;
 	}
+
 }
