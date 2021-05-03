@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CatComp } from 'src/entity/CatComp.entity';
 import { CatContr } from 'src/entity/CatContr.entity';
 import { Trabajador } from 'src/entity/Trabajador.entity';
+import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';
 import { TrabajadorRepo } from './trabajador.repository';
@@ -20,25 +21,34 @@ export class TrabajadoresController {
 
 	@Get('all')
 	async getAllWorker() {
-		var trabajadores = await this.trabRepo.find({ relations: ['periodos', 'periodos.catContr', 'periodos.catComp'] });
-		//TODO: Usar queryBuilder o buscar manera para seleccionar solo el periodo activo y no filtrar en codigo
-		//Filtro los periodos y escojo solo el activo
-		trabajadores.forEach(trab => (trab.periodos = trab.periodos.filter(p => p.actual)));
+		//Tutorial seguido: https://is.gd/nNxUyX
+
+		let trabajadores = await this.trabRepo.find({
+			join: {
+				alias: 'trabajador',
+				leftJoinAndSelect: {
+					periodos: 'trabajador.periodos',
+					catComp: 'periodos.catComp',
+					catContr: 'periodos.catContr',
+				},
+			},
+			where: (qb: SelectQueryBuilder<Trabajador>) => {
+				qb.where('periodos.actual = true');
+			},
+		});
 		//Mapeo de Trabajador a ITrabajadorDTO
-		var trabDto: ITrabajadorDTO[] = [];
-		trabajadores.forEach(trab =>
-			trabDto.push({
+		return trabajadores.map(trab => {
+			return {
 				dni: trab.dni,
 				apellidos: trab.apellidos,
 				area: trab.area,
-				catComp: trab.periodos[0].catComp.id,
-				catContr: trab.periodos[0].catContr.id,
+				catComp: trab.periodos[0].catComp?.id,
+				catContr: trab.periodos[0].catContr?.id,
 				departamento: trab.departamento,
 				nombre: trab.nombre,
 				unidad: trab.unidad,
-			}),
-		);
-		return trabDto;
+			};
+		});
 	}
 
 	//TODO: Completar para añadir los parametros como queryparams y no como el dni tal que :dni
