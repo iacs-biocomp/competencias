@@ -83,6 +83,7 @@ export class OrganiGeneralView implements OnInit {
 			}
 		};
 		this.cv.modalRelations = addOrRemove === 'add' ? [] : relations();
+		this.cv.modalRelationsDelete = [];
 		this.cv.modalWorker = modalWorker;
 		this.cv.modalTitle = modalTitle;
 	}
