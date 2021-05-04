@@ -50,3 +50,7 @@
 	z-index: 2000;
 }
 
+.disableDiv{
+	pointer-events:none;
+}
+

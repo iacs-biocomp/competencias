@@ -105,6 +105,9 @@ export class ModelosComponent implements OnInit {
 	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
 	current = 0;
 
+ 	/** Boolean para comprobar que se puede pasar de vista*/
+	isDisabled=true;
+
 	constructor(
 		private catCompService: CatCompetencialesService,
 		private competSv: CompetenciasService,
@@ -129,10 +132,11 @@ export class ModelosComponent implements OnInit {
 
 	/** Selecciona la cat competen del modelo */
 	selectCatComp(catComp: ICatComp) {
-		var index = this.addModelo.catComp;
+		var index = this.dbData.modelToAdd.catComp;
 		if (index) {
-			this.addModelo.catComp = catComp;
-			console.log(this.addModelo.catComp);
+			this.dbData.modelToAdd.catComp = catComp;
+			console.log(this.dbData.modelToAdd.catComp);
+			this.isDisabled==false;
 		}
 	}
 
@@ -189,7 +193,7 @@ export class ModelosComponent implements OnInit {
 	 * Añade un comportamiento con un nivel asociado a una competencia
 	 */
 	addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
-		let matchSubModel = this.addModelo.subModels.find(
+		let matchSubModel = this.dbData.modelToAdd.subModels.find(
 			x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
 		);
 		if (!matchSubModel) {
