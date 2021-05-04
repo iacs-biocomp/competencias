@@ -1,4 +1,3 @@
-import { CompressionMiddleware } from '@nest-middlewares/compression';
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -18,6 +17,7 @@ import { CatCompModule } from './modules/cat-comp/cat-comp.module';
 import { TrabajadoresModule } from './modules/trabajadores/trabajadores.module';
 import { OrganigramaModule } from './modules/organigrama/organigrama.module';
 import { ModelosModule } from './modules/modelos/modelos.module';
+import { CompressionMiddleware } from '@aml360/nestjs-compression';
 
 @Module({
 	imports: [
