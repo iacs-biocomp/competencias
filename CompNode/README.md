@@ -1,27 +1,32 @@
 # NodeCompetencias
 
+## Dependencias
+
+La dependencia esencial es node y su package manager por defecto (npm) aunque puedes usar yarn si lo prefieres.
+
+Para instalar node y npm en debian, ubuntu, mint...
+
+```bash
+sudo apt-get update
+sudo apt-get install nodejs npm
+```
+
 ## Como generar la imagen para desplegar
 
 ```bash
-# No es necesario instalar dependencias para generar el contenedor, para compilar angular si
 # Estando posicionado en la carpeta CompNode:
 cd back-comp && \
 npm i ;\
 sudo ./dkbuild.sh ;\
 cd ..
-# Cuando este la imagen correr este comando para desplegarlo, en el volumen ha de estar la carpeta del compilado de angular
 # Crear la carpeta primero para que el owner no sea root sino el usuario
 mkdir /app/ngDist
-
+# Cuando este la imagen y la carpeta correr este comando para desplegarlo, en el volumen ha de estar la carpeta del compilado de angular
 sudo docker run --restart=always \
 -p 80:3000 -v /app/ngDist:/app/ngDist --name nodecompetencias -d nodecompetencias
 
 # Para compilar angular y moverlo a la carpeta /app/ngDist esta un script dentro de FrontComp
-# Recordatorio, es necesario tener las dependencias (@angular/core y @angular/compiler) para compilarlo sino da error, instalar con el comando:
-npm i
-# O si se usa yarn
-yarn install
-# Luego ir a la carpeta y compilar
+# Recordatorio, es necesario tener las dependencias (@angular/core y @angular/compiler) para compilarlo sino da error, con este comando las instala y compila:
 cd FrontComp && \
 npm i ; \
 sudo ./buildCpToVolume.sh; cd ..
