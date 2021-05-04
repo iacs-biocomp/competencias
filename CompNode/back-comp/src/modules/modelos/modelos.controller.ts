@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EvModel } from 'src/entity/EvModel.entity';
-import { SubModel } from 'src/entity/SubModel.entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { EvModelRepo } from './modelos.repository';
+import { SubModelRepo } from './subModel.repository';
 
 //Probablemente mejor un picker en vez de omit para quitar los metodos
 type NewModelDTO = Omit<EvModel, 'evs'>;
@@ -14,6 +14,8 @@ export class ModelosController {
 		private readonly modelRepo: EvModelRepo,
 		@InjectRepository(CatCompRepo)
 		private readonly catCompRepo: CatCompRepo,
+		@InjectRepository(SubModelRepo)
+		private readonly subModelRepo: SubModelRepo,
 	) {}
 
 	@Get(':cComp')
@@ -31,10 +33,14 @@ export class ModelosController {
 	}
 
 	@Post('')
-	async newModel(@Body() modelo: NewModelDTO) {
-		console.log(modelo);
-		var evModel = new EvModel();
-		evModel.catComp = await this.catCompRepo.findOne({ id: modelo.catComp.id });
-		console.log(modelo.subModels);
+	async newModel(@Body() modeloDto: NewModelDTO) {
+		let evModel = new EvModel();
+		evModel.catComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
+		evModel.catComp = modeloDto.catComp;
+		evModel.subModels = modeloDto.subModels;
+		this.modelRepo.save(evModel);
+		// * Si hay que guardar los submodelos por separado, ¿posible error al estar el array en null?
+		// evModel.subModels.forEach(subM => subM.modelos.push(evModel));
+		// this.subModelRepo.save(evModel.subModels);
 	}
 }

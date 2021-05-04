@@ -154,13 +154,13 @@ export class OrganigramaController {
 	//TODO: Creo que funciona sin bugs pero hay que cambiar unas cuantas cosas para que no haya posibilidad a que falle si en la bbdd se modifican los datos a mano.
 	/**
 	 *  Elimina las relaciones de un trabajador
-	 * @param trab	El trabajador del cual se quieren eliminar esas relaciones
-	 * @param relations Las relaciones a eliminar
-	 * @param relType El tipo de relación que se va a eliminar
+	 * @param trab	El trabajador del cual se quieren añadir/eliminar relaciones
+	 * @param relations Las relaciones a añadir/eliminar
+	 * @param relType El tipo de relación que se va a añadir/eliminar
 	 * @param recursive `True` si el metodo ha de ejecutarse otra vez para las relaciones del `trab`
 	 * @param relationsType El tipo de relaciones como string
-	 * @param addOrRemove Add si se quiere añadir relaciones y remove si se quieren eliminar
-	 * @returns Una promesa de tipo boolean, `true` si se han eliminado correctamente las relaciones, `false` en caso contrario
+	 * @param addOrRemove Add si se quiere añadir relaciones y remove si se quieren añadir/eliminar
+	 * @returns Una promesa de tipo boolean, `true` si se han añadido/eliminado correctamente las relaciones, `false` en caso contrario
 	 */
 	private async changeRelations(
 		trab: Trabajador,

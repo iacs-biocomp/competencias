@@ -6,11 +6,12 @@ import { IEvaluacion, IEvModel } from '../../../../../../../interfaces/IEvaluaci
 @Injectable({ providedIn: 'root' })
 export class EvaluacionesAdmService {
 	constructor(private httpClient: HttpClient) {}
-
+	// TODO: Tsdoc
 	public async getAllEval(): Promise<IEvaluacion[]> {
 		return await this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones/all`).toPromise();
 	}
 
+	// TODO: Tsdoc
 	async borrarEval(id: number): Promise<boolean> {
 		var borrado = false;
 		try {
@@ -22,10 +23,12 @@ export class EvaluacionesAdmService {
 		return borrado;
 	}
 
+	// TODO: Tsdoc
 	save(evalu: IEvaluacion): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 
+	// TODO: Tsdoc
 	editEval(evalu: IEvaluacion): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}

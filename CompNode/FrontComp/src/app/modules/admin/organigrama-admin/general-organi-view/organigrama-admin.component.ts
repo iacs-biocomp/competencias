@@ -61,9 +61,6 @@ export class OrganiGeneralView implements OnInit {
 	async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
 		this.cComps = promises[1];
-		setInterval(() => {
-			console.log(this.cv);
-		}, 1500);
 	}
 
 	/**
@@ -104,6 +101,7 @@ export class OrganiGeneralView implements OnInit {
 			this.cv.modalRelationsDelete.splice(index, 1);
 		}
 	}
+	/** Sincroniza la vista con la base de datos pidiendo todos los datos de nuevo */
 	async syncView(): Promise<void> {
 		this.fullOrgani = await this.orgSv.getFullOrgani();
 		this.fullOrgani.sort((a, b) => a.trabajador.nombre.localeCompare(b.trabajador.nombre));

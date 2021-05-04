@@ -16,6 +16,8 @@ type DbData = {
 	comports: IComportamiento[];
 	/** listado de niveles */
 	niveles: INivel[];
+	/** El modelo que se enviará al backend, sobre este se realizan las modificaciones */
+	modelToAdd: IModelDTO;
 };
 
 type MiCompetencia = {
@@ -24,7 +26,7 @@ type MiCompetencia = {
 
 type MiComportamiento = {
 	nivel?: INivel;
-	competencia?: ICompetencia
+	competencia?: ICompetencia;
 } & IComportamiento;
 
 @Component({
@@ -33,12 +35,13 @@ type MiComportamiento = {
 	styleUrls: ['./modelos.component.css'],
 })
 export class ModelosComponent implements OnInit {
-	/** Objeto que tiene los datos usados para los <select> */
+	/** Objeto que tiene los datos usados para los select */
 	dbData: DbData = {
 		catComps: [],
 		comps: [],
 		comports: [],
 		niveles: [],
+		modelToAdd: { catComp: undefined, subModels: [] },
 	};
 
 	/** Guarda la lista de competencias seleccionadas */
@@ -46,8 +49,10 @@ export class ModelosComponent implements OnInit {
 	/** Guarda la lista de comportamientos seleccionados */
 	comportamientosSelect: MiComportamiento[] = [];
 
-
-	/** Modelo a guardar en la bbdd, es la 'referencia' */
+	/**
+	 * Modelo a guardar en la bbdd, es la 'referencia'
+	 * @deprecated Usar dbData.modelToAdd
+	 */
 	addModelo: IModelDTO = {
 		catComp: {
 			id: 'CR6',
@@ -143,13 +148,13 @@ export class ModelosComponent implements OnInit {
 	}
 
 	/** Selecciona los comportamientos del submodelo */
-	selectComportamiento(comport: IComportamiento){
+	selectComportamiento(comport: IComportamiento) {
 		const index = this.comportamientosSelect.indexOf(comport);
 		if (index == -1) {
 			this.comportamientosSelect.push(comport);
 			this.dbData.comports[index] = comport;
 		} else {
-			this.comportamientosSelect.splice(index, 1)
+			this.comportamientosSelect.splice(index, 1);
 		}
 	}
 
@@ -159,7 +164,7 @@ export class ModelosComponent implements OnInit {
 		this.competenciasSelect[index].nivObjetivo = nivel;
 	}
 
-	saveComport(compet: ICompetencia, nivel: INivel, comport: IComportamiento){
+	saveComport(compet: ICompetencia, nivel: INivel, comport: IComportamiento) {
 		const index = this.comportamientosSelect.indexOf(comport);
 		this.comportamientosSelect[index].competencia = compet;
 		this.comportamientosSelect[index].nivel = nivel;
@@ -200,5 +205,4 @@ export class ModelosComponent implements OnInit {
 		}
 		return;
 	}
-
 }
