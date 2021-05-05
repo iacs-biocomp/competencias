@@ -28,6 +28,14 @@ type MiComportamiento = {
 	nivel?: INivel;
 	competencia?: ICompetencia;
 } & IComportamiento;
+type ComportCtrlView = {
+	compSelected?: ICompetencia;
+	nivSelected?: INivel;
+	comportsSelected: IComportamiento[];
+};
+interface Validators {
+	nivObjetivoValidator: (competencias: MiCompetencia[]) => boolean;
+}
 
 @Component({
 	selector: 'app-modelos',
@@ -41,7 +49,28 @@ export class ModelosComponent implements OnInit {
 		comps: [],
 		comports: [],
 		niveles: [],
-		modelToAdd: { catComp: undefined, subModels: [] },
+		modelToAdd: {
+			catComp: undefined,
+			subModels: [],
+		},
+	};
+	comportCtl: ComportCtrlView = {
+		compSelected: undefined,
+		nivSelected: undefined,
+		comportsSelected: [],
+	};
+	validators: Validators = {
+		nivObjetivoValidator: (competencias: MiCompetencia[]) => {
+			var valid = true;
+			competencias.forEach(c => {
+				console.log(c.nivObjetivo);
+				if (!c.nivObjetivo) {
+					valid = false;
+				}
+			});
+			console.log(valid);
+			return valid;
+		},
 	};
 
 	/** Guarda la lista de competencias seleccionadas */
@@ -105,8 +134,8 @@ export class ModelosComponent implements OnInit {
 	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
 	current = 0;
 
- 	/** Boolean para comprobar que se puede pasar de vista*/
-	isDisabled=true;
+	/** Boolean para comprobar que se puede pasar de vista*/
+	isDisabled = true;
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -126,17 +155,15 @@ export class ModelosComponent implements OnInit {
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
-		setInterval(() => console.log(this.competenciasSelect), 2500);
-		setInterval(() => console.log(this.comportamientosSelect), 2500);
+		// setInterval(() => console.log(this.comportCtl), 5500);
+		setInterval(() => console.log(this.competenciasSelect), 5500);
 	}
 
 	/** Selecciona la cat competen del modelo */
-	selectCatComp(catComp: ICatComp) {
-		var index = this.dbData.modelToAdd.catComp;
-		if (index) {
-			this.dbData.modelToAdd.catComp = catComp;
+	selectCatComp(catCompet: ICatComp) {
+		if (catCompet) {
+			this.dbData.modelToAdd.catComp = catCompet;
 			console.log(this.dbData.modelToAdd.catComp);
-			this.isDisabled==false;
 		}
 	}
 
@@ -145,7 +172,6 @@ export class ModelosComponent implements OnInit {
 		const index = this.competenciasSelect.indexOf(compete);
 		if (index == -1) {
 			this.competenciasSelect.push(compete);
-			this.dbData.comps[index] = compete;
 		} else {
 			this.competenciasSelect.splice(index, 1);
 		}
@@ -153,12 +179,12 @@ export class ModelosComponent implements OnInit {
 
 	/** Selecciona los comportamientos del submodelo */
 	selectComportamiento(comport: IComportamiento) {
-		const index = this.comportamientosSelect.indexOf(comport);
+		const arrToPush = this.comportCtl.comportsSelected;
+		const index = this.comportCtl.comportsSelected!.indexOf(comport);
 		if (index == -1) {
-			this.comportamientosSelect.push(comport);
-			this.dbData.comports[index] = comport;
+			arrToPush.push(comport);
 		} else {
-			this.comportamientosSelect.splice(index, 1);
+			arrToPush.splice(index, 1);
 		}
 	}
 
@@ -166,12 +192,6 @@ export class ModelosComponent implements OnInit {
 	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
 		const index = this.competenciasSelect.indexOf(compet);
 		this.competenciasSelect[index].nivObjetivo = nivel;
-	}
-
-	saveComport(compet: ICompetencia, nivel: INivel, comport: IComportamiento) {
-		const index = this.comportamientosSelect.indexOf(comport);
-		this.comportamientosSelect[index].competencia = compet;
-		this.comportamientosSelect[index].nivel = nivel;
 	}
 
 	/** Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'	*/
@@ -187,6 +207,12 @@ export class ModelosComponent implements OnInit {
 		if (!derecha && this.current > 0) {
 			this.current--;
 		}
+	}
+
+	addAllComports(): void {
+		this.comportCtl.comportsSelected.forEach(comport =>
+			this.addComportToCompet(this.comportCtl.compSelected!, this.comportCtl.nivSelected!, comport),
+		);
 	}
 
 	/**
