@@ -13,7 +13,7 @@
 					<ul class="list-group">
 						<li [ngClass]="{ active: catComp === dbData.modelToAdd.catComp }" [id]="'catComp' + i"
 							class="list-group-item p-3" aria-current="true" *ngFor="let catComp of dbData.catComps; let i = index"
-							(click)="selectCatComp(catComp)">
+							(click)="selectCatComp(catComp)" (click)="scrollToButton(target)">
 							{{ catComp.id }} - {{ catComp.description }}
 						</li>
 					</ul>
@@ -107,7 +107,6 @@
 					</button>
 					<button class="btn" type="button" [disabled]="!validators.nivObjetivoValidator(competenciasSelect)  "
 						(click)="move(true)">
-						<!-- TODO: Añadir un validador para que el botón este disabled hasta que se pulsen los niveles objetivo -->
 						<span class="material-icons"> arrow_forward </span>
 					</button>
 				</div>
@@ -155,7 +154,7 @@
 															{{ ' Nivel: ' + allNiveles.id }}
 
 															<!--Btn para añadir comportamientos a x nivel-->
-															<button (click)="comportCtl.nivSelected=allNiveles; comportCtl.compSelected=nivelComp  "
+															<button (click)="comportCtl.nivSelected=allNiveles; comportCtl.compSelected=nivelComp"
 																class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal1"
 																id="newEvButton" style="margin-left: 30px">
 																<span title="Añadir comportamiento"> Añadir comportamientos </span>
@@ -169,7 +168,7 @@
 															<!--!!!!!!! AQUI SE DEBEN VISUALIZAR LOS COMPORTAMIENTOS AÑADIDOS DEL MODAL-->
 															<ol type="1" class="list-group">
 																<li [id]="'nivel' + i" class="list-group-item p-3" aria-current="true"
-																	*ngFor="let comport of comportamientosSelect; let i = index">
+																	*ngFor="let comport of comportCtl.comportsSelected; let i = index">
 																	{{ comport.descripcion }}
 																</li>
 															</ol>

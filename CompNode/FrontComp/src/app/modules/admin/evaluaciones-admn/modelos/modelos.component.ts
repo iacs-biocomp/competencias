@@ -28,6 +28,7 @@ type MiComportamiento = {
 	nivel?: INivel;
 	competencia?: ICompetencia;
 } & IComportamiento;
+
 type ComportCtrlView = {
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
