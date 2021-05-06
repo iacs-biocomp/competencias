@@ -9,6 +9,10 @@ import { EvRepository } from './evaluaciones.repository';
 export class EvaluacionesController {
 	constructor(@InjectRepository(EvRepository) private readonly evRepo: EvRepository) {}
 
+	@Get('')
+	getAll(): Promise<Ev[]> {
+		return this.evRepo.find();
+	}
 	@Get(':username')
 	async getEvsOfUser(@Param('username') username: string) {
 		var worker = await Trabajador.findOne({

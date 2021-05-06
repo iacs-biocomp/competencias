@@ -5,6 +5,9 @@ import { CompetenciasService } from '../services/competencias.service';
 interface IComptEdit extends ICompetencia {
 	editing?: boolean;
 }
+// type ICompetenciaDTO = Omit<ICompetencia, 'createdAt'> & {
+// 	createdAt: Date | undefined;
+// };
 @Component({
 	selector: 'table-competencias',
 	templateUrl: './table-competencias.component.html',

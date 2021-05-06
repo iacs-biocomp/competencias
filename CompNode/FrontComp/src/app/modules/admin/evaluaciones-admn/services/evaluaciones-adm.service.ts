@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { environment as cnf } from 'src/environments/environment';
 import { IEvaluacion, IEvModel } from '../../../../../../../interfaces/IEvaluaciones';
 
+/** Tiene todos los metodos necesarios para la administración de las Evaluaciones y Modelos */
 @Injectable({ providedIn: 'root' })
 export class EvaluacionesAdmService {
 	constructor(private httpClient: HttpClient) {}
-	// TODO: Tsdoc
-	public async getAllEval(): Promise<IEvaluacion[]> {
-		return await this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones/all`).toPromise();
+	/** Obtiene todas las evaluaciones del backend */
+	public async getAll(): Promise<IEvaluacion[]> {
+		return await this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones`).toPromise();
 	}
 
 	// TODO: Tsdoc
-	async borrarEval(id: number): Promise<boolean> {
+	async deleteById(id: number): Promise<boolean> {
 		var borrado = false;
 		try {
 			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/evaluaciones/${id}`).toPromise();

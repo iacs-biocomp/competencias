@@ -3,22 +3,17 @@
 	<button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" id="newEvButton">
 		Nueva evaluación
 	</button>
-	<br>
-	<!--Al pulsar el boton se carga el modulo del MODELO-->
-	<button (click)="loadModelForm() " class="btn btn-success mb-2">
-		Nuevo modelo
-	</button>
-	<app-modelos *ngIf="loadMForm"></app-modelos>
-
+	<button (click)="loadMForm = true" class="btn btn-success ms-2 mb-2">Nuevo modelo</button>
+	<app-new-ev-model *ngIf="loadMForm"></app-new-ev-model>
 
 	<!-- TODO: Cambiar identificadores del modal nueva evalución -->
 	<div class="row gy-4">
-		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let row of evalToAdd">
+		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let ev of evaluaciones">
 			<div class="card">
-				<h2 class="card-title">Id evaluación: {{ row.id }}</h2>
+				<h2 class="card-title">Id evaluación: {{ ev.id }}</h2>
 				<div class="card-body">
-					<p>Descripción: {{ row.description }}</p>
-					<p>Id del modelo: {{ row.model }}</p>
+					<p>Descripción: {{ ev.description }}</p>
+					<p>Id del modelo: {{ ev.model }}</p>
 					<!-- <p>Id del la Cat. competencial: {{ row.catComp.id }}</p> -->
 					<!-- <p>Inicio propuestas: {{row}} </p>
 						<p>Fin propuestas: {{row}} </p>

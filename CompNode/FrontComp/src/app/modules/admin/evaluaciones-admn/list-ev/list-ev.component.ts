@@ -8,19 +8,11 @@ import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 	styleUrls: ['./list-ev.component.css'],
 })
 export class ListEvComponent implements OnInit {
+	/** Controla si se muestra o no el componente NuevoModelo */
 	public loadMForm = false;
 
-	evalToAdd: IEvaluacion[] = [
-		{
-			id: '1',
-			description: 'ff',
-			model: undefined,
-			catComp: {
-				id: 'GR1',
-				description: 'f',
-			},
-		},
-	];
+	/** Lista de las evaluaciones que hay en la bbdd */
+	evaluaciones: IEvaluacion[] = [];
 
 	constructor(private evalService: EvaluacionesAdmService) {}
 
@@ -29,10 +21,6 @@ export class ListEvComponent implements OnInit {
 	}
 
 	async updateEvalView(): Promise<void> {
-		// this.evalToAdd = await this.evalService.getAllEval();
-	}
-
-	loadModelForm() {
-		this.loadMForm = true;
+		this.evaluaciones = await this.evalService.getAll();
 	}
 }

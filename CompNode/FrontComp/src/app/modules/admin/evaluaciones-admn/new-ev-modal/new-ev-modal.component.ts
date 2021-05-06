@@ -5,6 +5,7 @@ import { IEvaluacion, IEvModel } from 'sharedInterfaces/IEvaluaciones';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 
+/** Componente destinado a la creación de una nueva evaluación, modal de bootstrap */
 @Component({
 	selector: 'app-new-ev-modal',
 	templateUrl: './new-ev-modal.component.html',

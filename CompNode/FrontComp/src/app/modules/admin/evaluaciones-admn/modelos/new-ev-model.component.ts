@@ -39,11 +39,11 @@ interface Validators {
 }
 
 @Component({
-	selector: 'app-modelos',
-	templateUrl: './modelos.component.html',
-	styleUrls: ['./modelos.component.css'],
+	selector: 'app-new-ev-model',
+	templateUrl: './new-ev-model.component.html',
+	styleUrls: ['./new-ev-model.component.css'],
 })
-export class ModelosComponent implements OnInit {
+export class NewEvModelComponent implements OnInit {
 	/** Objeto que tiene los datos usados para los select */
 	dbData: DbData = {
 		catComps: [],

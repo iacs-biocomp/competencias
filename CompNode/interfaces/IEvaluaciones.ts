@@ -50,20 +50,24 @@ export interface ISubModel {
 
   comportamientos?: IComportamiento[];
 }
+/** Representa un nivel, tiene la misma estructura que el que tiene el backend */
 export interface INivel {
   id: string;
-
+  /** El valor del nivel como float */
   valor: number;
-
+  /** Los submodelos asociados a este nivel, en la mayoría de los casos esta propiedad será undefined */
   subModels: ISubModel[] | undefined;
 }
+
+/** Representa un comportamiento, tiene la misma estructura que el que tiene el backend */
 export interface IComportamiento {
   id: string;
 
   descripcion: string;
-
+  /** Los submodelos asociados a este comportamiento, en la mayoría de los casos esta propiedad será undefined */
   subModels: ISubModel[] | undefined;
 }
+/** Representa una competencia, tiene la misma estructura que el que tiene el backend */
 export interface ICompetencia {
   id: string;
   descripcion: string;
