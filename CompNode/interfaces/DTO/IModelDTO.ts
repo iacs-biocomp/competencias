@@ -1,5 +1,5 @@
-import { IEvModel, ISubModel } from "../IEvaluaciones";
+import { IEvModel, ISubModel } from '../IEvaluaciones';
 
-export interface IModelDTO extends Omit<IEvModel, 'id' | 'subModels'>{
+export interface IModelDTO extends Omit<IEvModel, 'id' | 'subModels'> {
   subModels: ISubModel[];
 }

@@ -1,4 +1,4 @@
-import { IPeriodoTrab, ITrabajador } from "./IUser";
+import { IPeriodoTrab, ITrabajador } from './IUser';
 
 /**
  * Interfaz que representa el organigrama de un trabajador;

@@ -20,13 +20,7 @@ export const catRoutes: Routes = [
 
 @NgModule({
 	declarations: [TableContracComponent, TableCompetComponent],
-	imports: [
-		CommonModule,
-		RouterModule,
-		SharedModule,
-		FormsModule,
-		ReactiveFormsModule,
-	],
+	imports: [CommonModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule],
 	providers: [CatCompetencialesService],
 })
 export class CatAdmnModule {}
