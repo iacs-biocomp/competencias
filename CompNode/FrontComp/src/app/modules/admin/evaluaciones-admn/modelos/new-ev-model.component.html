@@ -154,9 +154,13 @@
 															{{ ' Nivel: ' + allNiveles.id }}
 
 															<!--Btn para añadir comportamientos a x nivel-->
-															<button (click)="comportCtl.nivSelected=allNiveles; comportCtl.compSelected=nivelComp"
-																class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal1"
-																id="newEvButton" style="margin-left: 30px">
+															<button
+																(click)="comportCtl.nivSelected=allNiveles; comportCtl.compSelected=nivelComp; printComports(comportCtl.compSelected, dbData.modelToAdd.subModels)"
+																class="btn btn-primary me-2"
+																data-bs-toggle="modal"
+																data-bs-target="#removeModal"
+																id="newEvButton"
+																style="margin-left: 30px">
 																<span title="Añadir comportamiento"> Añadir comportamientos </span>
 															</button>
 															<!--FIN btn para añadir comportamientos a x nivel-->
@@ -168,7 +172,7 @@
 															<!--!!!!!!! AQUI SE DEBEN VISUALIZAR LOS COMPORTAMIENTOS AÑADIDOS DEL MODAL-->
 															<ol type="1" class="list-group">
 																<li [id]="'nivel' + i" class="list-group-item p-3" aria-current="true"
-																	*ngFor="let comport of comportCtl.comportsSelected; let i = index">
+																	*ngFor="let comport of findSubModel(dbData.modelToAdd.subModels, nivelComp, allNiveles)?.comportamientos; let i = index">
 																	{{ comport.descripcion }}
 																</li>
 															</ol>
@@ -201,7 +205,7 @@
 	<!--FIN ELEGIR COMPORTAMIENTOS -->
 
 	<!-- Modal para añadir comportamientos -->
-	<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+	<div class="modal fade" tabindex="-1" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
