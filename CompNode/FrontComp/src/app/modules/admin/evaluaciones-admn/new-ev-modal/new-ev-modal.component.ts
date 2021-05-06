@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICatComp } from 'sharedInterfaces/ICategorias';
 import { IEvaluacion, IEvModel } from 'sharedInterfaces/IEvaluaciones';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 
+/** Same type as IEvaluacion but without id because is not necesary for create a new one */
+export type evAddDTO = Omit<IEvaluacion, 'id'>;
 /** Componente destinado a la creación de una nueva evaluación, modal de bootstrap */
 @Component({
 	selector: 'app-new-ev-modal',
@@ -12,36 +14,42 @@ import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 	styleUrls: ['./new-ev-modal.component.css'],
 })
 export class NewEvModalComponent implements OnInit {
+	/** Metodo que se ejecuta cuando se guarda una evaluación El componente padre debe pasarlo como parametro */
+	@Input()
+	onEvSaved!: () => void | Promise<void>;
 	evModels!: IEvModel[];
-	// evModelsFiltered: IEvModel[] = [];
 	catComps!: ICatComp[];
 	catCompSelected?: ICatComp;
-	evToAdd!: IEvaluacion;
+	/** Descripción de la evaluación, bindeado al input en el html */
+	evDescription: string | undefined;
+	/** La evaluación que se añadirá a la bbdd */
+	evToAdd!: evAddDTO;
 	evModelSelected!: IEvModel;
-	periodos = {
-		rangePropuesta: new FormGroup({
-			start: new FormControl(),
-			end: new FormControl(),
-		}),
-		rangeValidacion: new FormGroup({
-			start: new FormControl(),
-			end: new FormControl(),
-		}),
-		rangeValoracion: new FormGroup({
-			start: new FormControl(),
-			end: new FormControl(),
-		}),
-		rangeEvaluacion: new FormGroup({
-			start: new FormControl(),
-			end: new FormControl(),
-		}),
-	};
+	/** Los rangos de fechas de esa evaluacion, periodo de propuesta, validación, valoración... */
+	rangesForm: FormGroup | undefined;
 
-	constructor(private evSv: EvaluacionesAdmService, private cCompSv: CatCompetencialesService) {}
+	constructor(
+		private evSv: EvaluacionesAdmService,
+		private cCompSv: CatCompetencialesService,
+		private fb: FormBuilder,
+	) {}
+
 	async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([this.cCompSv.getAll(), this.evSv.getAllEvModels()]);
 		this.catComps = promises[0].sort((a, b) => a.id.localeCompare(b.id));
 		this.evModels = promises[1];
+		// TODO: Añadir validadores que comprueben que las fechas de inicio y final esten en orden Ejemplo: propuestaEnd < validacionStart
+		// ?? Preguntar a vega si tiene que ser asi o pueden solaparse (propuestaEnd > validacionStart)
+		this.rangesForm = this.fb.group({
+			propuestaStart: ['', Validators.required],
+			propuestaEnd: ['', Validators.required],
+			validacionStart: ['', Validators.required],
+			validacionEnd: ['', Validators.required],
+			valoracionStart: ['', Validators.required],
+			valoracionEnd: ['', Validators.required],
+			evaluacionStart: ['', [Validators.required]],
+			evaluacionEnd: ['', Validators.required],
+		});
 	}
 
 	/**
@@ -55,23 +63,33 @@ export class NewEvModalComponent implements OnInit {
 		}
 		return this.evModels.filter(evModel => evModel.catComp?.id == this.catCompSelected?.id);
 	}
+	/**
+	 * @returns `true` si el formulario es valido y `false` en caso contrario
+	 */
+	isFormValid(): boolean {
+		if (!this.rangesForm) return false; //Se quita undefined
+		// TODO: Añadir validadores de modelo seleccionado y de catComp
+		return this.rangesForm.valid;
+	}
 
-	save() {
+	async save() {
+		if (!this.rangesForm) return; //Se quita undefined
+		const form = this.rangesForm.value;
 		this.evToAdd = {
-			id: 'none',
-			description: 'test',
+			description: this.evDescription === undefined ? 'Descripción por defecto' : this.evDescription,
 			catComp: this.catCompSelected!,
 			model: this.evModelSelected,
-			iniDate: this.periodos.rangePropuesta.get('start')!.value as Date,
-			finPropuestas: this.periodos.rangePropuesta.get('end')!.value as Date,
-			iniValidacion: this.periodos.rangeValidacion.get('start')!.value as Date,
-			endValidacion: this.periodos.rangeValidacion.get('end')!.value as Date,
-			iniValoracion: this.periodos.rangeValoracion.get('start')!.value as Date,
-			endValoracion: this.periodos.rangeValoracion.get('end')!.value as Date,
-			iniPerEvaluado: this.periodos.rangeEvaluacion.get('start')!.value as Date,
-			endPerEvaluado: this.periodos.rangeEvaluacion.get('end')!.value as Date,
+			iniDate: form.propuestaStart as Date,
+			finPropuestas: form.propuestaEnd as Date,
+			iniValidacion: form.validacionStart as Date,
+			endValidacion: form.validacionEnd as Date,
+			iniValoracion: form.valoracionStart as Date,
+			endValoracion: form.valoracionEnd as Date,
+			iniPerEvaluado: form.evaluacionStart as Date,
+			endPerEvaluado: form.evaluacionEnd as Date,
 		};
 		console.log(this.evToAdd);
-		this.evSv.save(this.evToAdd);
+		const saved = await this.evSv.save(this.evToAdd);
+		if (saved) this.onEvSaved(); //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 }

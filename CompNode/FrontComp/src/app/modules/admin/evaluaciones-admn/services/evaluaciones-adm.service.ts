@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as cnf } from 'src/environments/environment';
 import { IEvaluacion, IEvModel } from '../../../../../../../interfaces/IEvaluaciones';
+import { evAddDTO } from '../new-ev-modal/new-ev-modal.component';
 
 /** Tiene todos los metodos necesarios para la administración de las Evaluaciones y Modelos */
 @Injectable({ providedIn: 'root' })
@@ -25,7 +26,7 @@ export class EvaluacionesAdmService {
 	}
 
 	// TODO: Tsdoc
-	save(evalu: IEvaluacion): Promise<boolean> {
+	save(evalu: evAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 

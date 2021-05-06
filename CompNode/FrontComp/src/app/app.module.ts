@@ -12,6 +12,7 @@ import { Error404Component } from './modules/app/error404/error404.component';
 //Usado para tener fechas y monedas en castellano
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 registerLocaleData(localeEs);
 
 // function initializeKeycloak(keycloak: KeycloakService) {
@@ -34,8 +35,9 @@ registerLocaleData(localeEs);
 @NgModule({
 	declarations: [AppComponent, Error404Component],
 	imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, SharedModule],
+	exports: [SharedModule],
 	providers: [
-		// HttpConfigInterceptor
+		{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
 		// KeycloakService,
 		// {
 		//   provide: APP_INITIALIZER,
@@ -44,16 +46,8 @@ registerLocaleData(localeEs);
 		//   deps: [KeycloakService],
 		// },
 	],
-	exports: [SharedModule],
 	bootstrap: [AppComponent],
 })
 export class AppModule {
-	constructor(private m: NgModuleRef<AppModule>) {}
-
-	/**
-	 * Destruye el modulo de app y sus childrens, usar solo para el logout
-	 */
-	// destory() {
-	// 	this.m.destroy();
-	// }
+	constructor() {}
 }
