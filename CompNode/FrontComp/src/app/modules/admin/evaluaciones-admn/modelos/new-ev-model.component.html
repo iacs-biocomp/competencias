@@ -63,7 +63,7 @@
 							[id]="compete.id"
 							class="list-group-item p-3"
 							*ngFor="let compete of dbData.comps"
-							(click)="selectCompet(compete)"
+							(click)="toggleComp(compete)"
 						>
 							{{ compete.id }} - {{ compete.descripcion }}
 						</li>
@@ -220,7 +220,7 @@
 																(click)="
 																	comportCtl.nivSelected = allNiveles;
 																	comportCtl.compSelected = nivelComp;
-																	printComports(comportCtl.compSelected, dbData.modelToAdd.subModels)
+																	getRemainingComports(comportCtl.compSelected, dbData.modelToAdd.subModels)
 																"
 																class="btn btn-primary me-2"
 																data-bs-toggle="modal"
@@ -240,7 +240,6 @@
 														data-bs-parent="#accordionLast"
 													>
 														<div class="accordion-body">
-															<!--!!!!!!! AQUI SE DEBEN VISUALIZAR LOS COMPORTAMIENTOS AÑADIDOS DEL MODAL-->
 															<ol type="1" class="list-group">
 																<li
 																	[id]="'nivel' + i"
@@ -258,7 +257,6 @@
 																	{{ comport.descripcion }}
 																</li>
 															</ol>
-															<!--!!!!!!! FIN AQUI SE DEBEN VISUALIZAR LOS COMPORTAMIENTOS AÑADIDOS-->
 														</div>
 													</div>
 												</div>
@@ -310,7 +308,7 @@
 							[id]="comport.id"
 							class="list-group-item p-3"
 							aria-current="true"
-							*ngFor="let comport of dbData.comports; let i = index"
+							*ngFor="let comport of getRemainingComports(comportCtl.compSelected!, dbData.modelToAdd.subModels); let i = index"
 							(click)="selectComportamiento(comport)"
 						>
 							{{ comport.descripcion }}

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICatComp } from 'sharedInterfaces/ICategorias';
 import { IEvaluacion, IEvModel } from 'sharedInterfaces/IEvaluaciones';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
+import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 
 /** Same type as IEvaluacion but without id because is not necesary for create a new one */
@@ -30,12 +31,13 @@ export class NewEvModalComponent implements OnInit {
 
 	constructor(
 		private evSv: EvaluacionesAdmService,
+		private evModelSv: EvModelsAdmnService,
 		private cCompSv: CatCompetencialesService,
 		private fb: FormBuilder,
 	) {}
 
 	async ngOnInit(): Promise<void> {
-		const promises = await Promise.all([this.cCompSv.getAll(), this.evSv.getAllEvModels()]);
+		const promises = await Promise.all([this.cCompSv.getAll(), this.evModelSv.getAll()]);
 		this.catComps = promises[0].sort((a, b) => a.id.localeCompare(b.id));
 		this.evModels = promises[1];
 		// TODO: Añadir validadores que comprueben que las fechas de inicio y final esten en orden Ejemplo: propuestaEnd < validacionStart
@@ -76,7 +78,7 @@ export class NewEvModalComponent implements OnInit {
 		if (!this.rangesForm) return; //Se quita undefined
 		const form = this.rangesForm.value;
 		this.evToAdd = {
-			description: this.evDescription === undefined ? 'Descripción por defecto' : this.evDescription,
+			description: this.evDescription === undefined ? 'Descripción por defecto' : this.evDescription, //TODO: Return si desc == undefined, validator en formcontrol
 			catComp: this.catCompSelected!,
 			model: this.evModelSelected,
 			iniDate: form.propuestaStart as Date,

@@ -36,9 +36,14 @@ type ComportCtrlView = {
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
 };
-//TODO: Tsdoc, cambiar por una interfaz o type mas generica
-interface Validators {
-	nivObjetivoValidator: (competencias: MiCompetencia[]) => boolean;
+/**
+ * Interfaz de validadores generica, cada propiedad del objeto que implemente esta interfaz ha de
+ * ser una función que devuelva un boolean o Promise<boolean>
+ *
+ * `TRUE` Si es valido `FALSE` si no
+ */
+interface EvModalValidators {
+	[key: string]: (...args: any[]) => boolean | Promise<boolean>;
 }
 
 @Component({
@@ -58,35 +63,29 @@ export class NewEvModelComponent implements OnInit {
 			subModels: [],
 		},
 	};
+
 	comportCtl: ComportCtrlView = {
 		compSelected: undefined,
 		nivSelected: undefined,
 		comportsSelected: [],
 	};
-	validators: Validators = {
-		nivObjetivoValidator: (competencias: MiCompetencia[]) => {
-			var valid = true;
-			competencias.forEach(c => {
-				// console.log(c.nivObjetivo);
+	/** Contiene todas las funciones usadas para validar datos en este componente*/
+	validators: EvModalValidators = {
+		nivObjetivoValidator: (comps: MiCompetencia[]) =>
+			comps.every(c => {
 				if (!c.nivObjetivo) {
-					valid = false;
+					return false;
 				}
-			});
-			// console.log(valid);
-			return valid;
-		},
+				return true;
+			}),
 	};
 	/** Guarda la lista de competencias seleccionadas */
+	//! Mejor en un objeto ctrlView o intentar no usar esta y añadir logica en el html para buscar en el dbData.modelToAdd
 	competenciasSelect: MiCompetencia[] = [];
 	/** Guarda la lista de comportamientos seleccionados */
 	comportamientosSelect: MiComportamiento[] = [];
-	/** Guarda la categoria competencial seleccionada */
-	catCompeteSelected!: ICatComp;
-
 	/** Posicion actual de la vista (sirve para comprobar si se puede pasar y volver de tab) */
 	current = 0;
-	/** Boolean para comprobar que se puede pasar de vista*/
-	isDisabled = true;
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -117,11 +116,35 @@ export class NewEvModelComponent implements OnInit {
 		if (!catCompet) {
 			return;
 		}
-		this.catCompeteSelected = catCompet;
-		this.dbData.modelToAdd.catComp = this.catCompeteSelected; //se guarda la catCompetencial del modelo
+		this.dbData.modelToAdd.catComp = catCompet; //se guarda la catCompetencial del modelo
 	}
 
-	/** Selecciona las competencias del submodelo */
+	/**
+	 * Añade o quita del {@link NewEvModelComponent.dbData| modelToAdd} los subModelos con esa competencia
+	 * @param comp La competencia que se usa para buscar los subModelos que la poseen
+	 */
+	toggleComp(comp: ICompetencia) {
+		let _modelToAdd = this.dbData.modelToAdd;
+		if (this.findSubModels(_modelToAdd.subModels, comp).length === 0) {
+			//Se añade la competencia
+			_modelToAdd.subModels.push({
+				competencia: comp,
+				nivel: undefined,
+				comportamientos: [],
+			});
+			this.competenciasSelect.push(comp);
+		} else {
+			//Se elimina la competencia
+			_modelToAdd.subModels = _modelToAdd.subModels.filter(subModel => subModel.competencia !== comp);
+			const compIndx = this.competenciasSelect.indexOf(comp);
+			this.competenciasSelect.splice(compIndx, 1);
+		}
+	}
+
+	/**
+	 * Selecciona las competencias del submodelo
+	 * @deprecated use {@link NewEvModelComponent.toggleComp | toggleComp()}
+	 */
 	selectCompet(compete: ICompetencia) {
 		const index = this.competenciasSelect.indexOf(compete);
 		if (index == -1) {
@@ -130,7 +153,6 @@ export class NewEvModelComponent implements OnInit {
 		} else {
 			this.competenciasSelect.splice(index, 1);
 		}
-
 	}
 
 	/** Selecciona los comportamientos del submodelo */
@@ -138,19 +160,16 @@ export class NewEvModelComponent implements OnInit {
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);
 		if (index == -1) {
-			//	console.log(`adding ${comport}`);
 			arrToPush.push(comport);
 		} else {
 			arrToPush.splice(index, 1);
 		}
-
 	}
 
 	/** Selecciona el nivel objetivo de cada competencia */
 	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
 		const index = this.competenciasSelect.indexOf(compet);
 		this.competenciasSelect[index].nivObjetivo = nivel;
-
 	}
 
 	/** Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'	*/
@@ -169,8 +188,6 @@ export class NewEvModelComponent implements OnInit {
 	}
 	// TODO: Tsdoc
 	addAllComports(): void {
-		// console.log(`ForEach comportsSelected `);
-		// console.log(this.comportCtl.comportsSelected);
 		this.comportCtl.comportsSelected.forEach(comport =>
 			this.addComportToCompet(this.comportCtl.compSelected!, this.comportCtl.nivSelected!, comport),
 		);
@@ -178,9 +195,11 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Añade un comportamiento con un nivel asociado a una competencia
+	 * @param comp La competencia a la que se quiere añadir el comportamiento
+	 * @param niv El nivel que relaciona comport y comp
+	 * @param comport El comportamiento que se añade a esa comp con ese nivel
 	 */
 	addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
-		//	console.log(comp, niv, comport);
 		let matchSubModel = this.dbData.modelToAdd.subModels.find(
 			x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
 		);
@@ -198,64 +217,71 @@ export class NewEvModelComponent implements OnInit {
 		}
 		return;
 	}
-	// TODO: Tsdoc, refactor en una sola función
-	findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel) {
-		const oe = subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
-		// console.log(oe);
-		// console.log(subModels);
-		return oe;
+
+	/**
+	 * @param subModels El array de submodelos en el que se busca el submodelo
+	 * @param comp La competencia usada para filtrar
+	 * @param niv El nivel que junto con la competencia hacen de filtro
+	 * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
+	 */
+	findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel): ISubModel | undefined {
+		return subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
 	}
-	// TODO: Tsdoc
-	findSubModels(subModels: ISubModel[], comp: ICompetencia) {
-		const oe = subModels.filter(subModel => subModel.competencia === comp);
-		//console.log(oe);
-		//console.log(subModels);
-		return oe;
+
+	/**
+	 * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s
+	 * @param comp La competencia que se usará como filtrado
+	 * @returns El array de subModelos que tienen esa competencia
+	 */
+	findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
+		return subModels.filter(subModel => subModel.competencia === comp);
 	}
-	// TODO: Tsdoc
+
+	/**
+	 * Concatena los arrays de comportamientos que puedan tener varios submodelos, con la MISMA competencia @see {@link ISubModel}
+	 * @param comp La competencia con la que se filtran los subModelos
+	 * @param subModels Array de subModelos del cual se devuelven sus comportamientos (concatenados donde comp==subModel.comp)
+	 * @returns El array de comportamientos que tiene esa competencia
+	 */
 	getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const subModelos = this.findSubModels(subModels, comp);
 		let comports: IComportamiento[] = [];
 		subModelos.forEach(s => comports.concat(s.comportamientos!));
 		return comports;
 	}
-	// TODO: Tsdoc, cambio de nombre porque no es esta función la que imprime nada
-	printComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
-		let comports: IComportamiento[] = [];
-		let matchComport = this.getAllComportsOfComp(comp, subModels).find(x => x.subModels == subModels);
-		console.log(matchComport);
-		if (!matchComport) {
-			return comports.filter(x => !matchComport);
-		} else {
-			return comports.filter(x => !matchComport);
-		}
-	}
+
 	/**
-	 *
+	 * @param comp La competencia de la que se quiere obtener los comportamientos no asociados
+	 * @param subModels Array de todos los subModelos
+	 * @returns Un array de comportamientos que esa competencia aun no tiene asociados
+	 */
+	getRemainingComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
+		let comportsOfComp = this.getAllComportsOfComp(comp, subModels);
+		//TODO: Bug aqui, comportsOfComp vacio
+		console.log(comportsOfComp);
+		let comports = this.dbData.comports.filter(
+			comport => comportsOfComp.find(c => c.id === comport.id) === undefined,
+		);
+		console.log(comports);
+		return comports;
+	}
+
+	/**
+	 * Guarda un evModel en el backend, este debería venir validado, si ocurre un error se maneja la excepción
 	 * @param evModel
-	 * @returns
 	 */
 	async saveEvModel(evModel: IEvModel) {
 		if (!evModel.subModels) return; //Evito undefineds en los subModelos
-		const saved = await this.evModelSv.save(evModel as IModelDTO);
+		let saved: boolean = false;
+		try {
+			saved = await this.evModelSv.save(evModel as IModelDTO);
+		} catch (err) {
+			// TODO: En todas las excepciones del front mandar un log con todos los datos al backend (Crear servicio provided in root)
+		}
 		if (!saved) {
 			alert(
 				'El modelo de la evaluacion no se ha guardado correctamente, compruebe los campos o contacte con un programador',
 			);
 		}
 	}
-
-	/* 	saveData() {
-		this.dbData.modelToAdd = {
-			catComp: this.catCompeteSelected,
-			subModels: [
-				{
-					nivel: this.comportCtl.nivSelected,
-					competencia: this.comportCtl.compSelected,
-					comportamientos: this.comportCtl.comportsSelected,
-				},
-			],
-		};
-		this.modelSV.save
-	} */
 }
