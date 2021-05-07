@@ -171,7 +171,7 @@ export class NewEvModelComponent implements OnInit {
 			return;
 		}
 		this.catCompeteSelected = catCompet;
-		this.dbData.modelToAdd.catComp = this.catCompeteSelected;
+		this.dbData.modelToAdd.catComp = this.catCompeteSelected; //se guarda la catCompetencial del modelo
 	}
 
 	/** Selecciona las competencias del submodelo */
@@ -183,6 +183,7 @@ export class NewEvModelComponent implements OnInit {
 		} else {
 			this.competenciasSelect.splice(index, 1);
 		}
+
 	}
 
 	/** Selecciona los comportamientos del submodelo */
@@ -195,12 +196,14 @@ export class NewEvModelComponent implements OnInit {
 		} else {
 			arrToPush.splice(index, 1);
 		}
+
 	}
 
 	/** Selecciona el nivel objetivo de cada competencia */
 	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
 		const index = this.competenciasSelect.indexOf(compet);
 		this.competenciasSelect[index].nivObjetivo = nivel;
+
 	}
 
 	/** Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'	*/
