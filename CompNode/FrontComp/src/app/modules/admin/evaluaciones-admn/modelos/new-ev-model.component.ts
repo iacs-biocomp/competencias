@@ -229,7 +229,12 @@ export class NewEvModelComponent implements OnInit {
 		return subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
 	}
 
-	//TODO: Tsdoc
+	/**
+	 * Elimina el comportamiento seleccionado de la lista de comportamientos que pertenecen a ese submodelo en concreto
+	 * @param comport El comportamiento a eliminar del array
+	 * @param comp La competencia usada para filtrar
+	 * @param niv El nivel que junto con la competencia hacen de filtro
+	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
 		const _model = this.dbData.modelToAdd;
 		const subModel = this.findSubModel(_model.subModels, comp, niv);
