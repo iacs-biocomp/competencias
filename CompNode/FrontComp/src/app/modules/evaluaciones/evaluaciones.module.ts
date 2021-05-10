@@ -6,11 +6,17 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { EvaluacionesService } from './evaluaciones.service';
 import { HttpClient } from '@angular/common/http';
 import { JwtService } from 'src/app/services/jwt.service';
+import { EvaluarEvConcretaComponent } from './evaluar-ev/evaluar-ev.component';
 
-const routes: Routes = [{ path: '', component: MisEvaluacionesComponent }];
+/** Como se llama el parametro que identifica la evaluación a evaluar */
+export const evId = 'evId';
+const routes: Routes = [
+	{ path: '', component: MisEvaluacionesComponent },
+	{ path: `evaluar/:${evId}`, component: EvaluarEvConcretaComponent },
+];
 
 @NgModule({
-	declarations: [MisEvaluacionesComponent],
+	declarations: [MisEvaluacionesComponent, EvaluarEvConcretaComponent],
 	imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
 	providers: [EvaluacionesService, HttpClient, JwtService],
 })
