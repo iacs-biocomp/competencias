@@ -33,12 +33,18 @@ export class ModelosController {
 	}
 
 	@Post('')
-	async newModel(@Body() modeloDto: NewModelDTO) {
+	async newModel(@Body() modeloDto: NewModelDTO): Promise<boolean> {
 		let evModel = new EvModel();
 		evModel.catComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
-		evModel.catComp = modeloDto.catComp;
 		evModel.subModels = modeloDto.subModels;
-		this.modelRepo.save(evModel);
+		await this.modelRepo.save(evModel);
+		await Promise.all(
+			evModel.subModels.map(subModel => {
+				subModel.modelos = [evModel];
+				return this.subModelRepo.save(subModel);
+			}),
+		);
+		return true;
 		// * Si hay que guardar los submodelos por separado, ¿posible error al estar el array en null?
 		// evModel.subModels.forEach(subM => subM.modelos.push(evModel));
 		// this.subModelRepo.save(evModel.subModels);

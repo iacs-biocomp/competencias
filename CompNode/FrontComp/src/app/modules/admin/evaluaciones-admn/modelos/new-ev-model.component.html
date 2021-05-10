@@ -1,3 +1,4 @@
+<p>{{!(obs| async)}}</p>
 <div class="inline">
 	<!--CATEGORIAS COMPETENCIALES -->
 	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
@@ -155,9 +156,7 @@
 			</div>
 		</div>
 	</div>
-	<!--FIN ASIGNAR NIVEL OBJETIVO A ESAS COMPETENCIAS-->
 
-	<!--ELEGIR COMPORTAMIENTOS -->
 	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -201,8 +200,8 @@
 											<div class="accordion-body">
 												<div
 													class="accordion-item"
-													[id]="allNiveles.id"
-													*ngFor="let allNiveles of dbData.niveles; let i = index"
+													[id]="nivel.id"
+													*ngFor="let nivel of dbData.niveles; let i = index"
 												>
 													<h2 class="accordion-header" [id]="'headerLast ' + i">
 														<button
@@ -213,14 +212,14 @@
 															aria-expanded="false"
 															[attr.aria-controls]="'collLast' + i"
 														>
-															{{ ' Nivel: ' + allNiveles.id }}
+															{{ ' Nivel: ' + nivel.id }}
 
-															<!--Btn para añadir comportamientos a x nivel-->
 															<button
 																(click)="
-																	comportCtl.nivSelected = allNiveles;
+																	comportCtl.nivSelected = nivel;
 																	comportCtl.compSelected = nivelComp;
-																	getRemainingComports(comportCtl.compSelected, dbData.modelToAdd.subModels)
+																	comportamientosSelect = [];
+																	comportCtl.comportsSelected = []
 																"
 																class="btn btn-primary me-2"
 																data-bs-toggle="modal"
@@ -230,7 +229,6 @@
 															>
 																<span title="Añadir comportamiento"> Añadir comportamientos </span>
 															</button>
-															<!--FIN btn para añadir comportamientos a x nivel-->
 														</button>
 													</h2>
 													<div
@@ -246,11 +244,8 @@
 																	class="list-group-item p-3"
 																	aria-current="true"
 																	*ngFor="
-																		let comport of findSubModel(
-																			dbData.modelToAdd.subModels,
-																			nivelComp,
-																			allNiveles
-																		)?.comportamientos;
+																		let comport of findSubModel(dbData.modelToAdd.subModels, nivelComp, nivel)
+																			?.comportamientos;
 																		let i = index
 																	"
 																>
@@ -267,23 +262,19 @@
 							</div>
 						</div>
 					</div>
-					<!--FOOTER OBJETIVO COMPORT-->
 					<div class="modal-footer">
 						<div class="btn" (click)="move(false)">
 							<span class="material-icons"> arrow_back </span>
 						</div>
-						<div class="btn">
+						<div class="btn" (click)="saveEvModel(dbData.modelToAdd)">
 							<span class="material-icons"> arrow_forward </span>
 						</div>
 					</div>
-					<!--FIN FOOTER OBJETIVO COMPORT-->
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--FIN ELEGIR COMPORTAMIENTOS -->
 
-	<!-- Modal para añadir comportamientos -->
 	<div
 		class="modal fade"
 		tabindex="-1"
@@ -302,13 +293,16 @@
 				</div>
 				<div class="modal-body">
 					<hr />
-					<ol type="1" class="list-group">
+					<ol type="1" class="list-group" *ngIf="comportCtl.compSelected">
 						<li
 							[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
 							[id]="comport.id"
 							class="list-group-item p-3"
 							aria-current="true"
-							*ngFor="let comport of getRemainingComports(comportCtl.compSelected!, dbData.modelToAdd.subModels); let i = index"
+							*ngFor="
+								let comport of getRemainingComports(comportCtl.compSelected, dbData.modelToAdd.subModels);
+								let i = index
+							"
 							(click)="selectComportamiento(comport)"
 						>
 							{{ comport.descripcion }}
@@ -324,5 +318,4 @@
 			</div>
 		</div>
 	</div>
-	<!-- FIN modal para añadir comportamientos -->
 </div>

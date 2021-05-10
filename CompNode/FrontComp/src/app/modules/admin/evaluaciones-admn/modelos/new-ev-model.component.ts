@@ -125,6 +125,7 @@ export class NewEvModelComponent implements OnInit {
 	 */
 	toggleComp(comp: ICompetencia) {
 		let _modelToAdd = this.dbData.modelToAdd;
+		console.log(this.findSubModels(_modelToAdd.subModels, comp));
 		if (this.findSubModels(_modelToAdd.subModels, comp).length === 0) {
 			//Se añade la competencia
 			_modelToAdd.subModels.push({
@@ -228,13 +229,22 @@ export class NewEvModelComponent implements OnInit {
 		return subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
 	}
 
+	//TODO: Tsdoc
+	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
+		const _model = this.dbData.modelToAdd;
+		const subModel = this.findSubModel(_model.subModels, comp, niv);
+		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
+		subModel?.comportamientos?.splice(indx, 1);
+	}
+
 	/**
 	 * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s
 	 * @param comp La competencia que se usará como filtrado
 	 * @returns El array de subModelos que tienen esa competencia
 	 */
 	findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
-		return subModels.filter(subModel => subModel.competencia === comp);
+		if (!comp) throw new Error('Competencia undefined');
+		return subModels.filter(subModel => subModel.competencia?.id === comp.id);
 	}
 
 	/**
@@ -246,7 +256,7 @@ export class NewEvModelComponent implements OnInit {
 	getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const subModelos = this.findSubModels(subModels, comp);
 		let comports: IComportamiento[] = [];
-		subModelos.forEach(s => comports.concat(s.comportamientos!));
+		subModelos.forEach(s => (comports = comports.concat(s.comportamientos!)));
 		return comports;
 	}
 
@@ -257,7 +267,6 @@ export class NewEvModelComponent implements OnInit {
 	 */
 	getRemainingComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		let comportsOfComp = this.getAllComportsOfComp(comp, subModels);
-		//TODO: Bug aqui, comportsOfComp vacio
 		console.log(comportsOfComp);
 		let comports = this.dbData.comports.filter(
 			comport => comportsOfComp.find(c => c.id === comport.id) === undefined,
@@ -270,11 +279,11 @@ export class NewEvModelComponent implements OnInit {
 	 * Guarda un evModel en el backend, este debería venir validado, si ocurre un error se maneja la excepción
 	 * @param evModel
 	 */
-	async saveEvModel(evModel: IEvModel) {
-		if (!evModel.subModels) return; //Evito undefineds en los subModelos
+	async saveEvModel(evModel: IModelDTO) {
+		if (!evModel.catComp) return alert('Contacte con un programador');
 		let saved: boolean = false;
 		try {
-			saved = await this.evModelSv.save(evModel as IModelDTO);
+			saved = await this.evModelSv.save(evModel);
 		} catch (err) {
 			// TODO: En todas las excepciones del front mandar un log con todos los datos al backend (Crear servicio provided in root)
 		}
