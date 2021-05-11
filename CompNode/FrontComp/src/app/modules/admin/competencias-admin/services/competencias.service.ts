@@ -16,7 +16,7 @@ export class CompetenciasService {
 	 *
 	 * @returns Un `Array` de todas las competencias
 	 */
-	public getAllCompt(): Promise<ICompetencia[]> {
+	public getAll(): Promise<ICompetencia[]> {
 		return this.httpClient.get<ICompetencia[]>(`${cnf.apiURL}/competencias/all`).toPromise();
 	}
 

@@ -8,6 +8,8 @@ import { ComportService } from '../../comportamientos-admin/services/comport.ser
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 
+type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
+
 type DbData = {
 	/** listado de categorias competenciales */
 	catComps: ICatComp[];
@@ -18,7 +20,7 @@ type DbData = {
 	/** listado de niveles */
 	niveles: INivel[];
 	/** El modelo que se enviará al backend, sobre este se realizan las modificaciones */
-	modelToAdd: IModelDTO;
+	modelToAdd: IModelPreDTO;
 };
 
 type MiCompetencia = {
@@ -69,13 +71,11 @@ export class NewEvModelComponent implements OnInit {
 		nivSelected: undefined,
 		comportsSelected: [],
 	};
-	/** Contiene todas las funciones usadas para validar datos en este componente*/
+	/** Contiene todas las funciones usadas para validar datos en este componente */
 	validators: EvModalValidators = {
 		nivObjetivoValidator: (comps: MiCompetencia[]) =>
 			comps.every(c => {
-				if (!c.nivObjetivo) {
-					return false;
-				}
+				if (!c.nivObjetivo) return false;
 				return true;
 			}),
 	};
@@ -98,7 +98,7 @@ export class NewEvModelComponent implements OnInit {
 	async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([
 			this.catCompService.getAll(),
-			this.competSv.getAllCompt(),
+			this.competSv.getAll(),
 			this.nivSv.getAll(),
 			this.comportSv.getAll(),
 		]);
@@ -106,17 +106,11 @@ export class NewEvModelComponent implements OnInit {
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
-		// setInterval(() => console.log(this.comportCtl), 5500);
-		// setInterval(() => console.log(this.competenciasSelect), 5500);
-		// setInterval(() => console.log(this.dbData.modelToAdd), 5500);
 	}
 
 	/** Selecciona la cat competen del modelo */
 	selectCatComp(catCompet: ICatComp) {
-		if (!catCompet) {
-			return;
-		}
-		this.dbData.modelToAdd.catComp = catCompet; //se guarda la catCompetencial del modelo
+		this.dbData.modelToAdd.catComp = catCompet;
 	}
 
 	/**
@@ -139,20 +133,6 @@ export class NewEvModelComponent implements OnInit {
 			_modelToAdd.subModels = _modelToAdd.subModels.filter(subModel => subModel.competencia !== comp);
 			const compIndx = this.competenciasSelect.indexOf(comp);
 			this.competenciasSelect.splice(compIndx, 1);
-		}
-	}
-
-	/**
-	 * Selecciona las competencias del submodelo
-	 * @deprecated use {@link NewEvModelComponent.toggleComp | toggleComp()}
-	 */
-	selectCompet(compete: ICompetencia) {
-		const index = this.competenciasSelect.indexOf(compete);
-		if (index == -1) {
-			this.competenciasSelect.push(compete);
-			// console.log(this.dbData.comps[index]);
-		} else {
-			this.competenciasSelect.splice(index, 1);
 		}
 	}
 
@@ -216,7 +196,6 @@ export class NewEvModelComponent implements OnInit {
 		if (comportIndx === -1) {
 			matchSubModel.comportamientos?.push(comport);
 		}
-		return;
 	}
 
 	/**
@@ -248,7 +227,6 @@ export class NewEvModelComponent implements OnInit {
 	 * @returns El array de subModelos que tienen esa competencia
 	 */
 	findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
-		if (!comp) throw new Error('Competencia undefined');
 		return subModels.filter(subModel => subModel.competencia?.id === comp.id);
 	}
 
@@ -284,11 +262,11 @@ export class NewEvModelComponent implements OnInit {
 	 * Guarda un evModel en el backend, este debería venir validado, si ocurre un error se maneja la excepción
 	 * @param evModel
 	 */
-	async saveEvModel(evModel: IModelDTO) {
+	async saveEvModel(evModel: IModelPreDTO) {
 		if (!evModel.catComp) return alert('Contacte con un programador');
 		let saved: boolean = false;
 		try {
-			saved = await this.evModelSv.save(evModel);
+			saved = await this.evModelSv.save(evModel as IModelDTO);
 		} catch (err) {
 			// TODO: En todas las excepciones del front mandar un log con todos los datos al backend (Crear servicio provided in root)
 		}

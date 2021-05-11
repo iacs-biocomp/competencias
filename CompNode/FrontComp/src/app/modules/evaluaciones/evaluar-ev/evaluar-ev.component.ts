@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { evId } from '../evaluaciones.module';
 import { EvaluacionesService } from '../evaluaciones.service';
+export const evId = 'evId';
 
 @Component({
 	selector: 'app-evaluar-ev',
@@ -14,6 +14,5 @@ export class EvaluarEvConcretaComponent implements OnInit {
 
 	ngOnInit(): void {
 		if (evId) console.log(this.evId);
-
 	}
 }

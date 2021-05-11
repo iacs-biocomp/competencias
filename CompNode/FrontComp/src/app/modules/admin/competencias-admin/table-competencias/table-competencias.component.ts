@@ -30,7 +30,7 @@ export class TableCompetenciasComponent implements OnInit {
 	}
 
 	async updateCompeView(): Promise<void> {
-		this.compets = await this.comptService.getAllCompt();
+		this.compets = await this.comptService.getAll();
 		console.log('update');
 	}
 
