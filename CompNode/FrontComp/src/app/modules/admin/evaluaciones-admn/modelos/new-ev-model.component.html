@@ -7,15 +7,16 @@
 					<h2 class="modal-title">Haga click en la categoría competencial que tendrá este modelo</h2>
 				</div>
 				<div class="modal-body">
-					<li
-						[ngClass]="{ active: catComp === dbData.modelToAdd.catComp }"
-						class="list-group-item p-3"
-						*ngFor="let catComp of dbData.catComps"
-						(click)="selectCatComp(catComp)"
-						(click)="scrollToButton(target)"
-					>
-						{{ catComp.id }} - {{ catComp.description }}
-					</li>
+					<ul class="list-group">
+						<li
+							[ngClass]="{ active: catComp === dbData.modelToAdd.catComp }"
+							class="list-group-item p-3"
+							*ngFor="let catComp of dbData.catComps"
+							(click)="selectCatComp(catComp); scrollToButton(target)"
+						>
+							{{ catComp.id }} - {{ catComp.description }}
+						</li>
+					</ul>
 					<div #target class="modal-footer">
 						<button
 							class="btn arrowBtn"
@@ -38,14 +39,16 @@
 					<h2 class="modal-title">Haga click para añadir las competencias que tendrá este modelo</h2>
 				</div>
 				<div class="modal-body">
-					<li
-						[ngClass]="{ active: competenciasSelect.includes(compete) }"
-						class="list-group-item p-3"
-						*ngFor="let compete of dbData.comps"
-						(click)="toggleComp(compete)"
-					>
-						{{ compete.id }} - {{ compete.descripcion }}
-					</li>
+					<ul class="list-group">
+						<li
+							[ngClass]="{ active: competenciasSelect.includes(compete) }"
+							class="list-group-item p-3"
+							*ngFor="let compete of dbData.comps"
+							(click)="toggleComp(compete)"
+						>
+							{{ compete.id }} - {{ compete.descripcion }}
+						</li>
+					</ul>
 				</div>
 				<div class="modal-footer">
 					<button class="btn arrowBtn" (click)="move(false)">
@@ -67,35 +70,37 @@
 					<h2 class="modal-title">Asigne el nivel objetivo a cada competencia</h2>
 				</div>
 				<div class="modal-body">
-					<div class="accordion" id="accordionExample">
+					<div class="accordion" id="accordionCompetencias">
 						<div class="accordion-body">
 							<div class="accordion-item" *ngFor="let compet of competenciasSelect; let i = index">
-								<h2 class="accordion-header" [id]="'headingWorker ' + i">
+								<h2 class="accordion-header" [id]="'competenciasHeading ' + i">
 									<button
 										class="accordion-button collapsed"
 										data-bs-toggle="collapse"
-										[attr.data-bs-target]="'#collWorker' + i"
-										[attr.aria-controls]="'collWorker' + i"
+										[attr.data-bs-target]="'#btnCompetencias' + i"
+										[attr.aria-controls]="'btnCompetencias' + i"
 									>
 										{{ compet.id }} - {{ compet.descripcion }}
 									</button>
 								</h2>
 								<div
-									[id]="'collWorker' + i"
+									[id]="'btnCompetencias' + i"
 									class="accordion-collapse collapse"
-									[attr.aria-labelledby]="'headingWorker' + i"
-									data-bs-parent="#accordionExample"
+									[attr.aria-labelledby]="'competenciasHeading' + i"
+									data-bs-parent="#accordionCompetencias"
 								>
-									<li
-										[ngClass]="{
-											active: nivel === competenciasSelect[competenciasSelect.indexOf(compet)].nivObjetivo
-										}"
-										class="list-group-item p-3"
-										*ngFor="let nivel of dbData.niveles"
-										(click)="selectNivelObjetivo(nivel, compet)"
-									>
-										{{ nivel.id }}
-									</li>
+									<ul class="list-group">
+										<li
+											[ngClass]="{
+												active: nivel === competenciasSelect[competenciasSelect.indexOf(compet)].nivObjetivo
+											}"
+											class="list-group-item p-3"
+											*ngFor="let nivel of dbData.niveles"
+											(click)="selectNivelObjetivo(nivel, compet)"
+										>
+											{{ nivel.id }}
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
