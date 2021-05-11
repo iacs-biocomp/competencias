@@ -1,32 +1,24 @@
 <div class="inline">
-	<!--CATEGORIAS COMPETENCIALES -->
+	<!--ELEGIR CAT COMPETENCIAL -->
 	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel">
-						Haga click en la categoría competencial que tendrá este modelo
-					</h2>
+					<h2 class="modal-title">Haga click en la categoría competencial que tendrá este modelo</h2>
 				</div>
 				<div class="modal-body">
-					<hr />
-					<ul class="list-group">
-						<li
-							[ngClass]="{ active: catComp === dbData.modelToAdd.catComp }"
-							[id]="'catComp' + i"
-							class="list-group-item p-3"
-							aria-current="true"
-							*ngFor="let catComp of dbData.catComps; let i = index"
-							(click)="selectCatComp(catComp)"
-							(click)="scrollToButton(target)"
-						>
-							{{ catComp.id }} - {{ catComp.description }}
-						</li>
-					</ul>
+					<li
+						[ngClass]="{ active: catComp === dbData.modelToAdd.catComp }"
+						class="list-group-item p-3"
+						*ngFor="let catComp of dbData.catComps"
+						(click)="selectCatComp(catComp)"
+						(click)="scrollToButton(target)"
+					>
+						{{ catComp.id }} - {{ catComp.description }}
+					</li>
 					<div #target class="modal-footer">
 						<button
 							class="btn arrowBtn"
-							type="button"
 							[disabled]="dbData.modelToAdd.catComp === undefined"
 							(click)="move(true)"
 						>
@@ -37,71 +29,52 @@
 			</div>
 		</div>
 	</div>
-	<!-- FIN CATEGORIAS COMPETENCIALES-->
 
 	<!--ELEGIR COMPETENCIAS -->
-	<div
-		class="block"
-		style="pointer-events: none"
-		[ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }"
-	>
+	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel">
-						Haga click para añadir las competencias que tendrá este modelo
-					</h2>
+					<h2 class="modal-title">Haga click para añadir las competencias que tendrá este modelo</h2>
 				</div>
 				<div class="modal-body">
-					<hr />
-					<ul class="list-group">
-						<li
-							[ngClass]="{ active: competenciasSelect.includes(compete) }"
-							[id]="compete.id"
-							class="list-group-item p-3"
-							*ngFor="let compete of dbData.comps"
-							(click)="toggleComp(compete)"
-						>
-							{{ compete.id }} - {{ compete.descripcion }}
-						</li>
-					</ul>
+					<li
+						[ngClass]="{ active: competenciasSelect.includes(compete) }"
+						class="list-group-item p-3"
+						*ngFor="let compete of dbData.comps"
+						(click)="toggleComp(compete)"
+					>
+						{{ compete.id }} - {{ compete.descripcion }}
+					</li>
 				</div>
 				<div class="modal-footer">
-					<button class="btn arrowBtn" type="button" (click)="move(false)">
+					<button class="btn arrowBtn" (click)="move(false)">
 						<span class="material-icons"> arrow_back </span>
 					</button>
-					<button class="btn arrowBtn" type="button" [disabled]="competenciasSelect.length === 0" (click)="move(true)">
+					<button class="btn arrowBtn" [disabled]="competenciasSelect.length === 0" (click)="move(true)">
 						<span class="material-icons"> arrow_forward </span>
 					</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--FIN ELEGIR COMPETENCIAS -->
 
 	<!--ASIGNAR NIVEL OBJETIVO A ESAS COMPETENCIAS-->
 	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel">Asigne el nivel objetivo a cada competencia</h2>
+					<h2 class="modal-title">Asigne el nivel objetivo a cada competencia</h2>
 				</div>
 				<div class="modal-body">
-					<hr />
 					<div class="accordion" id="accordionExample">
 						<div class="accordion-body">
-							<div
-								class="accordion-item"
-								[id]="compet.id"
-								*ngFor="let compet of competenciasSelect; let i = index"
-							>
+							<div class="accordion-item" *ngFor="let compet of competenciasSelect; let i = index">
 								<h2 class="accordion-header" [id]="'headingWorker ' + i">
 									<button
 										class="accordion-button collapsed"
-										type="button"
 										data-bs-toggle="collapse"
 										[attr.data-bs-target]="'#collWorker' + i"
-										aria-expanded="false"
 										[attr.aria-controls]="'collWorker' + i"
 									>
 										{{ compet.id }} - {{ compet.descripcion }}
@@ -113,34 +86,27 @@
 									[attr.aria-labelledby]="'headingWorker' + i"
 									data-bs-parent="#accordionExample"
 								>
-									<div class="accordion-body">
-										<ol type="1" class="list-group">
-											<li
-												[ngClass]="{
-													active: nivel === competenciasSelect[competenciasSelect.indexOf(compet)].nivObjetivo
-												}"
-												[id]="'nivel' + i"
-												class="list-group-item p-3"
-												aria-current="true"
-												*ngFor="let nivel of dbData.niveles; let i = index"
-												(click)="selectNivelObjetivo(nivel, compet)"
-											>
-												{{ nivel.id }}
-											</li>
-										</ol>
-									</div>
+									<li
+										[ngClass]="{
+											active: nivel === competenciasSelect[competenciasSelect.indexOf(compet)].nivObjetivo
+										}"
+										class="list-group-item p-3"
+										*ngFor="let nivel of dbData.niveles"
+										(click)="selectNivelObjetivo(nivel, compet)"
+									>
+										{{ nivel.id }}
+									</li>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn arrowBtn" type="button" (click)="move(false)">
+					<button class="btn arrowBtn" (click)="move(false)">
 						<span class="material-icons"> arrow_back </span>
 					</button>
 					<button
 						class="btn arrowBtn"
-						type="button"
 						[disabled]="!validators.nivObjetivoValidator(competenciasSelect)"
 						(click)="move(true)"
 					>
@@ -151,30 +117,24 @@
 		</div>
 	</div>
 
+	<!--ASIGNAR COMPORTAMIENTOS -->
 	<div class="block" [ngStyle]="{ transform: 'translateX(' + current * -100 + '%)' }">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel">
+					<h2 class="modal-title">
 						Haga click para añadir los comportamientos que tendrán estas competencias por niveles
 					</h2>
 				</div>
 				<div class="modal-body">
-					<hr />
 					<div class="accordion" id="accordionCompo">
 						<div class="accordion-body">
-							<div
-								class="accordion-item"
-								[id]="nivelComp.id"
-								*ngFor="let nivelComp of competenciasSelect; let i = index"
-							>
+							<div class="accordion-item" *ngFor="let nivelComp of competenciasSelect; let i = index">
 								<h2 class="accordion-header" [id]="'headerCompo ' + i">
 									<button
 										class="accordion-button collapsed"
-										type="button"
 										data-bs-toggle="collapse"
 										[attr.data-bs-target]="'#collCompo' + i"
-										aria-expanded="false"
 										[attr.aria-controls]="'collCompo' + i"
 									>
 										{{ 'Competencia: ' + nivelComp.descripcion }}
@@ -192,22 +152,15 @@
 									<div class="accordion-body">
 										<div class="accordion" id="accordionLast">
 											<div class="accordion-body">
-												<div
-													class="accordion-item"
-													[id]="nivel.id"
-													*ngFor="let nivel of dbData.niveles; let i = index"
-												>
+												<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
 													<h2 class="accordion-header" [id]="'headerLast ' + i">
 														<button
 															class="accordion-button collapsed"
-															type="button"
 															data-bs-toggle="collapse"
 															[attr.data-bs-target]="'#collLast' + i"
-															aria-expanded="false"
 															[attr.aria-controls]="'collLast' + i"
 														>
 															{{ ' Nivel: ' + nivel.id }}
-
 															<button
 																(click)="
 																	comportCtl.nivSelected = nivel;
@@ -218,7 +171,6 @@
 																class="btn btn-primary me-2"
 																data-bs-toggle="modal"
 																data-bs-target="#removeModal"
-																id="newEvButton"
 																style="margin-left: 30px"
 															>
 																<span title="Añadir comportamiento"> Añadir comportamientos </span>
@@ -232,9 +184,8 @@
 														data-bs-parent="#accordionLast"
 													>
 														<div class="accordion-body">
-															<ol type="1" class="list-group">
+															<ol class="list-group">
 																<li
-																	[id]="'nivel' + i"
 																	class="list-group-item p-3"
 																	aria-current="true"
 																	*ngFor="
@@ -244,7 +195,6 @@
 																	"
 																>
 																	{{ comport.descripcion }}
-
 																	<button
 																		class="btn btn-danger me-2"
 																		(click)="removeComport(comport, comportCtl.compSelected!, nivel)"
@@ -267,10 +217,10 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button class="btn arrowBtn" type="button" (click)="move(false)">
+						<button class="btn arrowBtn" (click)="move(false)">
 							<span class="material-icons"> arrow_back </span>
 						</button>
-						<button class="btn btn-outline-success" type="submit" (click)="saveEvModel(dbData.modelToAdd)">
+						<button class="btn btn-outline-success" (click)="saveEvModel(dbData.modelToAdd)">
 							<span> CREAR MODELO </span>
 						</button>
 					</div>
@@ -279,33 +229,23 @@
 		</div>
 	</div>
 
-	<div
-		class="modal fade"
-		tabindex="-1"
-		id="removeModal"
-		tabindex="-1"
-		aria-labelledby="exampleModalLabel1"
-		aria-hidden="true"
-	>
+	<!-- MODAL LISTA COMPORTAMIENTO -->
+	<div class="modal fade" id="removeModal" aria-labelledby="modalComportamientos">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title" id="exampleModalLabel1">
+					<h2 class="modal-title" id="modalComportamientos">
 						Haga click en los comportamientos para añadirlos
 					</h2>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<hr />
-					<ol type="1" class="list-group" *ngIf="comportCtl.compSelected">
+					<ol class="list-group" *ngIf="comportCtl.compSelected">
 						<li
 							[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
-							[id]="comport.id"
 							class="list-group-item p-3"
-							aria-current="true"
 							*ngFor="
-								let comport of getRemainingComports(comportCtl.compSelected, dbData.modelToAdd.subModels);
-								let i = index
+								let comport of getRemainingComports(comportCtl.compSelected, dbData.modelToAdd.subModels)
 							"
 							(click)="selectComportamiento(comport)"
 						>
@@ -315,8 +255,8 @@
 				</div>
 
 				<div class="modal-footer">
-					<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addAllComports()">
+					<button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button class="btn btn-primary" data-bs-dismiss="modal" (click)="addAllComports()">
 						Confirmar
 					</button>
 				</div>
