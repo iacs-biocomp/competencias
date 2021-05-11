@@ -189,7 +189,7 @@
 														data-bs-parent="#accordionLast"
 													>
 														<div class="accordion-body">
-															<ol class="list-group">
+															<ul class="list-group">
 																<li
 																	class="list-group-item p-3"
 																	aria-current="true"
@@ -210,7 +210,7 @@
 																		</span>
 																	</button>
 																</li>
-															</ol>
+															</ul>
 														</div>
 													</div>
 												</div>
@@ -235,7 +235,13 @@
 	</div>
 
 	<!-- MODAL LISTA COMPORTAMIENTO -->
-	<div class="modal fade" id="removeModal" aria-labelledby="modalComportamientos">
+	<div
+		class="modal fade"
+		tabindex="-1"
+		aria-hidden="true"
+		id="removeModal"
+		aria-labelledby="modalComportamientos"
+	>
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -245,7 +251,7 @@
 					<button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<ol class="list-group" *ngIf="comportCtl.compSelected">
+					<ul class="list-group" *ngIf="comportCtl.compSelected">
 						<li
 							[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
 							class="list-group-item p-3"
@@ -256,7 +262,7 @@
 						>
 							{{ comport.descripcion }}
 						</li>
-					</ol>
+					</ul>
 				</div>
 
 				<div class="modal-footer">
