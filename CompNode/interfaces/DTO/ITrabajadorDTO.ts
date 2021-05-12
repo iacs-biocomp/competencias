@@ -1,5 +1,5 @@
-import { ICatComp } from 'sharedInterfaces/ICategorias';
-import { ITrabajador } from '../IUser';
+import { ICatComp } from '../Entity/ICategorias';
+import { ITrabajador } from '../Entity/IUser';
 
 export interface ITrabajadorDTO {
   dni: string;

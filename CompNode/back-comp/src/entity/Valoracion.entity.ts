@@ -24,7 +24,7 @@ export class Valoracion extends BaseEntity {
 	evaluado: Trabajador;
 
 	@ApiProperty({ type: () => Ev })
-	@OneToOne(() => Ev)
+	@ManyToOne(type => Ev, ev => ev.valoraciones)
 	@JoinColumn()
 	ev: Ev;
 

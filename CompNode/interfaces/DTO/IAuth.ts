@@ -1,4 +1,4 @@
-import { RoleType } from '../back-comp/src/modules/role/roletype.enum';
+import { RoleType } from '../../back-comp/src/modules/role/roletype.enum';
 /**
  * Esta interfaz es la que manda el login al backend, Usuario y contraseña
  */

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICompetencia } from '../../../../../../../interfaces/IEvaluaciones';
+import { ICompetencia } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { CompetenciasService } from '../services/competencias.service';
 
 interface IComptEdit extends ICompetencia {

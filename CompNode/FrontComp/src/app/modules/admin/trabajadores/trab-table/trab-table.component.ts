@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TrabajadoresService } from '../services/trabajadores.service';
-import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
-import { ICatComp, ICatContr } from '../../../../../../../interfaces/ICategorias';
+import { ITrabajadorDTO } from 'sharedInterfaces/DTO/ITrabajadorDTO';
+import { ICatComp, ICatContr } from 'sharedInterfaces/Entity/ICategorias';
 import { CatContractService } from '../../cat-admn/services/CatContractuales.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IComportamiento } from '../../../../../../../interfaces/IEvaluaciones';
+import { IComportamiento } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { ComportService } from '../services/comport.service';
 
 interface IComportEdit extends IComportamiento {

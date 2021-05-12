@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IEvaluacion } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { JwtService } from 'src/app/services/jwt.service';
-import { IEvaluacion } from '../../../../../../interfaces/IEvaluaciones';
 import { EvaluacionesService } from '../evaluaciones.service';
-
 
 /** Enumerador que tiene los 3 estados en los que puede estar una evaluacion */
 enum EvalStatus {
@@ -15,10 +14,7 @@ enum EvalStatus {
 	templateUrl: './mis-evaluaciones.component.html',
 	styleUrls: ['./mis-evaluaciones.component.css'],
 })
-
-
 export class MisEvaluacionesComponent implements OnInit {
-
 	/** Inicializa el enum EvaStatus  */
 	eEvalStatus!: EvalStatus;
 
@@ -37,26 +33,18 @@ export class MisEvaluacionesComponent implements OnInit {
 		this.buttonCalcular = true;
 	}
 
-
-
 	/** Funcion que calculará en que periodo se encuetra la evaluacion (los 3 del ENUM);
 	 * y mostrará un botón u otro
 	 */
-	calcularPeriodoActual(evaluacionActual: IEvaluacion){
-
+	calcularPeriodoActual(evaluacionActual: IEvaluacion) {
 		var fecha = new Date();
 
-			if(evaluacionActual.finPropuestas! > fecha){
-				return EvalStatus.PeriodoEvaluar;
-			} else if(evaluacionActual.endValidacion! > fecha){
-				return EvalStatus.PeriodoResultados;
-			} else {
-			 return	EvalStatus.PeriodoEvaluadores;
-			}
+		if (evaluacionActual.finPropuestas! > fecha) {
+			return EvalStatus.PeriodoEvaluar;
+		} else if (evaluacionActual.endValidacion! > fecha) {
+			return EvalStatus.PeriodoResultados;
+		} else {
+			return EvalStatus.PeriodoEvaluadores;
+		}
 	}
-
 }
-
-
-
-

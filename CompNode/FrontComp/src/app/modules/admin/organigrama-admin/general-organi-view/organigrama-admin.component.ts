@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IOrganigramaUsrDTO, ITrabOrgani } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
-import { ICatComp } from 'sharedInterfaces/ICategorias';
+import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO/ITrabajadorDTO';
+import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
 import { OrganiService } from '../services/organi.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 

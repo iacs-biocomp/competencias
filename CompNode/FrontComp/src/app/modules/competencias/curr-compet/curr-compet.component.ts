@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICompetencia } from '../../../../../../interfaces/IEvaluaciones';
+import { ICompetencia } from 'sharedInterfaces/Entity/IEvaluaciones';
 
 @Component({
 	selector: 'app-curr-compet',

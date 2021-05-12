@@ -25,23 +25,23 @@ export interface ITrabajador {
 }
 export interface IPeriodoTrab {
   id: number;
-
+  /** El trabajador al que corresponde este periodo */
   trabajador: ITrabajador;
-
+  /** La categoria contractual que tiene el trabajador en este periodo */
   catContr: ICatContr;
 
   catComp: ICatComp;
   /** El array de trabajadores que son superiores de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
-  superiores: ITrabajador[] | undefined;
+  superiores?: ITrabajador[];
   /** El array de trabajadores que son pares de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
-  pares: ITrabajador[];
+  pares?: ITrabajador[];
   /** El array de trabajadores que son inferiores de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
-  inferiores: ITrabajador[];
+  inferiores?: ITrabajador[];
 
   createdAt: Date;
 
-  endAt: Date | undefined;
-
+  endAt?: Date;
+  /** Propiedad que indica si es el periodo actual o es uno pasado, cada trabajador solo tiene un periodo actual */
   actual: boolean;
 }
 

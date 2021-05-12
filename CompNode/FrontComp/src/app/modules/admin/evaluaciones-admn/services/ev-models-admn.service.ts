@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
-import { IEvModel } from 'sharedInterfaces/IEvaluaciones';
+import { IEvModel } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { environment as cnf } from 'src/environments/environment';
 
 /** Servicio crud para el manejo de los modelos de las evaluaciones */

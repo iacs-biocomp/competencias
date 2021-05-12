@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IUserJson } from 'sharedInterfaces/Entity/IUser';
 import { JwtService } from 'src/app/services/jwt.service';
-import { IUserJson } from '../../../../../../../interfaces/IUser';
 import { UserDataService } from '../user-data.service';
 
 @Component({

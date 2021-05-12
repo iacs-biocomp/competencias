@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ITrabajadorDTO } from '../../../../../../../interfaces/DTO/ITrabajadorDTO';
-import { ICatComp, ICatContr } from '../../../../../../../interfaces/ICategorias';
+import { ITrabajadorDTO } from 'sharedInterfaces/DTO/ITrabajadorDTO';
+import { ICatComp, ICatContr } from 'sharedInterfaces/Entity/ICategorias';
 
 @Injectable({
 	providedIn: 'root',

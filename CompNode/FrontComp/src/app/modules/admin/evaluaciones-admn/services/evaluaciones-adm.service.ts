@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as cnf } from 'src/environments/environment';
-import { IEvaluacion, IEvModel } from '../../../../../../../interfaces/IEvaluaciones';
+import { IEvaluacion, IEvModel } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { evAddDTO } from '../new-ev-modal/new-ev-modal.component';
 
 /** Tiene todos los metodos necesarios para la administración de las Evaluaciones y Modelos */

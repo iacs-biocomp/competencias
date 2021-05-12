@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IUserJson } from '../../../../../../interfaces/IUser';
+import { IUserJson } from 'sharedInterfaces/Entity/IUser';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({

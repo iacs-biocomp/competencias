@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICatComp } from '../../../../../../../interfaces/ICategorias';
+import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
 import { CatCompetencialesService } from '../services/CatCompetenciales.service';
 
 interface ICatCompetEdit extends ICatComp {

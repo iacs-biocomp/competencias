@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from 'typeorm';
 import { CatComp } from './CatComp.entity';
 import { EvModel } from './EvModel.entity';
+import { Valoracion } from './Valoracion.entity';
 
 @Entity()
 export class Ev extends BaseEntity {
@@ -83,4 +84,11 @@ export class Ev extends BaseEntity {
 	@ApiProperty()
 	@Column({ type: 'timestamp', nullable: false })
 	endPerEvaluado: Date;
+
+	/**
+	 * Son todas las valoraciones que se asocian a esa evaluacion
+	 */
+	@ApiProperty()
+	@OneToMany(type => Valoracion, v => v.ev)
+	valoraciones?: Valoracion[];
 }

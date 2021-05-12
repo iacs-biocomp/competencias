@@ -1,4 +1,4 @@
-import { IEvModel, ISubModel } from '../IEvaluaciones';
+import { IEvModel } from '../Entity/IEvaluaciones';
 
 export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id'>;
 

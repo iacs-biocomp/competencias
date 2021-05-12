@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { IComportamiento } from '../../../../../../../interfaces/IEvaluaciones';
+import { IComportamiento } from 'sharedInterfaces/Entity/IEvaluaciones';
 
 @Injectable({ providedIn: 'root' })
 export class ComportService {
