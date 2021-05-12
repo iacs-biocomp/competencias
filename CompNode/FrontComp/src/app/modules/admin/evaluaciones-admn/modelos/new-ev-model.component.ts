@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
-import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
 import { CompetenciasService } from '../../competencias-admin/services/competencias.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
@@ -106,6 +106,9 @@ export class NewEvModelComponent implements OnInit {
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
+		setInterval(() => {
+			console.log(this);
+		}, 3500);
 	}
 
 	/** Selecciona la cat competen del modelo */

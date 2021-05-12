@@ -49,11 +49,29 @@ yarn install
 
 Para lanzar la aplicación mientras se desarrolla:
 
+Si se tienen las CLI de angular y Nest:
+
 ```bash
 # En la carpeta del Frontend
 ng serve
 # En la del backend
 nest start --watch
+```
+
+Si no se tienen estas CLI instalados
+
+```bash
+# En la carpeta del Frontend
+npm run start
+# En la del backend
+npm run start:dev
+```
+
+Para instalar las dos CLI (Recomendado)
+
+```sh
+sudo npm i -g @nestjs/cli
+sudo npm i -g @angular/cli
 ```
 
 ## Depurar la aplicación:
@@ -92,3 +110,5 @@ Luego enlazar el debugger a este proceso, para vscode crear una configuración e
 [Json2TS](http://www.json2ts.com/) Web para generar interfaces de typescript a partir de un Json
 
 [Angular material](https://material.angular.io/) Componentes ya hechos de angular
+
+[Libro resumen y tips Typescript](https://basarat.gitbook.io/typescript/)

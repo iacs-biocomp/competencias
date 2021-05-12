@@ -17,11 +17,21 @@ export const evRoutes: Routes = [
 		path: '',
 		component: ListEvComponent,
 	},
+	// {
+	// 	path: 'test',
+	// 	component: LayoutTestComponent,
+	// },
 ];
 
 /** Contiene los componentes para la visualización y administración de las evaluaciones y sus modelos */
 @NgModule({
-	declarations: [ListEvComponent, NewEvModelComponent, NewEvModalComponent],
+	declarations: [
+		ListEvComponent,
+		NewEvModelComponent,
+		NewEvModalComponent,
+		// ViewEditModelComponent,
+		// LayoutTestComponent,
+	],
 	imports: [
 		CommonModule,
 		RouterModule,

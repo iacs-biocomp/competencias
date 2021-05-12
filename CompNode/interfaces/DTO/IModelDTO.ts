@@ -1,7 +1,4 @@
 import { IEvModel } from '../Entity/IEvaluaciones';
+import { RequiredAndNotNull } from '../Utility';
 
 export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id'>;
-
-type RequiredAndNotNull<T> = {
-  [P in keyof T]-?: Exclude<T[P], null | undefined>;
-};

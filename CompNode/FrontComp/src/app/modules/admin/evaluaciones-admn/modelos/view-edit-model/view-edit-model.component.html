@@ -1,0 +1,109 @@
+<!--ASIGNAR COMPORTAMIENTOS -->
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h2 class="modal-title">
+				Haga click para añadir los comportamientos que tendrán estas competencias por niveles
+				{{ test }}
+			</h2>
+		</div>
+		<div class="modal-body">
+			<div class="accordion" id="accordionCompo">
+				<div class="accordion-body">
+					<div class="accordion-item" *ngFor="let nivelComp of competenciasSelect; let i = index">
+						<h2 class="accordion-header" [id]="'headerCompo ' + i">
+							<button
+								class="accordion-button collapsed"
+								data-bs-toggle="collapse"
+								[attr.data-bs-target]="'#collCompo' + i"
+								[attr.aria-controls]="'collCompo' + i"
+							>
+								{{ 'Competencia: ' + nivelComp.descripcion }}
+								<br />
+								{{ 'Nivel objetivo: ' + nivelComp.nivObjetivo?.id }}
+							</button>
+						</h2>
+
+						<div
+							[id]="'collCompo' + i"
+							class="accordion-collapse collapse"
+							[attr.aria-labelledby]="'headerCompo' + i"
+							data-bs-parent="#accordionCompo"
+						>
+							<div class="accordion-body">
+								<div class="accordion" id="accordionLast">
+									<div class="accordion-body">
+										<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
+											<h2 class="accordion-header" [id]="'headerLast ' + i">
+												<button
+													class="accordion-button collapsed"
+													data-bs-toggle="collapse"
+													[attr.data-bs-target]="'#collLast' + i"
+													[attr.aria-controls]="'collLast' + i"
+												>
+													{{ ' Nivel: ' + nivel.id }}
+													<button
+													*ngIf="modoEdicion"
+														(click)="
+															comportCtl.nivSelected = nivel;
+															comportCtl.compSelected = nivelComp;
+															comportamientosSelect = [];
+															comportCtl.comportsSelected = []
+														"
+														class="btn btn-primary me-2"
+														data-bs-toggle="modal"
+														data-bs-target="#removeModal"
+														style="margin-left: 30px"
+													>
+														<span title="Añadir comportamiento"> Añadir comportamientos </span>
+													</button>
+												</button>
+											</h2>
+											<div
+												[id]="'collLast' + i"
+												class="accordion-collapse collapse"
+												[attr.aria-labelledby]="'headerLast' + i"
+												data-bs-parent="#accordionLast"
+											>
+												<div class="accordion-body">
+													<ul class="list-group">
+														<li
+															class="list-group-item p-3"
+															aria-current="true"
+															*ngFor="
+																let comport of findSubModel(dbData.modelToAdd.subModels, nivelComp, nivel)
+																	?.comportamientos;
+																let i = index
+															"
+														>
+															{{ comport.descripcion }}
+															<button
+																class="btn btn-danger me-2"
+																(click)="removeComport(comport, comportCtl.compSelected!, nivel)"
+																style="float: right"
+															>
+																<span class="material-icons" title="Eliminar comportamiento"> remove </span>
+															</button>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn arrowBtn">
+					<span class="material-icons"> arrow_back </span>
+				</button>
+				<button class="btn btn-outline-success">
+					<span> CREAR MODELO </span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
