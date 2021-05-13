@@ -4,7 +4,6 @@
 		<div class="modal-header">
 			<h2 class="modal-title">
 				Haga click para añadir los comportamientos que tendrán estas competencias por niveles
-				{{ test }}
 			</h2>
 		</div>
 		<div class="modal-body">
@@ -43,7 +42,7 @@
 												>
 													{{ ' Nivel: ' + nivel.id }}
 													<button
-													*ngIf="modoEdicion"
+														*ngIf="modoEdicion"
 														(click)="
 															comportCtl.nivSelected = nivel;
 															comportCtl.compSelected = nivelComp;

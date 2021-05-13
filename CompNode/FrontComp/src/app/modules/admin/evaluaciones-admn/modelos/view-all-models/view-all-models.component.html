@@ -1,0 +1,26 @@
+<div *ngIf="!viewProps?.haveModels">
+	Vaya, no hay ningun modelo de referencia creado
+	<button class="btn btn-primary" routerLink="/admin/evaluaciones">Crear modelo</button>
+	<!-- TODO: Cambiar por componente de creación modelos o llevar a la ruta asignada para crear modelos -->
+	<br />Cambiar por texto majo que indique que no hay modelos de referencia creados
+</div>
+<div *ngIf="viewProps?.haveModels">
+	<div class="row">
+		<div class="col-lg-3 col-md-5 col-sm-6" *ngFor="let model of refModels">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">{{ model.catComp.id }}</h5>
+					<p class="card-text">Texto, no parece necesario?</p>
+					<button
+						class="btn btn-primary"
+						(click)="modoEdicion = false; dbData.modelToAdd = model; renderViewModels = true"
+					>
+						Ver detalles modelo (Componente ver-editar) wrapped como modal
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- -->
+<app-view-edit-model *ngIf="renderViewModels" [dbData]="dbData" [modoEdicion]="false"></app-view-edit-model>

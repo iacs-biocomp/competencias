@@ -10,12 +10,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NewEvModelComponent } from './modelos/new-ev-model.component';
+import { ViewAllModelsComponent } from './modelos/view-all-models/view-all-models.component';
+import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-model.component';
 
-/** Rutas relacionadas con el subModulo de comportamientos */
+/** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: Routes = [
 	{
 		path: '',
 		component: ListEvComponent,
+	},
+	{
+		path: 'modelos-reference',
+		component: ViewAllModelsComponent,
 	},
 	// {
 	// 	path: 'test',
@@ -29,7 +35,8 @@ export const evRoutes: Routes = [
 		ListEvComponent,
 		NewEvModelComponent,
 		NewEvModalComponent,
-		// ViewEditModelComponent,
+		ViewAllModelsComponent,
+		ViewEditModelComponent,
 		// LayoutTestComponent,
 	],
 	imports: [

@@ -18,18 +18,27 @@ export class ModelosController {
 		private readonly subModelRepo: SubModelRepo,
 	) {}
 
-	@Get(':cComp')
-	modelsCatComp(@Param('cComp') catCompId: string): Promise<EvModel[]> {
+	@Get('references')
+	getReferenceModels() {
 		return this.modelRepo.find({
-			where: { catComp: catCompId },
+			where: { reference: true },
+			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
+		});
+	}
+
+	@Get('/reference/:cComp')
+	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel[]> {
+		console.log('xd');
+		return this.modelRepo.find({
+			where: { catComp: catCompId, reference: true },
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
 		});
 	}
 
 	@Get(':cComp')
-	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel[]> {
+	modelsCatComp(@Param('cComp') catCompId: string): Promise<EvModel[]> {
 		return this.modelRepo.find({
-			where: { catComp: catCompId, reference: true },
+			where: { catComp: catCompId },
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
 		});
 	}

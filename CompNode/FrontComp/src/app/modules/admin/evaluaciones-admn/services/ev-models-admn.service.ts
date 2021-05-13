@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IModelDTO } from 'sharedInterfaces/DTO';
+import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { IEvModel } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -21,5 +21,11 @@ export class EvModelsAdmnService {
 	 */
 	getAll(): Promise<IEvModel[]> {
 		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos`).toPromise();
+	}
+	/**
+	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
+	 */
+	getAllReference(): Promise<IRefModel[]> {
+		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();
 	}
 }

@@ -1,24 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
-import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
+import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
+import { DbData } from '../new-ev-model.component';
 
 type MiCompetencia = {
 	nivObjetivo?: INivel;
 } & ICompetencia;
 type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
 
-type DbData = {
-	/** listado de categorias competenciales */
-	catComps: ICatComp[];
-	/** listado de competencias */
-	comps: ICompetencia[];
-	/** listado de comportamientos */
-	comports: IComportamiento[];
-	/** listado de niveles */
-	niveles: INivel[];
-	/** El modelo que se enviará al backend, sobre este se realizan las modificaciones */
-	modelToAdd: IModelPreDTO;
-};
 type ComportCtrlView = {
 	//TODO: Tsdoc
 	compSelected?: ICompetencia;
@@ -32,13 +21,11 @@ type MiComportamiento = {
 
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
-	selector: 'app-view-edit-model [test] [modoEdicion] ',
+	selector: 'app-view-edit-model',
 	templateUrl: './view-edit-model.component.html',
 	styleUrls: ['./view-edit-model.component.css'],
 })
 export class ViewEditModelComponent implements OnInit {
-	@Input() test!: string;
-	modelEditShow!: IModelPreDTO;
 	@Input() dbData!: DbData;
 	@Input() modoEdicion!: boolean;
 
@@ -56,11 +43,11 @@ export class ViewEditModelComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit(): void {
-		console.log(this.modelEditShow);
+		console.log('start on init edit');
 		console.log(this.dbData);
-		this.competenciasSelect = this.getCompet(this.modelEditShow);
+		this.competenciasSelect = this.getCompet(this.dbData.modelToAdd);
 		console.log(this.competenciasSelect);
-		this.modelEditShow = this.dbData.modelToAdd;
+		console.log('end on init edit');
 	}
 
 	getCompet(model: IModelPreDTO): ICompetencia[] {
@@ -75,7 +62,7 @@ export class ViewEditModelComponent implements OnInit {
 	 * @param niv El nivel que junto con la competencia hacen de filtro
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
-		const _model = this.modelEditShow;
+		const _model = this.dbData.modelToAdd;
 		const subModel = this.findSubModel(_model.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
 		subModel?.comportamientos?.splice(indx, 1);
@@ -87,7 +74,11 @@ export class ViewEditModelComponent implements OnInit {
 	 * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
 	 */
 	findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel): ISubModel | undefined {
-		return subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
+		const submodelFind = subModels.find(
+			subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id,
+		);
+		console.log(submodelFind);
+		return submodelFind;
 	}
 	/**
 	 * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s

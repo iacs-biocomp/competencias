@@ -4,6 +4,9 @@
 		Nueva evaluación
 	</button>
 	<button (click)="loadMForm = true" class="btn btn-success ms-2 mb-2">Nuevo modelo</button>
+	<button routerLink="/admin/evaluaciones/modelos-reference" class="btn btn-primary ms-2 mb-2">
+		Ver modelos
+	</button>
 	<app-new-ev-model *ngIf="loadMForm"></app-new-ev-model>
 
 	<!-- TODO: Cambiar identificadores del modal nueva evalución -->

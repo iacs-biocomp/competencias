@@ -9,7 +9,7 @@ import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'shar
 
 type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
 
-type DbData = {
+export type DbData = {
 	/** listado de categorias competenciales */
 	catComps: ICatComp[];
 	/** listado de competencias */
