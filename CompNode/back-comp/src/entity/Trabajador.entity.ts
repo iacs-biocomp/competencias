@@ -1,8 +1,7 @@
 import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './user.entity';
-import { PeriodoTrab } from './PeriodoTrab.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { ITrabajadorDTO } from '../modules/trabajadores/trabajadores.controller';
+import { PeriodoTrab, User } from '.';
 
 @Entity('trabajador')
 export class Trabajador extends BaseEntity {

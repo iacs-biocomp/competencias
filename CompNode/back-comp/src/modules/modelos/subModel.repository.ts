@@ -1,4 +1,4 @@
-import { SubModel } from 'src/entity/SubModel.entity';
+import { SubModel } from 'src/entity';
 import { Repository, EntityRepository } from 'typeorm';
 
 @EntityRepository(SubModel)

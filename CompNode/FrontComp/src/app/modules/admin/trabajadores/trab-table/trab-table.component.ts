@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TrabajadoresService } from '../services/trabajadores.service';
-import { ITrabajadorDTO } from 'sharedInterfaces/DTO/ITrabajadorDTO';
-import { ICatComp, ICatContr } from 'sharedInterfaces/Entity/ICategorias';
-import { CatContractService } from '../../cat-admn/services/CatContractuales.service';
+import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
+import { ICatComp, ICatContr } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
+import { CatContractService } from '../../cat-admn/services/CatContractuales.service';
+import { TrabajadoresService } from '../services/trabajadores.service';
 
 interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 	editing?: boolean;

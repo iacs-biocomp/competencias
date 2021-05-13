@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IEvaluacion } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({

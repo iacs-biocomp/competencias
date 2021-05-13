@@ -1,4 +1,4 @@
-import { Trabajador } from 'src/entity/Trabajador.entity';
+import { Trabajador } from 'src/entity';
 import { Repository, EntityRepository } from 'typeorm';
 
 @EntityRepository(Trabajador)

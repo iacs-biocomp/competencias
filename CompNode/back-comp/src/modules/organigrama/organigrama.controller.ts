@@ -1,12 +1,9 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { CatComp } from 'src/entity/CatComp.entity';
-import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
-import { Trabajador } from 'src/entity/Trabajador.entity';
 import { PeriodosRepo } from '../trabajadores/periodos.repository';
 import { TrabajadorRepo } from '../trabajadores/trabajador.repository';
 import { UserRepository } from '../users/user.repository';
 import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
-import { time } from 'console';
+import { Trabajador, CatComp, PeriodoTrab } from 'src/entity';
 interface Organigrama {
 	inferiores: Trabajador[];
 	superiores: Trabajador[];

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
-import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
 import { CompetenciasService } from '../../competencias-admin/services/competencias.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { ComportService } from '../../comportamientos-admin/services/comport.service';
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
+import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 
 type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
 

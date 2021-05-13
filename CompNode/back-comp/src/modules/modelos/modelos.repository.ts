@@ -1,6 +1,5 @@
-import { EvModel } from 'src/entity/EvModel.entity';
+import { EvModel } from 'src/entity';
 import { Repository, EntityRepository } from 'typeorm';
-import { Ev } from '../../entity/Ev.entity';
 
 @EntityRepository(EvModel)
 export class EvModelRepo extends Repository<EvModel> {}

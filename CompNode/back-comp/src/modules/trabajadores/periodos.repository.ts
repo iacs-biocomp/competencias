@@ -1,4 +1,4 @@
-import { PeriodoTrab } from 'src/entity/PeriodoTrab.entity';
+import { PeriodoTrab } from 'src/entity';
 import { Repository, EntityRepository } from 'typeorm';
 
 @EntityRepository(PeriodoTrab)

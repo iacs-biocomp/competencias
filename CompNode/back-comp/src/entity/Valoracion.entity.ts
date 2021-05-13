@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, BaseEntity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, Column } from 'typeorm';
-import { Competencia } from './Competencia.entity';
-import { Comportamiento } from './Comportamiento.entity';
-import { Ev } from './Ev.entity';
-import { Trabajador } from './Trabajador.entity';
+import { Competencia, Comportamiento, Ev, Trabajador } from '.';
 
 type ValoracionesNums = 1 | 2 | 3 | 4 | 5;
 

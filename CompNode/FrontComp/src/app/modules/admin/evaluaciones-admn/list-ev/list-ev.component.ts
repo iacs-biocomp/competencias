@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IEvaluacion } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 
 @Component({

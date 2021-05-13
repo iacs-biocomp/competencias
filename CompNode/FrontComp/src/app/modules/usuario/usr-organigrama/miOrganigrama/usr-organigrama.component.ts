@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IOrganigramaTrabajador } from 'sharedInterfaces/Entity/IOrganigrama';
+import { IOrganigramaTrabajador } from 'sharedInterfaces/Entity';
 import { UsrOrganigramaService } from '../usr-organigrama.service';
 
 @Component({

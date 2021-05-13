@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
+import { ICatComp } from 'sharedInterfaces/Entity';
 
 @Injectable({ providedIn: 'root' })
 export class CatCompetencialesService {
@@ -17,7 +17,7 @@ export class CatCompetencialesService {
 	 * @returns Un `Array` de todas las categorias competenciales
 	 */
 	public async getAll(): Promise<ICatComp[]> {
-		return await this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
+		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
 	/**

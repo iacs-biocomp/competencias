@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ICompetencia, IComportamiento, INivel } from 'sharedInterfaces/Entity/IEvaluaciones';
-import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
+import { ICatComp, ICompetencia, IComportamiento, INivel } from 'sharedInterfaces/Entity';
 
 type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
 type DbData = {

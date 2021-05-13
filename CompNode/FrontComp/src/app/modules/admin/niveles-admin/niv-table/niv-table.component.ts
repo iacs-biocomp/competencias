@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { INivel } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { INivel } from 'sharedInterfaces/Entity';
 import { NivelService } from '../services/nivel.service';
 
 interface INivelEdit extends INivel {

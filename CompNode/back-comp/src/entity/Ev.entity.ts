@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from 'typeorm';
-import { CatComp } from './CatComp.entity';
-import { EvModel } from './EvModel.entity';
-import { Valoracion } from './Valoracion.entity';
+import { EvModel, CatComp, Valoracion } from '.';
 
 @Entity()
 export class Ev extends BaseEntity {

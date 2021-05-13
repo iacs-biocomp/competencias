@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
-import { IEvaluacion, IEvModel } from 'sharedInterfaces/Entity/IEvaluaciones';
 import { evAddDTO } from '../new-ev-modal/new-ev-modal.component';
 
 /** Tiene todos los metodos necesarios para la administración de las Evaluaciones y Modelos */
@@ -12,7 +12,7 @@ export class EvaluacionesAdmService {
 	 * @returns Una promsesa que se resuelve como un array de todas las evaluaciones que tiene el backend
 	 */
 	public async getAll(): Promise<IEvaluacion[]> {
-		return await this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones`).toPromise();
+		return this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones`).toPromise();
 	}
 
 	// TODO: Tsdoc

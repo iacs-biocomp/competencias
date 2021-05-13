@@ -1,4 +1,4 @@
-import { CatComp } from 'src/entity/CatComp.entity';
+import { CatComp } from 'src/entity';
 import { Repository, EntityRepository } from 'typeorm';
 
 @EntityRepository(CatComp)

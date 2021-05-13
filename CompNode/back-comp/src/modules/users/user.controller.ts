@@ -1,7 +1,6 @@
-import { Controller, Get, Param, Post, Body, Patch, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Delete, ParseIntPipe } from '@nestjs/common';
+import { Trabajador, User } from 'src/entity';
 import { UserService } from './user.service';
-import { User } from '../../entity/user.entity';
-import { Trabajador } from '../../entity/Trabajador.entity';
 
 @Controller('nest/users')
 export class UserController {

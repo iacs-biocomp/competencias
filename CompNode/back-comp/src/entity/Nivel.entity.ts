@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, BaseEntity, OneToMany, PrimaryColumn, Column } from 'typeorm';
-import { SubModel } from './SubModel.entity';
+import { SubModel } from '.';
 
 @Entity()
 export class Nivel extends BaseEntity {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IEvaluacion } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { EvaluacionesService } from '../evaluaciones.service';
 export const evId = 'evId';
 

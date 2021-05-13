@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, BaseEntity, OneToMany, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
-import { CatComp } from './CatComp.entity';
-import { Ev } from './Ev.entity';
-import { SubModel } from './SubModel.entity';
+import {
+	Entity,
+	BaseEntity,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	ManyToOne,
+	ManyToMany,
+	JoinTable,
+	Column,
+} from 'typeorm';
+import { CatComp, Ev, SubModel } from '.';
 
 @Entity()
 export class EvModel extends BaseEntity {
@@ -22,5 +29,10 @@ export class EvModel extends BaseEntity {
 	@ManyToMany(type => SubModel, subModel => subModel.modelos)
 	@JoinTable()
 	subModels: SubModel[];
-	// TODO: Elegir un nombre correcto
+
+	/**
+	 * Representa si el modelo es de referencia para esa categoría competencial, si es `true`, el modelo no se podrá asociar a ninguna evaluacion
+	 */
+	@Column({ default: false })
+	reference: boolean;
 }

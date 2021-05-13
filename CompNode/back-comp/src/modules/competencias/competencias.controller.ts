@@ -12,7 +12,7 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Competencia } from '../../entity/Competencia.entity';
+import { Competencia } from 'src/entity';
 import { ComptRepository } from './competencias.repository';
 
 @Controller('nest/competencias')

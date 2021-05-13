@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
+import { ICatComp } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../services/CatCompetenciales.service';
 
 interface ICatCompetEdit extends ICatComp {
@@ -69,7 +69,7 @@ export class TableCompetComponent implements OnInit {
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.deleteCatCompToAdd(catComp);
-			return await this.updateCatCompView();
+			return this.updateCatCompView();
 		}
 	}
 
@@ -82,7 +82,7 @@ export class TableCompetComponent implements OnInit {
 		const borrado = await this.catCompService.delete(catComp);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			return await this.updateCatCompView();
+			return this.updateCatCompView();
 		}
 	}
 }

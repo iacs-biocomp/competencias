@@ -9,10 +9,9 @@ import {
 	PrimaryColumn,
 	OneToOne,
 } from 'typeorm';
-import { Role } from './role.entity';
 import { SignupDto } from '../modules/auth/dto';
-import { Trabajador } from './Trabajador.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Role, Trabajador } from '.';
 
 @Entity('user')
 export class User extends BaseEntity {

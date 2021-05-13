@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EvModel } from 'src/entity/EvModel.entity';
+import { EvModel } from 'src/entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { EvModelRepo } from './modelos.repository';
 import { SubModelRepo } from './subModel.repository';
@@ -19,15 +19,24 @@ export class ModelosController {
 	) {}
 
 	@Get(':cComp')
-	async modelsCatComp(@Param('cComp') catCompId: string) {
-		return await this.modelRepo.find({
+	modelsCatComp(@Param('cComp') catCompId: string): Promise<EvModel[]> {
+		return this.modelRepo.find({
 			where: { catComp: catCompId },
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
 		});
 	}
+
+	@Get(':cComp')
+	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel[]> {
+		return this.modelRepo.find({
+			where: { catComp: catCompId, reference: true },
+			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
+		});
+	}
+
 	@Get('')
-	async allModels() {
-		return await this.modelRepo.find({
+	allModels(): Promise<EvModel[]> {
+		return this.modelRepo.find({
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
 		});
 	}

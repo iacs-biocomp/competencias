@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
-import { IEvaluacion, IEvModel } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { ICatComp, IEvaluacion, IEvModel } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';

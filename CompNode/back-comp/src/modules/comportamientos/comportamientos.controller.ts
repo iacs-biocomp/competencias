@@ -12,7 +12,7 @@ import {
 	UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Comportamiento } from '../../entity/Comportamiento.entity';
+import { Comportamiento } from 'src/entity';
 import { ComportRepository } from './comportamientos.repository';
 
 @Controller('nest/comportamientos')

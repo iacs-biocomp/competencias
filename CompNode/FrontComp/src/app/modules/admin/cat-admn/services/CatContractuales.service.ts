@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ICatContr } from 'sharedInterfaces/Entity/ICategorias';
+import { ICatContr } from 'sharedInterfaces/Entity';
 
 @Injectable({ providedIn: 'root' })
 export class CatContractService {

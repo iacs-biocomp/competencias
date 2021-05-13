@@ -8,7 +8,7 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '.';
 
 @Entity('roles')
 export class Role extends BaseEntity {

@@ -1,4 +1,4 @@
-import { CatContr } from 'src/entity/CatContr.entity';
+import { CatContr } from 'src/entity';
 import { Repository, EntityRepository } from 'typeorm';
 
 @EntityRepository(CatContr)

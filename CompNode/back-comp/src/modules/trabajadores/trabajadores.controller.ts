@@ -1,8 +1,6 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CatComp } from 'src/entity/CatComp.entity';
-import { CatContr } from 'src/entity/CatContr.entity';
-import { Trabajador } from 'src/entity/Trabajador.entity';
+import { Trabajador, CatComp, CatContr } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';

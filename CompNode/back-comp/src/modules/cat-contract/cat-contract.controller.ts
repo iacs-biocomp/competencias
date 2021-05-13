@@ -1,6 +1,6 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CatContr } from '../../entity/CatContr.entity';
+import { CatContr } from 'src/entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { PeriodosRepo } from '../trabajadores/periodos.repository';
 import { CatContrRepo } from './catContr.repository';

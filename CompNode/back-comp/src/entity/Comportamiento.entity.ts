@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, BaseEntity, PrimaryColumn, Column, ManyToMany } from 'typeorm';
-import { SubModel } from './SubModel.entity';
+import { SubModel } from '.';
 
 @Entity()
 export class Comportamiento extends BaseEntity {

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
-import { ICatComp } from 'sharedInterfaces/Entity/ICategorias';
-import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity/IEvaluaciones';
+import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 
 type MiCompetencia = {
 	nivObjetivo?: INivel;

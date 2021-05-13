@@ -1,8 +1,7 @@
 import { Body, ConflictException, UnprocessableEntityException } from '@nestjs/common';
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Ev } from '../../entity/Ev.entity';
-import { Trabajador } from '../../entity/Trabajador.entity';
+import { Ev, Trabajador } from 'src/entity';
 import { EvRepository } from './evaluaciones.repository';
 
 @Controller('nest/evaluaciones')

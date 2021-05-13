@@ -11,7 +11,7 @@ import {
 	Put,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CatComp } from '../../entity/CatComp.entity';
+import { CatComp } from 'src/entity';
 import { CatCompRepo } from './catComp.repository';
 
 type CatCompWithNoModels = {

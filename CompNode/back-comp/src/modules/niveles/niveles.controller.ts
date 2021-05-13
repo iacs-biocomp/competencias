@@ -11,7 +11,7 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Nivel } from 'src/entity/Nivel.entity';
+import { Nivel } from 'src/entity';
 import { NivelRepository } from './nivel.repository';
 @Controller('nest/niveles')
 export class NivelesController {
