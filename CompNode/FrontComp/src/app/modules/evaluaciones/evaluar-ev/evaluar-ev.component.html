@@ -1,29 +1,49 @@
 <div class="main-content">
 	<form>
-	<h1 class="layout-title">Evaluación {{ evId }}</h1>
-	<h2 class="layout-subTitle">INFO DE FUNCIONAMIENTO DE EVALUAR</h2>
-	<button type="submit" class="btn btn-primary mb-2">
-		Guardar evaluación
-		<span class="material-icons" title="Guardar evaluación"> save </span>
-	</button>
-	<div class="form-group">
-		<div class="accordion" id="accEvaluaciones">
-			<div class="accordion-body">
-				<div class="accordion-item" >
-					<h2 class="accordion-header">
-						<button
-							class="accordion-button collapsed"
-							data-bs-toggle="collapse"
-
-
+		<h1 class="layout-title">Evaluación {{ evId }}</h1>
+		<h2 class="layout-subTitle"> Esta evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado, por lo que puede modificarla siempre que quiera </h2>
+		<button type="submit" class="btn btn-primary mb-2">
+			Guardar evaluación
+			<span class="material-icons" title="Guardar evaluación"> save </span>
+		</button>
+		<div class="form-group">
+			<div class="accordion" id="accEvaluaciones">
+				<div class="accordion-body">
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button
+								class="accordion-button collapsed"
+								data-bs-toggle="collapse"
+								[attr.data-bs-target]="'#btnEvaluaciones'"
+								[attr.aria-controls]="'btnEvaluaciones'"
+							>
+								{{ evaluacion.id }}
+							</button>
+						</h2>
+						<div
+							[id]="'btnCompors'"
+							class="accordion-collapse collapse"
+							[attr.aria-labelledby]="'btnComportamientos'"
+							data-bs-parent="#btnComportamientos"
 						>
-							{{ evaluacion.id }} - {{ evaluacion.description }}
-						</button>
-					</h2>
-
+							<ul class="list-group">
+								<li
+									class="list-group-item p-3"
+								>
+<!-- 									{{ evaluacion.descripcion }}
+ -->								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button class="accordion-button collapsed" data-bs-toggle="collapse">
+								{{ evaluacion.id }}
+							</button>
+						</h2>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</form>
+	</form>
 </div>
