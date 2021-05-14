@@ -1,17 +1,29 @@
 <div class="main-content">
+	<form>
 	<h1 class="layout-title">Evaluación {{ evId }}</h1>
-	<div class="container-fluid">
-		<div class="row gy-4">
-			<div class="col-md-12 col-sm-12 col-lg-12">
-				<div class="card">
-					<div class="card-body">
-						<h2 class="card-title">Cristina Izquierdo</h2> <!-- nombre del trabajador -->
-						<p>Id : {{ evaluacion.id }}</p>
-						<p>Descripcion evaluacion : {{ evaluacion.description}}</p>
+	<h2 class="layout-subTitle">INFO DE FUNCIONAMIENTO DE EVALUAR</h2>
+	<button type="submit" class="btn btn-primary mb-2">
+		Guardar evaluación
+		<span class="material-icons" title="Guardar evaluación"> save </span>
+	</button>
+	<div class="form-group">
+		<div class="accordion" id="accEvaluaciones">
+			<div class="accordion-body">
+				<div class="accordion-item" >
+					<h2 class="accordion-header">
+						<button
+							class="accordion-button collapsed"
+							data-bs-toggle="collapse"
 
-					</div>
+
+						>
+							{{ evaluacion.id }} - {{ evaluacion.description }}
+						</button>
+					</h2>
+
 				</div>
 			</div>
 		</div>
 	</div>
+</form>
 </div>

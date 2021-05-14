@@ -21,5 +21,8 @@ export class EvaluarEvConcretaComponent implements OnInit {
 
 	ngOnInit(): void {
 		if (evId) console.log(this.evId);
+		this.evSv.evaluacionesUsr(this.evaluacion.id);
 	}
+
+
 }
