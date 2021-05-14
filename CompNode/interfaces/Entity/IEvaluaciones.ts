@@ -65,7 +65,7 @@ export interface IComportamiento {
 
   descripcion: string;
   /** Los submodelos asociados a este comportamiento, en la mayoría de los casos esta propiedad será undefined */
-  subModels: ISubModel[] | undefined;
+  subModels?: ISubModel[];
 }
 /** Representa una competencia, tiene la misma estructura que el que tiene el backend */
 export interface ICompetencia {
