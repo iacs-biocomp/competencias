@@ -1,5 +1,42 @@
 <div class="tablewrapper">
 	<h1 class="title">Lista de todos los comportamientos</h1>
+	<div class="input-group">
+		Filtrados por:
+
+		<input
+			placeholder="Descripción del comportamiento"
+			type="text"
+			#descFilter
+			class="form-control me-5 max50Percent"
+			(keyup)="cv.filters.descObs.next(descFilter.value)"
+		/>
+		<select
+			class="form-select mb-2"
+			style="max-width: 15%"
+			#compFilter
+			(change)="cv.filters.compObs.next(findCompById(dbData.comps, compFilter.value))"
+		>
+			<option selected hidden disabled>Competencia</option>
+			<option value="undefined">Todas</option>
+			<option *ngFor="let comp of dbData.comps" [ngValue]="comp">
+				{{ comp.id }}
+			</option>
+		</select>
+		<select
+			#nivFilter
+			class="form-select mb-2"
+			style="max-width: 10%"
+			(change)="cv.filters.nivObs.next(findNivelById(dbData.niveles, nivFilter.value))"
+		>
+			<option selected hidden disabled>Nivel</option>
+			<option *ngFor="let niv of dbData.niveles">
+				{{ niv.id }}
+			</option>
+			<!-- TODO: Corregir error, no pilla undefined -->
+			<option [value]="undefined">Todos</option>
+		</select>
+	</div>
+
 	<table aria-label="Listado de todos los comportamientos existentes" class="table table-hover">
 		<thead>
 			<tr>
@@ -36,7 +73,7 @@
 				</td>
 			</tr>
 
-			<tr *ngFor="let comport of comports">
+			<tr *ngFor="let comport of comportsFiltered">
 				<td>{{ comport.id }}</td>
 				<td *ngIf="!comport.editing">{{ comport.descripcion }}</td>
 				<td *ngIf="comport.editing">

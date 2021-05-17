@@ -1,6 +1,12 @@
 .tablewrapper {
-	margin-left: auto;
-	margin-top: 0.25rem;
-	margin-right: auto;
+	margin-left: 0.4rem;
+	margin-top: 0.55rem;
+	margin-right: 0.4rem;
 	max-width: 95%;
+}
+.max25Percent {
+	max-width: 25%;
+}
+.max50Percent {
+	max-width: 50%;
 }

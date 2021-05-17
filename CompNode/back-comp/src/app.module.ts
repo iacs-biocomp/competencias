@@ -24,7 +24,7 @@ import { CompressionMiddleware } from '@aml360/nestjs-compression';
 		UserModule,
 		DatabaseModule,
 		ServeStaticModule.forRoot({
-			rootPath: join(__dirname, '..', 'ngDist'),
+			rootPath: join('/app', '/ngDist'),
 			exclude: ['/nest*'],
 		}),
 		EvaluacionesModule,
