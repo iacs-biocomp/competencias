@@ -1,7 +1,12 @@
 <div class="contrainer-fluid p-3">
 	<h1>Listado de los trabajadores y su organigrama</h1>
 
-	<input type="text" #filterOrg (keyup)="cv.orgFilter = filterOrg.value" placeholder="Filtrar trabajadores" />
+	<input
+		type="text"
+		#filterOrg
+		(keyup)="cv.orgFilterObs.next(filterOrg.value)"
+		placeholder="Filtrar trabajadores"
+	/>
 	<button (click)="cv.showall = !cv.showall" class="btn show-all-btn">Mostrar todos</button>
 	<select class="mb-2" [(ngModel)]="cv.cCompFilter">
 		<option selected hidden disabled [ngValue]="cv.cCompFilter">Filtrar por Categoria competencial</option>
@@ -15,7 +20,7 @@
 			<div
 				class="accordion-item"
 				[id]="trab.trabajador.dni"
-				*ngFor="let trab of filterOrgani(cv.orgFilter); let i = index"
+				*ngFor="let trab of filteredOrgani; let i = index"
 			>
 				<h2 class="accordion-header" [id]="'headingWorker ' + i">
 					<button
@@ -51,7 +56,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Inferior', 'add')"
+							(click)="setCtrlView(trab, 'Inferior', 'add'); cv.modal.filterObs.next('')"
 						>
 							<span class="material-icons" title="Añadir inferior"> add </span>
 						</button>
@@ -74,7 +79,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Par', 'add')"
+							(click)="setCtrlView(trab, 'Par', 'add'); cv.modal.filterObs.next('')"
 						>
 							<span class="material-icons" title="Añadir par"> add </span>
 						</button>
@@ -96,7 +101,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Superior', 'add')"
+							(click)="setCtrlView(trab, 'Superior', 'add'); cv.modal.filterObs.next('')"
 						>
 							<span class="material-icons" title="Añadir superior"> add </span>
 						</button>
@@ -125,14 +130,14 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title" id="exampleModalLabel">Añadir un {{ cv.modalTitle }}</h2>
+				<h2 class="modal-title" id="exampleModalLabel">Añadir un {{ cv.modal.title }}</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<input
 					type="text"
 					#addRelation
-					(keyup)="cv.modalFilter = addRelation.value"
+					(keyup)="cv.modal.filterObs.next(addRelation.value)"
 					placeholder="Filtrar trabajadores"
 				/>
 				<hr />
@@ -140,12 +145,9 @@
 					<li
 						[id]="'newRel' + i"
 						class="list-group-item p-3"
-						[ngClass]="{ active: cv.modalRelations.includes(org.trabajador) }"
+						[ngClass]="{ active: cv.modal.relations.includes(org.trabajador) }"
 						aria-current="true"
-						*ngFor="
-							let org of filterNewRelation(filterOrgani(cv.modalFilter), cv.modalWorker!);
-							let i = index
-						"
+						*ngFor="let org of cv.modal.orgFiltered; let i = index"
 						(click)="selectRelation(org.trabajador)"
 					>
 						{{ org.trabajador.nombre }} {{ org.trabajador.apellidos }}
@@ -164,18 +166,18 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title" id="exampleModalLabel">Borrar {{ cv.modalTitle }}es</h2>
+				<h2 class="modal-title" id="exampleModalLabel">Borrar {{ cv.modal.title }}es</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<ul class="list-group">
 					<li
 						[id]="'rel' + i"
-						[ngClass]="{ active: cv.modalRelationsDelete.includes(rel) }"
+						[ngClass]="{ active: cv.modal.relationsDelete.includes(rel) }"
 						class="list-group-item p-3"
 						aria-current="true"
 						[tabindex]="i"
-						*ngFor="let rel of cv.modalRelations; let i = index"
+						*ngFor="let rel of cv.modal.relations; let i = index"
 						(click)="selectRelToRm(rel)"
 						(keydown.space)="selectRelToRm(rel)"
 					>
@@ -184,7 +186,9 @@
 				</ul>
 			</div>
 			<div class="modal-footer">
-				<button #closeModalDeleteRel type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button #closeModalDeleteRel type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					Cerrar
+				</button>
 				<button type="button" class="btn btn-primary" (click)="deleteRelations()">
 					Borrar seleccionados
 				</button>

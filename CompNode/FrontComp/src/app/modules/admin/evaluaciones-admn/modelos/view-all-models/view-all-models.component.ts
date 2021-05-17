@@ -47,12 +47,13 @@ export class ViewAllModelsComponent implements OnInit {
 			this.competSv.getAll(),
 			this.nivSv.getAll(),
 			this.comportSv.getAll(),
+			this.evModelSv.getAllReference(),
 		]);
 		this.dbData.catComps = promises[0];
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
-		this.refModels = await this.evModelSv.getAllReference();
+		this.refModels = promises[4];
 
 		this.viewProps = {
 			haveModels: this.refModels.length !== 0,

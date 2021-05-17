@@ -9,7 +9,7 @@
 		<div class="modal-body">
 			<div class="accordion" id="accordionCompo">
 				<div class="accordion-body">
-					<div class="accordion-item" *ngFor="let nivelComp of competenciasSelect; let i = index">
+					<div class="accordion-item" *ngFor="let comp of competenciasSelect; let i = index">
 						<h2 class="accordion-header" [id]="'headerCompo ' + i">
 							<button
 								class="accordion-button collapsed"
@@ -17,9 +17,9 @@
 								[attr.data-bs-target]="'#collCompo' + i"
 								[attr.aria-controls]="'collCompo' + i"
 							>
-								{{ 'Competencia: ' + nivelComp.descripcion }}
+								{{ 'Competencia: ' + comp.descripcion }}
 								<br />
-								{{ 'Nivel objetivo: ' + nivelComp.nivObjetivo?.id }}
+								{{ 'Nivel objetivo: ' + comp.nivObjetivo?.id }}
 							</button>
 						</h2>
 
@@ -45,7 +45,7 @@
 														*ngIf="modoEdicion"
 														(click)="
 															comportCtl.nivSelected = nivel;
-															comportCtl.compSelected = nivelComp;
+															comportCtl.compSelected = comp;
 															comportamientosSelect = [];
 															comportCtl.comportsSelected = []
 														"
@@ -69,18 +69,10 @@
 														<li
 															class="list-group-item p-3"
 															aria-current="true"
-															*ngFor="
-																let comport of findSubModel(dbData.modelToAdd.subModels, nivelComp, nivel)
-																	?.comportamientos;
-																let i = index
-															"
+															*ngFor="let comport of keysToArrayComport(evModelIndx.comps[comp.id].comports); let i = index"
 														>
 															{{ comport.descripcion }}
-															<button
-																class="btn btn-danger me-2"
-																(click)="removeComport(comport, comportCtl.compSelected!, nivel)"
-																style="float: right"
-															>
+															<button class="btn btn-danger me-2" style="float: right">
 																<span class="material-icons" title="Eliminar comportamiento"> remove </span>
 															</button>
 														</li>

@@ -47,6 +47,7 @@ interface EvModalValidators {
 	[key: string]: (...args: any[]) => boolean | Promise<boolean>;
 }
 
+/** Componente dedicado a crear un nuevo modelo usado para las evaluaciones */
 @Component({
 	selector: 'app-new-ev-model',
 	templateUrl: './new-ev-model.component.html',
@@ -213,8 +214,9 @@ export class NewEvModelComponent implements OnInit {
 	/**
 	 * Elimina el comportamiento seleccionado de la lista de comportamientos que pertenecen a ese submodelo en concreto
 	 * @param comport El comportamiento a eliminar del array
-	 * @param comp La competencia usada para filtrar
-	 * @param niv El nivel que junto con la competencia hacen de filtro
+	 * @param comp La competencia usada para filtrarCo1: {
+          descripcion: 'dsadsaasd',
+        },
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
 		const _model = this.dbData.modelToAdd;

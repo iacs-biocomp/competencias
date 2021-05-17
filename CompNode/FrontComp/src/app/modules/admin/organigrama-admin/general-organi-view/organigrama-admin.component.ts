@@ -1,27 +1,47 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { OrganiService } from '../services/organi.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 type ModalTitles = 'Inferior' | 'Superior' | 'Par';
-type CtlView = {
+type ModalCtrl = {
 	/** El trabajador sobre el que se abre el modal al cual se le añadirá una relacion */
-	modalWorker?: IOrganigramaUsrDTO;
+	worker?: IOrganigramaUsrDTO;
 	/** Los trabajadores que se quieren añadir como relación del modalWorker,
 	 *  del modalTitle se obtiene que tipo de relación se añadirá */
-	modalRelations: ITrabOrgani[];
+	relations: ITrabOrgani[];
 	/** Relaciones de un trabajador a borrar en la base de datos, el modal las añade a este array al hacer click */
-	modalRelationsDelete: ITrabOrgani[];
+	relationsDelete: ITrabOrgani[];
 	/** Strings permitidos como titulo del modal, usado también para saber que es lo que se quiere añadir (inf/sup/par) */
-	modalTitle: ModalTitles;
+	title: ModalTitles;
+	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+	filter: string;
+	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+	filterObs: BehaviorSubject<string>;
+	/** Organigrama del modal filtrado (Debe ser filtrado para el trabajador del modal y con el texto dado) */
+	orgFiltered: IOrganigramaUsrDTO[];
+};
+
+type CtlView = {
+	modal: ModalCtrl;
+
 	/** Categoria competencial usada para filtrar el organigrama */
 	cCompFilter?: ICatComp;
-	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
-	modalFilter: string;
-	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+	/** Categoria competencial usada para filtrar el organigrama */
+	cCompFilterObs: BehaviorSubject<ICatComp | undefined>;
+
+	/**
+	 * El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input>
+	 * @deprecated utilizar {@link orgFilterObs}
+	 */
 	orgFilter: string;
+	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+	orgFilterObs: BehaviorSubject<string>;
+	/** Representa el texto que se ha usado previamente para filtrar (orgFilterObs.value) */
+	previousFilterTxt: string;
 	[key: string]: any;
 };
 @Component({
@@ -29,12 +49,14 @@ type CtlView = {
 	templateUrl: './organigrama-admin.component.html',
 	styleUrls: ['./organigrama-admin.component.css'],
 })
-export class OrganiGeneralView implements OnInit {
+export class OrganiGeneralView implements OnInit, OnDestroy {
 	@ViewChild('closeModal') closeModalAddRel!: ElementRef;
 	@ViewChild('closeModalDeleteRel') closeModalDeleteRel!: ElementRef;
 
 	/** El organigrama completo, cada elemento tiene el trabajador y sus (pares/inf/sup) */
 	fullOrgani!: IOrganigramaUsrDTO[];
+	/** El organigrama filtrado, este es el que ha de modificarse cuando cambien los valores a filtrar */
+	filteredOrgani!: IOrganigramaUsrDTO[];
 	/** Lista de los trabajadores que hay en el fullOrgani*/
 	trabajadores!: ITrabOrgani[];
 	trabajadoresFiltered!: ITrabOrgani[];
@@ -45,22 +67,52 @@ export class OrganiGeneralView implements OnInit {
 	/** Control View, objeto que tiene variables unicamente para la vista y se usan poco en el modelo */
 	cv: CtlView = {
 		orgFilter: '',
+		orgFilterObs: new BehaviorSubject<string>(''),
+		previousFilterTxt: '',
 		/** Usada para hacer collapse de todos los accordion o mostrarlos */
 		showall: false,
-		modalTitle: 'Par',
 		cCompFilter: undefined,
-		modalFilter: '',
-		modalWorker: undefined,
-		modalRelations: [],
-		modalRelationsDelete: [],
+		cCompFilterObs: new BehaviorSubject<ICatComp | undefined>(undefined),
+
 		trabCount: 0,
+		modal: {
+			title: 'Par',
+			worker: undefined,
+			relations: [],
+			relationsDelete: [],
+			filter: '',
+			filterObs: new BehaviorSubject<string>(''),
+			orgFiltered: [],
+		},
 	};
+	subs: Subscription[] = [];
 
 	constructor(private orgSv: OrganiService, private cCompSv: CatCompetencialesService) {}
 
 	async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
 		this.cComps = promises[1];
+		this.filteredOrgani = this.filterOrgani('');
+
+		this.subs.push(
+			//Suscripción 1
+			this.cv.orgFilterObs.subscribe(txt4filter => {
+				if (txt4filter === this.cv.previousFilterTxt) return;
+				this.filteredOrgani = this.filterOrgani(txt4filter);
+				this.cv.previousFilterTxt = txt4filter;
+			}),
+			//Suscripción 2
+			this.cv.modal.filterObs.subscribe(modalFilterTxt => {
+				this.cv.modal.orgFiltered = this.filterNewRelation(
+					this.filterOrgani(modalFilterTxt),
+					this.cv.modal.worker!,
+				);
+			}),
+		);
+	}
+
+	ngOnDestroy(): void {
+		this.subs.forEach(s => s.unsubscribe());
 	}
 
 	/**
@@ -79,26 +131,26 @@ export class OrganiGeneralView implements OnInit {
 					return modalWorker.pares;
 			}
 		};
-		this.cv.modalRelations = addOrRemove === 'add' ? [] : relations();
-		this.cv.modalRelationsDelete = [];
-		this.cv.modalWorker = modalWorker;
-		this.cv.modalTitle = modalTitle;
+		this.cv.modal.relations = addOrRemove === 'add' ? [] : relations();
+		this.cv.modal.relationsDelete = [];
+		this.cv.modal.worker = modalWorker;
+		this.cv.modal.title = modalTitle;
 	}
 
 	selectRelation(wrk: ITrabOrgani) {
-		const index = this.cv.modalRelations.indexOf(wrk);
+		const index = this.cv.modal.relations.indexOf(wrk);
 		if (index === -1) {
-			this.cv.modalRelations.push(wrk);
+			this.cv.modal.relations.push(wrk);
 		} else {
-			this.cv.modalRelations.splice(index, 1);
+			this.cv.modal.relations.splice(index, 1);
 		}
 	}
 	selectRelToRm(wrk: ITrabOrgani) {
-		const index = this.cv.modalRelationsDelete.indexOf(wrk);
+		const index = this.cv.modal.relationsDelete.indexOf(wrk);
 		if (index === -1) {
-			this.cv.modalRelationsDelete.push(wrk);
+			this.cv.modal.relationsDelete.push(wrk);
 		} else {
-			this.cv.modalRelationsDelete.splice(index, 1);
+			this.cv.modal.relationsDelete.splice(index, 1);
 		}
 	}
 	/** Sincroniza la vista con la base de datos pidiendo todos los datos de nuevo */
@@ -107,6 +159,8 @@ export class OrganiGeneralView implements OnInit {
 		this.fullOrgani.sort((a, b) => a.trabajador.nombre.localeCompare(b.trabajador.nombre));
 		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
 		this.trabajadoresFiltered = this.trabajadores;
+		this.filteredOrgani = this.filterOrgani('');
+		this.cv.modal.filterObs.next('');
 	}
 
 	/**
@@ -119,18 +173,18 @@ export class OrganiGeneralView implements OnInit {
 		const filterDuplicates = (rels: ITrabOrgani[]) =>
 			rels.filter((rel, index) => rels.indexOf(rel) === index);
 		try {
-			switch (this.cv.modalTitle) {
+			switch (this.cv.modal.title) {
 				case 'Inferior':
-					relations = filterDuplicates(this.cv.modalRelations.concat(this.cv.modalWorker?.inferiores!));
-					saved = await this.orgSv.setInferiores(this.cv.modalWorker!.trabajador, relations);
+					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.inferiores!));
+					saved = await this.orgSv.setInferiores(this.cv.modal.worker!.trabajador, relations);
 					break;
 				case 'Par':
-					relations = filterDuplicates(this.cv.modalRelations.concat(this.cv.modalWorker?.pares!));
-					saved = await this.orgSv.setPares(this.cv.modalWorker!.trabajador, relations);
+					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.pares!));
+					saved = await this.orgSv.setPares(this.cv.modal.worker!.trabajador, relations);
 					break;
 				case 'Superior':
-					relations = filterDuplicates(this.cv.modalRelations.concat(this.cv.modalWorker?.superiores!));
-					saved = await this.orgSv.setSuperiores(this.cv.modalWorker!.trabajador, relations);
+					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.superiores!));
+					saved = await this.orgSv.setSuperiores(this.cv.modal.worker!.trabajador, relations);
 					break;
 			}
 		} catch (error) {
@@ -138,25 +192,24 @@ export class OrganiGeneralView implements OnInit {
 		}
 		if (saved) {
 			console.log('Guardado correctamente');
-			// alert('Guardado correctamente');
 		}
 		this.closeModalAddRel.nativeElement.click();
 		await this.syncView();
 	}
 
 	async deleteRelations() {
-		let trabajador = this.cv.modalWorker?.trabajador;
+		let trabajador = this.cv.modal.worker?.trabajador;
 		if (!trabajador) return;
 		try {
-			switch (this.cv.modalTitle) {
+			switch (this.cv.modal.title) {
 				case 'Inferior':
-					await this.orgSv.deleteInferiores(trabajador, this.cv.modalRelationsDelete);
+					await this.orgSv.deleteInferiores(trabajador, this.cv.modal.relationsDelete);
 					break;
 				case 'Superior':
-					await this.orgSv.deleteSuperiores(trabajador, this.cv.modalRelationsDelete);
+					await this.orgSv.deleteSuperiores(trabajador, this.cv.modal.relationsDelete);
 					break;
 				case 'Par':
-					await this.orgSv.deletePares(trabajador, this.cv.modalRelationsDelete);
+					await this.orgSv.deletePares(trabajador, this.cv.modal.relationsDelete);
 					break;
 			}
 		} catch (err) {
@@ -208,6 +261,7 @@ export class OrganiGeneralView implements OnInit {
 	 * @returns Un organigrama filtrado de tipo IOrganigramaUsrDTO
 	 */
 	filterOrgani(value: string): IOrganigramaUsrDTO[] {
+		console.log('filterOrganiCalled');
 		const filterValue = value.toLowerCase().replace(/\s/g, '');
 		const nameFilteredOrg = this.fullOrgani?.filter(org => {
 			const trabNames = org.trabajador.nombre.toLowerCase() + org.trabajador.apellidos.toLowerCase();
@@ -220,7 +274,6 @@ export class OrganiGeneralView implements OnInit {
 		const nameAndCCompFiltered = nameFilteredOrg.filter(
 			org => org.trabajador.catComp?.id === this.cv.cCompFilter?.id,
 		);
-		//TODO: Refactor, mejor usar 2 observables para ver si ha cambiado el string a filtrar o la cComp y cambiar una variable OrgFiltered.
 		this.cv.trabCount = nameAndCCompFiltered.length;
 		return nameAndCCompFiltered;
 	}
