@@ -8,7 +8,7 @@
 		placeholder="Filtrar trabajadores"
 	/>
 	<button (click)="cv.showall = !cv.showall" class="btn show-all-btn">Mostrar todos</button>
-	<select class="mb-2" [(ngModel)]="cv.cCompFilter">
+	<select #catCompFilter class="mb-2" (change)="cv.cCompFilterObs.next(findCatComp(catCompFilter.value))">
 		<option selected hidden disabled [ngValue]="cv.cCompFilter">Filtrar por Categoria competencial</option>
 		<option [ngValue]="undefined">Todas</option>
 		<option *ngFor="let cComp of cComps" [ngValue]="cComp">
@@ -112,8 +112,8 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="cv.cCompFilter && cv.orgFilter == '' && cv.trabCount == 0">
-				No hay ningun trabajador con {{ cv.cCompFilter?.id }}
+			<div *ngIf="cv.cCompFilterObs.value && cv.orgFilterObs.value == '' && cv.trabCount == 0">
+				No hay ningun trabajador con {{ cv.cCompFilterObs.value.id }}
 			</div>
 		</div>
 	</div>

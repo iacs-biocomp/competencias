@@ -33,11 +33,6 @@ type CtlView = {
 	/** Categoria competencial usada para filtrar el organigrama */
 	cCompFilterObs: BehaviorSubject<ICatComp | undefined>;
 
-	/**
-	 * El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input>
-	 * @deprecated utilizar {@link orgFilterObs}
-	 */
-	orgFilter: string;
 	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
 	orgFilterObs: BehaviorSubject<string>;
 	/** Representa el texto que se ha usado previamente para filtrar (orgFilterObs.value) */
@@ -66,7 +61,6 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 
 	/** Control View, objeto que tiene variables unicamente para la vista y se usan poco en el modelo */
 	cv: CtlView = {
-		orgFilter: '',
 		orgFilterObs: new BehaviorSubject<string>(''),
 		previousFilterTxt: '',
 		/** Usada para hacer collapse de todos los accordion o mostrarlos */
@@ -107,6 +101,9 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 					this.filterOrgani(modalFilterTxt),
 					this.cv.modal.worker!,
 				);
+			}),
+			this.cv.cCompFilterObs.subscribe(cComp => {
+				this.filteredOrgani = this.filterOrgani(this.cv.orgFilterObs.value);
 			}),
 		);
 	}
@@ -255,6 +252,10 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		return organi.filter(x => !dnisRelaciones.includes(x.trabajador.dni));
 	}
 
+	findCatComp(id: string): ICatComp | undefined {
+		return this.cComps.find(c => c.id === id);
+	}
+
 	/**
 	 * Metodo que filtra el organigrama, NO lo modifica, retorna el valor filtrado
 	 * @param value El valor a usar como filtro
@@ -267,12 +268,12 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 			const trabNames = org.trabajador.nombre.toLowerCase() + org.trabajador.apellidos.toLowerCase();
 			return trabNames.includes(filterValue) ? true : false;
 		});
-		if (!this.cv.cCompFilter) {
+		if (!this.cv.cCompFilterObs.value) {
 			this.cv.trabCount = nameFilteredOrg?.length;
 			return nameFilteredOrg;
 		}
 		const nameAndCCompFiltered = nameFilteredOrg.filter(
-			org => org.trabajador.catComp?.id === this.cv.cCompFilter?.id,
+			org => org.trabajador.catComp?.id === this.cv.cCompFilterObs.value?.id,
 		);
 		this.cv.trabCount = nameAndCCompFiltered.length;
 		return nameAndCCompFiltered;
