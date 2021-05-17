@@ -6,6 +6,10 @@ import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+type OrgScrollOpts = {
+	removeHighlight?: boolean;
+};
+
 type ModalTitles = 'Inferior' | 'Superior' | 'Par';
 type ModalCtrl = {
 	/** El trabajador sobre el que se abre el modal al cual se le añadirá una relacion */
@@ -102,7 +106,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 					this.cv.modal.worker!,
 				);
 			}),
-			this.cv.cCompFilterObs.subscribe(cComp => {
+			this.cv.cCompFilterObs.subscribe(() => {
 				this.filteredOrgani = this.filterOrgani(this.cv.orgFilterObs.value);
 			}),
 		);
@@ -162,8 +166,9 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 
 	/**
 	 * Guarda las relaciones de un trabajador de un tipo determinado (par/inf/sup)
+	 * @param dniId El identificador del elemento HTML al cual hay que volver una vez se sincronice la vista
 	 */
-	async saveRelations() {
+	async saveRelations(dniId?: string) {
 		let saved = false;
 		let relations: ITrabOrgani[];
 		/**Funcion que recibe unos trabajadores y elimina los duplicados */
@@ -192,9 +197,13 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		}
 		this.closeModalAddRel.nativeElement.click();
 		await this.syncView();
+		if (!dniId) return;
+		this.scroll(dniId, {
+			removeHighlight: true,
+		});
 	}
 
-	async deleteRelations() {
+	async deleteRelations(dniId?: string) {
 		let trabajador = this.cv.modal.worker?.trabajador;
 		if (!trabajador) return;
 		try {
@@ -214,19 +223,26 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		}
 		this.closeModalDeleteRel.nativeElement.click();
 		await this.syncView();
+		if (!dniId) return;
+		this.scroll(dniId, {
+			removeHighlight: true,
+		});
 	}
 
 	/**
 	 * Función que aplica una animación css (Clase highlight) y hace scroll hasta ver en pantalla el elemento dado.
 	 * @param id Id del elemento HTML al que se quiere hacer scroll
 	 */
-	scroll(id: string) {
+	scroll(id: string, scrollOpts?: OrgScrollOpts) {
 		const element = document.getElementById(id);
-		element?.classList.add('highlight');
-		element?.scrollIntoView();
-		setTimeout(() => {
-			element?.classList.remove('highlight');
-		}, 1500);
+		if (!element) return;
+		if (!scrollOpts?.removeHighlight) {
+			element.classList.add('highlight');
+			setTimeout(() => {
+				element.classList.remove('highlight');
+			}, 1500);
+		}
+		element.scrollIntoView();
 	}
 
 	/**
