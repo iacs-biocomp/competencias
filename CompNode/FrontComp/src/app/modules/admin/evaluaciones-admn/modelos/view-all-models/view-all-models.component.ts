@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { IRefModel } from 'sharedInterfaces/DTO';
-import { CatCompetencialesService } from '../../../cat-admn/services/CatCompetenciales.service';
-import { CompetenciasService } from '../../../competencias-admin/services/competencias.service';
-import { ComportService } from '../../../comportamientos-admin/services/comport.service';
-import { NivelService } from '../../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
 import { DbData } from '../new-ev-model.component';
 
@@ -32,33 +29,23 @@ export class ViewAllModelsComponent implements OnInit {
 	};
 	/** Objeto con propiedades usadas principalmente en la vista */
 	viewProps?: ViewProps;
-	constructor(
-		private evModelSv: EvModelsAdmnService,
-		private catCompService: CatCompetencialesService,
-		private competSv: CompetenciasService,
-		private nivSv: NivelService,
-		private comportSv: ComportService,
-	) {}
+	//TODO: Complete, este subject al pasarselo al componente es undefined (No el valor sino el propio objeto)
+	evModelToShow = new BehaviorSubject<IRefModel | undefined>(undefined);
+
+	constructor(private evModelSv: EvModelsAdmnService) {}
 
 	async ngOnInit(): Promise<void> {
-		console.log('start on init edit');
-		const promises = await Promise.all([
-			this.catCompService.getAll(),
-			this.competSv.getAll(),
-			this.nivSv.getAll(),
-			this.comportSv.getAll(),
-			this.evModelSv.getAllReference(),
-		]);
-		this.dbData.catComps = promises[0];
-		this.dbData.comps = promises[1];
-		this.dbData.niveles = promises[2];
-		this.dbData.comports = promises[3];
-		this.refModels = promises[4];
+		this.refModels = await this.evModelSv.getAllReference();
 
 		this.viewProps = {
 			haveModels: this.refModels.length !== 0,
 		};
 		if (!this.viewProps) throw new Error('View Props no ha sido inicializado');
 		console.log(this);
+	}
+
+	newEvModelShow(model: IRefModel): BehaviorSubject<IRefModel> {
+		console.log(this.evModelToShow);
+		return new BehaviorSubject<IRefModel>(model);
 	}
 }

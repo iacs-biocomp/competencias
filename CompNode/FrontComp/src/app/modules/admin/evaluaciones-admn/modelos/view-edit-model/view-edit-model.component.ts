@@ -1,6 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { IModelBasicIndxDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
+import { CatCompetencialesService } from '../../../cat-admn/services/CatCompetenciales.service';
+import { CompetenciasService } from '../../../competencias-admin/services/competencias.service';
+import { ComportService } from '../../../comportamientos-admin/services/comport.service';
+import { NivelService } from '../../../niveles-admin/services/nivel.service';
 import { DbData } from '../new-ev-model.component';
 
 type MiCompetencia = {
@@ -21,37 +27,55 @@ type MiComportamiento = {
 
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
-	selector: 'app-view-edit-model [dbData] [modoEdicion] [evModel]',
+	selector: 'app-view-edit-model [modoEdicion] [evModel]',
 	templateUrl: './view-edit-model.component.html',
 	styleUrls: ['./view-edit-model.component.css'],
 })
 export class ViewEditModelComponent implements OnInit {
-	@Input() dbData!: Omit<DbData, 'modelToAdd'>;
+	dbData!: Omit<DbData, 'modelToAdd'>;
 	@Input() modoEdicion!: boolean;
-	@Input() evModel!: IRefModel;
+	@Input() evModel!: BehaviorSubject<IRefModel | undefined>;
+
+	cv = {
+		modelView: this.evModel.getValue(),
+	};
 	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
 	evModelIndx!: IModelBasicIndxDTO;
-
+	/**
+	 * @deprecated Usar modelo en vez de competencias selecionadas
+	 */
 	competenciasSelect: MiCompetencia[] = [];
 	/** Guarda la lista de comportamientos seleccionados */
 	comportamientosSelect: MiComportamiento[] = [];
 
 	/** Objeto que tiene los datos usados para los select */
-
 	comportCtl: ComportCtrlView = {
 		compSelected: undefined,
 		nivSelected: undefined,
 		comportsSelected: [],
 	};
 
-	// constructor() {}
+	constructor(
+		private catCompService: CatCompetencialesService,
+		private competSv: CompetenciasService,
+		private nivSv: NivelService,
+		private comportSv: ComportService,
+	) {}
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
 		console.log('start on init edit');
-		console.log(this.dbData);
-		this.competenciasSelect = this.getCompet(this.evModel);
-		console.log(this.competenciasSelect);
-		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel);
+		const promises = await Promise.all([
+			this.catCompService.getAll(),
+			this.competSv.getAll(),
+			this.comportSv.getAll(),
+			this.nivSv.getAll(),
+		]);
+		this.dbData.catComps = promises[0];
+		this.dbData.comps = promises[1];
+		this.dbData.comports = promises[2];
+		this.dbData.niveles = promises[3];
+		this.competenciasSelect = this.getCompet(this.evModel.value!);
+		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel.value!);
 		console.log(this.evModelIndx);
 		console.log('end on init edit');
 	}
@@ -107,8 +131,8 @@ export class ViewEditModelComponent implements OnInit {
 	 * @param niv El nivel que junto con la competencia hacen de filtro
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
-		const _model = this.evModel;
-		const subModel = this.findSubModel(_model.subModels, comp, niv);
+		const _model = this.evModel.value;
+		const subModel = this.findSubModel(_model!.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
 		subModel?.comportamientos?.splice(indx, 1);
 	}

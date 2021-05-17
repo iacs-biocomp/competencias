@@ -10,7 +10,7 @@
 			<div class="accordion" id="accordionCompo">
 				<div class="accordion-body">
 					<div class="accordion-item" *ngFor="let comp of competenciasSelect; let i = index">
-						<h2 class="accordion-header" [id]="'headerCompo ' + i">
+						<h2 class="accordion-header" [id]="'headerComp ' + i">
 							<button
 								class="accordion-button collapsed"
 								data-bs-toggle="collapse"
@@ -26,7 +26,7 @@
 						<div
 							[id]="'collCompo' + i"
 							class="accordion-collapse collapse"
-							[attr.aria-labelledby]="'headerCompo' + i"
+							[attr.aria-labelledby]="'headerComp' + i"
 							data-bs-parent="#accordionCompo"
 						>
 							<div class="accordion-body">
@@ -69,7 +69,10 @@
 														<li
 															class="list-group-item p-3"
 															aria-current="true"
-															*ngFor="let comport of keysToArrayComport(evModelIndx.comps[comp.id].comports); let i = index"
+															*ngFor="
+																let comport of keysToArrayComport(evModelIndx.comps[comp.id].comports);
+																let i = index
+															"
 														>
 															{{ comport.descripcion }}
 															<button class="btn btn-danger me-2" style="float: right">
