@@ -1,49 +1,41 @@
-<div class="main-content">
-	<form>
-		<h1 class="layout-title">Evaluación {{ evId }}</h1>
-		<h2 class="layout-subTitle"> Esta evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado, por lo que puede modificarla siempre que quiera </h2>
-		<button type="submit" class="btn btn-primary mb-2">
-			Guardar evaluación
-			<span class="material-icons" title="Guardar evaluación"> save </span>
-		</button>
-		<div class="form-group">
-			<div class="accordion" id="accEvaluaciones">
-				<div class="accordion-body">
-					<div class="accordion-item">
-						<h2 class="accordion-header">
-							<button
-								class="accordion-button collapsed"
-								data-bs-toggle="collapse"
-								[attr.data-bs-target]="'#btnEvaluaciones'"
-								[attr.aria-controls]="'btnEvaluaciones'"
-							>
-								{{ evaluacion.id }}
-							</button>
-						</h2>
-						<div
-							[id]="'btnCompors'"
-							class="accordion-collapse collapse"
-							[attr.aria-labelledby]="'btnComportamientos'"
-							data-bs-parent="#btnComportamientos"
-						>
-							<ul class="list-group">
-								<li
-									class="list-group-item p-3"
-								>
-<!-- 									{{ evaluacion.descripcion }}
- -->								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="accordion-item">
-						<h2 class="accordion-header">
-							<button class="accordion-button collapsed" data-bs-toggle="collapse">
-								{{ evaluacion.id }}
-							</button>
-						</h2>
+<div class="contrainer-fluid p-3">
+	<h1 class="layout-title">Evaluación {{ evId }}</h1>
+	<h2 class="layout-subTitle">
+		Esta evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado,
+		por lo que puede modificarla siempre que quiera
+	</h2>
+	<button type="submit" class="btn btn-primary mb-2">
+		Guardar evaluación
+		<span class="material-icons" title="Guardar evaluación"> save </span>
+	</button>
+	<div class="accordion" id="accorEvaluaciones">
+		<div class="accordion-body">
+			<div class="accordion-item" *ngFor="let competenciaYComports of cv.compsYComports; let i = index">
+				<h2 class="accordion-header" [id]="'headingEval' + i">
+					<button
+						class="accordion-button collapsed"
+						type="button"
+						data-bs-toggle="collapse"
+						[attr.data-bs-target]="'#collEval' + i"
+						aria-expanded="false"
+						[attr.aria-controls]="'collEval' + i"
+					>
+						{{ competenciaYComports.id }}
+					</button>
+				</h2>
+				<div
+					[id]="'collEval' + i"
+					class="accordion-collapse collapse"
+					[attr.aria-labelledby]="'headingEval' + i"
+					data-bs-parent="#accorEvaluaciones"
+				>
+					<div *ngFor="let comport of competenciaYComports.comports">
+						<span class="ips-title">
+							{{ comport.descripcion }}
+						</span>
 					</div>
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 </div>
