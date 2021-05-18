@@ -1,22 +1,16 @@
-FROM node:alpine3.13
-# Create app directory
-
+FROM  alpine:latest as builder
+ENV ALPINE_MIRROR "http://dl-cdn.alpinelinux.org/alpine"
+RUN echo "${ALPINE_MIRROR}/edge/main" >> /etc/apk/repositories
+RUN apk add --no-cache nodejs-current curl --repository="http://dl-cdn.alpinelinux.org/alpine/edge/community"
+RUN curl -f https://get.pnpm.io/v6.js | node - add --global pnpm
 WORKDIR /app
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package*.json ./
-# Se instalan estas dependencias, previamente funcionaba con node:alpine3.13 pero ya no se genera
-# la imagen sin esta linea lo que aumenta el tamaño de la imagen de 140mb a 228mb
-# Solución sacada de aqui: https://is.gd/dCafcZ
-
-# RUN apk --no-cache --virtual build-dependencies add python3 make g++ gcc libgcc \
-#   && npm ci --only=production \
-#   && apk del build-dependencies
-RUN npm ci --only=production
-# Bundle app source
+COPY pnpm-lock.yaml ./
+RUN pnpm i --shamefully-hoist --prod
+# Multi-stage build
+FROM node:alpine
+WORKDIR /app
+COPY --from=builder /app .
 COPY . .
-
 EXPOSE 3000
-
 CMD [ "npm", "run", "start:prod" ]

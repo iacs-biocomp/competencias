@@ -46,7 +46,7 @@
 		"passport-jwt": "^4.0.0",
 		"pg": "^8.6.0",
 		"reflect-metadata": "^0.1.13",
-		"rxjs": "^7.0.1",
+		"rxjs": "^6.6.7",
 		"source-map-support": "^0.5.19",
 		"swagger-ui-express": "^4.1.6",
 		"typeorm": "^0.2.32"
