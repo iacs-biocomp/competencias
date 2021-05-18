@@ -11,6 +11,16 @@ sudo apt-get update
 sudo apt-get install nodejs npm
 ```
 
+Si se quiere otro manejador de paquetes como pnpm o yarn:
+
+```bash
+npm i -g yarn
+npm i -g pnpm
+# Con pnpm hay que configurar un par de cosas:
+pnpm config set shamefully-hoist=true
+# Asi la estructura de los node_modules sigue siengo igual que la de npm
+```
+
 ## Como generar la imagen para desplegar
 
 ```bash

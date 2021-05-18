@@ -1,0 +1,32 @@
+
+FROM node:alpine as base
+RUN npm i -g pnpm && \
+	pnpm config set shamefully-hoist=true
+
+FROM base AS prodDependencies
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install -P
+
+FROM prodDependencies AS builder
+LABEL stage=intermediate
+WORKDIR /app
+COPY ["./src", "./package.json", "pnpm-lock.yaml", ".envProd", "tsconfig.build.json", "tsconfig.json", "./"]
+RUN mv .envProd .env &&\
+	pnpm install && \
+	pnpm run build
+
+FROM node:alpine
+WORKDIR /app
+COPY --from=prodDependencies ["/app/package.json", "/app/pnpm-lock.yaml", "./"]
+COPY --from=prodDependencies ["/app/node_modules", "./node_modules"]
+COPY --from=builder /app/dist ./dist
+EXPOSE 3000
+CMD [ "npm", "run", "start:prod" ]
+
+# FROM  alpine:latest AS base
+# ENV ALPINE_MIRROR "http://dl-cdn.alpinelinux.org/alpine"
+# RUN echo "${ALPINE_MIRROR}/edge/main" >> /etc/apk/repositories \
+# 	&& apk add --no-cache nodejs-current curl --repository="http://dl-cdn.alpinelinux.org/alpine/edge/community"  \
+# 	&& curl -f https://get.pnpm.io/v6.js | node - add --global pnpm \
+# 	&& pnpm config set shamefully-hoist=true

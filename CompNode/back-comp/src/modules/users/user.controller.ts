@@ -8,17 +8,14 @@ export class UserController {
 
 	@Get(':username')
 	async getUserUsername(@Param('username') username: string): Promise<User> {
-		const users = await this._userService.getFromUsername(username);
-		return users;
+		return this._userService.getFromUsername(username);
 	}
 	@Get('allinfo/:username')
 	async getAllUserInfo(@Param('username') username: string): Promise<Trabajador> {
-		var worker = await Trabajador.findOne({
+		return 	Trabajador.findOne({
 			where: { user: username },
 			relations: ['periodos', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
 		});
-
-		return worker;
 	}
 	// @UseGuards(AuthGuard())
 	// @Get()
@@ -29,15 +26,13 @@ export class UserController {
 
 	@Post()
 	async createUser(@Body() user: User): Promise<User> {
-		const createdUser = await this._userService.create(user);
-		return createdUser;
+		return this._userService.create(user);
 	}
 
 	@Patch(':id')
 	async updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: User) {
 		//TODO: Terminar el metodo
-		const updatedUser = await this._userService.update(id, user);
-		return true;
+		return this._userService.update(id, user);
 	}
 
 	@Delete(':id')
