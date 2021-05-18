@@ -30,10 +30,10 @@
 					data-bs-parent="#accorEvaluaciones"
 				>
 					<div *ngFor="let comport of competenciaYComports.comports">
-						<span class="ips-title">
+						<span class="ips-title" style="margin-left: 10px;">
 							{{ comport.descripcion }}
 
-							<form style="margin-left: 30px;">
+							<form style="margin-left: 100px;">
 								<input type="radio" id="1" name="values" value="1" >
 								<label for="1">1</label>
 								<input type="radio" id="2" name="values" value="2" >
@@ -46,6 +46,7 @@
 								<label for="5">5</label>
 							</form>
 						</span>
+						<hr style="color: #0d6dfd">
 					</div>
 				</div>
 			</div>

@@ -12,8 +12,4 @@ export class EvaluacionesService {
 	public evaluacionesUsr(usr: string): Promise<IEvaluacion[]> {
 		return this.httpClient.get<IEvaluacion[]>(cnf.apiURL + `/evaluaciones/${usr}`).toPromise();
 	}
-
-
-
-
 }

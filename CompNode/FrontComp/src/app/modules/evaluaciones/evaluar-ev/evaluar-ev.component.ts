@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EvaluacionesService } from '../evaluaciones.service';
 import { ICompetencia, IComportamiento } from 'sharedInterfaces/Entity';
-import { IModelBasicIndxDTO, IValoracionIndexadaDTO } from 'sharedInterfaces/DTO';
+import { IModelBasicIndxDTO, IValoracionDTO, IValoracionIndexadaDTO } from 'sharedInterfaces/DTO';
 export const evId = 'evId';
 
 type EvCompetencia = {
@@ -34,6 +34,7 @@ export class EvaluarEvConcretaComponent implements OnInit {
 
 	cv: EvaluarCtrlView = {};
 	valoracion: Partial<IValoracionIndexadaDTO> = {};
+	evaluaciones: IValoracionDTO[] = [];
 	valoracionExample: Partial<IValoracionIndexadaDTO> = {
 		evaluadoDni: '33213215134H',
 		evaluadorDni: '3999999934H',
@@ -102,7 +103,9 @@ export class EvaluarEvConcretaComponent implements OnInit {
 		return competencias;
 	}
 
-	/** Devuelve los comportamientos por cada competencia de una evaluacion */
+	/** Devuelve los comportamientos por cada competencia de una evaluacion
+	 * @param idComp id de la competencia a buscar
+	 */
 	getComporCompetencia(idComp: string) {
 		const compsIndx = this.evaluacion.comps;
 		const comp = compsIndx[idComp];
@@ -115,4 +118,16 @@ export class EvaluarEvConcretaComponent implements OnInit {
 		// console.log(Object.keys(competencias).map(key => competencias[key].comports[key].descripcion));
 		// return Object.keys(competencias).map(key => competencias[key].comports);
 	}
+
+	/** Devuelve las evaluaciones de una persona por su dni
+	 * @param dniEvaluado el dni de la persona a evaluar
+	 */
+	getEvaluaciones4Persona(dniEvaluado: string) {
+		var resultado = this.evaluaciones.filter(
+			evaluadoDni => this.valoracionExample.evaluadoDni === dniEvaluado,
+		);
+		console.log(resultado);
+		return resultado;
+	}
+
 }
