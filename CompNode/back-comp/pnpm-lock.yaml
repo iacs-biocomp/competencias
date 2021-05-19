@@ -2,44 +2,44 @@ lockfileVersion: 5.3
 
 specifiers:
   '@aml360/nestjs-compression': ^6.0.103
-  '@compodoc/compodoc': '>=1.1.11'
+  '@compodoc/compodoc': ^1.1.11
   '@mapbox/node-pre-gyp': ^1.0.5
   '@nestjs-modules/mailer': ^1.6.0
   '@nestjs/cli': ^7.6.0
-  '@nestjs/common': ^7.6.15
-  '@nestjs/core': ^7.6.15
+  '@nestjs/common': ^7.6.17
+  '@nestjs/core': ^7.6.17
   '@nestjs/jwt': ^7.2.0
   '@nestjs/passport': ^7.1.5
-  '@nestjs/platform-express': ^7.6.15
-  '@nestjs/platform-fastify': ^7.6.5
+  '@nestjs/platform-express': ^7.6.17
+  '@nestjs/platform-fastify': ^7.6.17
   '@nestjs/schematics': ^7.3.1
   '@nestjs/serve-static': ^2.1.4
   '@nestjs/swagger': ^4.8.0
-  '@nestjs/testing': ^7.6.15
+  '@nestjs/testing': ^7.6.17
   '@nestjs/typeorm': ^7.1.5
   '@types/bcrypt': ^5.0.0
   '@types/benchmark': ^2.1.0
-  '@types/bluebird': ^3.5.34
+  '@types/bluebird': ^3.5.35
   '@types/cookie': ^0.4.0
   '@types/express': ^4.17.11
   '@types/jest': ^26.0.23
-  '@types/node': ^15.0.3
+  '@types/node': ^15.3.0
   '@types/nodemailer': ^6.4.1
   '@types/orientjs': ^3.0.11
   '@types/passport-jwt': ^3.0.5
   '@types/source-map-support': ^0.5.3
   '@types/supertest': ^2.0.11
-  '@typescript-eslint/eslint-plugin': ^4.23.0
-  '@typescript-eslint/parser': ^4.23.0
-  bcrypt: ^5.0.0
+  '@typescript-eslint/eslint-plugin': ^4.24.0
+  '@typescript-eslint/parser': ^4.24.0
+  bcrypt: ^5.0.1
   benchmark: ^2.1.4
   bluebird: ^3.7.2
   class-transformer: ^0.4.0
   class-validator: ^0.13.1
   cookie: ^0.4.1
   eslint: ^7.26.0
-  eslint-config-prettier: ^8.2.0
-  eslint-plugin-prettier: ^3.1.4
+  eslint-config-prettier: ^8.3.0
+  eslint-plugin-prettier: ^3.4.0
   jest: ^26.6.3
   passport: ^0.4.1
   passport-jwt: ^4.0.0
@@ -51,7 +51,7 @@ specifiers:
   supertest: ^6.1.3
   swagger-ui-express: ^4.1.6
   ts-jest: ^26.5.6
-  ts-loader: ^9.1.2
+  ts-loader: ^9.2.0
   ts-node: ^9.1.1
   tsconfig-paths: ^3.9.0
   typeorm: ^0.2.32
@@ -92,7 +92,7 @@ devDependencies:
   '@nestjs/testing': 7.6.17_e6e96ca856e7f50a9c42371caf77b7ae
   '@types/bcrypt': 5.0.0
   '@types/benchmark': 2.1.0
-  '@types/bluebird': 3.5.34
+  '@types/bluebird': 3.5.35
   '@types/cookie': 0.4.0
   '@types/express': 4.17.11
   '@types/jest': 26.0.23
@@ -111,7 +111,7 @@ devDependencies:
   prettier: 2.3.0
   supertest: 6.1.3
   ts-jest: 26.5.6_jest@26.6.3+typescript@4.2.4
-  ts-loader: 9.1.2_typescript@4.2.4
+  ts-loader: 9.2.0_typescript@4.2.4
   ts-node: 9.1.1_typescript@4.2.4
   tsconfig-paths: 3.9.0
   typescript: 4.2.4
@@ -1215,8 +1215,8 @@ packages:
     resolution: {integrity: sha512-wxT2/LZn4z0NvSfZirxmBx686CU7EXp299KHkIk79acXpQtgeYHrslFzDacPGXifC0Pe3CEaLup07bgY1PnuQw==}
     dev: true
 
-  /@types/bluebird/3.5.34:
-    resolution: {integrity: sha512-QMc57Pf067Rr78l6f4FftvuIXPYxu0VYFRKrZk1Clv+LWy7gN2fTBiAiv68askFHEHZcTLPFd01kNlpKOiSPgQ==}
+  /@types/bluebird/3.5.35:
+    resolution: {integrity: sha512-2WeeXK7BuQo7yPI4WGOBum90SzF/f8rqlvpaXx4rjeTmNssGRDHWf7fgDUH90xMB3sUOu716fUK5d+OVx0+ncQ==}
     dev: true
 
   /@types/body-parser/1.19.0:
@@ -2308,7 +2308,7 @@ packages:
     dependencies:
       caniuse-lite: 1.0.30001228
       colorette: 1.2.2
-      electron-to-chromium: 1.3.730
+      electron-to-chromium: 1.3.732
       escalade: 3.1.1
       node-releases: 1.1.72
     dev: true
@@ -3297,8 +3297,8 @@ packages:
     dev: false
     optional: true
 
-  /electron-to-chromium/1.3.730:
-    resolution: {integrity: sha512-1Tr3h09wXhmqXnvDyrRe6MFgTeU0ZXy3+rMJWTrOHh/HNesWwBBrKnMxRJWZ86dzs8qQdw2c7ZE1/qeGHygImA==}
+  /electron-to-chromium/1.3.732:
+    resolution: {integrity: sha512-qKD5Pbq+QMk4nea4lMuncUMhpEiQwaJyCW7MrvissnRcBDENhVfDmAqQYRQ3X525oTzhar9Zh1cK0L2d1UKYcw==}
     dev: true
 
   /emittery/0.7.2:
@@ -3855,8 +3855,8 @@ packages:
   /fast-json-stable-stringify/2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
-  /fast-json-stringify/2.7.3:
-    resolution: {integrity: sha512-QNIh4CQ5S3D5vO7Bv88Si8TFQGZgxv15h2n/79TESr4lhZ8ptq3R9SCTteslr+pwrZQlvrAFgcXgFuUIgS3UQA==}
+  /fast-json-stringify/2.7.4:
+    resolution: {integrity: sha512-fc2bvaF7C6fa+Q/8D9SbjJC70F/PueIR9gaZPr/85WLjJjpUbwszm7vvK7fu+c/W6sCCeeEOMs+ry8/LV6xBPg==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       ajv: 6.12.6
@@ -3915,7 +3915,7 @@ packages:
       abstract-logging: 2.0.1
       ajv: 6.12.6
       avvio: 7.2.2
-      fast-json-stringify: 2.7.3
+      fast-json-stringify: 2.7.4
       fastify-error: 0.3.1
       fastify-warning: 0.2.0
       find-my-way: 4.1.0
@@ -4406,7 +4406,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.13.6
+      uglify-js: 3.13.7
 
   /har-schema/2.0.0:
     resolution: {integrity: sha1-qUwiJOvKwEeCoNkDVSHyRzW37JI=}
@@ -8475,8 +8475,8 @@ packages:
       yargs-parser: 20.2.7
     dev: true
 
-  /ts-loader/9.1.2_typescript@4.2.4:
-    resolution: {integrity: sha512-ryMgATvLLl+z8zQvdlm6Pep0slmwxFWIEnq/5VdiLVjqQXnFJgO+qNLGIIP+d2N2jsFZ9MibZCVDb2bSp7OmEA==}
+  /ts-loader/9.2.0_typescript@4.2.4:
+    resolution: {integrity: sha512-9MlaeNNEk5juw5YL3Xfkvz2gGTsRcXMqfTEAW2mLFWNVsuQEa4jZc4lFB1UZjmA5cyPriCRmOFx+XKV47p5OZg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       typescript: '*'
@@ -8674,8 +8674,8 @@ packages:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
     dev: false
 
-  /uglify-js/3.13.6:
-    resolution: {integrity: sha512-rRprLwl8RVaS+Qvx3Wh5hPfPBn9++G6xkGlUupya0s5aDmNjI7z3lnRLB3u7sN4OmbB0pWgzhM9BEJyiWAwtAA==}
+  /uglify-js/3.13.7:
+    resolution: {integrity: sha512-1Psi2MmnZJbnEsgJJIlfnd7tFlJfitusmR7zDI8lXlFI0ACD4/Rm/xdrU8bh6zF0i74aiVoBtkRiFulkrmh3AA==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     optional: true

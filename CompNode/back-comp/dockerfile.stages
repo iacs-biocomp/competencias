@@ -11,9 +11,12 @@ RUN pnpm install -P
 FROM prodDependencies AS builder
 LABEL stage=intermediate
 WORKDIR /app
-COPY ["./src", "./package.json", "pnpm-lock.yaml", ".envProd", "tsconfig.build.json", "tsconfig.json", "./"]
+COPY "pnpm-lock.yaml" ./
+RUN pnpm fetch
+COPY ./src ./src
+COPY ["./package.json", "pnpm-lock.yaml", ".envProd", "tsconfig.build.json", "tsconfig.json", "./"]
+RUN pnpm install
 RUN mv .envProd .env &&\
-	pnpm install && \
 	pnpm run build
 
 FROM node:alpine
@@ -21,6 +24,7 @@ WORKDIR /app
 COPY --from=prodDependencies ["/app/package.json", "/app/pnpm-lock.yaml", "./"]
 COPY --from=prodDependencies ["/app/node_modules", "./node_modules"]
 COPY --from=builder /app/dist ./dist
+
 EXPOSE 3000
 CMD [ "npm", "run", "start:prod" ]
 
