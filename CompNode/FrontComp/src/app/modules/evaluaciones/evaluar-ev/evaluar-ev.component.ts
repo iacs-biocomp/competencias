@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EvaluacionesService } from '../evaluaciones.service';
 import { ICompetencia, IComportamiento } from 'sharedInterfaces/Entity';
-import { IModelBasicIndxDTO, IValoracionDTO, IValoracionIndexadaDTO } from 'sharedInterfaces/DTO';
+import { IModelBasicIndxDTO, ITrabajadorDTO, IValoracionIndexadaDTO } from 'sharedInterfaces/DTO';
 export const evId = 'evId';
 
 type EvCompetencia = {
@@ -31,10 +31,11 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	evId = this.route.snapshot.paramMap.get(evId)!;
 	constructor(private route: ActivatedRoute, private evSv: EvaluacionesService) {}
 	competencias?: ICompetencia[];
+	trabajador: Partial<ITrabajadorDTO> = {};
 
 	cv: EvaluarCtrlView = {};
 	valoracion: Partial<IValoracionIndexadaDTO> = {};
-	evaluaciones: IValoracionDTO[] = [];
+
 	valoracionExample: Partial<IValoracionIndexadaDTO> = {
 		evaluadoDni: '33213215134H',
 		evaluadorDni: '3999999934H',
@@ -122,12 +123,18 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	/** Devuelve las evaluaciones de una persona por su dni
 	 * @param dniEvaluado el dni de la persona a evaluar
 	 */
-	getEvaluaciones4Persona(dniEvaluado: string) {
-		var resultado = this.evaluaciones.filter(
-			evaluadoDni => this.valoracionExample.evaluadoDni === dniEvaluado,
-		);
-		console.log(resultado);
-		return resultado;
+	getEvaluacionesPorPersona(dniEvaluado: string) {
+		/** De ese dni ver las evaluacion que tiene */
+
+		/** Una evaluacion tiene un modelo y una categoria competencial, las personas
+		 * tiene catCompetencial; */
+		/** Buscar la catComp de ese dni? */
+
+
 	}
 
+	/** Guarda la evaluacion por persona (una evaluacion se puede modificar siempre que
+	 * el plazo para evaluar esté activo) */
+	saveEvaluacion(){
+	}
 }
