@@ -6,6 +6,18 @@ import { DbData } from '../../evaluaciones-admn/modelos/new-ev-model.component';
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { ComportService } from '../services/comport.service';
 
+type ComportCtrlView = {
+	filters: {
+		nivObs: BehaviorSubject<INivel | undefined>;
+		compObs: BehaviorSubject<ICompetencia | undefined>;
+		descObs: BehaviorSubject<string>;
+	};
+	/** Objeto que tiene datos de utilidad para los filtros como timers o Comportamientos con la descripción ya modificada para buscar mas rapido */
+	util4Filters: {
+		/** Objeto key/value que tiene el id de un comportamiento y su descripción modificada (sin espacios y lowercase) */
+		comportPlainDesc: { [key: string]: string };
+	};
+};
 interface IComportEdit extends IComportamiento {
 	editing?: boolean;
 }
@@ -18,10 +30,6 @@ interface IComportEdit extends IComportamiento {
 export class TableComportComponent implements OnInit, OnDestroy {
 	comportToAdd: IComportamiento[] = [];
 	// TODO: Eliminar
-	/**
-	 * @deprecated Usar dbData.comports
-	 */
-	comports: IComportEdit[] = [];
 	//TODO: Como varias vistas utilizan datos de la bbdd para hacer calculos seria preferible crear un servicio que tiene estos datos y los componentes leen de ahi en vez de pedir varias veces al backend, los componentes deciden cuando actualizar esos datos
 	//TODO: Generar interfaz en interfaces del frontend, DbData se utiliza en muchos componentes
 	dbData: Omit<DbData, 'modelToAdd' | 'catComps'> = {
@@ -31,13 +39,18 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	};
 
 	comportsFiltered: IComportEdit[] = [];
-	cv = {
+	cv: ComportCtrlView = {
 		filters: {
 			nivObs: new BehaviorSubject<INivel | undefined>(undefined),
 			compObs: new BehaviorSubject<ICompetencia | undefined>(undefined),
 			descObs: new BehaviorSubject<string>(''),
 		},
+		util4Filters: {
+			/** Objeto key/value que tiene el id de un comportamiento y su descripción modificada (sin espacios y lowercase) */
+			comportPlainDesc: {},
+		},
 	};
+	//TODO: Tsdoc (Array suscripciones)
 	subs: Subscription[] = [];
 	constructor(
 		private comportService: ComportService,
@@ -46,42 +59,41 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	) {}
 
 	async ngOnInit(): Promise<void> {
+		//Obtengo todos los datos de la bbdd necesarios para funcionar
 		const promises = await Promise.all([
 			this.comportService.getAll(),
 			this.compSv.getAll(),
 			this.nivSv.getAll(),
 		]);
-		this.comports = promises[0];
 		this.dbData.comports = promises[0];
 		this.comportsFiltered = promises[0];
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
+		//Añado la descripción modificada por cada comportamiento al objeto key/value comportPlainDesc
+		this.dbData.comports.forEach(
+			comport =>
+				(this.cv.util4Filters.comportPlainDesc[comport.id] = comport.descripcion
+					.toLowerCase()
+					.replace(/\s/g, '')),
+		);
+		//Se añaden las suscripciones a un array para eliminarlas mas facil despues
 		this.subs.push(
-			this.cv.filters.nivObs.subscribe(niv => {
-				if (!niv) return;
-				this.comportsFiltered = this.filterByNivel(niv, this.dbData.comports);
-			}),
-			this.cv.filters.compObs.subscribe(comp => {
-				if (!comp) return;
-				this.comportsFiltered = this.filterByComp(comp, this.dbData.comports);
-			}),
-			this.cv.filters.descObs.subscribe(descFilterTxt => {
-				const txtToFilter = descFilterTxt === undefined ? '' : descFilterTxt;
-				console.log('hola');
-				console.time('filterByDesc');
-				this.comportsFiltered = this.filterByDesc(txtToFilter, this.dbData.comports);
-				console.timeEnd('filterByDesc');
+			this.cv.filters.nivObs.subscribe(() => (this.comportsFiltered = this.filterByAll())),
+			this.cv.filters.compObs.subscribe(() => (this.comportsFiltered = this.filterByAll())),
+			this.cv.filters.descObs.subscribe(() => {
+				this.comportsFiltered = this.filterByAll();
 			}),
 		);
 	}
 
 	ngOnDestroy(): void {
+		//Se desuscribe de todos los observables para evitar memory leaks
 		this.subs.forEach(s => s.unsubscribe());
 	}
 
 	/** Metodo que sincroniza la vista con el backend (La lista de comportamiento) */
 	async updateComportView(): Promise<void> {
-		this.comports = await this.comportService.getAll();
+		this.dbData.comports = await this.comportService.getAll();
 	}
 
 	deleteComptToAdd(row: IComportamiento): void {
@@ -132,29 +144,53 @@ export class TableComportComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	//TODO tsdoc, devuelve el INivel con el identificador dado por parametroo o undefined si no hay un nivel con ese identificador en el array dado
+	// TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo INivel
 	findNivelById(niveles: INivel[], nivId: string): INivel | undefined {
 		return niveles.find(nivel => nivel.id === nivId);
 	}
 
+	//TODO tsdoc, devuelve la ICompetencia con el identificador dado por parametroo o undefined si no hay una competencia con ese identificador en el array dado
+	// TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo ICompetencia
 	findCompById(competencias: ICompetencia[], compId: string): ICompetencia | undefined {
 		return competencias.find(comp => comp.id === compId);
 	}
+
+	/**
+	 * Filtra los comportamientos sumando todas las funciones de filtro, estan hardcodeados los Observables de los que se obtienen los valores
+	 * @returns TODO: Complete
+	 */
+	filterByAll(): IComportamiento[] {
+		console.time('filterByAll');
+		const filters = this.cv.filters;
+		let comports = this.dbData.comports;
+		console.log('filterByAllcalled');
+		if (!!filters.compObs.value) {
+			comports = this.filterByComp(filters.compObs.value, comports);
+		}
+		comports = this.filterByDesc(filters.descObs.value, comports);
+		if (!!filters.nivObs.value) {
+			comports = this.filterByNivel(filters.nivObs.value, comports);
+		}
+		console.timeEnd('filterByAll');
+
+		return comports;
+	}
+	//TODO: Tsdoc
 	filterByDesc(desc: string, comports: IComportamiento[]): IComportamiento[] {
 		if (desc === '') return comports;
 		return comports.filter(comport => {
 			const filterValue = desc.toLowerCase().replace(/\s/g, '');
-			return comport.descripcion.includes(filterValue) ? true : false;
+			return this.cv.util4Filters.comportPlainDesc[comport.id].includes(filterValue) ? true : false;
 		});
 	}
 	filterByNivel(nivel: INivel, comports: IComportamiento[]): IComportamiento[] {
-		//TODO: La función de filtrado debería ser por relacion en bdd (fk en tabla comportamiento) en vez de usar el codigo
 		return comports.filter(comport => {
 			const idSplited = comport.id.split('.');
 			return idSplited[1] === String(nivel.valor);
 		});
 	}
 	filterByComp(comp: ICompetencia, comports: IComportamiento[]): IComportamiento[] {
-		//TODO: La función de filtrado debería ser por relacion en bdd (fk en tabla comportamiento) en vez de usar el codigo
 		return comports.filter(comport => {
 			const idSplited = comport.id.split('.');
 			return idSplited[0] === String(comp.id);
