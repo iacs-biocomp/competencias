@@ -29,7 +29,7 @@ interface IComportEdit extends IComportamiento {
 })
 export class TableComportComponent implements OnInit, OnDestroy {
 	comportToAdd: IComportamiento[] = [];
-	// TODO: Eliminar
+	//TODO: Eliminar
 	//TODO: Como varias vistas utilizan datos de la bbdd para hacer calculos seria preferible crear un servicio que tiene estos datos y los componentes leen de ahi en vez de pedir varias veces al backend, los componentes deciden cuando actualizar esos datos
 	//TODO: Generar interfaz en interfaces del frontend, DbData se utiliza en muchos componentes
 	dbData: Omit<DbData, 'modelToAdd' | 'catComps'> = {
@@ -145,13 +145,13 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	}
 
 	//TODO tsdoc, devuelve el INivel con el identificador dado por parametroo o undefined si no hay un nivel con ese identificador en el array dado
-	// TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo INivel
+	//TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo INivel
 	findNivelById(niveles: INivel[], nivId: string): INivel | undefined {
 		return niveles.find(nivel => nivel.id === nivId);
 	}
 
 	//TODO tsdoc, devuelve la ICompetencia con el identificador dado por parametroo o undefined si no hay una competencia con ese identificador en el array dado
-	// TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo ICompetencia
+	//TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo ICompetencia
 	findCompById(competencias: ICompetencia[], compId: string): ICompetencia | undefined {
 		return competencias.find(comp => comp.id === compId);
 	}
@@ -176,7 +176,13 @@ export class TableComportComponent implements OnInit, OnDestroy {
 
 		return comports;
 	}
-	//TODO: Tsdoc
+
+	/**
+	 * Filtra por descripcion los comportamientos para la busqueda
+	 * @param desc descripcion a buscar (palabra, letra, etc)
+	 * @param comports array de comportamientos
+	 * @returns devuelve un array de comportamientos que coinciden con la busqueda de la descripción
+	 */
 	filterByDesc(desc: string, comports: IComportamiento[]): IComportamiento[] {
 		if (desc === '') return comports;
 		return comports.filter(comport => {
@@ -184,12 +190,25 @@ export class TableComportComponent implements OnInit, OnDestroy {
 			return this.cv.util4Filters.comportPlainDesc[comport.id].includes(filterValue) ? true : false;
 		});
 	}
+
+	/**
+	 * Filtra por nivel los comportamientos para la busqueda
+	 * @param nivel el nivel que queremos encontrar
+	 * @param comports array de comportamientos
+	 * @returns devuelve un array de comportamientos que coinciden con la busqueda del nivel
+	 */
 	filterByNivel(nivel: INivel, comports: IComportamiento[]): IComportamiento[] {
 		return comports.filter(comport => {
 			const idSplited = comport.id.split('.');
 			return idSplited[1] === String(nivel.valor);
 		});
 	}
+	/**
+	 * Filtra por competencia la lista de comportamientos
+	 * @param comp la competencia por la que queremos filtrar
+	 * @param comports un array con los comportamientos
+	 * @returns devuelve un array de comportamientos que coinciden con la busqueda de la competencia
+	 */
 	filterByComp(comp: ICompetencia, comports: IComportamiento[]): IComportamiento[] {
 		return comports.filter(comport => {
 			const idSplited = comport.id.split('.');
