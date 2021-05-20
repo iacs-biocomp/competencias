@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { RoleType } from '../../role/roletype.enum';
+import { RoleType } from 'sharedInterfaces/DTO';
 
 export class UserDto {
 	@IsNotEmpty()

@@ -5,8 +5,8 @@ import { UserRepository } from '../users/user.repository';
 import { SigninDto, SignupDto } from './dto';
 import { IJwtPayload } from './jwt-payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoleType } from '../role/roletype.enum';
 import { User } from 'src/entity';
+import { RoleType } from 'sharedInterfaces/DTO';
 
 @Injectable()
 export class AuthService {

@@ -12,6 +12,10 @@
 		"importHelpers": true,
 		"baseUrl": "./",
 		"sourceMap": true,
-		"incremental": true
+		"incremental": true,
+		"paths": {
+			"sharedInterfaces/*": ["../sharedCode/interfaces/*"],
+			"sharedCode/*": ["../sharedCode/*"]
+		}
 	}
 }

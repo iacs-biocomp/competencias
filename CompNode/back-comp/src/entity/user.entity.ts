@@ -25,11 +25,11 @@ export class User extends BaseEntity {
 
 	@ApiProperty()
 	@Column({ type: 'varchar', nullable: true })
-	email: string;
+	email?: string;
 
 	@ApiProperty()
 	@Column({ type: 'varchar', nullable: true })
-	name: string;
+	name?: string;
 
 	@ApiProperty()
 	@Column({ type: 'varchar', nullable: false })
@@ -37,11 +37,11 @@ export class User extends BaseEntity {
 
 	@ApiProperty()
 	@CreateDateColumn({ type: 'timestamp', name: 'created_at', nullable: true })
-	createdAt: Date;
+	createdAt?: Date;
 
 	@ApiProperty()
 	@UpdateDateColumn({ type: 'timestamp', name: 'updated_at', nullable: true })
-	updatedAt: Date;
+	updatedAt?: Date;
 
 	@ApiProperty({ type: () => Role })
 	@ManyToMany(type => Role, role => role.users, { eager: true })

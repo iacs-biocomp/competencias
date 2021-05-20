@@ -19,7 +19,8 @@
 		"module": "es2020",
 		"lib": ["es2018", "dom"],
 		"paths": {
-			"sharedInterfaces/*": ["../interfaces/*"]
+			"sharedInterfaces/*": ["../sharedCode/interfaces/*"],
+			"sharedCode/*": ["../sharedCode/*"]
 		}
 	},
 	"angularCompilerOptions": {

@@ -1,5 +1,5 @@
-import * as fs from 'fs';
 import { parse } from 'dotenv';
+import { existsSync, readFileSync } from 'fs';
 
 /**
  * @description Service for getting the env variables
@@ -9,18 +9,18 @@ export class ConfigService {
 	private readonly envConfig: { [key: string]: string };
 
 	constructor() {
-		const envFilePath = __dirname + '/../../.env';
+		const envFilePath = __dirname + '/../../../../.env';
 		//*Se sustituye por .env y se cambia el nombre en el proceso de dkbuild.sh
 		// const isDevelopmentEnv = process.env.NODE_ENV !== 'production';
 		// isDevelopmentEnv ? __dirname + '/../../.env'  : __dirname + '/../../.envProd';
 
-		const existsPath = fs.existsSync(envFilePath);
+		const existsPath = existsSync(envFilePath);
 
 		if (!existsPath) {
 			console.error('.env file does not exist');
 			process.exitCode = 1;
 		}
-		this.envConfig = parse(fs.readFileSync(envFilePath));
+		this.envConfig = parse(readFileSync(envFilePath));
 	}
 	/**
 	 * Gets the requested env variable

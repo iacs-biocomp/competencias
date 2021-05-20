@@ -1,5 +1,4 @@
-import { RoleType } from '../role/roletype.enum';
-
+import { RoleType } from 'sharedInterfaces/DTO';
 export interface IJwtPayload {
 	username: string;
 	email: string;
