@@ -15,17 +15,28 @@ export class EvaluacionesAdmService {
 		return this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones`).toPromise();
 	}
 
-	// TODO: Tsdoc
+	/**
+	 * @param id id de la evaluacion a borrar
+	 * @returns una promesa que se resulelve como boolean `true` si se puede borar, `false` si no
+	 */
 	deleteById(id: number): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/evaluaciones/${id}`).toPromise();
 	}
 
-	// TODO: Tsdoc
+	/**
+	 *
+	 * @param evalu la evaluacion a guardar
+	 * @returns una promesa que se resuelve como boolean `true` si se puede guardar, `false` si no
+	 */
 	save(evalu: evAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 
-	// TODO: Tsdoc
+	/**
+	 *
+	 * @param evalu la evaluacion que se quiere editar
+	 * @returns una promesa que se resuelve como boolean `true` si se puede editar, `false` si no
+	 */
 	editEval(evalu: IEvaluacion): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}

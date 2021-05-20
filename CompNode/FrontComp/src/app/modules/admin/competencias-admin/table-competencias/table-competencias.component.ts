@@ -21,28 +21,40 @@ export class TableCompetenciasComponent implements OnInit {
 
 	constructor(private comptService: CompetenciasService) {}
 
-	//TODO: Añadir tsdoc a los metodos y atributos de la clase
-
 	async ngOnInit(): Promise<void> {
 		this.OneWeekAgo = new Date();
 		this.OneWeekAgo.setDate(this.hoy.getDate() - 7);
 		this.updateCompeView();
 	}
 
+	/** Actualiza la vista de competencias */
 	async updateCompeView(): Promise<void> {
 		this.compets = await this.comptService.getAll();
 		console.log('update');
 	}
 
+	/** Devuelve un booleano con true si se puede borrar y false si no;
+	 * esto depende de si la competencia tiene más de una semana desde que se
+	 * creó (return true), o no (return false)
+	 *
+	 * @param competencia la competencia que queremos intentar borrar
+	 */
 	canDelete(competencia: ICompetencia): boolean {
 		return competencia.createdAt! <= this.OneWeekAgo ? false : true;
 	}
 
+	/** Busca la competencia a borrar y la elimina
+	 *
+	 * @param row competencia que se quiere borrar
+	 */
 	deleteCompeToAdd(row: ICompetencia): void {
 		const indx = this.compeToAdd.indexOf(row);
 		this.compeToAdd.splice(indx, 1);
 	}
 
+	/** Crea una competencia vacia con id, descripcion y
+	 * fecha de creacion (puede ser undefined)
+	 */
 	newEmptyCompe(): void {
 		this.compeToAdd.push({
 			id: '',
@@ -65,6 +77,11 @@ export class TableCompetenciasComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * Guarda la competencia que acabamos de crear y actualiza la vista
+	 *
+	 * @param competencia la competencia para guardar
+	 */
 	async persistCompe(competencia: ICompetencia): Promise<void> {
 		const guardado = await this.comptService.addCompeten(competencia);
 		if (guardado) {
@@ -74,6 +91,11 @@ export class TableCompetenciasComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * Borra la competencia seleccionada y actualiza la vista
+	 *
+	 * @param competencia la competencia a borrar
+	 */
 	async deleteCompe(competencia: ICompetencia) {
 		const borrado = await this.comptService.delete(competencia);
 		if (borrado) {

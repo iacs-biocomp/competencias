@@ -25,14 +25,16 @@ export type DbData = {
 type MiCompetencia = {
 	nivObjetivo?: INivel;
 } & ICompetencia;
-//TODO: Tsdoc
+/** Tipo que sirve para concatena nivel, competencia e IComportortamiento */
 type MiComportamiento = {
 	nivel?: INivel;
 	competencia?: ICompetencia;
 } & IComportamiento;
 
 type ComportCtrlView = {
-	//TODO: Tsdoc
+/** Tipo que agrupa competencias seleccionadas, nivel seleccionado y
+ * comportamientos seleccionados
+ */
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
@@ -41,13 +43,16 @@ type ComportCtrlView = {
  * Interfaz de validadores generica, cada propiedad del objeto que implemente esta interfaz ha de
  * ser una función que devuelva un boolean o Promise<boolean>
  *
- * `TRUE` Si es valido `FALSE` si no
+ * `TRUE` Si es valido, `FALSE` si no
  */
 interface EvModalValidators {
 	[key: string]: (...args: any[]) => boolean | Promise<boolean>;
 }
 
-/** Componente dedicado a crear un nuevo modelo usado para las evaluaciones */
+/**
+ * Componente dedicado a crear un nuevo modelo usado para las evaluaciones
+ *
+ */
 @Component({
 	selector: 'app-new-ev-model',
 	templateUrl: './new-ev-model.component.html',
@@ -111,13 +116,17 @@ export class NewEvModelComponent implements OnInit {
 		}, 3500);
 	}
 
-	/** Selecciona la cat competen del modelo */
+	/** Selecciona la categoría competentencial que va a tener el modelo
+	 *
+	 * @param catCompet la categoría competencial elegida
+	*/
 	selectCatComp(catCompet: ICatComp) {
 		this.dbData.modelToAdd.catComp = catCompet;
 	}
 
 	/**
 	 * Añade o quita del {@link NewEvModelComponent.dbData| modelToAdd} los subModelos con esa competencia
+	 *
 	 * @param comp La competencia que se usa para buscar los subModelos que la poseen
 	 */
 	toggleComp(comp: ICompetencia) {
@@ -139,7 +148,10 @@ export class NewEvModelComponent implements OnInit {
 		}
 	}
 
-	/** Selecciona los comportamientos del submodelo */
+	/** Selecciona los comportamientos que va tener el submodelo
+	 *
+	 * @param comport comportamiento seleccionado
+	*/
 	selectComportamiento(comport: IComportamiento) {
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);
@@ -150,18 +162,33 @@ export class NewEvModelComponent implements OnInit {
 		}
 	}
 
-	/** Selecciona el nivel objetivo de cada competencia */
+	/**
+	 * Selecciona el nivel objetivo de cada competencia
+	 *
+	 * @param nivel nivel objetvio seleccionado
+	 * @param compet competencia seleccionada
+	 */
 	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
 		const index = this.competenciasSelect.indexOf(compet);
 		this.competenciasSelect[index].nivObjetivo = nivel;
 	}
 
-	/** Cuando se pulsa una opcion la ventana hace scroll hasta el botón de 'siguiente'	*/
+	/**
+	 * Esta función se llama en la primera vista del modal de crear modelos,
+	 * al elegir una categoria competencial la ventana hace scroll automatico
+	 * hasta la flecha de siguiente vista *
+	 *
+	 * @param element el elemento al que scrolleará al hacer click
+	 */
 	scrollToButton(element: HTMLElement) {
 		element.scrollIntoView();
 	}
 
-	/** Comprueba que las vistas del modelo pueden moverse izquierda y derecha si existe otra vista contigua */
+	/**
+	 * Comprueba que las vistas del modelo pueden moverse izquierda y derecha si existe otra vista contigua
+	 *
+	 */
+	//TODO: los numeros no pueden ser estáticos
 	move(derecha: boolean) {
 		if (derecha && this.current < 3) {
 			this.current++;
@@ -170,7 +197,11 @@ export class NewEvModelComponent implements OnInit {
 			this.current--;
 		}
 	}
-	// TODO: Tsdoc
+
+	/**
+	 * Va añadiendo los comportamientos que se seleccionan a comportCtl
+	 *
+	 */
 	addAllComports(): void {
 		this.comportCtl.comportsSelected.forEach(comport =>
 			this.addComportToCompet(this.comportCtl.compSelected!, this.comportCtl.nivSelected!, comport),

@@ -15,7 +15,7 @@ type MiCompetencia = {
 type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
 
 type ComportCtrlView = {
-	//TODO: Tsdoc
+	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
