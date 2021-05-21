@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IPeriodoTrab } from 'sharedInterfaces/Entity';
 import {
 	Entity,
 	PrimaryGeneratedColumn,
@@ -12,7 +13,7 @@ import {
 import { CatComp, CatContr, Trabajador } from '.';
 
 @Entity('periodo_trab')
-export class PeriodoTrab extends BaseEntity {
+export class PeriodoTrab extends BaseEntity implements IPeriodoTrab {
 	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -32,17 +33,17 @@ export class PeriodoTrab extends BaseEntity {
 	@ApiProperty({ type: () => Trabajador })
 	@ManyToMany(type => Trabajador, sup => sup)
 	@JoinTable()
-	superiores: Trabajador[];
+	superiores?: Trabajador[];
 
 	@ApiProperty({ type: () => Trabajador })
 	@ManyToMany(type => Trabajador, par => par)
 	@JoinTable()
-	pares: Trabajador[];
+	pares?: Trabajador[];
 
 	@ApiProperty({ type: () => Trabajador })
 	@ManyToMany(type => Trabajador, inf => inf)
 	@JoinTable()
-	inferiores: Trabajador[];
+	inferiores?: Trabajador[];
 
 	@ApiProperty()
 	@CreateDateColumn({ type: 'timestamp', name: 'created_at' })
@@ -50,7 +51,7 @@ export class PeriodoTrab extends BaseEntity {
 
 	@ApiProperty()
 	@Column({ type: 'timestamp', nullable: true })
-	endAt: Date;
+	endAt?: Date;
 
 	@ApiProperty()
 	@Column({ type: 'bool', default: false, nullable: false })

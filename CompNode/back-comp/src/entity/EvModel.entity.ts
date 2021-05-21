@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IEvModel } from 'sharedInterfaces/Entity';
 import {
 	Entity,
 	BaseEntity,
@@ -12,14 +13,14 @@ import {
 import { CatComp, Ev, SubModel } from '.';
 
 @Entity()
-export class EvModel extends BaseEntity {
+export class EvModel extends BaseEntity implements IEvModel {
 	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	id: string;
 
 	@ApiProperty({ type: () => Ev })
 	@OneToMany(type => Ev, ev => ev.model)
-	evs: Ev[];
+	evs?: Ev[];
 
 	@ApiProperty({ type: () => CatComp })
 	@ManyToOne(type => CatComp, cat => cat.models)

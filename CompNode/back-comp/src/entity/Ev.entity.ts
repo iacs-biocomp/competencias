@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from 'typeorm';
 import { EvModel, CatComp, Valoracion } from '.';
 
 @Entity()
-export class Ev extends BaseEntity {
+export class Ev extends BaseEntity implements IEvaluacion {
 	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	id: string;

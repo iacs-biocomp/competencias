@@ -12,9 +12,10 @@ import {
 import { SignupDto } from '../modules/auth/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role, Trabajador } from '.';
+import { IUserJson } from 'sharedInterfaces/Entity';
 
 @Entity('user')
-export class User extends BaseEntity {
+export class User extends BaseEntity implements IUserJson {
 	@ApiProperty()
 	@PrimaryColumn({ type: 'varchar', unique: true, length: 40, nullable: false })
 	username: string;
@@ -54,7 +55,7 @@ export class User extends BaseEntity {
 
 	@ApiProperty({ type: () => Trabajador })
 	@OneToOne(type => Trabajador, t => t.user)
-	trabajador: Trabajador;
+	trabajador?: Trabajador;
 
 	/**
 	 * This function creates a new user instance for save the user to database, use only for register

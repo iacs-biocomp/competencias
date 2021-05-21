@@ -6,8 +6,12 @@ import { ComportService } from '../../comportamientos-admin/services/comport.ser
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
+import { WithOptional } from 'sharedInterfaces/Utility';
 
-type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
+type IModelPreDTO = Partial<IModelDTO> &
+	Omit<IModelDTO, 'catComp' | 'evs' | 'subModels'> & {
+		subModels: WithOptional<ISubModel, 'nivel'>[];
+	};
 
 export type DbData = {
 	/** listado de categorias competenciales */
@@ -32,9 +36,9 @@ type MiComportamiento = {
 } & IComportamiento;
 
 type ComportCtrlView = {
-/** Tipo que agrupa competencias seleccionadas, nivel seleccionado y
- * comportamientos seleccionados
- */
+	/** Tipo que agrupa competencias seleccionadas, nivel seleccionado y
+	 * comportamientos seleccionados
+	 */
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
@@ -119,7 +123,7 @@ export class NewEvModelComponent implements OnInit {
 	/** Selecciona la categoría competentencial que va a tener el modelo
 	 *
 	 * @param catCompet la categoría competencial elegida
-	*/
+	 */
 	selectCatComp(catCompet: ICatComp) {
 		this.dbData.modelToAdd.catComp = catCompet;
 	}
@@ -151,7 +155,7 @@ export class NewEvModelComponent implements OnInit {
 	/** Selecciona los comportamientos que va tener el submodelo
 	 *
 	 * @param comport comportamiento seleccionado
-	*/
+	 */
 	selectComportamiento(comport: IComportamiento) {
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);

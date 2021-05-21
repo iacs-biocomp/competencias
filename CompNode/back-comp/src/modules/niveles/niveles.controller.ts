@@ -28,7 +28,7 @@ export class NivelesController {
 	//TODO: Completar para añadir los parametros como queryparams y no como el id tal que :id
 	@Get(':id')
 	getNiv(
-		@Param('id') id: string,
+		@Param('id') id: number,
 		@Param('subModels') submodel: boolean,
 		@Param('evaluaciones') evaluaciones: boolean,
 	): Promise<Nivel> {
@@ -38,7 +38,7 @@ export class NivelesController {
 	}
 
 	@Delete(':id')
-	async deleteNiv(@Param('id') id: string): Promise<boolean> {
+	async deleteNiv(@Param('id') id: number): Promise<boolean> {
 		const nivel = await this.nivRepo.findOne({ id: id }, { relations: ['subModels'] });
 
 		if (!nivel) {
