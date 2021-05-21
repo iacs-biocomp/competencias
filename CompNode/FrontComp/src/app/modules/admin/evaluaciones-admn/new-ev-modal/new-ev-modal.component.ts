@@ -27,6 +27,8 @@ export class NewEvModalComponent implements OnInit {
 	evModelSelected!: IEvModel;
 	/** Los rangos de fechas de esa evaluacion, periodo de propuesta, validación, valoración... */
 	rangesForm: FormGroup | undefined;
+	/**Estilo del boton de siguiente que lleva a elegir las competencias */
+	btnStyle?: string;
 
 	constructor(
 		private evSv: EvaluacionesAdmService,
@@ -51,7 +53,17 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 		});
+
+		/** Estilo por defecto */
+		this.btnStyle = 'btn-default';
 	}
+
+	/** Cuando se clicka en el boton, se abre el otro modal (elegir competencias) */
+	submit(){
+		this.btnStyle = 'btn-change';
+		console.log("ME has llamado");
+	}
+
 
 	/**
 	 * Filtra de this.evModels y elimina los que no tengan una catComp igual a this.catCompSelected
