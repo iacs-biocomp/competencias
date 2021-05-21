@@ -116,8 +116,6 @@ export class EvaluarEvConcretaComponent implements OnInit {
 			comports.push({ id: key, descripcion: comp.comports[key].descripcion }),
 		);
 		return comports;
-		// console.log(Object.keys(competencias).map(key => competencias[key].comports[key].descripcion));
-		// return Object.keys(competencias).map(key => competencias[key].comports);
 	}
 
 	/** Devuelve las evaluaciones de una persona por su dni
@@ -125,16 +123,12 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	 */
 	getEvaluacionesPorPersona(dniEvaluado: string) {
 		/** De ese dni ver las evaluacion que tiene */
-
 		/** Una evaluacion tiene un modelo y una categoria competencial, las personas
 		 * tiene catCompetencial; */
 		/** Buscar la catComp de ese dni? */
-
-
 	}
 
 	/** Guarda la evaluacion por persona (una evaluacion se puede modificar siempre que
 	 * el plazo para evaluar esté activo) */
-	saveEvaluacion(){
-	}
+	saveEvaluacion() {}
 }

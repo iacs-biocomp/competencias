@@ -37,18 +37,18 @@ export interface IEvModel {
 	 * @see {ISubModel}
 	 * {@link ISubModel|link text}
 	 */
-	subModels: ISubModel[] | undefined;
+	subModels?: ISubModel[];
 }
 /** El submodelo representa el array de comportamientos que un nivel de una competencia posee */
 export interface ISubModel {
 	/** Los modelos a los que pertenece este SubModelo, puede ser undefined si la petición es desde el modelo o no se carga la relación del modelo */
 	modelos?: IEvModel[];
 
-	nivel: INivel | undefined;
+	nivel: INivel;
 
-	competencia: ICompetencia | undefined;
+	competencia: ICompetencia;
 
-	comportamientos?: IComportamiento[];
+	comportamientos: IComportamiento[];
 }
 /** Representa un nivel, tiene la misma estructura que el que tiene el backend */
 export interface INivel {

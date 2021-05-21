@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { INivel } from 'sharedInterfaces/Entity';
+import { INivelToAdd } from '../niv-table/niv-table.component';
 
 @Injectable({ providedIn: 'root' })
 export class NivelService {
@@ -31,7 +32,8 @@ export class NivelService {
 	 * @throws Exception, de tipo http con su codigo de error si ya existe ese nivel
 	 * @returns `true` si se ha añadido correctamente el nivel a la bbdd o `false`/`exception` en otros casos
 	 */
-	add(nivel: INivel): Promise<boolean> {
+	add(nivel: INivelToAdd): Promise<boolean> {
+		// TODO: Crear INivelPostDto o similar
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
 	/**

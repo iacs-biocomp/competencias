@@ -5,6 +5,7 @@ import { CompetenciasService } from '../../competencias-admin/services/competenc
 import { DbData } from '../../evaluaciones-admn/modelos/new-ev-model.component';
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { ComportService } from '../services/comport.service';
+import { findNivelById, findCompById } from 'sharedCode/Utility';
 
 type ComportCtrlView = {
 	filters: {
@@ -110,6 +111,9 @@ export class TableComportComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	findNivelById = findNivelById;
+	findCompById = findCompById;
+
 	/**
 	 *
 	 * @param compet La competencia a editar/mandar
@@ -142,18 +146,6 @@ export class TableComportComponent implements OnInit, OnDestroy {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			await this.updateComportView();
 		}
-	}
-
-	//TODO tsdoc, devuelve el INivel con el identificador dado por parametroo o undefined si no hay un nivel con ese identificador en el array dado
-	//TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo INivel
-	findNivelById(niveles: INivel[], nivId: string): INivel | undefined {
-		return niveles.find(nivel => nivel.id === nivId);
-	}
-
-	//TODO tsdoc, devuelve la ICompetencia con el identificador dado por parametroo o undefined si no hay una competencia con ese identificador en el array dado
-	//TODO: Enviar a carpeta interfaces ya que esta función puede ser usada por backend y frontend, es de ayuda para mapear un dto a entidades de tipo ICompetencia
-	findCompById(competencias: ICompetencia[], compId: string): ICompetencia | undefined {
-		return competencias.find(comp => comp.id === compId);
 	}
 
 	/**

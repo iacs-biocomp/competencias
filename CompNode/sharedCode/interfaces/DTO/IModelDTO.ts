@@ -9,7 +9,7 @@ export type IRefModel = RequiredAndNotNull<IEvModel>;
 type ICompNoId = Omit<ICompetencia, 'id' | 'createdAt'>;
 type IComportNoId = Omit<IComportamiento, 'id' | 'subModels'>;
 
-export type IModelBasicIndxDTO = Omit<RequiredAndNotNull<IEvModel>, 'subModels'> & {
+export type IModelBasicIndxDTO = Omit<RequiredAndNotNull<IEvModel>, 'subModels' | 'evs'> & {
 	comps: {
 		/** Es el identificador de la competencia que tiene ciertos comportamientos asociados*/
 		[compId: string]: {

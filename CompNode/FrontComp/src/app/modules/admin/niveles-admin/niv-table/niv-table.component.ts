@@ -5,6 +5,8 @@ import { NivelService } from '../services/nivel.service';
 interface INivelEdit extends INivel {
 	editing?: boolean;
 }
+// Omit<INivel, 'id'>
+export interface INivelToAdd extends Omit<INivel, 'id'> {}
 
 @Component({
 	selector: 'app-niv-table',
@@ -13,7 +15,7 @@ interface INivelEdit extends INivel {
 })
 export class NivTableComponent implements OnInit {
 	constructor(private nivelService: NivelService) {}
-	nivelToAdd: INivel[] = [];
+	nivelesToAdd: INivelToAdd[] = [];
 	niveles: INivelEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
@@ -34,16 +36,17 @@ export class NivTableComponent implements OnInit {
 	 *  Elimina un nivel de la listta nivelToAdd
 	 * @param row El nivel a eliminar
 	 */
-	deleteNivToAdd(row: INivel): void {
-		const indx = this.nivelToAdd.indexOf(row);
-		this.nivelToAdd.splice(indx, 1);
+	deleteNivToAdd(nivel: INivelToAdd): void {
+		const indx = this.nivelesToAdd.indexOf(nivel);
+		this.nivelesToAdd.splice(indx, 1);
 	}
 
 	newEmptyNivel(): void {
-		this.nivelToAdd.push({
-			id: '',
+		this.nivelesToAdd.push({
+			code: '',
 			valor: 0,
-			subModels: undefined,
+			maxRango: 0,
+			minRango: 0,
 		});
 	}
 
@@ -61,7 +64,7 @@ export class NivTableComponent implements OnInit {
 		}
 	}
 
-	async persistNiv(nivel: INivel): Promise<void> {
+	async persistNiv(nivel: INivelToAdd): Promise<void> {
 		const guardado = await this.nivelService.add(nivel);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
