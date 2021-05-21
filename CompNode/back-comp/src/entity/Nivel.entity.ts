@@ -1,16 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, BaseEntity, OneToMany, PrimaryColumn, Column } from 'typeorm';
+import { INivel } from 'sharedInterfaces/Entity';
+import { Entity, BaseEntity, OneToMany, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { SubModel } from '.';
 
 @Entity()
-export class Nivel extends BaseEntity {
+export class Nivel extends BaseEntity implements INivel {
 	@ApiProperty()
-	@PrimaryColumn()
-	id: string;
+	@PrimaryGeneratedColumn()
+	id: number;
 
 	@ApiProperty()
-	@Column({ type: 'float8', unique: true, nullable: false })
+	@Column({ type: 'varchar', unique: false, nullable: false })
+	code: string;
+
+	@ApiProperty()
+	@Column({ type: 'float8', unique: false, nullable: false })
 	valor: number;
+
+	@ApiProperty()
+	@Column({ type: 'float8', unique: false, nullable: false })
+	minRango: number;
+	@ApiProperty()
+	@Column({ type: 'float8', unique: false, nullable: false })
+	maxRango: number;
 
 	@ApiProperty({ type: () => SubModel })
 	@OneToMany(type => SubModel, subm => subm.nivel)

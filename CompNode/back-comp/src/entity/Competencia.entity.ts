@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ICompetencia } from 'sharedInterfaces/Entity';
 import { Entity, BaseEntity, OneToMany, PrimaryColumn, Column, CreateDateColumn } from 'typeorm';
 import { SubModel } from '.';
 
 @Entity()
-export class Competencia extends BaseEntity {
+export class Competencia extends BaseEntity implements ICompetencia {
 	@ApiProperty()
 	@PrimaryColumn()
 	id: string;

@@ -5,44 +5,42 @@ import { ICatComp, ICatContr } from './ICategorias';
  * @param Url /nest/users/{USERNAME}
  */
 export interface ITrabajador {
-  dni: string;
+	dni: string;
 
-  nombre: string;
+	nombre: string;
 
-  apellidos: string;
+	apellidos: string;
 
-  area: string;
+	area: string;
 
-  unidad: string;
+	unidad: string;
 
-  departamento: string;
+	departamento: string;
 
-  periodos: IPeriodoTrab[] | undefined;
+	periodos?: IPeriodoTrab[];
 
-  catComp?: ICatComp;
-
-  user: IUserJson;
+	user: IUserJson;
 }
 export interface IPeriodoTrab {
-  id: number;
-  /** El trabajador al que corresponde este periodo */
-  trabajador: ITrabajador;
-  /** La categoria contractual que tiene el trabajador en este periodo */
-  catContr: ICatContr;
+	id: number;
+	/** El trabajador al que corresponde este periodo */
+	trabajador: ITrabajador;
+	/** La categoria contractual que tiene el trabajador en este periodo */
+	catContr: ICatContr;
 
-  catComp: ICatComp;
-  /** El array de trabajadores que son superiores de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
-  superiores?: ITrabajador[];
-  /** El array de trabajadores que son pares de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
-  pares?: ITrabajador[];
-  /** El array de trabajadores que son inferiores de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
-  inferiores?: ITrabajador[];
+	catComp: ICatComp;
+	/** El array de trabajadores que son superiores de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
+	superiores?: ITrabajador[];
+	/** El array de trabajadores que son pares de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
+	pares?: ITrabajador[];
+	/** El array de trabajadores que son inferiores de este trabajador, undefined o array vacío segun el endpoint al que se pidan datos */
+	inferiores?: ITrabajador[];
 
-  createdAt: Date;
+	createdAt: Date;
 
-  endAt?: Date;
-  /** Propiedad que indica si es el periodo actual o es uno pasado, cada trabajador solo tiene un periodo actual */
-  actual: boolean;
+	endAt?: Date;
+	/** Propiedad que indica si es el periodo actual o es uno pasado, cada trabajador solo tiene un periodo actual */
+	actual: boolean;
 }
 
 /**
@@ -50,31 +48,31 @@ export interface IPeriodoTrab {
  * @param Url /nest/users/{USERNAME}
  */
 export interface IUserJson {
-  username: string;
+	username: string;
 
-  password: string;
+	password: string;
 
-  email: string;
+	email?: string;
 
-  name: string;
+	name?: string;
 
-  lastname: string;
+	lastname: string;
 
-  createdAt: Date;
+	createdAt?: Date;
 
-  updatedAt: Date;
+	updatedAt?: Date;
 
-  roles: Role[];
+	roles: Role[];
 
-  active: boolean;
+	active: boolean;
 
-  trabajador: ITrabajador | undefined;
+	trabajador?: ITrabajador;
 }
 export interface Role {
-  id: number;
-  name: string;
-  description: string;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
+	id: number;
+	name: string;
+	description: string;
+	status: string;
+	createdAt: Date;
+	updatedAt: Date;
 }

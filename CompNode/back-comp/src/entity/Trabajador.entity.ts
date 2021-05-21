@@ -2,9 +2,10 @@ import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinCol
 import { ApiProperty } from '@nestjs/swagger';
 import { ITrabajadorDTO } from '../modules/trabajadores/trabajadores.controller';
 import { PeriodoTrab, User } from '.';
+import { ITrabajador } from 'sharedInterfaces/Entity';
 
 @Entity('trabajador')
-export class Trabajador extends BaseEntity {
+export class Trabajador extends BaseEntity implements ITrabajador {
 	@ApiProperty()
 	@PrimaryColumn('varchar')
 	dni: string;
@@ -31,7 +32,7 @@ export class Trabajador extends BaseEntity {
 
 	@ApiProperty({ type: () => PeriodoTrab })
 	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.trabajador, { nullable: false })
-	periodos: PeriodoTrab[];
+	periodos?: PeriodoTrab[];
 
 	@ApiProperty({ type: () => User })
 	@OneToOne(type => User, usr => usr.trabajador)

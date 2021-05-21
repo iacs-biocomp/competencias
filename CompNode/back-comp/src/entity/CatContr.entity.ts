@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { ICatContr } from 'sharedInterfaces/Entity';
+import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, JoinColumn, ManyToOne } from 'typeorm';
 import { CatComp, PeriodoTrab } from '.';
 
 @Entity()
-export class CatContr extends BaseEntity {
+export class CatContr extends BaseEntity implements ICatContr {
 	@ApiProperty()
 	@PrimaryColumn('varchar')
 	id: string;
@@ -11,10 +12,6 @@ export class CatContr extends BaseEntity {
 	@ApiProperty()
 	@Column({ type: 'varchar', nullable: false })
 	description: string;
-
-	@ApiProperty({ type: () => PeriodoTrab })
-	@OneToMany(type => PeriodoTrab, periodo => periodo.catContr)
-	periodos: PeriodoTrab[];
 
 	//? Al cambiar la catComp por defecto han de cambiar la catComp de los trabajadores que tengan tambien la de por defecto previa o todos o ninguno
 	/**
@@ -25,5 +22,9 @@ export class CatContr extends BaseEntity {
 	@ApiProperty({ type: () => CatComp })
 	@ManyToOne(type => CatComp)
 	@JoinColumn()
-	catComp: CatComp;
+	catComp?: CatComp ;
+
+	@ApiProperty({ type: () => PeriodoTrab })
+	@OneToMany(type => PeriodoTrab, periodo => periodo.catContr)
+	periodos?: PeriodoTrab[];
 }

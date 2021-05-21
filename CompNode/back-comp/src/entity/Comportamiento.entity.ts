@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IComportamiento } from 'sharedInterfaces/Entity';
 import { Entity, BaseEntity, PrimaryColumn, Column, ManyToMany } from 'typeorm';
 import { SubModel } from '.';
 
 @Entity()
-export class Comportamiento extends BaseEntity {
+export class Comportamiento extends BaseEntity implements IComportamiento {
 	@ApiProperty()
 	@PrimaryColumn()
 	id: string;
@@ -14,5 +15,5 @@ export class Comportamiento extends BaseEntity {
 
 	@ApiProperty({ type: () => SubModel })
 	@ManyToMany(type => SubModel, subm => subm.comportamientos)
-	subModels: SubModel[];
+	subModels?: SubModel[];
 }

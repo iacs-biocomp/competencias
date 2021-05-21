@@ -6,70 +6,74 @@ import { ICatComp } from './ICategorias';
  * @param Url /nest/evaluaciones/$USER (Username como parametro)
  */
 export interface IEvaluacion {
-  /** El id como string de la evaluación */
-  id: string;
-  /** La descripción de la evaluación */
-  description: string;
-  /** El modelo que usa la evaluación (Donde se indican competencias comportamientos y niveles) */
-  model?: IEvModel;
-  /** La categoría competencial de la evaluación */
-  catComp?: ICatComp;
+	/** El id como string de la evaluación */
+	id: string;
+	/** La descripción de la evaluación */
+	description: string;
+	/** El modelo que usa la evaluación (Donde se indican competencias comportamientos y niveles) */
+	model?: IEvModel;
+	/** La categoría competencial de la evaluación */
+	catComp?: ICatComp;
 
-  iniDate?: Date;
-  finPropuestas?: Date;
+	iniDate?: Date;
+	finPropuestas?: Date;
 
-  iniValidacion?: Date;
-  endValidacion?: Date;
+	iniValidacion?: Date;
+	endValidacion?: Date;
 
-  iniValoracion?: Date;
-  endValoracion?: Date;
+	iniValoracion?: Date;
+	endValoracion?: Date;
 
-  iniPerEvaluado?: Date;
-  endPerEvaluado?: Date;
+	iniPerEvaluado?: Date;
+	endPerEvaluado?: Date;
 }
 
 export interface IEvModel {
-  id: string;
-  // evs: Ev[];
-  catComp: ICatComp | undefined;
-  /**
-   * Representa los submodelos de el modelo que utiliza la evaluación
-   * @see {ISubModel}
-   * {@link ISubModel|link text}
-   */
-  subModels: ISubModel[] | undefined;
+	id: string;
+	catComp: ICatComp | undefined;
+	evs?: IEvaluacion[];
+	/**
+	 * Representa los submodelos de el modelo que utiliza la evaluación
+	 * @see {ISubModel}
+	 * {@link ISubModel|link text}
+	 */
+	subModels: ISubModel[] | undefined;
 }
 /** El submodelo representa el array de comportamientos que un nivel de una competencia posee */
 export interface ISubModel {
-  /** Los modelos a los que pertenece este SubModelo, puede ser undefined si la petición es desde el modelo o no se carga la relación del modelo */
-  modelos?: IEvModel[];
+	/** Los modelos a los que pertenece este SubModelo, puede ser undefined si la petición es desde el modelo o no se carga la relación del modelo */
+	modelos?: IEvModel[];
 
-  nivel: INivel | undefined;
+	nivel: INivel | undefined;
 
-  competencia: ICompetencia | undefined;
+	competencia: ICompetencia | undefined;
 
-  comportamientos?: IComportamiento[];
+	comportamientos?: IComportamiento[];
 }
 /** Representa un nivel, tiene la misma estructura que el que tiene el backend */
 export interface INivel {
-  id: string;
-  /** El valor del nivel como float */
-  valor: number;
-  /** Los submodelos asociados a este nivel, en la mayoría de los casos esta propiedad será undefined */
-  subModels: ISubModel[] | undefined;
+	id: number;
+	/**  */
+	code: string;
+	/** El valor del nivel como float */
+	valor: number;
+	minRango: number;
+	maxRango: number;
+	/** Los submodelos asociados a este nivel, en la mayoría de los casos esta propiedad será undefined */
+	subModels?: ISubModel[];
 }
 
 /** Representa un comportamiento, tiene la misma estructura que el que tiene el backend */
 export interface IComportamiento {
-  id: string;
+	id: string;
 
-  descripcion: string;
-  /** Los submodelos asociados a este comportamiento, en la mayoría de los casos esta propiedad será undefined */
-  subModels?: ISubModel[];
+	descripcion: string;
+	/** Los submodelos asociados a este comportamiento, en la mayoría de los casos esta propiedad será undefined */
+	subModels?: ISubModel[];
 }
 /** Representa una competencia, tiene la misma estructura que el que tiene el backend */
 export interface ICompetencia {
-  id: string;
-  descripcion: string;
-  createdAt?: Date;
+	id: string;
+	descripcion: string;
+	createdAt?: Date;
 }
