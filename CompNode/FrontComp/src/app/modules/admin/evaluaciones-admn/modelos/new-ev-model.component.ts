@@ -34,11 +34,11 @@ type MiComportamiento = {
 	nivel?: INivel;
 	competencia?: ICompetencia;
 } & IComportamiento;
-
+/**
+ * Tipo que agrupa competencias seleccionadas, nivel seleccionado y comportamientos seleccionados
+ */
 type ComportCtrlView = {
-	/** Tipo que agrupa competencias seleccionadas, nivel seleccionado y
-	 * comportamientos seleccionados
-	 */
+	/** La ultima competencia seleccionada */
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
@@ -278,7 +278,7 @@ export class NewEvModelComponent implements OnInit {
 	getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const subModelos = this.findSubModels(subModels, comp);
 		let comports: IComportamiento[] = [];
-		subModelos.forEach(s => (comports = comports.concat(s.comportamientos!)));
+		subModelos.forEach(s => (comports = comports.concat(s.comportamientos)));
 		return comports;
 	}
 

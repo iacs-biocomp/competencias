@@ -8,6 +8,9 @@ type ViewProps = {
 	/** Representa si hay modelos de referencia o no */
 	haveModels: boolean;
 };
+/**
+ * TODO: Comentario de que hace este componente
+ */
 @Component({
 	selector: 'app-view-all-models',
 	templateUrl: './view-all-models.component.html',

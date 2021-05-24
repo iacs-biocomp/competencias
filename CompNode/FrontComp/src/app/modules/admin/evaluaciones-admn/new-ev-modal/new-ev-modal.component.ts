@@ -21,14 +21,12 @@ export class NewEvModalComponent implements OnInit {
 	catComps!: ICatComp[];
 	catCompSelected?: ICatComp;
 	/** Descripción de la evaluación, bindeado al input en el html */
-	evDescription: string | undefined;
+	evDescription?: string;
 	/** La evaluación que se añadirá a la bbdd */
 	evToAdd!: evAddDTO;
 	evModelSelected!: IEvModel;
 	/** Los rangos de fechas de esa evaluacion, periodo de propuesta, validación, valoración... */
 	rangesForm: FormGroup | undefined;
-	/**Estilo del boton de siguiente que lleva a elegir las competencias */
-	btnStyle?: string;
 
 	constructor(
 		private evSv: EvaluacionesAdmService,
@@ -53,17 +51,7 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 		});
-
-		/** Estilo por defecto */
-		this.btnStyle = 'btn-default';
 	}
-
-	/** Cuando se clicka en el boton, se abre el otro modal (elegir competencias) */
-	submit(){
-		this.btnStyle = 'btn-change';
-		console.log("ME has llamado");
-	}
-
 
 	/**
 	 * Filtra de this.evModels y elimina los que no tengan una catComp igual a this.catCompSelected
@@ -81,9 +69,12 @@ export class NewEvModalComponent implements OnInit {
 	 */
 	isFormValid(): boolean {
 		if (!this.rangesForm) return false; //Se quita undefined
-		// TODO: Añadir validadores de modelo seleccionado y de catComp
+		if (!this.evDescription || this.evDescription === '') return false;
+		if (!this.catCompSelected) return false;
 		return this.rangesForm.valid;
 	}
+
+	nextModal() {}
 
 	async save() {
 		if (!this.rangesForm) return; //Se quita undefined

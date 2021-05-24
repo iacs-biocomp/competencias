@@ -90,26 +90,22 @@
 					</option>
 					<option *ngFor="let catComp of catComps" [ngValue]="catComp">{{ catComp.id }}</option>
 				</select>
-				<!-- 	<select class="form-select mb-2" [(ngModel)]="evModelSelected">
-					<option selected hidden disabled [value]="evModelSelected">Seleccione el modelo a usar</option>
-					<option *ngFor="let evModel of filterEvModels()" [ngValue]="evModel">
-						{{ evModel.id }}
-					</option>
-				</select> -->
 			</div>
 
 			<div class="modal-footer">
-				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<!-- 		<button type="button" (click)="save()" [disabled]="!isFormValid()" class="btn btn-primary">
-					Guardar cambios
-				</button> -->
-				<button name="Save" [ngClass]="[btnStyle]" (click)="submit()" > Siguiente </button>
-
+				<button #closeEvModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button
+					#nextModalBtn
+					data-bs-toggle="modal"
+					data-bs-target="#selectModelCompsModal"
+					class="btn btn-primary"
+					[disabled]="isFormValid()"
+					(click)="closeEvModal.click()"
+				>
+					Siguiente
+				</button>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-
-
+<app-model-comp-select></app-model-comp-select>

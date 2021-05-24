@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NewEvModelComponent } from './modelos/new-ev-model.component';
 import { ViewAllModelsComponent } from './modelos/view-all-models/view-all-models.component';
 import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-model.component';
+import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: Routes = [
@@ -37,6 +38,7 @@ export const evRoutes: Routes = [
 		NewEvModalComponent,
 		ViewAllModelsComponent,
 		ViewEditModelComponent,
+		ModelCompSelectComponent,
 		// LayoutTestComponent,
 	],
 	imports: [

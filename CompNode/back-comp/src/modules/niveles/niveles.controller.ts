@@ -60,8 +60,9 @@ export class NivelesController {
 	async createNivel(@Body() nivel: Nivel): Promise<boolean> {
 		const existingNivel = await this.nivRepo.findOne({ id: nivel.id });
 		if (existingNivel) {
-			throw new ConflictException('Nivel ya creada');
+			throw new ConflictException('Nivel ya creado');
 		}
+		nivel.reference = true;
 		await this.nivRepo.save(nivel);
 		return true;
 	}
@@ -71,7 +72,6 @@ export class NivelesController {
 		if (!existingNivel) {
 			throw new NotFoundException('No existe un nivel con ese id');
 		}
-		//? Se pueden modificar los niveles asociados a un submodelo usado en una evaluación?
 		if (nivel.subModels.length !== 0) {
 			throw new UnauthorizedException('Ese nivel esta asociado a un submodelo, no se puede modificar');
 		}
