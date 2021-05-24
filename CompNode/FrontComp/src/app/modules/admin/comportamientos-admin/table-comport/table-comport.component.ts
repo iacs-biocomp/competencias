@@ -137,14 +137,18 @@ export class TableComportComponent implements OnInit, OnDestroy {
 		if (guardado) {
 			await this.updateComportView();
 			this.deleteComptToAdd(comport);
+			this.comportsFiltered = this.filterByAll();
 		}
 	}
 
 	async deleteComport(comport: IComportamiento) {
 		const borrado = await this.comportService.delete(comport);
+		console.log('delete');
+		console.log(borrado);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			await this.updateComportView();
+			this.comportsFiltered = this.filterByAll();
 		}
 	}
 

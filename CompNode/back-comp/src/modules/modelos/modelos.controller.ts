@@ -50,11 +50,14 @@ export class ModelosController {
 		});
 	}
 
+	// TODO: Crear otro endpoint para modelos de referencia o con queryparam
 	@Post('')
 	async newModel(@Body() modeloDto: NewModelDTO): Promise<boolean> {
+		console.log(modeloDto);
 		let evModel = new EvModel();
 		evModel.catComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		evModel.subModels = modeloDto.subModels;
+		evModel.reference = true;
 		await this.modelRepo.save(evModel);
 		await Promise.all(
 			evModel.subModels.map(subModel => {
