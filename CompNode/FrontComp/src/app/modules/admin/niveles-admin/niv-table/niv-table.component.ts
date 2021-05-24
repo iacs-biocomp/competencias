@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { maxYmin } from 'sharedCode/Utility';
 import { INivel } from 'sharedInterfaces/Entity';
 import { NivelService } from '../services/nivel.service';
 
@@ -20,12 +21,19 @@ export class NivTableComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.updateNivelView();
+		console.log(
+			maxYmin({
+				maxValoracion: 5,
+				minValoracion: 1,
+				niveles: await this.nivelService.getAllRefNivs(),
+			}),
+		);
 	}
 
 	/** Metodo que sincroniza los niveles de la vista con los del backend */
 	async updateNivelView(): Promise<void> {
 		// TODO: Hay que cambiarla por la nueva del servicio
-		this.niveles = await this.nivelService.getAll();
+		this.niveles = await this.nivelService.getAllRefNivs();
 	}
 
 	/**
