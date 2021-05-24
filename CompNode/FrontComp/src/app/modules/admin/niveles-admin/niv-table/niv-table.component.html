@@ -5,6 +5,8 @@
 			<tr>
 				<th scope="col">CÓDIGO</th>
 				<th scope="col">VALOR</th>
+				<th scope="col">Rango Minimo</th>
+				<th scope="col">Rango Maximo</th>
 				<th scope="col">EDITAR/ELIMINAR</th>
 				<th scope="col" style="max-width: 1rem">
 					<button class="btn btn-primary" (click)="newEmptyNivel()">
@@ -37,12 +39,13 @@
 			</tr>
 
 			<tr *ngFor="let nivel of niveles">
-				<td>{{ nivel.id }}</td>
+				<td>{{ nivel.code }}</td>
 				<td *ngIf="!nivel.editing">{{ nivel.valor }}</td>
 				<td *ngIf="nivel.editing">
 					<input type="text" class="form-control" [(ngModel)]="nivel.valor" />
 				</td>
-
+				<td>TODO: Completar</td>
+				<td>TODO: Completar</td>
 				<td>
 					<div class="btn btn-success" (click)="editingNivel(nivel, true, false)">
 						<span class="material-icons"> edit </span>
@@ -50,7 +53,7 @@
 					<div class="btn btn-primary" *ngIf="nivel.editing" (click)="editingNivel(nivel, false, true)">
 						<span class="material-icons"> done </span>
 					</div>
-					<div *ngIf="canDelete(nivel)" class="btn btn-danger" (click)="deleteNivel(nivel)">
+					<div class="btn btn-danger" (click)="deleteNivel(nivel)">
 						<span class="material-icons"> delete </span>
 					</div>
 				</td>

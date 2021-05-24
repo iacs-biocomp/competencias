@@ -25,6 +25,11 @@ export class NivelesController {
 		return this.nivRepo.find({ relations: ['subModels'] });
 	}
 
+	@Get('reference')
+	getAllRefNivs(): Promise<Nivel[]> {
+		return this.nivRepo.find({ relations: ['subModels'], where: { reference: true } });
+	}
+
 	//TODO: Completar para añadir los parametros como queryparams y no como el id tal que :id
 	@Get(':id')
 	getNiv(

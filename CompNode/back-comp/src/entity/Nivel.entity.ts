@@ -20,9 +20,15 @@ export class Nivel extends BaseEntity implements INivel {
 	@ApiProperty()
 	@Column({ type: 'float8', unique: false, nullable: false })
 	minRango: number;
+
 	@ApiProperty()
 	@Column({ type: 'float8', unique: false, nullable: false })
 	maxRango: number;
+
+	@ApiProperty()
+	// TODO: Añadir nullable: false???, comprobar
+	@Column({ type: 'boolean', default: false })
+	reference: boolean;
 
 	@ApiProperty({ type: () => SubModel })
 	@OneToMany(type => SubModel, subm => subm.nivel)

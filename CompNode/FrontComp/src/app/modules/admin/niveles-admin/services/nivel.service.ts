@@ -17,6 +17,11 @@ export class NivelService {
 		return this.httpClient.get<INivel[]>(`${cnf.apiURL}/niveles/all`).toPromise();
 	}
 
+	/** Obtiene todos */
+	// getAllRefNivs(): Promise<INivel[]> {
+	//
+	// }
+
 	/**
 	 * Metodo que borra un nivel del backend
 	 *

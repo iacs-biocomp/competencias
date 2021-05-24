@@ -24,12 +24,8 @@ export class NivTableComponent implements OnInit {
 
 	/** Metodo que sincroniza los niveles de la vista con los del backend */
 	async updateNivelView(): Promise<void> {
+		// TODO: Hay que cambiarla por la nueva del servicio
 		this.niveles = await this.nivelService.getAll();
-	}
-
-	canDelete(nivel: INivel): boolean {
-		//TODO: Borrar metodo, generar Una interfaz INivelAdminDto o similar, añadir campo 'borrable' boolean, y hacer que el backend diga si se puede o no borrar
-		return true;
 	}
 
 	/**
