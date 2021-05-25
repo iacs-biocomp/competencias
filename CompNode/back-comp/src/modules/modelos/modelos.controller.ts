@@ -27,9 +27,9 @@ export class ModelosController {
 	}
 
 	@Get('/reference/:cComp')
-	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel[]> {
+	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel> {
 		console.log('xd');
-		return this.modelRepo.find({
+		return this.modelRepo.findOne({
 			where: { catComp: catCompId, reference: true },
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
 		});

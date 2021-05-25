@@ -82,8 +82,8 @@ export class ViewEditModelComponent implements OnInit {
 			comports: promises[2],
 			niveles: promises[3],
 		};
-		this.competenciasSelect = this.getCompet(this.evModel.value!);
-		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel.value!);
+		this.competenciasSelect = this.getCompet(this.evModel.value);
+		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel.value);
 		this.cv.modelView = this.evModel.value;
 		console.log(this.evModelIndx);
 		console.log('end on init edit');
@@ -116,7 +116,7 @@ export class ViewEditModelComponent implements OnInit {
 	 * @returns Un array que representa las competencias que tiene el modelo pasado como parametro
 	 */
 	getCompet(model: IModelPreDTO): ICompetencia[] {
-		const competencias = model.subModels.map(x => x.competencia!);
+		const competencias = model.subModels.map(x => x.competencia);
 		return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
 	}
 
@@ -129,7 +129,7 @@ export class ViewEditModelComponent implements OnInit {
 	getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const subModelos = this.findSubModels(subModels, comp);
 		let comports: IComportamiento[] = [];
-		subModelos.forEach(s => (comports = comports.concat(s.comportamientos!)));
+		subModelos.forEach(s => (comports = comports.concat(s.comportamientos)));
 		return comports;
 	}
 
@@ -141,7 +141,7 @@ export class ViewEditModelComponent implements OnInit {
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
 		const _model = this.evModel.value;
-		const subModel = this.findSubModel(_model!.subModels, comp, niv);
+		const subModel = this.findSubModel(_model.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
 		subModel?.comportamientos?.splice(indx, 1);
 	}
@@ -167,6 +167,9 @@ export class ViewEditModelComponent implements OnInit {
 		return subModels.filter(subModel => subModel.competencia?.id === comp.id);
 	}
 
+	/**
+	 * @deprecated Usar subModelos y sus funciones
+	 */
 	keysToArrayComport(comportIndxObj: { [key: string]: { descripcion: string } }): { descripcion: string }[] {
 		let arrayOfComports: { descripcion: string }[];
 		arrayOfComports = Object.keys(comportIndxObj).map(key => comportIndxObj[key]);

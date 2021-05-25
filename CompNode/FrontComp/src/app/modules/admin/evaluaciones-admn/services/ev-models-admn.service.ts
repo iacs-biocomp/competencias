@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
-import { IEvModel } from 'sharedInterfaces/Entity';
+import { ICatComp, IEvModel } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
 /** Servicio crud para el manejo de los modelos de las evaluaciones */
@@ -27,5 +27,9 @@ export class EvModelsAdmnService {
 	 */
 	getAllReference(): Promise<IRefModel[]> {
 		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();
+	}
+	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
+		const id = typeof catComp === 'string' ? catComp : catComp.id;
+		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
 	}
 }
