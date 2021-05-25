@@ -32,7 +32,6 @@ export class ViewAllModelsComponent implements OnInit {
 	};
 	/** Objeto con propiedades usadas principalmente en la vista */
 	viewProps?: ViewProps;
-	//TODO: Complete, este subject al pasarselo al componente es undefined (No el valor sino el propio objeto)
 	evModelToShow = new BehaviorSubject<IRefModel | undefined>(undefined);
 
 	constructor(private evModelSv: EvModelsAdmnService) {}
@@ -45,6 +44,13 @@ export class ViewAllModelsComponent implements OnInit {
 		};
 		if (!this.viewProps) throw new Error('View Props no ha sido inicializado');
 		console.log(this);
+	}
+	evModelShowNotUndefined(subj: BehaviorSubject<IRefModel | undefined>): BehaviorSubject<IRefModel> {
+		if (!subj.value)
+			throw new Error(
+				'Se ha llamado a la función de casteo cuando BehaviorSubject tenia valor interno undefined',
+			);
+		return subj as BehaviorSubject<IRefModel>;
 	}
 
 	newEvModelShow(model: IRefModel): BehaviorSubject<IRefModel> {

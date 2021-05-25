@@ -30,7 +30,7 @@
 </div>
 <!-- -->
 <app-view-edit-model
-	[evModel]="evModelToShow"
+	[evModel]="evModelShowNotUndefined(evModelToShow)"
 	[modoEdicion]="false"
 	*ngIf="renderViewModels"
 ></app-view-edit-model>

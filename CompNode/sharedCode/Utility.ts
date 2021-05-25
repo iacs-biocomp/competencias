@@ -1,5 +1,13 @@
 import { WithOptional } from 'sharedInterfaces/Utility';
-import { ICompetencia, INivel } from './interfaces/Entity';
+import { ICompetencia, IComportamiento, INivel, ISubModel } from './interfaces/Entity';
+
+export type changeMyName = {
+	//TODO: Tsdoc (1)
+	minValoracion: number;
+	//TODO: Tsdoc (5)
+	maxValoracion: number;
+	niveles: WithOptional<INivel, 'subModels'>[];
+};
 
 /**
  * Busca un nivel en un array de niveles donde le indicamos el id del nivel
@@ -45,24 +53,38 @@ export function maxYmin(data: changeMyName) {
 	return maxPunt;
 }
 
-export type changeMyName = {
-	//TODO: Tsdoc (1)
-	minValoracion: number;
-	//TODO: Tsdoc (5)
-	maxValoracion: number;
-	niveles: WithOptional<INivel, 'subModels'>[];
-};
+/**
+ * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s
+ * @param comp La competencia que se usará como filtrado
+ * @returns El array de subModelos que tienen esa competencia
+ */
+export function findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
+	return subModels.filter(subModel => subModel.competencia.id === comp.id);
+}
 
-// console.log(
-// 	maxYmin({
-// 		maxValoracion: 5,
-// 		minValoracion: 1,
-// 		niveles: [
-// 			{ id: 1, minRang code: 'N2', valor: 2 },
-// 			{ code: 'N4', valor: 4 },
-// 			{ code: 'N1', valor: -0.25 },
-// 			{ code: 'N-1', valor: -1 },
-// 			{ code: 'N3', valor: 3 },
-// 		],
-// 	}),
-// );
+// type SubModelFilterBy = {
+// 	competencia?: ICompetencia | string;
+// 	comportamientos?: IComportamiento[] | string[];
+// 	niveles?: INivel[] | string[];
+// };
+// export function filterSubModels(subModels: ISubModel[], filter: SubModelFilterBy): ISubModel[] {
+// 	subModels.filter(subModel => {
+// 		let passTheFilter = true;
+// 		compFilterLabel: {
+// 			if (!filter.competencia) break compFilterLabel;
+// 			if (typeof filter.competencia === 'string') {
+// 				passTheFilter = subModel.competencia.id === filter.competencia;
+// 			} else {
+// 				passTheFilter = subModel.competencia.id === filter.competencia.id;
+// 			}
+// 		}
+// 		comportFilterLabel: {
+// 			if (!filter.comportamientos) break comportFilterLabel;
+// 			if (typeof filter.comportamientos[0] === 'string') {
+// 			}
+// 		}
+// 	});
+// }
+// https://is.gd/Suahrg
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label
+// https://rangle.io/blog/how-to-use-typescript-type-guards/

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Subject } from 'rxjs';
 import { IModelBasicIndxDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../../cat-admn/services/CatCompetenciales.service';
@@ -25,6 +24,12 @@ type MiComportamiento = {
 	competencia?: ICompetencia;
 } & IComportamiento;
 
+//TODO: Cambiar nombre elegir el correcto
+type CvChangeMyName = {
+	//TODO: Tsdoc
+	modelView: IRefModel | undefined;
+};
+
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
 	selector: 'app-view-edit-model [modoEdicion] [evModel]',
@@ -34,10 +39,10 @@ type MiComportamiento = {
 export class ViewEditModelComponent implements OnInit {
 	dbData!: Omit<DbData, 'modelToAdd'>;
 	@Input() modoEdicion!: boolean;
-	@Input() evModel!: BehaviorSubject<IRefModel | undefined>;
+	@Input() evModel!: BehaviorSubject<IRefModel>;
 
-	cv = {
-		modelView: this.evModel.getValue(),
+	cv: CvChangeMyName = {
+		modelView: undefined,
 	};
 	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
 	evModelIndx!: IModelBasicIndxDTO;
@@ -64,18 +69,22 @@ export class ViewEditModelComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		console.log('start on init edit');
+		console.log(this.evModel);
 		const promises = await Promise.all([
 			this.catCompService.getAll(),
 			this.competSv.getAll(),
 			this.comportSv.getAll(),
-			this.nivSv.getAll(),
+			this.nivSv.getAllRefNivs(),
 		]);
-		this.dbData.catComps = promises[0];
-		this.dbData.comps = promises[1];
-		this.dbData.comports = promises[2];
-		this.dbData.niveles = promises[3];
+		this.dbData = {
+			catComps: promises[0],
+			comps: promises[1],
+			comports: promises[2],
+			niveles: promises[3],
+		};
 		this.competenciasSelect = this.getCompet(this.evModel.value!);
 		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel.value!);
+		this.cv.modelView = this.evModel.value;
 		console.log(this.evModelIndx);
 		console.log('end on init edit');
 	}
