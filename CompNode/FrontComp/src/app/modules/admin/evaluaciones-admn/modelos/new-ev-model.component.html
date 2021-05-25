@@ -83,8 +83,6 @@
 										[attr.aria-controls]="'collCompo' + i"
 									>
 										{{ 'Competencia: ' + nivelComp.descripcion }}
-										<br />
-										{{ 'Nivel objetivo: ' + nivelComp.nivObjetivo?.id }}
 									</button>
 								</h2>
 
@@ -105,13 +103,17 @@
 															[attr.data-bs-target]="'#collLast' + i"
 															[attr.aria-controls]="'collLast' + i"
 														>
-															{{ ' Nivel: ' + nivel.id }}
+															{{ ' Nivel: ' + nivel.code }}
 															<button
 																(click)="
 																	comportCtl.nivSelected = nivel;
 																	comportCtl.compSelected = nivelComp;
 																	comportamientosSelect = [];
-																	comportCtl.comportsSelected = []
+																	comportCtl.comportsSelected = [];
+																	comportCtl.comportsRemainingOfComp = getRemainingComports(
+																		nivelComp,
+																		dbData.modelToAdd.subModels
+																	)
 																"
 																class="btn btn-primary me-2"
 																data-bs-toggle="modal"
@@ -192,13 +194,19 @@
 					<span>Filtrar por descripcion:</span>
 				</div>
 				<div class="modal-body">
+					<div class="mb-1">
+						<p>Filtrar por descripcion:</p>
+						<input
+							#comportDescInput
+							type="text"
+							(keyup)="comportCtl.comportDescObs.next(comportDescInput.value)"
+						/>
+					</div>
 					<ul class="list-group" *ngIf="comportCtl.compSelected">
 						<li
 							[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
 							class="list-group-item p-3"
-							*ngFor="
-								let comport of getRemainingComports(comportCtl.compSelected, dbData.modelToAdd.subModels)
-							"
+							*ngFor="let comport of comportCtl.comportsFiltered"
 							(click)="selectComportamiento(comport)"
 						>
 							{{ comport.descripcion }}

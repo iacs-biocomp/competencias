@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { IModelDTO } from 'sharedInterfaces/DTO/IModelDTO';
 import { CompetenciasService } from '../../competencias-admin/services/competencias.service';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
@@ -8,10 +9,9 @@ import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { WithOptional } from 'sharedInterfaces/Utility';
 
-type IModelPreDTO = Partial<IModelDTO> &
-	Omit<IModelDTO, 'catComp' | 'evs' | 'subModels'> & {
-		subModels: WithOptional<ISubModel, 'nivel'>[];
-	};
+type IModelPreDTO = Partial<IModelDTO> & {
+	subModels: WithOptional<ISubModel, 'nivel'>[];
+};
 
 export type DbData = {
 	/** listado de categorias competenciales */
@@ -42,6 +42,10 @@ type ComportCtrlView = {
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
+	comportDescObs: BehaviorSubject<string | undefined>;
+	comportsFiltered: IComportamiento[];
+	/** Son los comportamientos restantes de la competencia seleccionada (Los que aun no se han añadido) */
+	comportsRemainingOfComp: IComportamiento[];
 };
 /**
  * Interfaz de validadores generica, cada propiedad del objeto que implemente esta interfaz ha de
@@ -79,6 +83,9 @@ export class NewEvModelComponent implements OnInit {
 		compSelected: undefined,
 		nivSelected: undefined,
 		comportsSelected: [],
+		comportDescObs: new BehaviorSubject<string | undefined>(undefined),
+		comportsFiltered: [],
+		comportsRemainingOfComp: [],
 	};
 	/** Contiene todas las funciones usadas para validar datos en este componente */
 	validators: EvModalValidators = {
@@ -108,13 +115,25 @@ export class NewEvModelComponent implements OnInit {
 		const promises = await Promise.all([
 			this.catCompService.getAll(),
 			this.competSv.getAll(),
-			this.nivSv.getAll(),
+			this.nivSv.getAllRefNivs(),
 			this.comportSv.getAll(),
 		]);
 		this.dbData.catComps = promises[0];
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
+		this.comportCtl.comportDescObs.subscribe(txt => {
+			if (!txt) {
+				this.comportCtl.comportsFiltered = this.dbData.comports;
+				return;
+			}
+			const filterValue = txt.toLowerCase().replace(/\s/g, '');
+			console.log(filterValue);
+			this.comportCtl.comportsFiltered = this.comportCtl.comportsRemainingOfComp.filter(comport => {
+				return comport.descripcion.toLowerCase().replace(/\s/g, '').includes(filterValue);
+			});
+			console.log(this.comportCtl.comportsFiltered);
+		});
 		setInterval(() => {
 			console.log(this);
 		}, 3500);
@@ -303,6 +322,7 @@ export class NewEvModelComponent implements OnInit {
 	 */
 	async saveEvModel(evModel: IModelPreDTO) {
 		if (!evModel.catComp) return alert('Contacte con un programador');
+		evModel.subModels = evModel.subModels.filter(subM => !!subM.nivel);
 		let saved: boolean = false;
 		try {
 			saved = await this.evModelSv.save(evModel as IModelDTO);
