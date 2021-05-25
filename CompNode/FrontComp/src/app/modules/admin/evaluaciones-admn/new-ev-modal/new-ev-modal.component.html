@@ -86,7 +86,7 @@
 				</mat-form-field>
 				<select class="form-select mb-2" [(ngModel)]="catCompSelected">
 					<option selected hidden disabled [value]="evModelSelected">
-						Seleccione la Categoria competencial
+						Seleccione la categoría competencial
 					</option>
 					<option *ngFor="let catComp of catComps" [ngValue]="catComp">{{ catComp.id }}</option>
 				</select>

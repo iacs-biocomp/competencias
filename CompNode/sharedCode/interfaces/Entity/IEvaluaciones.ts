@@ -33,7 +33,7 @@ export interface IEvModel {
 	catComp: ICatComp | undefined;
 	evs?: IEvaluacion[];
 	/**
-	 * Representa los submodelos de el modelo que utiliza la evaluación
+	 * Representa los submodelos del modelo que utiliza la evaluación
 	 * @see {ISubModel}
 	 * {@link ISubModel|link text}
 	 */

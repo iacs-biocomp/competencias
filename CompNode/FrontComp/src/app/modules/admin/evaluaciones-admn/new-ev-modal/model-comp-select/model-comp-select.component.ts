@@ -14,6 +14,7 @@ export class ModelCompSelectComponent implements OnInit {
 	modelReferenceShow!: IRefModel;
 	//TODO: Tsdoc
 	competenciasModelo: ICompetencia[] = [];
+	competenciasSeleccionadas: ICompetencia[] = [];
 
 	constructor(private evModelSv: EvModelsAdmnService) {}
 
@@ -41,5 +42,17 @@ export class ModelCompSelectComponent implements OnInit {
 			return !competencias.find(comp => comp.id === subModel.competencia.id);
 		});
 		return modelToSend;
+	}
+
+	toggleComp(comp: ICompetencia) {
+		const arrToPush = this.competenciasSeleccionadas;
+		const index = this.competenciasSeleccionadas.indexOf(comp);
+		if (index == -1) {
+			arrToPush.push(comp);
+			console.log("He entrado en -1");
+		} else {
+			arrToPush.splice(index, 1);
+			console.log("No he entrado en -1");
+		}
 	}
 }
