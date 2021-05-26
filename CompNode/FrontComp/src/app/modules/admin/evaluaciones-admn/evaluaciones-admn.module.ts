@@ -13,6 +13,7 @@ import { NewEvModelComponent } from './modelos/new-ev-model.component';
 import { ViewAllModelsComponent } from './modelos/view-all-models/view-all-models.component';
 import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-model.component';
 import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
+import { ModelNivel4CompSelectComponent } from './new-ev-modal/model-nivel4-comp-select/model-nivel4-comp-select.component';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: Routes = [
@@ -39,6 +40,7 @@ export const evRoutes: Routes = [
 		ViewAllModelsComponent,
 		ViewEditModelComponent,
 		ModelCompSelectComponent,
+  ModelNivel4CompSelectComponent,
 		// LayoutTestComponent,
 	],
 	imports: [

@@ -71,6 +71,5 @@ export class ModelCompSelectComponent implements OnInit {
 			arrToPush.splice(index, 1);
 			console.log(this.competCtl.competenciasModelos);
 		}
-		console.log(this.competCtl.competenciasModelos);
 	}
 }
