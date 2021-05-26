@@ -12,6 +12,10 @@
 .admin-menu > li > a {
 	background-color: #1663a1;
 }
+.admin-menu {
+	list-style: outside none none;
+	padding-left: 0px;
+}
 .active-route {
 	/* background-color: #297fc5; */
 	background-color: #297fc5 !important;

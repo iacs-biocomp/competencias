@@ -1,15 +1,18 @@
 <!--ASIGNAR COMPORTAMIENTOS -->
-<div class="modal-dialog">
+<div class="modal-dialog" *ngIf="initialized">
 	<div class="modal-content">
 		<div class="modal-header">
 			<h2 class="modal-title">
 				Haga click para añadir los comportamientos que tendrán estas competencias por niveles
 			</h2>
+			<div *ngIf="modoEdicion">Añadir botón añadir competencias</div>
 		</div>
 		<div class="modal-body">
+			<!-- TODO: Cambiar estilos, tiene mucho padding al sumarse modal-body y accordion-body -->
 			<div class="accordion" id="accordionCompo">
 				<div class="accordion-body">
-					<div class="accordion-item" *ngFor="let comp of competenciasSelect; let i = index">
+					<h4>Competencias:</h4>
+					<div class="accordion-item" *ngFor="let comp of cv.competenciasModelo; let i = index">
 						<h2 class="accordion-header" [id]="'headerComp ' + i">
 							<button
 								class="accordion-button collapsed"
@@ -17,7 +20,7 @@
 								[attr.data-bs-target]="'#collCompo' + i"
 								[attr.aria-controls]="'collCompo' + i"
 							>
-								{{ 'Competencia: ' + comp.descripcion }}
+								{{ comp.descripcion }}
 							</button>
 						</h2>
 
@@ -27,6 +30,8 @@
 							[attr.aria-labelledby]="'headerComp' + i"
 							data-bs-parent="#accordionCompo"
 						>
+						<!-- test -->
+							<!-- TODO: Reducir padding, es excesivo -->
 							<div class="accordion-body">
 								<div class="accordion" id="accordionLast">
 									<div class="accordion-body">

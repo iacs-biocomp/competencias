@@ -22,6 +22,17 @@
 						>
 							Ver detalles modelo
 						</button>
+						<button
+							class="btn btn-primary m-1"
+							(click)="
+								evModelToShow.next(model);
+								modoEdicion = true;
+								dbData.modelToAdd = model;
+								renderViewModels = true
+							"
+						>
+							Editar el modelo
+						</button>
 					</div>
 				</div>
 			</div>
@@ -31,6 +42,6 @@
 <!-- -->
 <app-view-edit-model
 	[evModel]="evModelShowNotUndefined(evModelToShow)"
-	[modoEdicion]="false"
+	[modoEdicion]="modoEdicion"
 	*ngIf="renderViewModels"
 ></app-view-edit-model>

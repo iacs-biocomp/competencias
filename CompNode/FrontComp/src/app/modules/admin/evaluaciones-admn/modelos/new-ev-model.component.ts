@@ -64,7 +64,7 @@ interface EvModalValidators {
 @Component({
 	selector: 'app-new-ev-model',
 	templateUrl: './new-ev-model.component.html',
-	styleUrls: ['./new-ev-model.component.css'],
+	styleUrls: ['./new-ev-model.component.scss'],
 })
 export class NewEvModelComponent implements OnInit {
 	/** Objeto que tiene los datos usados para los select */

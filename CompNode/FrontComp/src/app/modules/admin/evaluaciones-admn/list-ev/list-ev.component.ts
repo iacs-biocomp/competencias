@@ -5,7 +5,7 @@ import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 @Component({
 	selector: 'app-list-ev',
 	templateUrl: './list-ev.component.html',
-	styleUrls: ['./list-ev.component.css'],
+	styleUrls: ['./list-ev.component.scss'],
 })
 export class ListEvComponent implements OnInit {
 	/** Controla si se muestra o no el componente NuevoModelo */

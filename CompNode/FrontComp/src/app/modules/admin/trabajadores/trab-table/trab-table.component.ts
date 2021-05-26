@@ -12,7 +12,7 @@ interface ITrabajadorDTOEdit extends ITrabajadorDTO {
 @Component({
 	selector: 'app-trab-table',
 	templateUrl: './trab-table.component.html',
-	styleUrls: ['./trab-table.component.css'],
+	styleUrls: ['./trab-table.component.scss'],
 })
 export class TrabTableComponent implements OnInit {
 	/** Lista de todas las categorías competenciales */

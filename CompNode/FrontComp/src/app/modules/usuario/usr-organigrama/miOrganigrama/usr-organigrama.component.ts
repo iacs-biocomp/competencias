@@ -5,7 +5,7 @@ import { UsrOrganigramaService } from '../usr-organigrama.service';
 @Component({
 	selector: 'app-usr-organigrama',
 	templateUrl: './usr-organigrama.component.html',
-	styleUrls: ['./usr-organigrama.component.css'],
+	styleUrls: ['./usr-organigrama.component.scss'],
 })
 export class UsrOrganigramaComponent implements OnInit {
 	miOrganigramaData!: IOrganigramaTrabajador;

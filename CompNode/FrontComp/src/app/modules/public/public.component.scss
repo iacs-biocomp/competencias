@@ -1,0 +1,137 @@
+/* .link1b > a {
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
+} */
+.tab1 {
+	height: 650px;
+	background-color: rgb(155, 231, 245);
+}
+.tab2 {
+	height: 650px;
+	background-color: rgb(134, 163, 201);
+}
+.item_icon {
+	height: 5rem;
+	width: 5rem;
+}
+.icons_list {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto 1rem;
+	padding: 0 3.125rem;
+	list-style: none;
+}
+.icons_item {
+	flex: 1 0 50%;
+	margin: 0 0 2rem;
+	padding: 0 1.5rem;
+	max-width: 50%;
+	text-align: center;
+	width: 50%;
+	p {
+		margin: 0;
+		color: black;
+		text-decoration: none;
+	}
+	a {
+		margin: 0;
+		color: black;
+		text-decoration: none;
+	}
+}
+.public_intro {
+	margin: 0 auto;
+	padding: 3.4375rem 1.25rem 0;
+	max-width: none;
+	text-align: center;
+}
+.bigan_title {
+	font-family: GT Super, serif;
+	font-feature-settings: 'liga' on;
+	font-weight: 1000;
+	font-size: 2.5rem;
+	line-height: 1;
+	text-align: center;
+	letter-spacing: -0.005em;
+	margin: 0 0 2rem;
+	max-width: 1440px;
+	outline: none;
+}
+.bigan_desc {
+	margin: 0 auto 2.5rem;
+}
+.tab2ul {
+	height: 100%;
+	margin: 0;
+}
+.link1b {
+	display: flex;
+	align-items: center;
+	height: 25%;
+	> a {
+		font-family: GT Super, serif;
+		font-feature-settings: 'liga' on;
+		vertical-align: middle;
+		color: rgb(58, 58, 58);
+		font-size: 1.95rem;
+		font-weight: 700;
+		line-height: 1.875rem;
+		text-decoration: none;
+	}
+}
+@media (min-width: 1240px) {
+	.icons_list {
+		margin: 0 auto 3.75rem;
+	}
+	.public_intro {
+		padding: 6.25rem 3.125rem 0;
+		max-width: 62.5rem;
+	}
+	.bigan_title {
+		margin: 0 0 3.75rem;
+		font-size: 5.25rem;
+	}
+}
+@media (min-width: 768px) {
+	.item_icon {
+		height: 6.25rem;
+		width: 6.25rem;
+	}
+	.icons_list {
+		margin: 0 auto 3.125rem;
+	}
+	.bigan_title {
+		margin: 0 0 3.125rem;
+	}
+	.bigan_desc {
+		max-width: 25rem;
+		margin: 0 auto 3.125rem;
+	}
+}
+@media (min-width: 500px) {
+	.icons_list {
+		max-width: 37.5rem;
+	}
+	.icons_item {
+		flex: 1 0 25%;
+		padding: 0;
+		max-width: 25%;
+		width: 25%;
+	}
+	.public_intro {
+		max-width: 48.75rem;
+		padding: 5.9375rem 3.125rem 0;
+	}
+	.bigan_title {
+		margin: 0 0 3.75rem;
+		font-size: 4.75rem;
+	}
+	.bigan_desc {
+		font-weight: 400;
+		font-size: 1.25rem;
+		line-height: 1.875rem;
+	}
+}

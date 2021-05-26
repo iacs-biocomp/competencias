@@ -11,7 +11,7 @@ interface IComptEdit extends ICompetencia {
 @Component({
 	selector: 'table-competencias',
 	templateUrl: './table-competencias.component.html',
-	styleUrls: ['./table-competencias.component.css'],
+	styleUrls: ['./table-competencias.component.scss'],
 })
 export class TableCompetenciasComponent implements OnInit {
 	compeToAdd: ICompetencia[] = [];

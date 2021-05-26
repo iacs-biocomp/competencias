@@ -25,7 +25,7 @@ type EvaluarCtrlView = {
 @Component({
 	selector: 'app-evaluar-ev',
 	templateUrl: './evaluar-ev.component.html',
-	styleUrls: ['./evaluar-ev.component.css'],
+	styleUrls: ['./evaluar-ev.component.scss'],
 })
 export class EvaluarEvConcretaComponent implements OnInit {
 	evId = this.route.snapshot.paramMap.get(evId)!;

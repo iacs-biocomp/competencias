@@ -6,7 +6,7 @@ import { UserDataService } from '../user-data.service';
 @Component({
 	selector: 'mis-datos',
 	templateUrl: './mis-datos.component.html',
-	styleUrls: ['./mis-datos.component.css'],
+	styleUrls: ['./mis-datos.component.scss'],
 })
 export class MisDatosComponent implements OnInit {
 	userData?: IUserJson;

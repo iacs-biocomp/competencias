@@ -8,7 +8,7 @@ import { ComportService } from '../../../comportamientos-admin/services/comport.
 import { NivelService } from '../../../niveles-admin/services/nivel.service';
 import { DbData } from '../new-ev-model.component';
 
-type MiCompetencia = {
+type MICompetencia = {
 	nivObjetivo?: INivel;
 } & ICompetencia;
 type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
@@ -28,28 +28,25 @@ type MiComportamiento = {
 type CvChangeMyName = {
 	//TODO: Tsdoc
 	modelView: IRefModel | undefined;
+	competenciasModelo: ICompetencia[] | undefined;
 };
 
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
 	selector: 'app-view-edit-model [modoEdicion] [evModel]',
 	templateUrl: './view-edit-model.component.html',
-	styleUrls: ['./view-edit-model.component.css'],
+	styleUrls: ['./view-edit-model.component.scss'],
 })
 export class ViewEditModelComponent implements OnInit {
+	/** Indica si el componente ha sido inicializado y se puede renderizar la vista */
+	initialized = false;
 	dbData!: Omit<DbData, 'modelToAdd'>;
 	@Input() modoEdicion!: boolean;
 	@Input() evModel!: BehaviorSubject<IRefModel>;
 
-	cv: CvChangeMyName = {
-		modelView: undefined,
-	};
+	cv!: CvChangeMyName;
 	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
 	evModelIndx!: IModelBasicIndxDTO;
-	/**
-	 * @deprecated Usar modelo en vez de competencias selecionadas
-	 */
-	competenciasSelect: MiCompetencia[] = [];
 	/** Guarda la lista de comportamientos seleccionados */
 	comportamientosSelect: MiComportamiento[] = [];
 
@@ -67,8 +64,9 @@ export class ViewEditModelComponent implements OnInit {
 		private comportSv: ComportService,
 	) {}
 
+	/** Función que se ejecuta cuando se va a construir el componente,
+	 * al ser asincrona la vista no debe mostrarse si este metodo no ha acabado*/
 	async ngOnInit(): Promise<void> {
-		console.log('start on init edit');
 		console.log(this.evModel);
 		const promises = await Promise.all([
 			this.catCompService.getAll(),
@@ -82,11 +80,13 @@ export class ViewEditModelComponent implements OnInit {
 			comports: promises[2],
 			niveles: promises[3],
 		};
-		this.competenciasSelect = this.getCompet(this.evModel.value);
 		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel.value);
-		this.cv.modelView = this.evModel.value;
+		this.cv = {
+			modelView: this.evModel.value,
+			competenciasModelo: this.getCompet(this.evModel.value),
+		};
+		this.initialized = true;
 		console.log(this.evModelIndx);
-		console.log('end on init edit');
 	}
 
 	/**

@@ -19,7 +19,7 @@ type DbData = {
 @Component({
 	selector: 'app-layout-test',
 	templateUrl: './layout-test.component.html',
-	styleUrls: ['./layout-test.component.css'],
+	styleUrls: ['./layout-test.component.scss'],
 })
 export class LayoutTestComponent implements OnInit {
 	constructor() {

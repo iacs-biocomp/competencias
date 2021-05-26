@@ -21,7 +21,8 @@
 		"test:e2e": "jest --config ./test/jest-e2e.json",
 		"migration:generate": "ts-node node_modules/.bin/typeorm migration:generate --config ./orm.config.json --name",
 		"migration:run": "ts-node node_modules/.bin/typeorm migration:run --config ./orm.config.json",
-		"migration:revert": "ts-node node_modules/.bin/typeorm migration:revert --config ./orm.config.json"
+		"migration:revert": "ts-node node_modules/.bin/typeorm migration:revert --config ./orm.config.json",
+		"nest": "nest"
 	},
 	"dependencies": {
 		"@aml360/nestjs-compression": "^6.0.103",

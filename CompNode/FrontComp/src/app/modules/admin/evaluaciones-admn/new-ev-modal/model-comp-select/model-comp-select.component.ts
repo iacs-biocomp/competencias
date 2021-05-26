@@ -11,7 +11,7 @@ type CompetenciaCtrlView = {
 @Component({
 	selector: 'app-model-comp-select',
 	templateUrl: './model-comp-select.component.html',
-	styleUrls: ['./model-comp-select.component.css'],
+	styleUrls: ['./model-comp-select.component.scss'],
 })
 export class ModelCompSelectComponent implements OnInit {
 	@Input() catComp!: ICatComp;

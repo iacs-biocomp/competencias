@@ -1,5 +1,5 @@
-import { WithOptional } from 'sharedInterfaces/Utility';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from './interfaces/Entity';
+import { WithOptional } from './interfaces/Utility';
 
 export type changeMyName = {
 	//TODO: Tsdoc (1)
@@ -19,6 +19,7 @@ export type changeMyName = {
 export function findNivelById(niveles: INivel[], nivCode: string): INivel | undefined {
 	return niveles.find(nivel => nivel.code === nivCode);
 }
+
 /**
  * Busca una competencia en un array de competencias donde le indicamos el id de la competencia
  *
@@ -29,6 +30,7 @@ export function findNivelById(niveles: INivel[], nivCode: string): INivel | unde
 export function findCompById(competencias: ICompetencia[], compId: string): ICompetencia | undefined {
 	return competencias.find(comp => comp.id === compId);
 }
+
 /**
  * Calcula la maxima puntuación que un trabajador puede tener si todos los apartados que son positivos son evaluados al maximo y los negativos al minimo
  */
@@ -51,6 +53,19 @@ export function maxYmin(data: changeMyName) {
 		return { max: suma, min: sumaMin };
 	})(multOrderded);
 	return maxPunt;
+}
+
+/**
+ * Concatena los arrays de comportamientos que puedan tener varios submodelos, con la MISMA competencia @see {@link ISubModel}
+ * @param comp La competencia con la que se filtran los subModelos
+ * @param subModels Array de subModelos del cual se devuelven sus comportamientos (concatenados donde comp==subModel.comp)
+ * @returns El array de comportamientos que tiene esa competencia
+ */
+export function getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
+	const subModelos = findSubModels(subModels, comp);
+	let comports: IComportamiento[] = [];
+	subModelos.forEach(s => (comports = comports.concat(s.comportamientos)));
+	return comports;
 }
 
 /**

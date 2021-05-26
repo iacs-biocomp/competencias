@@ -5,7 +5,7 @@ import { NivelService } from '../../../niveles-admin/services/nivel.service';
 @Component({
   selector: 'app-model-nivel4-comp-select',
   templateUrl: './model-nivel4-comp-select.component.html',
-  styleUrls: ['./model-nivel4-comp-select.component.css']
+  styleUrls: ['./model-nivel4-comp-select.component.scss']
 })
 export class ModelNivel4CompSelectComponent implements OnInit {
 	@Input() competenciasModelos!: ICompetencia[];

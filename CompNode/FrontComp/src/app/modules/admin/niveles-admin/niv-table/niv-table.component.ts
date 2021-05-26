@@ -12,7 +12,7 @@ export interface INivelToAdd extends Omit<INivel, 'id'> {}
 @Component({
 	selector: 'app-niv-table',
 	templateUrl: './niv-table.component.html',
-	styleUrls: ['./niv-table.component.css'],
+	styleUrls: ['./niv-table.component.scss'],
 })
 export class NivTableComponent implements OnInit {
 	constructor(private nivelService: NivelService) {}
