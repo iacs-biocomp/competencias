@@ -74,6 +74,8 @@ export class NewEvModalComponent implements OnInit {
 		return this.rangesForm.valid;
 	}
 
+
+
 	nextModal() {}
 
 	async save() {
