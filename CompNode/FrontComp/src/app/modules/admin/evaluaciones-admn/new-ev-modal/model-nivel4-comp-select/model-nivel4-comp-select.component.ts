@@ -16,10 +16,13 @@ export class ModelNivel4CompSelectComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 		if (!this.competenciasModelos)
-		throw new Error('Debes elegir una competencia como mínimo');
+			throw new Error('Debes elegir una competencia como mínimo');
 		this.niveles = await this.nivelSv.getAll();
   }
 
+	/** Method that save all the info evaluation and creates it*/
+	saveDataEval(){
 
 
+	}
 }

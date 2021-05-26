@@ -44,10 +44,10 @@ export class ModelCompSelectComponent implements OnInit {
 		);
 	}
 	/**
-	 * Se hace una copia del modelo de referencia, se buscan los submodelos con esa/esas
-	 * competencia/s id y devuelve los que NO coincidan
+	 * A copy of the reference model is stored, submodels are searched with that/those competence/cies id
+	 * and returns those that DO NOT match
 	 *
-	 * @param competencias La competencia o competencias que se quieren buscar
+	 * @param competencias the competence/ or competencies that you want to look for in the subModel
 	 */
 	getCompetsNotMatch(competencias: ICompetencia[]) {
 		const modelToSend = { ...this.modelReferenceShow };
@@ -58,8 +58,9 @@ export class ModelCompSelectComponent implements OnInit {
 	}
 
 	/**
-	 * Sirve para seleccionar las competencias de la evaluacion
-	 * @param comp la competencia que se quiere quitar o añadir
+	 * Used for select the competence or competencies for the current evaluation
+	 *
+	 * @param comp the competence you want to add or remove to the array
 	 */
 	toggleCompet(comp: ICompetencia) {
 		const arrToPush = this.competCtl.competenciasModelos;
@@ -71,5 +72,6 @@ export class ModelCompSelectComponent implements OnInit {
 			arrToPush.splice(index, 1);
 			console.log(this.competCtl.competenciasModelos);
 		}
+//		console.log(this.competCtl.competenciasModelos);
 	}
 }
