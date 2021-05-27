@@ -56,6 +56,8 @@ export class ViewEditModelComponent implements OnInit {
 		nivSelected: undefined,
 		comportsSelected: [],
 	};
+	collapseIdObj= {
+	}
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -175,6 +177,14 @@ export class ViewEditModelComponent implements OnInit {
 		arrayOfComports = Object.keys(comportIndxObj).map(key => comportIndxObj[key]);
 		return arrayOfComports;
 	}
+	/**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
+	collapseId(compId: string, nivelCode: string) {
+		// TODO: Cache
+		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
+	}
+
+
+
 	//TODO: Completar y pasar a funciones genericas
 
 	keysToArray<T extends Object, T1>(obj: T): T1[] {
