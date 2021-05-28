@@ -1,12 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UnprocessableEntityException, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EvModel } from 'src/entity';
+import { INewEvModelDTO } from 'sharedInterfaces/DTO';
+import { EvModel, SubModel } from 'src/entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { EvModelRepo } from './modelos.repository';
 import { SubModelRepo } from './subModel.repository';
 
 //Probablemente mejor un picker en vez de omit para quitar los metodos
-type NewModelDTO = Omit<EvModel, 'evs'>;
 @Controller('nest/modelos')
 export class ModelosController {
 	constructor(
@@ -49,15 +49,30 @@ export class ModelosController {
 		});
 	}
 
-	// TODO: Crear otro endpoint para modelos de referencia o con queryparam
 	@Post('')
-	async newModel(@Body() modeloDto: NewModelDTO): Promise<boolean> {
+	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReference?: boolean): Promise<boolean> {
 		console.log(modeloDto);
+		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
+		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
+		if (isReference) {
+			if (!!this.modelRepo.findOne({ catComp: cComp, reference: true })) {
+				throw new UnprocessableEntityException('Ya se ha creado el modelo de referencia de esa catComp');
+			}
+		}
+		/** El modelo que se va a guardar en la db*/
 		let evModel = new EvModel();
-		evModel.catComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
-		evModel.subModels = modeloDto.subModels;
-		evModel.reference = true;
+		evModel.catComp = cComp;
+		const subModels = evModel.subModels.map(sub => {
+			let mutSub = new SubModel();
+			mutSub.competencia = sub.competencia;
+			mutSub.comportamientos = sub.comportamientos;
+			mutSub.nivel = sub.nivel;
+			return mutSub;
+		});
+		evModel.subModels = subModels;
+		evModel.reference = isReference;
 		await this.modelRepo.save(evModel);
+		// Se guardan los submodelos con la pk del modelo como fk
 		await Promise.all(
 			evModel.subModels.map(subModel => {
 				subModel.modelos = [evModel];
@@ -65,8 +80,10 @@ export class ModelosController {
 			}),
 		);
 		return true;
-		// * Si hay que guardar los submodelos por separado, ¿posible error al estar el array en null?
-		// evModel.subModels.forEach(subM => subM.modelos.push(evModel));
-		// this.subModelRepo.save(evModel.subModels);
+	}
+	@Post('')
+	editModel(@Body() modeloDto: INewEvModelDTO): boolean {
+		//TODO: Completar
+		return false;
 	}
 }

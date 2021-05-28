@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { findSubModels, getAllComportsOfComp } from 'sharedCode/Utility';
 import { IModelBasicIndxDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../../cat-admn/services/CatCompetenciales.service';
@@ -31,6 +32,11 @@ type CvChangeMyName = {
 	competenciasModelo: ICompetencia[] | undefined;
 };
 
+interface ICollapseId extends Function {
+	(compId: string, nivelCode: string): string;
+	texto: string;
+}
+
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
 	selector: 'app-view-edit-model [modoEdicion] [evModel]',
@@ -56,8 +62,16 @@ export class ViewEditModelComponent implements OnInit {
 		nivSelected: undefined,
 		comportsSelected: [],
 	};
-	collapseIdObj= {
-	}
+
+	collapseId: ICollapseId = (() => {
+		let counter = <ICollapseId>((compId: string, nivelCode: string) => {
+			console.log(self);
+			return `coll${compId.replace('\u0027', '')}${nivelCode}`;
+		});
+		counter.texto = 'textoFactory';
+		counter('21', '21');
+		return counter;
+	})();
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -91,6 +105,10 @@ export class ViewEditModelComponent implements OnInit {
 		console.log(this.evModelIndx);
 	}
 
+	//Se redeclaran para que la vista pueda acceder a ellas
+	findSubModels = findSubModels;
+	getAllComportsOfComp = getAllComportsOfComp;
+
 	/**
 	 * Mapea un modelo de tipo IRefModel a IModelBasicIndxDTO
 	 * @param modelToMap Modelo de tipo IRefModel (Con subModelos) que se quiere mapear
@@ -123,19 +141,6 @@ export class ViewEditModelComponent implements OnInit {
 	}
 
 	/**
-	 * Concatena los arrays de comportamientos que puedan tener varios submodelos, con la MISMA competencia @see {@link ISubModel}
-	 * @param comp La competencia con la que se filtran los subModelos
-	 * @param subModels Array de subModelos del cual se devuelven sus comportamientos (concatenados donde comp==subModel.comp)
-	 * @returns El array de comportamientos que tiene esa competencia
-	 */
-	getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
-		const subModelos = this.findSubModels(subModels, comp);
-		let comports: IComportamiento[] = [];
-		subModelos.forEach(s => (comports = comports.concat(s.comportamientos)));
-		return comports;
-	}
-
-	/**
 	 * Elimina el comportamiento seleccionado de la lista de comportamientos que pertenecen a ese submodelo en concreto
 	 * @param comport El comportamiento a eliminar del array
 	 * @param comp La competencia usada para filtrar
@@ -160,14 +165,6 @@ export class ViewEditModelComponent implements OnInit {
 		console.log(submodelFind);
 		return submodelFind;
 	}
-	/**
-	 * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s
-	 * @param comp La competencia que se usará como filtrado
-	 * @returns El array de subModelos que tienen esa competencia
-	 */
-	findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
-		return subModels.filter(subModel => subModel.competencia?.id === comp.id);
-	}
 
 	/**
 	 * @deprecated Usar subModelos y sus funciones
@@ -177,13 +174,11 @@ export class ViewEditModelComponent implements OnInit {
 		arrayOfComports = Object.keys(comportIndxObj).map(key => comportIndxObj[key]);
 		return arrayOfComports;
 	}
-	/**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
-	collapseId(compId: string, nivelCode: string) {
-		// TODO: Cache
-		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
-	}
-
-
+	// /**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
+	// collapseId(compId: string, nivelCode: string) {
+	// 	// TODO: Cache
+	// 	return `coll${compId.replace('\u0027', '')}${nivelCode}`;
+	// }
 
 	//TODO: Completar y pasar a funciones genericas
 

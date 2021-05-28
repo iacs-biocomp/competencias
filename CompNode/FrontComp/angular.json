@@ -72,7 +72,8 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "FrontComp:build"
+						"browserTarget": "FrontComp:build",
+						"aot": true
 					},
 					"configurations": {
 						"production": {

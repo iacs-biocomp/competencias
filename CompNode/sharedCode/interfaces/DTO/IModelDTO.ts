@@ -1,4 +1,4 @@
-import { ICompetencia, IComportamiento, IEvModel } from '../Entity/IEvaluaciones';
+import { ICompetencia, IComportamiento, IEvModel, INivel } from '../Entity/IEvaluaciones';
 import { RequiredAndNotNull } from '../Utility';
 
 export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id'>;
@@ -8,6 +8,7 @@ export type IRefModel = RequiredAndNotNull<IEvModel>;
 
 type ICompNoId = Omit<ICompetencia, 'id' | 'createdAt'>;
 type IComportNoId = Omit<IComportamiento, 'id' | 'subModels'>;
+type INivNoId = Omit<INivel, 'id' | 'subModels'>;
 
 export type IModelBasicIndxDTO = Omit<RequiredAndNotNull<IEvModel>, 'subModels' | 'evs'> & {
 	comps: {
@@ -35,12 +36,16 @@ export type IFullModelIndxDTO = Omit<RequiredAndNotNull<IEvModel>, 'subModels' |
 			/** Keys de la competencia */
 			[P in keyof ICompNoId]: ICompNoId[P];
 		} & {
-			/** Lista de comportamientos que tiene esta competencia asociados */
-			comports: {
-				/** Id del comportamiento */
-				[key: string]: {
-					/** Keys del comportamiento */
-					[P in keyof IComportNoId]: IComportNoId[P];
+			niveles: {
+				[P in keyof INivNoId]: INivNoId[P];
+			} & {
+				/** Lista de comportamientos que tiene esta competencia asociados */
+				comports: {
+					/** Id del comportamiento */
+					[key: string]: {
+						/** Keys del comportamiento */
+						[P in keyof IComportNoId]: IComportNoId[P];
+					};
 				};
 			};
 		};
@@ -53,6 +58,12 @@ export type IModelBasicDTO = Omit<RequiredAndNotNull<IEvModel>, 'subModels'> & {
 		comports: IComportamiento[];
 	}[];
 };
+
+/**
+ * Type used for creating a new evModel, even if is a reference one or not
+ * Used in enpoints: [/nest/modelos {POST}, /nest/modelos {PUT}]
+ */
+export type INewEvModelDTO = RequiredAndNotNull<Omit<IEvModel, 'evs' | 'id'>>;
 
 // const modelo2: IModelBasicDTO = {
 //   id: '22',

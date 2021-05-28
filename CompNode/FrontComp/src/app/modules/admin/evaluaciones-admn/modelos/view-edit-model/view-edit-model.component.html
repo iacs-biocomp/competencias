@@ -60,7 +60,7 @@
 										</button>
 									</h2>
 									<div
-										[id]="'coll' + comp.id.replace('\u0027', '') + nivel.code"
+										[id]="collapseId(comp.id, nivel.code)"
 										class="accordion-collapse collapse"
 										[attr.aria-labelledby]="'headerLast' + i"
 										data-bs-parent="#accordionLast"
