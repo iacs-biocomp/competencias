@@ -3,12 +3,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<ng-template [ngIf]="modoEdicion" [ngIfElse]="noEdicion">
-					<h2 class="modal-title">Edite el modelo de {{ evModel.value.catComp.id }}</h2>
+					<h2 class="modal-title">Edite el modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}</h2>
 					<button class="btn btn-success">Añadir competencias</button>
 				</ng-template>
 				<ng-template #noEdicion>
-					<h2>Modelo de {{ evModel.value.catComp.id }}</h2>
-					<!-- Añadir descripción de la catComp? -->
+					<h2>Modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}</h2>
 				</ng-template>
 			</div>
 			<div class="modal-body">
