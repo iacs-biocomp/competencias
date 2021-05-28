@@ -12,7 +12,7 @@ enum EvalStatus {
 @Component({
 	selector: 'app-mis-evaluaciones',
 	templateUrl: './mis-evaluaciones.component.html',
-	styleUrls: ['./mis-evaluaciones.component.css'],
+	styleUrls: ['./mis-evaluaciones.component.scss'],
 })
 export class MisEvaluacionesComponent implements OnInit {
 	/** Inicializa el enum EvaStatus  */

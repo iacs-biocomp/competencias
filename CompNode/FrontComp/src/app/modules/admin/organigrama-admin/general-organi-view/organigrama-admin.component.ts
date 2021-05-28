@@ -46,7 +46,7 @@ type CtlView = {
 @Component({
 	selector: 'app-organigrama-admin',
 	templateUrl: './organigrama-admin.component.html',
-	styleUrls: ['./organigrama-admin.component.css'],
+	styleUrls: ['./organigrama-admin.component.scss'],
 })
 export class OrganiGeneralView implements OnInit, OnDestroy {
 	@ViewChild('closeModal') closeModalAddRel!: ElementRef;

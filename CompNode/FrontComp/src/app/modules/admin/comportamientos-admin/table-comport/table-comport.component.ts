@@ -26,7 +26,7 @@ interface IComportEdit extends IComportamiento {
 @Component({
 	selector: 'app-table-comport',
 	templateUrl: './table-comport.component.html',
-	styleUrls: ['./table-comport.component.css'],
+	styleUrls: ['./table-comport.component.scss'],
 })
 export class TableComportComponent implements OnInit, OnDestroy {
 	comportToAdd: IComportamiento[] = [];

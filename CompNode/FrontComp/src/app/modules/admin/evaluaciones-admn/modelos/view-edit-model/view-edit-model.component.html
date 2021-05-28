@@ -1,85 +1,85 @@
-<!--ASIGNAR COMPORTAMIENTOS -->
-<div class="modal-dialog">
-	<div class="modal-content">
-		<div class="modal-header">
-			<h2 class="modal-title">
-				Haga click para añadir los comportamientos que tendrán estas competencias por niveles
-			</h2>
-		</div>
-		<div class="modal-body">
-			<div class="accordion" id="accordionCompo">
-				<div class="accordion-body">
-					<div class="accordion-item" *ngFor="let comp of competenciasSelect; let i = index">
-						<h2 class="accordion-header" [id]="'headerComp ' + i">
-							<button
-								class="accordion-button collapsed"
-								data-bs-toggle="collapse"
-								[attr.data-bs-target]="'#collCompo' + i"
-								[attr.aria-controls]="'collCompo' + i"
-							>
-								{{ 'Competencia: ' + comp.descripcion }}
-							</button>
-						</h2>
-
-						<div
-							[id]="'collCompo' + i"
-							class="accordion-collapse collapse"
-							[attr.aria-labelledby]="'headerComp' + i"
-							data-bs-parent="#accordionCompo"
+<div class="row" *ngIf="initialized">
+	<div class="card">
+		<div class="modal-content">
+			<div class="modal-header">
+				<ng-template [ngIf]="modoEdicion" [ngIfElse]="noEdicion">
+					<h2 class="modal-title">Edite el modelo de {{ evModel.value.catComp.id }}</h2>
+					<button class="btn btn-success">Añadir competencias</button>
+				</ng-template>
+				<ng-template #noEdicion>
+					<h2>Modelo de {{ evModel.value.catComp.id }}</h2>
+					<!-- Añadir descripción de la catComp? -->
+				</ng-template>
+			</div>
+			<div class="modal-body">
+				<h4>COMPETENCIAS del modelo:</h4>
+				<div class="accordion-item" *ngFor="let comp of cv.competenciasModelo; let i = index">
+					<h2 class="accordion-header" [id]="'headerComp ' + i">
+						<button
+							class="accordion-button collapsed"
+							data-bs-toggle="collapse"
+							[attr.data-bs-target]="'#collCompo' + i"
+							[attr.aria-controls]="'collCompo' + i"
 						>
-							<div class="accordion-body">
-								<div class="accordion" id="accordionLast">
-									<div class="accordion-body">
-										<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
-											<h2 class="accordion-header" [id]="'headerLast ' + i">
-												<button
-													class="accordion-button collapsed"
-													data-bs-toggle="collapse"
-													[attr.data-bs-target]="'#collLast' + i"
-													[attr.aria-controls]="'collLast' + i"
-												>
-													{{ ' Nivel: ' + nivel.code }}
-													<button
-														*ngIf="modoEdicion"
-														(click)="
-															comportCtl.nivSelected = nivel;
-															comportCtl.compSelected = comp;
-															comportamientosSelect = [];
-															comportCtl.comportsSelected = []
-														"
-														class="btn btn-primary me-2"
-														data-bs-toggle="modal"
-														data-bs-target="#removeModal"
-														style="margin-left: 30px"
-													>
-														<span title="Añadir comportamiento"> Añadir comportamientos </span>
-													</button>
-												</button>
-											</h2>
-											<div
-												[id]="'collLast' + i"
-												class="accordion-collapse collapse"
-												[attr.aria-labelledby]="'headerLast' + i"
-												data-bs-parent="#accordionLast"
+							{{ comp.descripcion }}
+						</button>
+					</h2>
+
+					<div
+						[id]="'collCompo' + i"
+						class="accordion-collapse collapse"
+						[attr.aria-labelledby]="'headerComp' + i"
+						data-bs-parent="#accordionCompo"
+					>
+						<div class="accordion-body">
+							<div class="accordion" id="accordionLast">
+								<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
+									<h2 class="accordion-header" [id]="'headerLast ' + i">
+										<button
+											class="accordion-button collapsed"
+											data-bs-toggle="collapse"
+											[attr.data-bs-target]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
+											[attr.aria-controls]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
+										>
+											{{ ' Nivel: ' + nivel.code }}
+											<button
+												*ngIf="modoEdicion"
+												(click)="
+													comportCtl.nivSelected = nivel;
+													comportCtl.compSelected = comp;
+													comportamientosSelect = [];
+													comportCtl.comportsSelected = []
+												"
+												class="btn btn-primary me-2"
+												data-bs-toggle="modal"
+												data-bs-target="#removeModal"
+												style="margin-left: 30px"
 											>
-												<div class="accordion-body">
-													<ul class="list-group">
-														<li
-															class="list-group-item p-3"
-															aria-current="true"
-															*ngFor="
-																let comport of keysToArrayComport(evModelIndx.comps[comp.id].comports);
-																let i = index
-															"
-														>
-															{{ comport.descripcion }}
-															<button class="btn btn-danger me-2" style="float: right">
-																<span class="material-icons" title="Eliminar comportamiento"> remove </span>
-															</button>
-														</li>
-													</ul>
-												</div>
-											</div>
+												<span title="Añadir comportamiento"> Añadir comportamientos </span>
+											</button>
+										</button>
+									</h2>
+									<div
+										[id]="collapseId(comp.id, nivel.code)"
+										class="accordion-collapse collapse"
+										[attr.aria-labelledby]="'headerLast' + i"
+										data-bs-parent="#accordionLast"
+									>
+										<div class="accordion-body">
+											<ul class="list-group">
+												<li
+													class="list-group-item p-3"
+													aria-current="true"
+													*ngFor="
+														let comport of findSubModel(evModel.value.subModels, comp, nivel)?.comportamientos
+													"
+												>
+													{{ comport.descripcion }}
+													<button *ngIf="modoEdicion" class="btn btn-danger me-2" style="float: right">
+														<span class="material-icons" title="Eliminar comportamiento"> remove </span>
+													</button>
+												</li>
+											</ul>
 										</div>
 									</div>
 								</div>
@@ -88,12 +88,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-				<button class="btn arrowBtn">
-					<span class="material-icons"> arrow_back </span>
-				</button>
+			<div class="modal-footer" *ngIf="modoEdicion">
 				<button class="btn btn-outline-success">
-					<span> CREAR MODELO </span>
+					<span> CONFIRMAR CAMBIOS </span>
 				</button>
 			</div>
 		</div>

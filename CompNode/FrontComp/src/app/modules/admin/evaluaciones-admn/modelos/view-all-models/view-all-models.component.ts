@@ -14,7 +14,7 @@ type ViewProps = {
 @Component({
 	selector: 'app-view-all-models',
 	templateUrl: './view-all-models.component.html',
-	styleUrls: ['./view-all-models.component.css'],
+	styleUrls: ['./view-all-models.component.scss'],
 })
 export class ViewAllModelsComponent implements OnInit {
 	renderViewModels: boolean = false;

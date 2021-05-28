@@ -11,7 +11,7 @@ export type evAddDTO = Omit<IEvaluacion, 'id'>;
 @Component({
 	selector: 'app-new-ev-modal',
 	templateUrl: './new-ev-modal.component.html',
-	styleUrls: ['./new-ev-modal.component.css'],
+	styleUrls: ['./new-ev-modal.component.scss'],
 })
 export class NewEvModalComponent implements OnInit {
 	/** Metodo que se ejecuta cuando se guarda una evaluación El componente padre debe pasarlo como parametro */
@@ -73,6 +73,8 @@ export class NewEvModalComponent implements OnInit {
 		if (!this.catCompSelected) return false;
 		return this.rangesForm.valid;
 	}
+
+
 
 	nextModal() {}
 

@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.css'],
+	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 	/**URL previa, por defecto es `/`, tiene que cambiarse en ngOnInit y pasar la url en el guard*/

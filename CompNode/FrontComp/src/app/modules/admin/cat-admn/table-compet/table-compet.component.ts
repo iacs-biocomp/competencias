@@ -8,7 +8,7 @@ interface ICatCompetEdit extends ICatComp {
 @Component({
 	selector: 'app-table-compet',
 	templateUrl: './table-compet.component.html',
-	styleUrls: ['./table-compet.component.css'],
+	styleUrls: ['./table-compet.component.scss'],
 })
 export class TableCompetComponent implements OnInit {
 	constructor(private catCompService: CatCompetencialesService) {}

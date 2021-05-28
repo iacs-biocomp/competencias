@@ -8,16 +8,16 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title" id="selecCompModalLabel">Selecciona las competencias de la evaluación</h2>
+				<h2 class="modal-title" id="selecCompModalLabel">Seleccione las competencias de la evaluación</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: competenciasModelo.includes(competencia) }"
-						*ngFor="let competencia of competenciasModelo"
+						[ngClass]="{ active: competCtl.competenciasModelos.includes(competencia)}"
+						*ngFor="let competencia of competCtl.competenciasRepetidas"
 						class="list-group-item p-3"
-						(click)="toggleComp(competencia)"
+						(click)="toggleCompet(competencia)"
 					>
 						{{ competencia.descripcion }}
 					</li>
@@ -26,8 +26,18 @@
 
 			<div class="modal-footer">
 				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button #nextModalBtn type="button" class="btn btn-primary">Guardar</button>
+				<button
+					#nextModalBtn
+					data-bs-toggle="modal"
+					data-bs-target="#selectNivelCompsModal"
+					class="btn btn-primary"
+					(click)="closeModal.click()"
+				>
+				Siguiente
+			</button>
 			</div>
 		</div>
 	</div>
 </div>
+<app-model-nivel4-comp-select *ngIf="!!competCtl.competenciasModelos" [competenciasModelos]="competCtl.competenciasModelos"></app-model-nivel4-comp-select>
+

@@ -9,7 +9,7 @@ interface IContracEdit extends ICatContr {
 @Component({
 	selector: 'app-table-contrac',
 	templateUrl: './table-contrac.component.html',
-	styleUrls: ['./table-contrac.component.css'],
+	styleUrls: ['./table-contrac.component.scss'],
 })
 export class TableContracComponent implements OnInit {
 	catContracts: ICatContr[] = [];

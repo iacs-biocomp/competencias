@@ -4,7 +4,7 @@ import { ICompetencia } from 'sharedInterfaces/Entity';
 @Component({
 	selector: 'app-curr-compet',
 	templateUrl: './curr-compet.component.html',
-	styleUrls: ['./curr-compet.component.css'],
+	styleUrls: ['./curr-compet.component.scss'],
 })
 /**
  * Componente que muestra las competencias actuales que tiene un trabajador

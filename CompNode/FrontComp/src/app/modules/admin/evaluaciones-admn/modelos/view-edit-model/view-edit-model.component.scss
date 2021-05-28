@@ -1,0 +1,27 @@
+.card {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+	padding: 1rem;
+	margin: 1rem;
+	background-color: rgba(232, 250, 255, 0.15);
+	border: 0.15rem solid #09548d;
+	border-radius: 1.25rem;
+	transition: ease 0.5s;
+}
+
+.card:hover {
+	box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.6);
+}
+
+/*  this prevent text come out their container  */
+*{
+	white-space: initial;
+}
+
+.row{
+	width: 80%;
+	margin: auto;
+}
+
+.ips{
+	background-color: #e7f1ff;
+}

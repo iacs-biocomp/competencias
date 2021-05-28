@@ -6,7 +6,7 @@ import { environment as cnf } from 'src/environments/environment';
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css'],
+	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
 	title = 'Competencias';

@@ -6,7 +6,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 @Component({
 	selector: 'app-session',
 	templateUrl: './session.component.html',
-	styleUrls: ['./session.component.css'],
+	styleUrls: ['./session.component.scss'],
 })
 export class SessionComponent implements OnInit {
 	username: string = this.jwtService.getDecodedToken().username;

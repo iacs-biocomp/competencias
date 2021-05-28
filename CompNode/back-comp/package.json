@@ -21,7 +21,8 @@
 		"test:e2e": "jest --config ./test/jest-e2e.json",
 		"migration:generate": "ts-node node_modules/.bin/typeorm migration:generate --config ./orm.config.json --name",
 		"migration:run": "ts-node node_modules/.bin/typeorm migration:run --config ./orm.config.json",
-		"migration:revert": "ts-node node_modules/.bin/typeorm migration:revert --config ./orm.config.json"
+		"migration:revert": "ts-node node_modules/.bin/typeorm migration:revert --config ./orm.config.json",
+		"nest": "nest"
 	},
 	"dependencies": {
 		"@aml360/nestjs-compression": "^6.0.103",
@@ -71,6 +72,7 @@
 		"@types/supertest": "^2.0.11",
 		"@typescript-eslint/eslint-plugin": "^4.25.0",
 		"@typescript-eslint/parser": "^4.25.0",
+		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.27.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^3.4.0",
@@ -99,5 +101,10 @@
 		],
 		"coverageDirectory": "../coverage",
 		"testEnvironment": "node"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./CompNode/back-comp/node_modules/cz-conventional-changelog"
+		}
 	}
 }

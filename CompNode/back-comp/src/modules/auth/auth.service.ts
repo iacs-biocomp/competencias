@@ -16,11 +16,10 @@ export class AuthService {
 	) {}
 
 	async signup(signupDto: SignupDto) {
-		let usr = signupDto;
+		const usr = signupDto;
 		const userExists = await this.userRepository.findOne({
 			where: [{ username: usr.username }, { email: usr.email }],
 		});
-		//TODO: Añadir mismas comprobaciones que en angular, minimo caracteres usuario movil etc.
 		if (userExists) {
 			console.log('El usuario existe');
 			throw new ConflictException('username or email already exists');
@@ -56,7 +55,7 @@ export class AuthService {
 		if (!user.active) {
 			throw new UnauthorizedException('User not verified');
 		}
-		var isMatch;
+		let isMatch: boolean;
 		try {
 			isMatch = await compare(password, user.password);
 		} catch (error) {
@@ -89,7 +88,7 @@ export class AuthService {
 		if (!this._jwtService.verify(tokenStr)) {
 			return;
 		}
-		let tokenObj: IJwtPayload = <IJwtPayload>this._jwtService.decode(tokenStr);
+		let tokenObj: IJwtPayload = this._jwtService.decode(tokenStr) as IJwtPayload;
 		delete tokenObj.iat;
 		delete tokenObj.exp;
 		const token = this._jwtService.sign(tokenObj);

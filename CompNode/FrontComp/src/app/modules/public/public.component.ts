@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
 	selector: 'public-component',
 	templateUrl: 'public.component.html',
-	styleUrls: ['./public.component.css'],
+	styleUrls: ['./public.component.scss'],
 })
 export class PublicComponent implements OnInit {
 	//Test de imagenes random
