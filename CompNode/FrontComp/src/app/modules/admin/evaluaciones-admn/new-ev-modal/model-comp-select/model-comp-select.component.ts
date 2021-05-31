@@ -31,14 +31,14 @@ export class ModelCompSelectComponent implements OnInit {
 			throw new Error('Has renderizado el componente antes de mandarle la catComp o esta es undefined');
 		this.modelReferenceShow = await this.evModelSv.getOneReference(this.catComp.id);
 		this.competCtl.competenciasModelos = this.getCompetsOfModel(this.modelReferenceShow);
-	//	console.log(this.getCompetsNotSelected([{ id: "C9'", descripcion: 'ddassa' }]));
+		//	console.log(this.getCompetsNotSelected([{ id: "C9'", descripcion: 'ddassa' }]));
 	}
 	//TODO: Tsdoc
 	getCompetsOfModel(model: IRefModel): ICompetencia[] {
 		this.competCtl.competenciasRepetidas = model.subModels.map(subModel => {
 			return subModel.competencia;
 		});
-	//	console.log(this.competCtl.competenciasModelos);
+		//	console.log(this.competCtl.competenciasModelos);
 		return this.competCtl.competenciasModelos.filter(
 			(compet, index) => this.competCtl.competenciasModelos.findIndex(f => compet.id === f.id) === index,
 		);
@@ -65,13 +65,13 @@ export class ModelCompSelectComponent implements OnInit {
 	toggleCompet(comp: ICompetencia) {
 		const arrToPush = this.competCtl.competenciasModelos;
 		const index = this.competCtl.competenciasModelos.indexOf(comp);
-		if (index == -1){
+		if (index == -1) {
 			arrToPush.push(comp);
 			console.log(this.competCtl.competenciasModelos);
 		} else {
 			arrToPush.splice(index, 1);
 			console.log(this.competCtl.competenciasModelos);
 		}
-//		console.log(this.competCtl.competenciasModelos);
+		//		console.log(this.competCtl.competenciasModelos);
 	}
 }

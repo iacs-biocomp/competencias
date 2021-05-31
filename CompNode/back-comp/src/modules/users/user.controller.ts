@@ -12,7 +12,7 @@ export class UserController {
 	}
 	@Get('allinfo/:username')
 	async getAllUserInfo(@Param('username') username: string): Promise<Trabajador> {
-		return 	Trabajador.findOne({
+		return Trabajador.findOne({
 			where: { user: username },
 			relations: ['periodos', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
 		});
