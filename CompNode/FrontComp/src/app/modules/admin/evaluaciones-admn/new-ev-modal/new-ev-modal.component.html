@@ -84,11 +84,11 @@
 						>Invalid Fecha final</mat-error
 					> -->
 				</mat-form-field>
-				<select class="form-select mb-2" [(ngModel)]="catCompSelected">
+				<select class="form-select mb-2" #selectCatComp (change)="setCatComp(selectCatComp.value)">
 					<option selected hidden disabled [value]="evModelSelected">
 						Seleccione la categoría competencial
 					</option>
-					<option *ngFor="let catComp of catComps" [ngValue]="catComp">{{ catComp.id }}</option>
+					<option *ngFor="let catComp of catComps" [value]="catComp.id">{{ catComp.id }}</option>
 				</select>
 			</div>
 
@@ -108,4 +108,7 @@
 		</div>
 	</div>
 </div>
-<app-model-comp-select *ngIf="!!catCompSelected" [catComp]="catCompSelected!"></app-model-comp-select>
+<app-model-comp-select
+	*ngIf="!!(catCompObs | async)"
+	[catCompObs]="catCompObs"
+></app-model-comp-select>

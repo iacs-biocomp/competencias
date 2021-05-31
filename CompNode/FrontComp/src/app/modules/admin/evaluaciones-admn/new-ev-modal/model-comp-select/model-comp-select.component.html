@@ -14,7 +14,7 @@
 			<div class="modal-body">
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: competCtl.competenciasModelos.includes(competencia)}"
+						[ngClass]="{ active: competCtl.competenciasModelos.includes(competencia) }"
 						*ngFor="let competencia of competCtl.competenciasRepetidas"
 						class="list-group-item p-3"
 						(click)="toggleCompet(competencia)"
@@ -32,13 +32,14 @@
 					data-bs-target="#selectNivelCompsModal"
 					class="btn btn-primary"
 					(click)="closeModal.click()"
-
 				>
-				Siguiente
-			</button>
+					Siguiente
+				</button>
 			</div>
 		</div>
 	</div>
 </div>
-<app-model-nivel4-comp-select *ngIf="!!competCtl.competenciasModelos" [competenciasModelos]="competCtl.competenciasModelos"></app-model-nivel4-comp-select>
-
+<app-model-nivel4-comp-select
+	*ngIf="!!competCtl.competenciasModelos"
+	[competenciasModelos]="competCtl.competenciasModelos"
+></app-model-nivel4-comp-select>

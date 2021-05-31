@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, IEvaluacion, IEvModel } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
@@ -27,7 +29,9 @@ export class NewEvModalComponent implements OnInit {
 	evModelSelected!: IEvModel;
 	/** Los rangos de fechas de esa evaluacion, periodo de propuesta, validación, valoración... */
 	rangesForm: FormGroup | undefined;
-
+	//TODO: Tsdoc
+	catCompObs = new BehaviorSubject<ICatComp | undefined>(undefined);
+	allReferenceModels: IRefModel[] = [];
 	constructor(
 		private evSv: EvaluacionesAdmService,
 		private evModelSv: EvModelsAdmnService,
@@ -36,9 +40,10 @@ export class NewEvModalComponent implements OnInit {
 	) {}
 
 	async ngOnInit(): Promise<void> {
-		const promises = await Promise.all([this.cCompSv.getAll(), this.evModelSv.getAll()]);
-		this.catComps = promises[0].sort((a, b) => a.id.localeCompare(b.id));
-		this.evModels = promises[1];
+		this.allReferenceModels = await this.evModelSv.getAllReference();
+		this.catComps = this.allReferenceModels.map(refModel => refModel.catComp);
+		console.log(this.catComps);
+		this.catComps = this.catComps.sort((a, b) => a.id.localeCompare(b.id));
 		// TODO: Añadir validadores que comprueben que las fechas de inicio y final esten en orden Ejemplo: propuestaEnd < validacionStart
 		// ?? Preguntar a vega si tiene que ser asi o pueden solaparse (propuestaEnd > validacionStart)
 		this.rangesForm = this.fb.group({
@@ -51,6 +56,8 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 		});
+
+		this.catCompObs.subscribe(c => console.log(c));
 	}
 
 	/**
@@ -95,5 +102,9 @@ export class NewEvModalComponent implements OnInit {
 		console.log(this.evToAdd);
 		const saved = await this.evSv.save(this.evToAdd);
 		if (saved) this.onEvSaved(); //Actualiza la vista del componente padre, se pasa función por parametro
+	}
+	setCatComp(idCatComp: string): void {
+		const cCompToSet = this.catComps.find(catComp => catComp.id === idCatComp);
+		this.catCompObs.next(cCompToSet);
 	}
 }

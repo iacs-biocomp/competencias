@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ObservableInput } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
@@ -10,12 +10,12 @@ type CompetenciaCtrlView = {
 };
 
 @Component({
-	selector: 'app-model-comp-select',
+	selector: 'app-model-comp-select [catCompObs]',
 	templateUrl: './model-comp-select.component.html',
 	styleUrls: ['./model-comp-select.component.scss'],
 })
 export class ModelCompSelectComponent implements OnInit {
-	@Input() catComp!: ICatComp;
+	@Input() catCompObs!: BehaviorSubject<ICatComp | undefined>;
 	//TODO: Tsdoc
 	modelReferenceShow!: IRefModel;
 	//TODO: Tsdoc
@@ -28,10 +28,12 @@ export class ModelCompSelectComponent implements OnInit {
 	constructor(private evModelSv: EvModelsAdmnService) {}
 
 	async ngOnInit(): Promise<void> {
-		if (!this.catComp)
+		if (!this.catCompObs.value)
 			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
-		this.modelReferenceShow = await this.evModelSv.getOneReference(this.catComp.id);
-		this.competCtl.competenciasModelos = this.getCompetsOfModel(this.modelReferenceShow);
+		this.catCompObs.subscribe(async cComp => {
+			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id);
+			this.competCtl.competenciasModelos = this.getCompetsOfModel(this.modelReferenceShow);
+		});
 		//	console.log(this.getCompetsNotSelected([{ id: "C9'", descripcion: 'ddassa' }]));
 	}
 	//TODO: Tsdoc
