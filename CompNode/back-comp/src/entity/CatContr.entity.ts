@@ -22,7 +22,7 @@ export class CatContr extends BaseEntity implements ICatContr {
 	@ApiProperty({ type: () => CatComp })
 	@ManyToOne(type => CatComp)
 	@JoinColumn()
-	catComp?: CatComp ;
+	catComp?: CatComp;
 
 	@ApiProperty({ type: () => PeriodoTrab })
 	@OneToMany(type => PeriodoTrab, periodo => periodo.catContr)

@@ -41,8 +41,8 @@ export const evRoutes: Routes = [
 		ViewAllModelsComponent,
 		ViewEditModelComponent,
 		ModelCompSelectComponent,
-  ModelNivel4CompSelectComponent,
-  SelectComportsModalComponent,
+		ModelNivel4CompSelectComponent,
+		SelectComportsModalComponent,
 		// LayoutTestComponent,
 	],
 	imports: [
