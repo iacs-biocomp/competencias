@@ -1,17 +1,19 @@
-<div class="row" *ngIf="initialized">
-	<div class="card">
-		<div class="modal-content">
-			<div class="modal-header">
-				<ng-template [ngIf]="modoEdicion" [ngIfElse]="noEdicion">
-					<h2 class="modal-title">Edite el modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}</h2>
-					<button class="btn btn-success">Añadir competencias</button>
-				</ng-template>
-				<ng-template #noEdicion>
-					<h2>Modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}</h2>
-				</ng-template>
-			</div>
-			<div class="modal-body">
-				<h4>COMPETENCIAS del modelo:</h4>
+<div class="card" *ngIf="initialized">
+	<div class="modal-content">
+		<div class="modal-header">
+			<ng-template [ngIf]="modoEdicion" [ngIfElse]="noEdicion">
+				<h2 class="modal-title">
+					Edite el modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}
+				</h2>
+				<button class="btn btn-success">Añadir competencias</button>
+			</ng-template>
+			<ng-template #noEdicion>
+				<h2>Modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}</h2>
+			</ng-template>
+		</div>
+		<div class="modal-body">
+			<h4>COMPETENCIAS del modelo:</h4>
+			<div class="accordion" id="accordionCompo">
 				<div class="accordion-item" *ngFor="let comp of cv.competenciasModelo; let i = index">
 					<h2 class="accordion-header" [id]="'headerComp ' + i">
 						<button
@@ -23,7 +25,6 @@
 							{{ comp.descripcion }}
 						</button>
 					</h2>
-
 					<div
 						[id]="'collCompo' + i"
 						class="accordion-collapse collapse"
@@ -34,13 +35,16 @@
 							<div class="accordion" id="accordionLast">
 								<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
 									<h2 class="accordion-header" [id]="'headerLast ' + i">
-										<button
-											class="accordion-button collapsed"
-											data-bs-toggle="collapse"
-											[attr.data-bs-target]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
-											[attr.aria-controls]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
-										>
-											{{ ' Nivel: ' + nivel.code }}
+										<div class="comports-toggle-header">
+											<button
+												class="accordion-button collapsed"
+												data-bs-toggle="collapse"
+												type="button"
+												[attr.data-bs-target]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
+												[attr.aria-controls]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
+											>
+												{{ ' Nivel: ' + nivel.code }}
+											</button>
 											<button
 												*ngIf="modoEdicion"
 												(click)="
@@ -49,14 +53,14 @@
 													comportamientosSelect = [];
 													comportCtl.comportsSelected = []
 												"
-												class="btn btn-primary me-2"
+												type="button"
+												class="btn btn-primary me-2 add-comports-btn"
 												data-bs-toggle="modal"
-												data-bs-target="#removeModal"
-												style="margin-left: 30px"
+												data-bs-target="#comportsModal"
 											>
 												<span title="Añadir comportamiento"> Añadir comportamientos </span>
 											</button>
-										</button>
+										</div>
 									</h2>
 									<div
 										[id]="collapseId(comp.id, nivel.code)"
@@ -87,11 +91,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer" *ngIf="modoEdicion">
-				<button class="btn btn-outline-success">
-					<span> CONFIRMAR CAMBIOS </span>
-				</button>
-			</div>
 		</div>
+		<div class="modal-footer" *ngIf="modoEdicion">
+			<button class="btn btn-outline-success">
+				<span> CONFIRMAR CAMBIOS </span>
+			</button>
+		</div>
+		<app-select-comports-modal [idModal]="'comportsModal'"></app-select-comports-modal>
 	</div>
 </div>

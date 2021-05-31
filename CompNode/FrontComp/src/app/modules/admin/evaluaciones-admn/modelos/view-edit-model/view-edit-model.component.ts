@@ -32,11 +32,6 @@ type CvChangeMyName = {
 	competenciasModelo: ICompetencia[] | undefined;
 };
 
-interface ICollapseId extends Function {
-	(compId: string, nivelCode: string): string;
-	texto: string;
-}
-
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
 	selector: 'app-view-edit-model [modoEdicion] [evModel]',
@@ -63,15 +58,12 @@ export class ViewEditModelComponent implements OnInit {
 		comportsSelected: [],
 	};
 
-	collapseId: ICollapseId = (() => {
-		let counter = <ICollapseId>((compId: string, nivelCode: string) => {
-			console.log(self);
-			return `coll${compId.replace('\u0027', '')}${nivelCode}`;
-		});
-		counter.texto = 'textoFactory';
-		counter('21', '21');
-		return counter;
-	})();
+	// collapseId: ICollapseId = (() => {
+	// 	let func = <ICollapseId>((compId: string, nivelCode: string) => {
+	// 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
+	// 	});
+	// 	return counter;
+	// })();
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -159,11 +151,7 @@ export class ViewEditModelComponent implements OnInit {
 	 * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
 	 */
 	findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel): ISubModel | undefined {
-		const submodelFind = subModels.find(
-			subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id,
-		);
-		console.log(submodelFind);
-		return submodelFind;
+		return subModels.find(subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id);
 	}
 
 	/**
@@ -174,19 +162,17 @@ export class ViewEditModelComponent implements OnInit {
 		arrayOfComports = Object.keys(comportIndxObj).map(key => comportIndxObj[key]);
 		return arrayOfComports;
 	}
-	// /**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
-	// collapseId(compId: string, nivelCode: string) {
-	// 	// TODO: Cache
-	// 	return `coll${compId.replace('\u0027', '')}${nivelCode}`;
-	// }
-
-	//TODO: Completar y pasar a funciones genericas
-
-	keysToArray<T extends Object, T1>(obj: T): T1[] {
-		const arr: T1[] = [];
-		Object.keys(obj).forEach(key => {
-			console.log(obj[key as keyof T]);
-		});
-		return arr;
+	/**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
+	collapseId(compId: string, nivelCode: string) {
+		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
 	}
+
+	// //TODO: Completar y pasar a funciones genericas
+	// keysToArray<T extends Object, T1>(obj: T): T1[] {
+	// 	const arr: T1[] = [];
+	// 	Object.keys(obj).forEach(key => {
+	// 		console.log(obj[key as keyof T]);
+	// 	});
+	// 	return arr;
+	// }
 }

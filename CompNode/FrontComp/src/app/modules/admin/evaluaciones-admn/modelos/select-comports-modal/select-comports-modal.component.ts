@@ -1,12 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {
-	ICompetencia,
-	IComportamiento,
-	INivel,
-	IEvModel,
-	ICatComp,
-	ISubModel,
-} from 'sharedInterfaces/Entity';
+import { Component, OnInit, Input } from '@angular/core';
+import { ICompetencia, IComportamiento, INivel, ICatComp, ISubModel } from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
 import { IModelDTO } from 'sharedInterfaces/DTO';
 import { WithOptional } from 'sharedInterfaces/Utility';
@@ -38,7 +31,7 @@ export type DbData = {
 };
 
 @Component({
-	selector: 'app-select-comports-modal',
+	selector: 'app-select-comports-modal [idModal]',
 	templateUrl: './select-comports-modal.component.html',
 	styleUrls: ['./select-comports-modal.component.scss'],
 })
@@ -62,6 +55,8 @@ export class SelectComportsModalComponent implements OnInit {
 			subModels: [],
 		},
 	};
+	@Input() idModal!: string;
+
 	constructor() {}
 
 	ngOnInit(): void {}
