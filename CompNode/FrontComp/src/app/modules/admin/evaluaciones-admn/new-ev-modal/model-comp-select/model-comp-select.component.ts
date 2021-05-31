@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ObservableInput } from 'rxjs';
 import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
@@ -28,7 +29,7 @@ export class ModelCompSelectComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		if (!this.catComp)
-			throw new Error('Has renderizado el componente antes de mandarle la catComp o esta es undefined');
+			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
 		this.modelReferenceShow = await this.evModelSv.getOneReference(this.catComp.id);
 		this.competCtl.competenciasModelos = this.getCompetsOfModel(this.modelReferenceShow);
 		//	console.log(this.getCompetsNotSelected([{ id: "C9'", descripcion: 'ddassa' }]));
@@ -38,7 +39,6 @@ export class ModelCompSelectComponent implements OnInit {
 		this.competCtl.competenciasRepetidas = model.subModels.map(subModel => {
 			return subModel.competencia;
 		});
-		//	console.log(this.competCtl.competenciasModelos);
 		return this.competCtl.competenciasModelos.filter(
 			(compet, index) => this.competCtl.competenciasModelos.findIndex(f => compet.id === f.id) === index,
 		);
@@ -47,7 +47,7 @@ export class ModelCompSelectComponent implements OnInit {
 	 * A copy of the reference model is stored, submodels are searched with that/those competence/cies id
 	 * and returns those that DO NOT match
 	 *
-	 * @param competencias the competence/ or competencies that you want to look for in the subModel
+	 * @param competencias the competence or competencies that you want to look for in the subModel
 	 */
 	getCompetsNotMatch(competencias: ICompetencia[]) {
 		const modelToSend = { ...this.modelReferenceShow };
