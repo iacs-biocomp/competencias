@@ -50,8 +50,7 @@
 												(click)="
 													comportCtl.nivSelected = nivel;
 													comportCtl.compSelected = comp;
-													comportamientosSelect = [];
-													comportCtl.comportsSelected = []
+													setComportsToShow(comp, cv.modelView.subModels)
 												"
 												type="button"
 												class="btn btn-primary me-2 add-comports-btn"
@@ -97,6 +96,9 @@
 				<span> CONFIRMAR CAMBIOS </span>
 			</button>
 		</div>
-		<app-select-comports-modal [idModal]="'comportsModal'"></app-select-comports-modal>
+		<app-select-comports-modal
+			[idModal]="'comportsModal'"
+			[comportsToShow]="comportCtl.comportsToShow"
+		></app-select-comports-modal>
 	</div>
 </div>

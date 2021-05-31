@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { findSubModels, getAllComportsOfComp } from 'sharedCode/Utility';
 import { IModelBasicIndxDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
@@ -18,7 +18,7 @@ type ComportCtrlView = {
 	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
-	comportsSelected: IComportamiento[];
+	comportsToShow: IComportamiento[];
 };
 type MiComportamiento = {
 	nivel?: INivel;
@@ -28,7 +28,7 @@ type MiComportamiento = {
 //TODO: Cambiar nombre elegir el correcto
 type CvChangeMyName = {
 	//TODO: Tsdoc
-	modelView: IRefModel | undefined;
+	modelView: IRefModel;
 	competenciasModelo: ICompetencia[] | undefined;
 };
 
@@ -48,14 +48,11 @@ export class ViewEditModelComponent implements OnInit {
 	cv!: CvChangeMyName;
 	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
 	evModelIndx!: IModelBasicIndxDTO;
-	/** Guarda la lista de comportamientos seleccionados */
-	comportamientosSelect: MiComportamiento[] = [];
-
 	/** Objeto que tiene los datos usados para los select */
 	comportCtl: ComportCtrlView = {
 		compSelected: undefined,
 		nivSelected: undefined,
-		comportsSelected: [],
+		comportsToShow: [],
 	};
 
 	// collapseId: ICollapseId = (() => {
@@ -64,6 +61,7 @@ export class ViewEditModelComponent implements OnInit {
 	// 	});
 	// 	return counter;
 	// })();
+	subs: Subscription[] = [];
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -88,13 +86,19 @@ export class ViewEditModelComponent implements OnInit {
 			comports: promises[2],
 			niveles: promises[3],
 		};
-		this.evModelIndx = this.mapIRefModelToIndexed(this.evModel.value);
-		this.cv = {
-			modelView: this.evModel.value,
-			competenciasModelo: this.getCompet(this.evModel.value),
-		};
+		this.subs.push(
+			this.evModel.subscribe(model => {
+				this.evModelIndx = this.mapIRefModelToIndexed(model);
+				this.cv = {
+					modelView: model,
+					competenciasModelo: this.getCompet(model),
+				};
+			}),
+		);
 		this.initialized = true;
-		console.log(this.evModelIndx);
+		setInterval(() => {
+			console.log(this.comportCtl.comportsToShow);
+		}, 5000);
 	}
 
 	//Se redeclaran para que la vista pueda acceder a ellas
@@ -166,13 +170,22 @@ export class ViewEditModelComponent implements OnInit {
 	collapseId(compId: string, nivelCode: string) {
 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
 	}
-
-	// //TODO: Completar y pasar a funciones genericas
-	// keysToArray<T extends Object, T1>(obj: T): T1[] {
-	// 	const arr: T1[] = [];
-	// 	Object.keys(obj).forEach(key => {
-	// 		console.log(obj[key as keyof T]);
-	// 	});
-	// 	return arr;
-	// }
+	//TODO: Añadir tsdoc y llevar a utility, parametrizar con IComport en vez de ISubModel
+	filterNonSelectedComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
+		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
+		/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
+		let nExcluded = 0;
+		return this.dbData.comports.filter(dbComport => {
+			if (nExcluded !== comportsOfComp.length - 1) {
+				return !comportsOfComp.find(c4filter => c4filter.id === dbComport.id);
+			} else {
+				return true;
+			}
+		});
+	}
+	/** Setea los comportamientos que no tiene cierta competencia */
+	setComportsToShow(comp: ICompetencia, subModels: ISubModel[]): void {
+		const comportsToSet = this.filterNonSelectedComports(comp, subModels);
+		this.comportCtl.comportsToShow = comportsToSet;
+	}
 }
