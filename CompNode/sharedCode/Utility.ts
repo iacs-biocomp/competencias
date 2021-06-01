@@ -1,4 +1,4 @@
-import { ICompetencia, IComportamiento, INivel, ISubModel } from './interfaces/Entity';
+import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
 import { WithOptional } from './interfaces/Utility';
 
 export type changeMyName = {
@@ -75,6 +75,16 @@ export function getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[])
  */
 export function findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
 	return subModels.filter(subModel => subModel.competencia.id === comp.id);
+}
+
+/**
+ * @param model El modelo del cual se sacan las competencias
+ * @returns Un array que representa las competencias que tiene el modelo pasado como parametro
+ */
+export function getCompetOfModel(model: IEvModel): ICompetencia[] {
+	if (!model.subModels) return [];
+	const competencias = model.subModels.map(x => x.competencia);
+	return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
 }
 
 // type SubModelFilterBy = {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
 import { IModelDTO } from 'sharedInterfaces/DTO';
@@ -27,7 +27,7 @@ export type DbData = {
 };
 
 @Component({
-	selector: 'app-select-comports-modal [idModal] [comportsToShow]',
+	selector: 'app-select-comports-modal [idModal] [comportsToShow] ',
 	templateUrl: './select-comports-modal.component.html',
 	styleUrls: ['./select-comports-modal.component.scss'],
 })
@@ -46,6 +46,7 @@ export class SelectComportsModalComponent implements OnInit {
 	@Input() idModal!: string;
 	/** Son los comportamientos que mostrará para seleccionar o borrar este componente */
 	@Input() comportsToShow!: IComportamiento[];
+	@Output() comports = new EventEmitter<IComportamiento[]>();
 
 	constructor(private comportSv: ComportService) {}
 
@@ -71,32 +72,7 @@ export class SelectComportsModalComponent implements OnInit {
 	}
 	/**Flush the "buffer" and moves the data into the model of type {@link IEvModel}*/
 	addAllComports(): void {
-		this.comportCtl.comportsSelected.forEach(
-			comport => comport,
-			// this.addComportToCompet(this.comportCtl.compSelected!, this.comportCtl.nivSelected!, comport),
-		);
+		this.comports.emit(this.comportCtl.comportsSelected);
+		this.comportCtl.comportsSelected = [];
 	}
-	/**
-	 * Añade un comportamiento con un nivel asociado a una competencia
-	 * @param comp La competencia a la que se quiere añadir el comportamiento
-	 * @param niv El nivel que relaciona comport y comp
-	 * @param comport El comportamiento que se añade a esa comp con ese nivel
-	 */
-	// addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
-	// 	let matchSubModel = this.dbData.modelToAdd.subModels.find(
-	// 		x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
-	// 	);
-	// 	if (!matchSubModel) {
-	// 		matchSubModel = {
-	// 			nivel: niv,
-	// 			competencia: comp,
-	// 			comportamientos: [],
-	// 		};
-	// 		this.dbData.modelToAdd.subModels.push(matchSubModel);
-	// 	}
-	// 	const comportIndx = matchSubModel.comportamientos?.indexOf(comport);
-	// 	if (comportIndx === -1) {
-	// 		matchSubModel.comportamientos?.push(comport);
-	// 	}
-	// }
 }

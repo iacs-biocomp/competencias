@@ -8,15 +8,17 @@ import { environment as cnf } from 'src/environments/environment';
 /** Servicio crud para el manejo de los modelos de las evaluaciones */
 @Injectable({ providedIn: 'root' })
 export class EvModelsAdmnService {
-
 	constructor(private httpClient: HttpClient) {}
 	/**
 	 * Envia un modelo al backend intentando guardarlo.
 	 * @param evModel El modelo a guardar
 	 * @returns Una promesa que se resuelve como `true` si se ha guardado y `false` en caso contrario
 	 */
-	save(evModel: IModelDTO): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/modelos`, evModel).toPromise();
+	save(evModel: IModelDTO, reference: boolean): Promise<boolean> {
+		console.log(String(reference));
+		return this.httpClient
+			.post<boolean>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
+			.toPromise();
 	}
 	/**
 	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
@@ -33,5 +35,12 @@ export class EvModelsAdmnService {
 	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
+	}
+
+	updateRefModel(catComp: ICatComp | string, refModel: IRefModel): Promise<boolean> {
+		const id = typeof catComp === 'string' ? catComp : catComp.id;
+		return this.httpClient
+			.put<boolean>(`${cnf.apiURL}/modelos/reference`, refModel, { params: { reference: 'true' } })
+			.toPromise();
 	}
 }

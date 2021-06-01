@@ -15,7 +15,7 @@
 			<h4>COMPETENCIAS del modelo:</h4>
 			<div class="accordion" id="accordionCompo">
 				<div class="accordion-item" *ngFor="let comp of cv.competenciasModelo; let i = index">
-					<h2 class="accordion-header" [id]="'headerComp ' + i">
+					<h2 class="accordion-header" [id]="'headerComp' + i">
 						<button
 							class="accordion-button collapsed"
 							data-bs-toggle="collapse"
@@ -32,6 +32,7 @@
 						data-bs-parent="#accordionCompo"
 					>
 						<div class="accordion-body">
+							<!-- TODO: Errores con accordion, se pueden abrir varios niveles a la vez, error en etiquetas accordion -->
 							<div class="accordion" id="accordionLast">
 								<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
 									<h2 class="accordion-header" [id]="'headerLast ' + i">
@@ -77,7 +78,13 @@
 													"
 												>
 													{{ comport.descripcion }}
-													<button *ngIf="modoEdicion" class="btn btn-danger me-2" style="float: right">
+													<!-- TODO: Estilo en archivo scss no en el botón -->
+													<button
+														*ngIf="modoEdicion"
+														class="btn btn-danger me-2"
+														style="float: right"
+														(click)="removeComport(comport, comp, nivel)"
+													>
 														<span class="material-icons" title="Eliminar comportamiento"> remove </span>
 													</button>
 												</li>
@@ -92,13 +99,14 @@
 			</div>
 		</div>
 		<div class="modal-footer" *ngIf="modoEdicion">
-			<button class="btn btn-outline-success">
+			<button class="btn btn-outline-success" (click)="updateModel(evModel.value)">
 				<span> CONFIRMAR CAMBIOS </span>
 			</button>
 		</div>
 		<app-select-comports-modal
 			[idModal]="'comportsModal'"
 			[comportsToShow]="comportCtl.comportsToShow"
+			(comports)="addComports($event)"
 		></app-select-comports-modal>
 	</div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { getCompetOfModel } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
@@ -34,17 +35,10 @@ export class ModelCompSelectComponent implements OnInit {
 			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id);
 			this.competCtl.competenciasModelos = this.getCompetsOfModel(this.modelReferenceShow);
 		});
-		//	console.log(this.getCompetsNotSelected([{ id: "C9'", descripcion: 'ddassa' }]));
 	}
 	//TODO: Tsdoc
-	getCompetsOfModel(model: IRefModel): ICompetencia[] {
-		this.competCtl.competenciasRepetidas = model.subModels.map(subModel => {
-			return subModel.competencia;
-		});
-		return this.competCtl.competenciasModelos.filter(
-			(compet, index) => this.competCtl.competenciasModelos.findIndex(f => compet.id === f.id) === index,
-		);
-	}
+	getCompetsOfModel = getCompetOfModel;
+
 	/**
 	 * A copy of the reference model is stored, submodels are searched with that/those competence/cies id
 	 * and returns those that DO NOT match
@@ -74,6 +68,5 @@ export class ModelCompSelectComponent implements OnInit {
 			arrToPush.splice(index, 1);
 			console.log(this.competCtl.competenciasModelos);
 		}
-		//		console.log(this.competCtl.competenciasModelos);
 	}
 }

@@ -325,7 +325,7 @@ export class NewEvModelComponent implements OnInit {
 		evModel.subModels = evModel.subModels.filter(subM => !!subM.nivel);
 		let saved: boolean = false;
 		try {
-			saved = await this.evModelSv.save(evModel as IModelDTO);
+			saved = await this.evModelSv.save(evModel as IModelDTO, true);
 		} catch (err) {
 			// TODO: En todas las excepciones del front mandar un log con todos los datos al backend (Crear servicio provided in root)
 		}
