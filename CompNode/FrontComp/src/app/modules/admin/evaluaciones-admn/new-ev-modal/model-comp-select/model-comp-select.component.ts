@@ -2,12 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
-import { ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
+import { ICatComp, ICompetencia, INivel } from 'sharedInterfaces/Entity';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
 
 type CompetenciaCtrlView = {
-	competenciasModelos: ICompetencia[];
-	competenciasRepetidas: ICompetencia[];
+	/** //TODO: Tsdoc  */
+	competencias: ICompetencia[];
+	/** //TODO: Tsdoc  */
+	compSelected: ICompetencia[];
 };
 
 @Component({
@@ -21,9 +23,11 @@ export class ModelCompSelectComponent implements OnInit {
 	modelReferenceShow!: IRefModel;
 	//TODO: Tsdoc
 
+	compsObs = new BehaviorSubject<ICompetencia[]>([]);
+
 	competCtl: CompetenciaCtrlView = {
-		competenciasModelos: [],
-		competenciasRepetidas: [],
+		competencias: [],
+		compSelected: [],
 	};
 
 	constructor(private evModelSv: EvModelsAdmnService) {}
@@ -33,7 +37,9 @@ export class ModelCompSelectComponent implements OnInit {
 			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
 		this.catCompObs.subscribe(async cComp => {
 			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id);
-			this.competCtl.competenciasModelos = this.getCompetsOfModel(this.modelReferenceShow);
+			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow);
+			this.competCtl.compSelected = [];
+			this.compsObs.next([]);
 		});
 	}
 	//TODO: Tsdoc
@@ -59,14 +65,18 @@ export class ModelCompSelectComponent implements OnInit {
 	 * @param comp the competence you want to add or remove to the array
 	 */
 	toggleCompet(comp: ICompetencia) {
-		const arrToPush = this.competCtl.competenciasModelos;
-		const index = this.competCtl.competenciasModelos.indexOf(comp);
+		const arrToPush = this.competCtl.compSelected;
+		const index = arrToPush.indexOf(comp);
 		if (index == -1) {
 			arrToPush.push(comp);
-			console.log(this.competCtl.competenciasModelos);
+			console.log(arrToPush);
 		} else {
 			arrToPush.splice(index, 1);
-			console.log(this.competCtl.competenciasModelos);
+			console.log(arrToPush);
 		}
+	}
+	//TODO: tsdoc
+	setCompe(): void {
+		this.compsObs.next(this.competCtl.compSelected);
 	}
 }

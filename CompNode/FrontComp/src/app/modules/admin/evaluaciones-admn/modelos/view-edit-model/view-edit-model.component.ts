@@ -125,7 +125,6 @@ export class ViewEditModelComponent implements OnInit {
 		});
 		return model as IModelBasicIndxDTO;
 	}
-
 	/**
 	 * @param subModels El array de submodelos en el que se busca el submodelo
 	 * @param comp La competencia usada para filtrar
