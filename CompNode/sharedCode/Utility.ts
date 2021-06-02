@@ -87,6 +87,23 @@ export function getCompetOfModel(model: IEvModel): ICompetencia[] {
 	return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
 }
 
+/**
+ *  Comprueba si cierta competencia tiene comportamientos asociados a un nivel pasado como parametro
+ * @param niv El codigo (no el id) del nivel u objeto a buscar
+ * @param comp La competencia a comprobar
+ * @param subModels Array de subModelos en los que se buscará uno con el niv y comp
+ * @returns `true` si se ha encontrado un subModelo con ese nivel y esa competencia `false` en caso contrario
+ */
+export function checkNivOnComp(
+	niv: INivel | string,
+	comp: ICompetencia | string,
+	subModels: ISubModel[],
+): boolean {
+	const compIdStr = typeof comp === 'string' ? comp : comp.id;
+	const nivIdStr = typeof niv === 'string' ? niv : niv.code;
+	return !!subModels.find(s => s.competencia.id === compIdStr && s.nivel.code === nivIdStr) ? true : false;
+}
+
 // type SubModelFilterBy = {
 // 	competencia?: ICompetencia | string;
 // 	comportamientos?: IComportamiento[] | string[];

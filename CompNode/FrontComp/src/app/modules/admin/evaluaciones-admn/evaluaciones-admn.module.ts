@@ -15,6 +15,7 @@ import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-mode
 import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
 import { ModelNivel4CompSelectComponent } from './new-ev-modal/model-nivel4-comp-select/model-nivel4-comp-select.component';
 import { SelectComportsModalComponent } from './modelos/select-comports-modal/select-comports-modal.component';
+import { NivComportFilterPipe } from './modelos/pipes/modules/admin/evaluaciones-admn/modelos/pipes/niv-comport-filter.pipe';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: Routes = [
@@ -43,6 +44,7 @@ export const evRoutes: Routes = [
 		ModelCompSelectComponent,
 		ModelNivel4CompSelectComponent,
 		SelectComportsModalComponent,
+		NivComportFilterPipe,
 		// LayoutTestComponent,
 	],
 	imports: [

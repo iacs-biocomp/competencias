@@ -34,7 +34,15 @@
 						<div class="accordion-body">
 							<!-- TODO: Errores con accordion, se pueden abrir varios niveles a la vez, error en etiquetas accordion -->
 							<div class="accordion" id="accordionLast">
-								<div class="accordion-item" *ngFor="let nivel of dbData.niveles; let i = index">
+								<div
+									class="accordion-item"
+									*ngFor="
+										let nivel of modoEdicion === false
+											? (dbData.niveles | haveComportFilter: evModel.value.subModels:comp)
+											: dbData.niveles;
+										let i = index
+									"
+								>
 									<h2 class="accordion-header" [id]="'headerLast ' + i">
 										<div class="comports-toggle-header">
 											<button

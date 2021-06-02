@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { findSubModels, getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
-import { IModelBasicIndxDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
+import { IModelBasicIndxDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../../cat-admn/services/CatCompetenciales.service';
 import { CompetenciasService } from '../../../competencias-admin/services/competencias.service';
@@ -10,21 +10,12 @@ import { NivelService } from '../../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
 import { DbData } from '../new-ev-model.component';
 
-type MICompetencia = {
-	nivObjetivo?: INivel;
-} & ICompetencia;
-type IModelPreDTO = Partial<IModelDTO> & Omit<IModelDTO, 'catComp'>;
-
 type ComportCtrlView = {
 	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
 	compSelected?: ICompetencia;
 	nivSelected?: INivel;
 	comportsToShow: IComportamiento[];
 };
-type MiComportamiento = {
-	nivel?: INivel;
-	competencia?: ICompetencia;
-} & IComportamiento;
 
 //TODO: Cambiar nombre elegir el correcto
 type CvChangeMyName = {
