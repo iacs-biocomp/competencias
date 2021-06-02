@@ -3,8 +3,6 @@
 	"sourceRoot": "src",
 	"entryFile": "back-comp/src/main",
 	"compilerOptions": {
-		"plugins": [
-			"@nestjs/swagger"
-		]
+		"plugins": ["@nestjs/swagger"]
 	}
 }

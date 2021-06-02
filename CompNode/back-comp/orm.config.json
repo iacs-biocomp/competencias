@@ -7,15 +7,9 @@
 	"database": "node-competencias",
 	"synchronize": true,
 	"logging": false,
-	"entities": [
-		"src/entity/**/*.entity{.ts,.js}"
-	],
-	"migrations": [
-		"src/database/migrations/*{.ts,.js}"
-	],
-	"subscribers": [
-		"src/subscriber/**/*.ts"
-	],
+	"entities": ["src/entity/**/*.entity{.ts,.js}"],
+	"migrations": ["src/database/migrations/*{.ts,.js}"],
+	"subscribers": ["src/subscriber/**/*.ts"],
 	"cli": {
 		"entitiesDir": "src/entity",
 		"migrationsDir": "src/database/migrations",

@@ -108,7 +108,4 @@
 		</div>
 	</div>
 </div>
-<app-model-comp-select
-	*ngIf="!!(catCompObs | async)"
-	[catCompObs]="catCompObs"
-></app-model-comp-select>
+<app-model-comp-select *ngIf="!!(catCompObs | async)" [catCompObs]="catCompObs"></app-model-comp-select>

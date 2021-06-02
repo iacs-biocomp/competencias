@@ -11,11 +11,12 @@
 				<h2 class="modal-title" id="selecCompModalLabel">Seleccione las competencias de la evaluación</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body"  #selectCompe >
+			<div class="modal-body" #selectCompe>
 				<ul class="list-group">
 					<li
 						[ngClass]="{ active: competCtl.compSelected.includes(competencia) }"
-						*ngFor="let competencia of competCtl.competencias" [value]="competencia.id"
+						*ngFor="let competencia of competCtl.competencias"
+						[value]="competencia.id"
 						class="list-group-item p-3"
 						(click)="toggleCompet(competencia)"
 					>

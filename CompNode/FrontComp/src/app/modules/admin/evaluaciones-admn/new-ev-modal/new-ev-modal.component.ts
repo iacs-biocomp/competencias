@@ -41,13 +41,13 @@ export class NewEvModalComponent implements OnInit {
 		private fb: FormBuilder,
 	) {}
 
-		/**
+	/**
 		 * async ngOnInit(): Promise<void> {
 		const promises = await Promise.all([this.cCompSv.getAll(), this.evModelSv.getAll()]);
 		this.catComps = promises[0].sort((a, b) => a.id.localeCompare(b.id));
 		this.evModels = promises[1];
 		 */
- 	async ngOnInit(): Promise<void> {
+	async ngOnInit(): Promise<void> {
 		this.allReferenceModels = await this.evModelSv.getAllReference();
 		this.catComps = this.allReferenceModels.map(refModel => refModel.catComp);
 		console.log(this.catComps);

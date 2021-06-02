@@ -1,135 +1,131 @@
 <div class="auth-page container-fluid">
-  <div class="row justify-content-end">
-    <div class="col-lg-4 col-sm-12">
-      <div class="login-branding">
-        <a routerLink="/">
-          <img
-            src="/../../../assets/images/logo.svg"
-            class="login-logo"
-            alt="BIGAN Ivestigación"
-            title="BIGAN Ivestigación"
-          />
-        </a>
-      </div>
-    </div>
-    <div id="formDiv" class="col-lg-6 offset-2 pe-sm-5 col-sm-12">
-      <div id="loginForm" class="login-content">
-        <h2 class="titleCenter">Registro de investigador</h2>
-        <form id="formLogin" name="formLogin" [formGroup]="signupForm">
-          <div class="form-group">
-            <small
-              class="err"
-              *ngIf="
-                signupForm.controls.username.hasError('required') &&
-                signupForm.controls.username.touched
-              "
-              >This field is required</small
-            >
-            <input
-              type="text"
-              class="form-control"
-              [ngClass]="{
-                err:
-                  signupForm.controls.username.hasError('required') &&
-                  signupForm.controls.username.touched
-              }"
-              formControlName="username"
-              placeholder="Usuario"
-              size="30"
-              autocomplete="off"
-              name="username"
-              #usernameOBJ
-            />
-            <input
-              type="password"
-              placeholder="Contraseña"
-              class="form-control"
-              size="30"
-              #passwordOBJ
-              formControlName="password"
-              id="password"
-              name="password"
-            />
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Nombre"
-              formControlName="name"
-              size="30"
-              name="nombre"
-            />
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Apellidos"
-              size="30"
-              formControlName="surnames"
-              autocomplete="off"
-              name="surname"
-            />
+	<div class="row justify-content-end">
+		<div class="col-lg-4 col-sm-12">
+			<div class="login-branding">
+				<a routerLink="/">
+					<img
+						src="/../../../assets/images/logo.svg"
+						class="login-logo"
+						alt="BIGAN Ivestigación"
+						title="BIGAN Ivestigación"
+					/>
+				</a>
+			</div>
+		</div>
+		<div id="formDiv" class="col-lg-6 offset-2 pe-sm-5 col-sm-12">
+			<div id="loginForm" class="login-content">
+				<h2 class="titleCenter">Registro de investigador</h2>
+				<form id="formLogin" name="formLogin" [formGroup]="signupForm">
+					<div class="form-group">
+						<small
+							class="err"
+							*ngIf="
+								signupForm.controls.username.hasError('required') && signupForm.controls.username.touched
+							"
+							>This field is required</small
+						>
+						<input
+							type="text"
+							class="form-control"
+							[ngClass]="{
+								err: signupForm.controls.username.hasError('required') && signupForm.controls.username.touched
+							}"
+							formControlName="username"
+							placeholder="Usuario"
+							size="30"
+							autocomplete="off"
+							name="username"
+							#usernameOBJ
+						/>
+						<input
+							type="password"
+							placeholder="Contraseña"
+							class="form-control"
+							size="30"
+							#passwordOBJ
+							formControlName="password"
+							id="password"
+							name="password"
+						/>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Nombre"
+							formControlName="name"
+							size="30"
+							name="nombre"
+						/>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Apellidos"
+							size="30"
+							formControlName="surnames"
+							autocomplete="off"
+							name="surname"
+						/>
 
-            <input
-              type="text"
-              class="form-control"
-              placeholder="DNI"
-              formControlName="DNI"
-              size="30"
-              autocomplete="off"
-              name="username"
-            />
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Email"
-              formControlName="email"
-              size="30"
-              name="email"
-            />
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Telefono"
-              formControlName="phone"
-              size="30"
-              autocomplete="off"
-              name="username"
-            />
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Institución"
-              formControlName="institution"
-              size="30"
-              autocomplete="off"
-              name="username"
-            />
+						<input
+							type="text"
+							class="form-control"
+							placeholder="DNI"
+							formControlName="DNI"
+							size="30"
+							autocomplete="off"
+							name="username"
+						/>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Email"
+							formControlName="email"
+							size="30"
+							name="email"
+						/>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Telefono"
+							formControlName="phone"
+							size="30"
+							autocomplete="off"
+							name="username"
+						/>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Institución"
+							formControlName="institution"
+							size="30"
+							autocomplete="off"
+							name="username"
+						/>
 
-            <input
-              type="button"
-              value="Acceder"
-              [disabled]="this.signupForm.invalid"
-              (click)="sendForm()"
-              id="formLogin_"
-              class="btn btn-primary btn-block"
-            />
-          </div>
+						<input
+							type="button"
+							value="Acceder"
+							[disabled]="this.signupForm.invalid"
+							(click)="sendForm()"
+							id="formLogin_"
+							class="btn btn-primary btn-block"
+						/>
+					</div>
 
-          <p class="text-center">
-            <a href="forgot-password.html">¿Olvidaste tu contraseña?</a>
-          </p>
-          <p class="text-center">
-            <a href="newformSolicitud">¿Quiere registrarse?</a>
-          </p>
-        </form>
-      </div>
-      <div id="banner">
-        <h2 class="login-banner">
-          <strong id="bannertext">
-            BIGAN Los datos sanitarios de Aragón al servicio de la investigación
-            biomédica
-          </strong>
-        </h2>
-      </div>
-    </div>
-  </div>
+					<p class="text-center">
+						<a href="forgot-password.html">¿Olvidaste tu contraseña?</a>
+					</p>
+					<p class="text-center">
+						<a href="newformSolicitud">¿Quiere registrarse?</a>
+					</p>
+				</form>
+			</div>
+			<div id="banner">
+				<h2 class="login-banner">
+					<strong id="bannertext">
+						BIGAN Los datos sanitarios de Aragón al servicio de la investigación biomédica
+					</strong>
+				</h2>
+			</div>
+		</div>
+	</div>
 </div>
