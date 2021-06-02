@@ -2,13 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
-import { ICatComp, ICompetencia, INivel } from 'sharedInterfaces/Entity';
+import { ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
 
 type CompetenciaCtrlView = {
-	/** //TODO: Tsdoc  */
+	/** Array with all the competences, type ICompetencia  */
 	competencias: ICompetencia[];
-	/** //TODO: Tsdoc  */
+	/** Array with the selected competences, type ICompetencia*/
 	compSelected: ICompetencia[];
 };
 
@@ -23,6 +23,7 @@ export class ModelCompSelectComponent implements OnInit {
 	modelReferenceShow!: IRefModel;
 	//TODO: Tsdoc
 
+	//TODO: tsdoc
 	compsObs = new BehaviorSubject<ICompetencia[]>([]);
 
 	competCtl: CompetenciaCtrlView = {
@@ -36,13 +37,12 @@ export class ModelCompSelectComponent implements OnInit {
 		if (!this.catCompObs.value)
 			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
 		this.catCompObs.subscribe(async cComp => {
-			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id);
-			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow);
-			this.competCtl.compSelected = [];
-			this.compsObs.next([]);
+			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id); //Gets the modelReference of the catComp.id
+			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow); //Gets the competences of this modelReference
+			this.flushCachedData();
 		});
 	}
-	//TODO: Tsdoc
+	/** Gets the competences of a specify model, this function is in Utility.ts */
 	getCompetsOfModel = getCompetOfModel;
 
 	/**
@@ -59,10 +59,16 @@ export class ModelCompSelectComponent implements OnInit {
 		return modelToSend;
 	}
 
+	/** Deletes both cached data, the compSelected and the compsObs, so, if one of these changed, its flushed */
+	flushCachedData() {
+		this.competCtl.compSelected = [];
+		this.compsObs.next([]);
+	}
+
 	/**
 	 * Used for select the competence or competencies for the current evaluation
 	 *
-	 * @param comp the competence you want to add or remove to the array
+	 * @param comp the competence you want to add or remove to the array (compSelected)
 	 */
 	toggleCompet(comp: ICompetencia) {
 		const arrToPush = this.competCtl.compSelected;

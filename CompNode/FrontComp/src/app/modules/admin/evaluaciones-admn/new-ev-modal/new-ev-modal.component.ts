@@ -31,9 +31,8 @@ export class NewEvModalComponent implements OnInit {
 	rangesForm: FormGroup | undefined;
 	//TODO: Tsdoc
 	catCompObs = new BehaviorSubject<ICatComp | undefined>(undefined);
+	/** Gets all the reference models (array)  */
 	allReferenceModels: IRefModel[] = [];
-
-
 
 	constructor(
 		private evSv: EvaluacionesAdmService,
@@ -90,8 +89,13 @@ export class NewEvModalComponent implements OnInit {
 		return this.rangesForm.valid;
 	}
 
-	nextModal() {}
+	//TODO: Tsdoc
+	setCatComp(idCatComp: string): void {
+		this.catCompSelected = this.catComps.find(catComp => catComp.id === idCatComp);
+		this.catCompObs.next(this.catCompSelected);
+	}
 
+	//TODO: Tsdoc
 	async save() {
 		if (!this.rangesForm) return; //Se quita undefined
 		const form = this.rangesForm.value;
@@ -111,9 +115,5 @@ export class NewEvModalComponent implements OnInit {
 		console.log(this.evToAdd);
 		const saved = await this.evSv.save(this.evToAdd);
 		if (saved) this.onEvSaved(); //Actualiza la vista del componente padre, se pasa función por parametro
-	}
-	setCatComp(idCatComp: string): void {
-		const cCompToSet = this.catComps.find(catComp => catComp.id === idCatComp);
-		this.catCompObs.next(cCompToSet);
 	}
 }
