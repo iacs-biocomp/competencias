@@ -32,7 +32,7 @@
 					data-bs-toggle="modal"
 					data-bs-target="#selectNivelCompsModal"
 					class="btn btn-primary"
-					(click)="setCompe(); closeModal.click()"
+					(click)="setCompe(); closeModal.click(); getCompetsNotMatch(competCtl.compSelected)"
 				>
 					Siguiente
 				</button>
@@ -43,4 +43,5 @@
 <app-model-nivel4-comp-select
 	*ngIf="!!(compsObs | async)"
 	[compsObs]="compsObs"
+	(nivelClick)="onChildNivelClicked($event)"
 ></app-model-nivel4-comp-select>

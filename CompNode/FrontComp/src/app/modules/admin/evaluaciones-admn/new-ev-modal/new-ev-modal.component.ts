@@ -64,7 +64,6 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 		});
-
 		this.catCompObs.subscribe(c => console.log(c));
 	}
 
@@ -80,7 +79,7 @@ export class NewEvModalComponent implements OnInit {
 		return this.evModels.filter(evModel => evModel.catComp?.id == this.catCompSelected?.id);
 	}
 	/**
-	 * @returns `true` si el formulario es valido y `false` en caso contrario
+	 * @returns `true` if the form is correct, `false` if it's not
 	 */
 	isFormValid(): boolean {
 		if (!this.rangesForm) return false; //Se quita undefined
@@ -112,7 +111,7 @@ export class NewEvModalComponent implements OnInit {
 			iniPerEvaluado: form.evaluacionStart as Date,
 			endPerEvaluado: form.evaluacionEnd as Date,
 		};
-		console.log(this.evToAdd);
+		console.log("Evaluacion a guardar" + this.evToAdd);
 		const saved = await this.evSv.save(this.evToAdd);
 		if (saved) this.onEvSaved(); //Actualiza la vista del componente padre, se pasa función por parametro
 	}
