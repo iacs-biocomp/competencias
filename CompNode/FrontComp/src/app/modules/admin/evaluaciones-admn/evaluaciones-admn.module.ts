@@ -12,10 +12,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NewEvModelComponent } from './modelos/new-ev-model.component';
 import { ViewAllModelsComponent } from './modelos/view-all-models/view-all-models.component';
 import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-model.component';
-import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
 import { ModelNivel4CompSelectComponent } from './new-ev-modal/model-nivel4-comp-select/model-nivel4-comp-select.component';
 import { SelectComportsModalComponent } from './modelos/select-comports-modal/select-comports-modal.component';
-import { NivComportFilterPipe } from './modelos/pipes/modules/admin/evaluaciones-admn/modelos/pipes/niv-comport-filter.pipe';
+import { NivComportFilterPipe } from './modelos/pipes/niv-comport-filter.pipe';
+import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
+import { CompSelectComponent } from './comp-select/comp-select.component';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: Routes = [
@@ -27,10 +28,6 @@ export const evRoutes: Routes = [
 		path: 'modelos-reference',
 		component: ViewAllModelsComponent,
 	},
-	// {
-	// 	path: 'test',
-	// 	component: LayoutTestComponent,
-	// },
 ];
 
 /** Contiene los componentes para la visualización y administración de las evaluaciones y sus modelos */
@@ -45,7 +42,7 @@ export const evRoutes: Routes = [
 		ModelNivel4CompSelectComponent,
 		SelectComportsModalComponent,
 		NivComportFilterPipe,
-		// LayoutTestComponent,
+		CompSelectComponent,
 	],
 	imports: [
 		CommonModule,

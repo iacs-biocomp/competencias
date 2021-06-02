@@ -36,6 +36,7 @@ export class ViewEditModelComponent implements OnInit {
 	dbData!: Omit<DbData, 'modelToAdd'>;
 	@Input() modoEdicion!: boolean;
 	@Input() evModel!: BehaviorSubject<IRefModel>;
+	preSelectedComps: ICompetencia[] = [];
 
 	cv!: CvChangeMyName;
 	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
@@ -46,13 +47,8 @@ export class ViewEditModelComponent implements OnInit {
 		nivSelected: undefined,
 		comportsToShow: [],
 	};
+	compsObs!: BehaviorSubject<ICompetencia[]>;
 
-	// collapseId: ICollapseId = (() => {
-	// 	let func = <ICollapseId>((compId: string, nivelCode: string) => {
-	// 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
-	// 	});
-	// 	return counter;
-	// })();
 	subs: Subscription[] = [];
 
 	constructor(
@@ -78,6 +74,7 @@ export class ViewEditModelComponent implements OnInit {
 			comports: promises[2],
 			niveles: promises[3],
 		};
+		this.compsObs = new BehaviorSubject(this.dbData.comps);
 		this.subs.push(
 			this.evModel.subscribe(model => {
 				this.evModelIndx = this.mapIRefModelToIndexed(model);
@@ -85,6 +82,7 @@ export class ViewEditModelComponent implements OnInit {
 					modelView: model,
 					competenciasModelo: this.getCompet(model),
 				};
+				this.preSelectedComps = getCompetOfModel(model);
 			}),
 		);
 		this.initialized = true;

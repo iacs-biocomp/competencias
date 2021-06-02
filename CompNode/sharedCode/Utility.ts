@@ -104,6 +104,17 @@ export function checkNivOnComp(
 	return !!subModels.find(s => s.competencia.id === compIdStr && s.nivel.code === nivIdStr) ? true : false;
 }
 
+/**
+ *  TODO: Complete
+ * @param objToggle objeto a eliminar o añadir
+ * @param arrToPushRemove Donde se añade/elimina
+ */
+export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
+	arrToPushRemove;
+	const indx = arrToPushRemove.indexOf(objToggle);
+	indx === -1 ? arrToPushRemove.push(objToggle) : arrToPushRemove.splice(indx, 1);
+}
+
 // type SubModelFilterBy = {
 // 	competencia?: ICompetencia | string;
 // 	comportamientos?: IComportamiento[] | string[];

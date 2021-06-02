@@ -5,7 +5,9 @@
 				<h2 class="modal-title">
 					Edite el modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}
 				</h2>
-				<button class="btn btn-success">Añadir competencias</button>
+				<button data-bs-toggle="modal" data-bs-target="#selectCompetsModal" class="btn btn-success">
+					Añadir competencias
+				</button>
 			</ng-template>
 			<ng-template #noEdicion>
 				<h2>Modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}</h2>
@@ -108,7 +110,7 @@
 		</div>
 		<div class="modal-footer" *ngIf="modoEdicion">
 			<button class="btn btn-outline-success" (click)="updateModel(evModel.value)">
-				<span> CONFIRMAR CAMBIOS </span>
+				<span> Guardar cambios </span>
 			</button>
 		</div>
 		<app-select-comports-modal
@@ -116,5 +118,10 @@
 			[comportsToShow]="comportCtl.comportsToShow"
 			(comports)="addComports($event)"
 		></app-select-comports-modal>
+		<app-comp-select-modal
+			*ngIf="modoEdicion"
+			[idModal]="'selectCompetsModal'"
+			[compsObs]="compsObs"
+		></app-comp-select-modal>
 	</div>
 </div>

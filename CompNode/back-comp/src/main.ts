@@ -5,7 +5,6 @@ import { Configuration as cnf } from './config/config.keys';
 import { ConfigService } from './config/config.service';
 import { install } from 'source-map-support';
 import { Promise } from 'bluebird';
-import { findCompById } from 'sharedCode/Utility';
 
 const cnfService = new ConfigService();
 
