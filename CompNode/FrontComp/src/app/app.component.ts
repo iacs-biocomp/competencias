@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
 	/**
 	 * Metodo que añade listeners a las interacciones del usuario con la aplicación,
 	 * ejecuta una función en cada evento
+	 *
 	 * @param fn Función a ejecutar cuando ocurre un evento del usuario
 	 */
 	private eventsToken(fn: () => void) {

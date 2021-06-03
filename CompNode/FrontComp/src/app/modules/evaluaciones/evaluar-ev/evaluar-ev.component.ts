@@ -52,7 +52,7 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	};
 
 	evaluacion: IModelBasicIndxDTO = {
-		id: '21',
+		id: 21,
 		catComp: { id: 'GR1', description: 'Gr1 descripción' },
 		comps: {
 			C1: {
@@ -87,31 +87,37 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	};
 
 	ngOnInit(): void {
-		this.evSv.evaluacionesUsr(this.evaluacion.id);
+		// ?? Que hace esto aqui?
+		// this.evSv.evaluacionesUsr(this.evaluacion.id);
 		this.competencias = this.getCompetenciasModel(this.evaluacion);
-		this.cv.compsYComports = this.competencias.map(comp => {
-			return { id: comp.id, descripcion: comp.descripcion, comports: this.getComporCompetencia(comp.id) };
-		});
+		this.cv.compsYComports = this.competencias.map(comp => ({
+			id: comp.id,
+			descripcion: comp.descripcion,
+			comports: this.getComporCompetencia(comp.id),
+		}));
 	}
 
 	/** Devuelve todas las competencias que hay dentro de una evaluacion*/
 	getCompetenciasModel(model: IModelBasicIndxDTO): ICompetencia[] {
 		const comps = model.comps;
-		const competencias = Object.keys(comps).map<ICompetencia>(key => {
-			return { id: key, descripcion: comps[key].descripcion };
-		});
+		const competencias = Object.keys(comps).map<ICompetencia>(key => ({
+			id: key,
+			descripcion: comps[key].descripcion,
+		}));
 		console.log(competencias);
 		return competencias;
 	}
 
-	/** Devuelve los comportamientos por cada competencia de una evaluacion
+	/**
+	 * Devuelve los comportamientos por cada competencia de una evaluacion
+	 *
 	 * @param idComp id de la competencia a buscar
 	 */
-	getComporCompetencia(idComp: string) {
+	getComporCompetencia(idComp: string): IComportamiento[] {
 		const compsIndx = this.evaluacion.comps;
 		const comp = compsIndx[idComp];
 		console.log(Object.keys(comp.comports));
-		let comports: IComportamiento[] = [];
+		const comports: IComportamiento[] = [];
 		Object.keys(comp.comports).forEach(key =>
 			comports.push({ id: key, descripcion: comp.comports[key].descripcion }),
 		);
@@ -119,6 +125,7 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	}
 
 	/** Devuelve las evaluaciones de una persona por su dni
+	 *
 	 * @param dniEvaluado el dni de la persona a evaluar
 	 */
 	getEvaluacionesPorPersona(dniEvaluado: string) {

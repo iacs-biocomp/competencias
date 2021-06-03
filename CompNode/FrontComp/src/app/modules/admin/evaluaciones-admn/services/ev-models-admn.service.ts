@@ -11,6 +11,7 @@ export class EvModelsAdmnService {
 	constructor(private httpClient: HttpClient) {}
 	/**
 	 * Envia un modelo al backend intentando guardarlo.
+	 *
 	 * @param evModel El modelo a guardar
 	 * @returns Una promesa que se resuelve como `true` si se ha guardado y `false` en caso contrario
 	 */
@@ -37,8 +38,7 @@ export class EvModelsAdmnService {
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
 	}
 
-	updateRefModel(catComp: ICatComp | string, refModel: IRefModel): Promise<boolean> {
-		const id = typeof catComp === 'string' ? catComp : catComp.id;
+	updateRefModel(refModel: IRefModel): Promise<boolean> {
 		return this.httpClient
 			.put<boolean>(`${cnf.apiURL}/modelos/reference`, refModel, { params: { reference: 'true' } })
 			.toPromise();

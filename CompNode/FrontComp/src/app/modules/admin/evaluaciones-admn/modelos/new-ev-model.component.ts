@@ -91,7 +91,9 @@ export class NewEvModelComponent implements OnInit {
 	validators: EvModalValidators = {
 		nivObjetivoValidator: (comps: MiCompetencia[]) =>
 			comps.every(c => {
-				if (!c.nivObjetivo) return false;
+				if (!c.nivObjetivo) {
+					return false;
+				}
 				return true;
 			}),
 	};
@@ -129,9 +131,9 @@ export class NewEvModelComponent implements OnInit {
 			}
 			const filterValue = txt.toLowerCase().replace(/\s/g, '');
 			console.log(filterValue);
-			this.comportCtl.comportsFiltered = this.comportCtl.comportsRemainingOfComp.filter(comport => {
-				return comport.descripcion.toLowerCase().replace(/\s/g, '').includes(filterValue);
-			});
+			this.comportCtl.comportsFiltered = this.comportCtl.comportsRemainingOfComp.filter(comport =>
+				comport.descripcion.toLowerCase().replace(/\s/g, '').includes(filterValue),
+			);
 			console.log(this.comportCtl.comportsFiltered);
 		});
 		setInterval(() => {
@@ -153,7 +155,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comp La competencia que se usa para buscar los subModelos que la poseen
 	 */
 	toggleComp(comp: ICompetencia) {
-		let _modelToAdd = this.dbData.modelToAdd;
+		const _modelToAdd = this.dbData.modelToAdd;
 		console.log(this.findSubModels(_modelToAdd.subModels, comp));
 		if (this.findSubModels(_modelToAdd.subModels, comp).length === 0) {
 			//Se añade la competencia
@@ -233,6 +235,7 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Añade un comportamiento con un nivel asociado a una competencia
+	 *
 	 * @param comp La competencia a la que se quiere añadir el comportamiento
 	 * @param niv El nivel que relaciona comport y comp
 	 * @param comport El comportamiento que se añade a esa comp con ese nivel
@@ -267,6 +270,7 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Elimina el comportamiento seleccionado de la lista de comportamientos que pertenecen a ese submodelo en concreto
+	 *
 	 * @param comport El comportamiento a eliminar del array
 	 * @param comp La competencia usada para filtrarCo1: {
           descripcion: 'dsadsaasd',
@@ -290,6 +294,7 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Concatena los arrays de comportamientos que puedan tener varios submodelos, con la MISMA competencia @see {@link ISubModel}
+	 *
 	 * @param comp La competencia con la que se filtran los subModelos
 	 * @param subModels Array de subModelos del cual se devuelven sus comportamientos (concatenados donde comp==subModel.comp)
 	 * @returns El array de comportamientos que tiene esa competencia
@@ -307,9 +312,9 @@ export class NewEvModelComponent implements OnInit {
 	 * @returns Un array de comportamientos que esa competencia aun no tiene asociados
 	 */
 	getRemainingComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
-		let comportsOfComp = this.getAllComportsOfComp(comp, subModels);
+		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
 		console.log(comportsOfComp);
-		let comports = this.dbData.comports.filter(
+		const comports = this.dbData.comports.filter(
 			comport => comportsOfComp.find(c => c.id === comport.id) === undefined,
 		);
 		console.log(comports);
@@ -318,12 +323,15 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Guarda un evModel en el backend, este debería venir validado, si ocurre un error se maneja la excepción
+	 *
 	 * @param evModel
 	 */
 	async saveEvModel(evModel: IModelPreDTO) {
-		if (!evModel.catComp) return alert('Contacte con un programador');
+		if (!evModel.catComp) {
+			return alert('Contacte con un programador');
+		}
 		evModel.subModels = evModel.subModels.filter(subM => !!subM.nivel);
-		let saved: boolean = false;
+		let saved = false;
 		try {
 			saved = await this.evModelSv.save(evModel as IModelDTO, true);
 		} catch (err) {

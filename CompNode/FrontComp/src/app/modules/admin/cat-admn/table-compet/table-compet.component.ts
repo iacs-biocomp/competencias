@@ -29,6 +29,7 @@ export class TableCompetComponent implements OnInit {
 
 	/**
 	 * Elimina una Categoria Competencial de la lista temporal catCompToAdd (Las catComp creadas en memoria no persistidas)
+	 *
 	 * @param row La catComp a borrar
 	 */
 	deleteCatCompToAdd(cComp: ICatComp): void {
@@ -61,6 +62,7 @@ export class TableCompetComponent implements OnInit {
 
 	/**
 	 * Persiste una categoria competencial
+	 *
 	 * @param catComp La categoria competencial a persistir
 	 * @returns Una promesa void
 	 */
@@ -75,6 +77,7 @@ export class TableCompetComponent implements OnInit {
 
 	/**
 	 * Borra una categoria competencial de la bbdd
+	 *
 	 * @param catComp La categoria competencial a borrar
 	 * @returns Una promesa de tipo void
 	 */

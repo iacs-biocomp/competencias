@@ -154,6 +154,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 
 	/**
 	 * Filtra los comportamientos sumando todas las funciones de filtro, estan hardcodeados los Observables de los que se obtienen los valores
+	 *
 	 * @returns TODO: Complete
 	 */
 	filterByAll(): IComportamiento[] {
@@ -175,12 +176,15 @@ export class TableComportComponent implements OnInit, OnDestroy {
 
 	/**
 	 * Filtra por descripcion los comportamientos para la busqueda
+	 *
 	 * @param desc descripcion a buscar (palabra, letra, etc)
 	 * @param comports array de comportamientos
 	 * @returns devuelve un array de comportamientos que coinciden con la busqueda de la descripción
 	 */
 	filterByDesc(desc: string, comports: IComportamiento[]): IComportamiento[] {
-		if (desc === '') return comports;
+		if (desc === '') {
+			return comports;
+		}
 		return comports.filter(comport => {
 			const filterValue = desc.toLowerCase().replace(/\s/g, '');
 			return this.cv.util4Filters.comportPlainDesc[comport.id].includes(filterValue) ? true : false;
@@ -189,6 +193,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 
 	/**
 	 * Filtra por nivel los comportamientos para la busqueda
+	 *
 	 * @param nivel el nivel que queremos encontrar
 	 * @param comports array de comportamientos
 	 * @returns devuelve un array de comportamientos que coinciden con la busqueda del nivel
@@ -201,6 +206,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	}
 	/**
 	 * Filtra por competencia la lista de comportamientos
+	 *
 	 * @param comp la competencia por la que queremos filtrar
 	 * @param comports un array con los comportamientos
 	 * @returns devuelve un array de comportamientos que coinciden con la busqueda de la competencia

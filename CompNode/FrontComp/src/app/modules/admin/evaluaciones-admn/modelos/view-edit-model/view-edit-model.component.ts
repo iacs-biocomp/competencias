@@ -95,11 +95,12 @@ export class ViewEditModelComponent implements OnInit {
 
 	/**
 	 * Mapea un modelo de tipo IRefModel a IModelBasicIndxDTO
+	 *
 	 * @param modelToMap Modelo de tipo IRefModel (Con subModelos) que se quiere mapear
 	 * @returns El modelo mapeado
 	 */
 	mapIRefModelToIndexed(modelToMap: IRefModel): IModelBasicIndxDTO {
-		let model: Partial<IModelBasicIndxDTO> = {};
+		const model: Partial<IModelBasicIndxDTO> = {};
 		model.id = modelToMap.id;
 		model.catComp = modelToMap.catComp;
 		model.comps = {};
@@ -142,7 +143,7 @@ export class ViewEditModelComponent implements OnInit {
 	filterNonSelectedComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
 		/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
-		let nExcluded = 0;
+		const nExcluded = 0;
 		return this.dbData.comports.filter(dbComport => {
 			if (nExcluded !== comportsOfComp.length - 1) {
 				return !comportsOfComp.find(c4filter => c4filter.id === dbComport.id);
@@ -158,6 +159,7 @@ export class ViewEditModelComponent implements OnInit {
 	}
 	/**
 	 * Añade un comportamiento con un nivel asociado a una competencia
+	 *
 	 * @param comp La competencia a la que se quiere añadir el comportamiento
 	 * @param niv El nivel que relaciona comport y comp
 	 * @param comports El array de comportamientos que añadirán a esa comp con ese nivel
@@ -183,6 +185,7 @@ export class ViewEditModelComponent implements OnInit {
 
 	/**
 	 * Elimina el comportamiento seleccionado de la lista de comportamientos que pertenecen a ese submodelo en concreto
+	 *
 	 * @param comport El comportamiento a eliminar del array
 	 * @param comp La competencia usada para filtrar
 	 * @param niv El nivel que junto con la competencia hacen de filtro
@@ -209,7 +212,7 @@ export class ViewEditModelComponent implements OnInit {
 	async updateModel(model: IRefModel) {
 		//Se eliminan los subModelos que no tengan comportamientos
 		model.subModels = model.subModels.filter(subM => subM.comportamientos.length !== 0);
-		const response = await this.evModelSv.updateRefModel(model.catComp, model);
+		const response = await this.evModelSv.updateRefModel(model);
 		console.log(response);
 	}
 }

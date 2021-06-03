@@ -7,7 +7,7 @@ interface INivelEdit extends INivel {
 	editing?: boolean;
 }
 // Omit<INivel, 'id'>
-export interface INivelToAdd extends Omit<INivel, 'id'> {}
+export type INivelToAdd = Omit<INivel, 'id'>;
 
 @Component({
 	selector: 'app-niv-table',
@@ -38,6 +38,7 @@ export class NivTableComponent implements OnInit {
 
 	/**
 	 *  Elimina un nivel de la listta nivelToAdd
+	 *
 	 * @param row El nivel a eliminar
 	 */
 	deleteNivToAdd(nivel: INivelToAdd): void {

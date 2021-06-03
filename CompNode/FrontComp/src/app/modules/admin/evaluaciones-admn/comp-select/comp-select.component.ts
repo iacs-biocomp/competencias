@@ -34,8 +34,9 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	}
 
 	async ngOnInit(): Promise<void> {
-		if (!this.compsObs.value)
+		if (!this.compsObs.value) {
 			throw new Error('Has renderizado el componente antes de elegir las competencias, o esta es undefined');
+		}
 		this.subs.push(
 			this.compsObs.subscribe(() => {
 				this.preSelectedComps = !this.preSelectedComps ? [] : this.preSelectedComps; //Se quita undefined
@@ -58,9 +59,9 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	 */
 	getCompetsNotMatch(competencias: ICompetencia[]) {
 		const modelToSend = { ...this.modelReferenceShow };
-		modelToSend.subModels = modelToSend.subModels.filter(subModel => {
-			return !competencias.find(comp => comp.id === subModel.competencia.id);
-		});
+		modelToSend.subModels = modelToSend.subModels.filter(
+			subModel => !competencias.find(comp => comp.id === subModel.competencia.id),
+		);
 		return modelToSend;
 	}
 	//TODO: tsdoc

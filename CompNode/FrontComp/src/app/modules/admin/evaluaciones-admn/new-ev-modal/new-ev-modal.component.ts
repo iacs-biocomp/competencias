@@ -70,6 +70,7 @@ export class NewEvModalComponent implements OnInit {
 	/**
 	 * Filtra de this.evModels y elimina los que no tengan una catComp igual a this.catCompSelected
 	 * Devuelve [] en caso de que este undefined cualquiera de estos dos.
+	 *
 	 * @returns El array de modelos de evaluaciones filtrado
 	 */
 	filterEvModels(): IEvModel[] {
@@ -82,9 +83,15 @@ export class NewEvModalComponent implements OnInit {
 	 * @returns `true` if the form is correct, `false` if it's not
 	 */
 	isFormValid(): boolean {
-		if (!this.rangesForm) return false; //Se quita undefined
-		if (!this.evDescription || this.evDescription === '') return false;
-		if (!this.catCompSelected) return false;
+		if (!this.rangesForm) {
+			return false;
+		} //Se quita undefined
+		if (!this.evDescription || this.evDescription === '') {
+			return false;
+		}
+		if (!this.catCompSelected) {
+			return false;
+		}
 		return this.rangesForm.valid;
 	}
 
@@ -96,7 +103,9 @@ export class NewEvModalComponent implements OnInit {
 
 	//TODO: Tsdoc
 	async save() {
-		if (!this.rangesForm) return; //Se quita undefined
+		if (!this.rangesForm) {
+			return;
+		} //Se quita undefined
 		const form = this.rangesForm.value;
 		this.evToAdd = {
 			description: this.evDescription === undefined ? 'Descripción por defecto' : this.evDescription, //TODO: Return si desc == undefined, validator en formcontrol
@@ -111,8 +120,10 @@ export class NewEvModalComponent implements OnInit {
 			iniPerEvaluado: form.evaluacionStart as Date,
 			endPerEvaluado: form.evaluacionEnd as Date,
 		};
-		console.log("Evaluacion a guardar" + this.evToAdd);
+		console.log('Evaluacion a guardar' + this.evToAdd);
 		const saved = await this.evSv.save(this.evToAdd);
-		if (saved) this.onEvSaved(); //Actualiza la vista del componente padre, se pasa función por parametro
+		if (saved) {
+			this.onEvSaved();
+		} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 }

@@ -22,7 +22,7 @@ export class ModelNivel4CompSelectComponent implements OnInit {
 	competenciasModelo!: ICompetencia[];
 
 	constructor(private nivelSv: NivelService) {}
-//TODO: Change names
+	//TODO: Change names
 	async ngOnInit(): Promise<void> {
 		this.niveles = await this.nivelSv.getAllRefNivs();
 		this.compsObs.subscribe(comps => {
@@ -33,14 +33,14 @@ export class ModelNivel4CompSelectComponent implements OnInit {
 			this.bufferCosas = aMeter;
 		});
 	}
-//TODO: Change names
+	//TODO: Change names
 	setNivel(comp: ICompetencia, niv: string): void {
 		const nivObj = this.niveles.find(n => n.code === niv);
 		const indx = this.bufferCosas.findIndex(cosa => cosa.comp?.id === comp.id);
 		this.bufferCosas[indx].niv = nivObj;
 	}
-//TODO: Change names
-	nivelClicked(): void{
+	//TODO: Change names
+	nivelClicked(): void {
 		const cosasAMandar = this.bufferCosas.filter(cosa =>
 			!cosa.comp && !cosa.niv ? false : true,
 		) as CompYnivel[];

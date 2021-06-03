@@ -38,6 +38,7 @@ export class CatCompetencialesService {
 
 	/**
 	 * Añade una nueva categoría competencial a la base de datos
+	 *
 	 * @param catComp La categoría competencial a añadir
 	 */
 	add(catComp: ICatComp): Promise<boolean> {

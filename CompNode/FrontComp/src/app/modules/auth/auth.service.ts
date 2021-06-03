@@ -42,6 +42,7 @@ export class AuthService {
 	//TODO: Refactor, usar el servicio jwt.service para tema del token
 	/**
 	 * Guarda un token en el localStorage `key:value` La key (nombre del token) viene dado por env variable
+	 *
 	 * @param token El token jwt firmado
 	 */
 	setToken(token: string): void {

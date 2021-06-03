@@ -37,7 +37,7 @@ export class MisEvaluacionesComponent implements OnInit {
 	 * y mostrará un botón u otro
 	 */
 	calcularPeriodoActual(evaluacionActual: IEvaluacion) {
-		var fecha = new Date();
+		const fecha = new Date();
 
 		if (evaluacionActual.finPropuestas! > fecha) {
 			return EvalStatus.PeriodoEvaluar;
