@@ -16,47 +16,20 @@ export class JwtService {
 	private refresh = {
 		eventOcurred: false,
 	};
-	/** Token codificado en base64 */
-	private token = () => {
-		const tkn = localStorage.getItem(JWT_NAME);
-		return tkn === null ? undefined : tkn;
-	};
 
 	constructor(private jwtHelper: JwtHelperService, private httpClient: HttpClient, private router: Router) {}
-
-	/**
-	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
-	 *
-	 * @returns El token de tipo `IJwtToken` descodificado
-	 */
-	getDecodedToken(): IJwtToken {
-		return this.jwtHelper.decodeToken<IJwtToken>(this.token());
-	}
-	private updateJwt(token: string): void {
-		localStorage.setItem(JWT_NAME, token);
-		document.cookie = JWT_NAME + '=' + encodeURIComponent(token);
-	}
-
-	/**Metodo que borra el token de las cookies y del localStorage */
-	rmToken(): void {
-		cookieRm(JWT_NAME);
-		localStorage.removeItem(JWT_NAME);
-	}
-
-	/** Debe ser llamado cuando ha ocurrido un evento que representa interación del usuario  */
-	refreshEvent(): void {
-		this.refresh.eventOcurred = true;
-	}
 
 	/**
 	 * Manda el jwt al backend para recibir uno nuevo si: Hay token & No esta expirado
 	 * & Ha ocurrido interación del usuario
 	 */
 	async refreshToken() {
-		if (!this.token()) {
+		const tkn = this.token();
+		if (!tkn) {
 			return;
 		}
-		if (this.jwtHelper.getTokenExpirationDate(this.token())! < new Date()) {
+
+		if (this.jwtHelper.getTokenExpirationDate(tkn)! < new Date()) {
 			this.rmToken();
 			this.router.navigate([LoginGuard.loginRoute], {
 				queryParams: { returnUrl: this.router.url },
@@ -73,4 +46,34 @@ export class JwtService {
 		this.updateJwt(response.token);
 		this.refresh.eventOcurred = false;
 	}
+
+	/**
+	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
+	 *
+	 * @returns El token de tipo `IJwtToken` descodificado
+	 */
+	getDecodedToken(): IJwtToken {
+		return this.jwtHelper.decodeToken<IJwtToken>(this.token());
+	}
+	/**Metodo que borra el token de las cookies y del localStorage */
+	rmToken(): void {
+		cookieRm(JWT_NAME);
+		localStorage.removeItem(JWT_NAME);
+	}
+
+	/** Debe ser llamado cuando ha ocurrido un evento que representa interación del usuario  */
+	refreshEvent(): void {
+		this.refresh.eventOcurred = true;
+	}
+
+	private updateJwt(token: string): void {
+		localStorage.setItem(JWT_NAME, token);
+		document.cookie = JWT_NAME + '=' + encodeURIComponent(token);
+	}
+
+	/** Token codificado en base64 */
+	private token = () => {
+		const tkn = localStorage.getItem(JWT_NAME);
+		return tkn === null ? undefined : tkn;
+	};
 }

@@ -180,7 +180,7 @@ export class NewEvModelComponent implements OnInit {
 	selectComportamiento(comport: IComportamiento) {
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);
-		if (index == -1) {
+		if (index === -1) {
 			arrToPush.push(comport);
 		} else {
 			arrToPush.splice(index, 1);
@@ -225,11 +225,15 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Va añadiendo los comportamientos que se seleccionan a comportCtl
-	 *
 	 */
 	addAllComports(): void {
+		const cSelected = this.comportCtl.compSelected;
+		const nivSelected = this.comportCtl.nivSelected;
+		if (!cSelected || !nivSelected) {
+			return;
+		}
 		this.comportCtl.comportsSelected.forEach(comport =>
-			this.addComportToCompet(this.comportCtl.compSelected!, this.comportCtl.nivSelected!, comport),
+			this.addComportToCompet(cSelected, nivSelected, comport),
 		);
 	}
 

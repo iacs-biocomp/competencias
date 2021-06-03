@@ -41,7 +41,7 @@
 	</div>
 </div>
 <app-model-nivel4-comp-select
-	*ngIf="!!(compsObs | async)"
+	*ngIf="(compsObs | async) !== (undefined && null)"
 	[compsObs]="compsObs"
 	(nivelClick)="onChildNivelClicked($event)"
 ></app-model-nivel4-comp-select>

@@ -77,7 +77,7 @@ export class NewEvModalComponent implements OnInit {
 		if (!this.catCompSelected || !this.evModels) {
 			return [];
 		}
-		return this.evModels.filter(evModel => evModel.catComp?.id == this.catCompSelected?.id);
+		return this.evModels.filter(evModel => evModel.catComp?.id === this.catCompSelected?.id);
 	}
 	/**
 	 * @returns `true` if the form is correct, `false` if it's not
@@ -103,13 +103,13 @@ export class NewEvModalComponent implements OnInit {
 
 	//TODO: Tsdoc
 	async save() {
-		if (!this.rangesForm) {
+		if (!this.rangesForm || !this.catCompSelected) {
 			return;
 		} //Se quita undefined
 		const form = this.rangesForm.value;
 		this.evToAdd = {
 			description: this.evDescription === undefined ? 'Descripción por defecto' : this.evDescription, //TODO: Return si desc == undefined, validator en formcontrol
-			catComp: this.catCompSelected!,
+			catComp: this.catCompSelected,
 			model: this.evModelSelected,
 			iniDate: form.propuestaStart as Date,
 			finPropuestas: form.propuestaEnd as Date,

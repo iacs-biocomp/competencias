@@ -36,11 +36,14 @@ export class ModelCompSelectComponent implements OnInit {
 	constructor(private evModelSv: EvModelsAdmnService) {}
 
 	async ngOnInit(): Promise<void> {
-		if (!this.catCompObs.value)
+		if (!this.catCompObs.value) {
 			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
+		}
 		this.catCompObs.subscribe(async cComp => {
-			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id); //Gets the modelReference with the Ccomp.id that we want to search in evModel
-			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow); //Gets the competences of this modelReference and save it in competCtl.competencias array
+			//Gets the modelReference with the Ccomp.id that we want to search in evModel
+			this.modelReferenceShow = await this.evModelSv.getOneReference(cComp!.id);
+			//Gets the competences of this modelReference and save it in competCtl.competencias array
+			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow);
 			this.flushCachedData();
 		});
 		setInterval(() => console.log(this), 5000);

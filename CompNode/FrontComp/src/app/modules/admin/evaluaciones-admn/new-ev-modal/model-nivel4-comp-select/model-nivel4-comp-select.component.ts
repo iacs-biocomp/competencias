@@ -27,9 +27,7 @@ export class ModelNivel4CompSelectComponent implements OnInit {
 		this.niveles = await this.nivelSv.getAllRefNivs();
 		this.compsObs.subscribe(comps => {
 			console.log(comps);
-			const aMeter = comps.map(c => {
-				return { comp: c };
-			}) as Partial<CompYnivel>[];
+			const aMeter = comps.map(c => ({ comp: c })) as Partial<CompYnivel>[];
 			this.bufferCosas = aMeter;
 		});
 	}

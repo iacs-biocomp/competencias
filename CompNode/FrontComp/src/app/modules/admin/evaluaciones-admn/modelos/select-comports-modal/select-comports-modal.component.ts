@@ -64,7 +64,7 @@ export class SelectComportsModalComponent implements OnInit {
 	selectComportamiento(comport: IComportamiento) {
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);
-		if (index == -1) {
+		if (index === -1) {
 			arrToPush.push(comport);
 		} else {
 			arrToPush.splice(index, 1);

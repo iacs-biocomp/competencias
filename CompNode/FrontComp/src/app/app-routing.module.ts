@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { RoleType } from 'sharedInterfaces/DTO';
+import { Roles } from 'sharedInterfaces/Entity';
 import { LoginGuard } from './guards/login.guard';
 import { Error404Component } from './modules/app/error404/error404.component';
 import { BaseLayoutComponent } from './shared/layout/base/base-layout.component';
@@ -12,7 +12,7 @@ const routes: Routes = [
 		path: 'admin',
 		canLoad: [LoginGuard],
 		data: {
-			roles: [RoleType.ADMIN],
+			roles: [Roles.ADMIN],
 		},
 		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/admin/admin.module').then(mod => mod.AdminModule),
@@ -25,7 +25,7 @@ const routes: Routes = [
 		path: 'usuario',
 		canLoad: [LoginGuard],
 		data: {
-			roles: [RoleType.PUBLIC],
+			roles: [Roles.PUBLIC],
 		},
 		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/usuario/usuario.module').then(mod => mod.UsuarioModule),
@@ -34,7 +34,7 @@ const routes: Routes = [
 		path: 'competencias',
 		canLoad: [LoginGuard],
 		data: {
-			roles: [RoleType.PUBLIC],
+			roles: [Roles.PUBLIC],
 		},
 		component: BaseLayoutComponent,
 
@@ -45,7 +45,7 @@ const routes: Routes = [
 		path: 'resultados',
 		canLoad: [LoginGuard],
 		data: {
-			roles: [RoleType.PUBLIC],
+			roles: [Roles.PUBLIC],
 		},
 		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/resultados/resultados.module').then(mod => mod.ResultadosModule),
@@ -55,7 +55,7 @@ const routes: Routes = [
 		canLoad: [LoginGuard],
 
 		data: {
-			roles: [RoleType.PUBLIC],
+			roles: [Roles.PUBLIC],
 		},
 		component: BaseLayoutComponent,
 		loadChildren: () =>
@@ -66,7 +66,7 @@ const routes: Routes = [
 		canLoad: [LoginGuard],
 
 		data: {
-			roles: [RoleType.PUBLIC],
+			roles: [Roles.PUBLIC],
 		},
 		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/public/public.module').then(mod => mod.PublicModule),

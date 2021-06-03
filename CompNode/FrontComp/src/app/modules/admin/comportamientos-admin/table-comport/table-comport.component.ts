@@ -13,7 +13,7 @@ type ComportCtrlView = {
 		compObs: BehaviorSubject<ICompetencia | undefined>;
 		descObs: BehaviorSubject<string>;
 	};
-	/** Objeto que tiene datos de utilidad para los filtros como timers o Comportamientos con la descripción ya modificada para buscar mas rapido */
+	/** Datos de utilidad para los filtros como timers o Comportamientos con la desc ya modificada */
 	util4Filters: {
 		/** Objeto key/value que tiene el id de un comportamiento y su descripción modificada (sin espacios y lowercase) */
 		comportPlainDesc: { [key: string]: string };

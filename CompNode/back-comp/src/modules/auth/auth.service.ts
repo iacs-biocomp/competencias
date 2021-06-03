@@ -6,7 +6,7 @@ import { SigninDto, SignupDto } from './dto';
 import { IJwtPayload } from './jwt-payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity';
-import { RoleType } from 'sharedInterfaces/DTO';
+import { Roles } from 'sharedInterfaces/Entity';
 
 @Injectable()
 export class AuthService {
@@ -69,7 +69,7 @@ export class AuthService {
 			email: user.email,
 			username: user.username,
 			password: user.password,
-			roles: user.roles.map(r => r.name as RoleType),
+			roles: user.roles.map(r => r.name as Roles),
 		};
 
 		const token = this._jwtService.sign(payload);
