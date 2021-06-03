@@ -4,7 +4,7 @@ import { RequiredAndNotNull } from '../Utility';
 export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id'>;
 
 //TODO: Tsdoc, ruta en /modelos/reference/${catComp} y /modelos/references siendo Array<IRefModel>
-export type IRefModel = RequiredAndNotNull<IEvModel>;
+export type IRefModel = Omit<RequiredAndNotNull<IEvModel>, 'evs'>;
 
 type ICompNoId = Omit<ICompetencia, 'id' | 'createdAt'>;
 type IComportNoId = Omit<IComportamiento, 'id' | 'subModels'>;
@@ -61,7 +61,7 @@ export type IModelBasicDTO = Omit<RequiredAndNotNull<IEvModel>, 'subModels'> & {
 
 /**
  * Type used for creating a new evModel, even if is a reference one or not
- * Used in enpoints: [/nest/modelos {POST}, /nest/modelos {PUT}]
+ * Used in enpoints: [/nest/modelos {POST}]
  */
 export type INewEvModelDTO = RequiredAndNotNull<Omit<IEvModel, 'evs' | 'id'>>;
 

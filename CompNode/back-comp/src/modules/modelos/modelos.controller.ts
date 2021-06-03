@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UnprocessableEntityException, Query, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { INewEvModelDTO } from 'sharedInterfaces/DTO';
+import { INewEvModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { Competencia, Comportamiento, EvModel, Nivel, SubModel } from 'src/entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { EvModelRepo } from './modelos.repository';
@@ -83,8 +83,28 @@ export class ModelosController {
 	}
 
 	@Put('reference')
+	async editModelfake(@Body() modeloDto: IRefModel, @Query('reference') isReference?: boolean): Promise<boolean> {
+		if (!isReference) isReference = false;
+		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
+		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
+		if (isReference) {
+			const dbModel = await this.modelRepo.findOne({ catComp: cComp, reference: true }, { relations: ['subModels'] });
+			if (!dbModel) {
+				throw new UnprocessableEntityException('No existe modelo de referencia de esa catComp');
+			}
+			const prevSubModels = dbModel.subModels;
+			dbModel.subModels = modeloDto.subModels as SubModel[];
+			console.log(modeloDto);
+			// this.subModelRepo.save(dbModel.subModels);
+			// this.modelRepo.save(dbModel);
+
+			return true;
+		}
+		return false;
+	}
+
+	@Put('reference2')
 	async editModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReference?: boolean): Promise<boolean> {
-		console.log(isReference);
 		if (!isReference) isReference = false;
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
@@ -97,8 +117,7 @@ export class ModelosController {
 			dbModel.subModels = modeloDto.subModels as SubModel[];
 			this.subModelRepo.save(dbModel.subModels);
 			this.modelRepo.save(dbModel);
-			console.log(dbModel, JSON.stringify(modeloDto));
-			console.log(prevSubModels.map(s => s.modelos));
+
 			return true;
 		}
 		return false;
