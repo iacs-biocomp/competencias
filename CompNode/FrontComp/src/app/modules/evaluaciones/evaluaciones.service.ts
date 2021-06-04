@@ -9,6 +9,7 @@ import { environment as cnf } from 'src/environments/environment';
 export class EvaluacionesService {
 	constructor(private httpClient: HttpClient) {}
 
+	// TODO: Tsdoc
 	public evaluacionesUsr(usr: string): Promise<IEvaluacion[]> {
 		return this.httpClient.get<IEvaluacion[]>(cnf.apiURL + `/evaluaciones/${usr}`).toPromise();
 	}

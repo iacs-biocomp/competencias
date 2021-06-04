@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {
-	ICompetencia,
-	IComportamiento,
-	INivel,
-	IEvModel,
-	ICatComp,
-	ISubModel,
-} from 'sharedInterfaces/Entity';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
 import { IModelDTO } from 'sharedInterfaces/DTO';
 import { WithOptional } from 'sharedInterfaces/Utility';
+import { ComportService } from '../../../comportamientos-admin/services/comport.service';
 
 type IModelPreDTO = Partial<IModelDTO> & {
 	subModels: WithOptional<ISubModel, 'nivel'>[];
@@ -20,25 +14,20 @@ type ComportCtrlView = {
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
 	comportDescObs: BehaviorSubject<string | undefined>;
-	comportsFiltered: IComportamiento[];
-	/** Son los comportamientos restantes de la competencia seleccionada (Los que aun no se han añadido) */
-	comportsRemainingOfComp: IComportamiento[];
 };
 export type DbData = {
-	/** listado de categorias competenciales */
-	catComps: ICatComp[];
-	/** listado de competencias */
-	comps: ICompetencia[];
 	/** listado de comportamientos */
 	comports: IComportamiento[];
-	/** listado de niveles */
-	niveles: INivel[];
-	/** El modelo que se enviará al backend, sobre este se realizan las modificaciones */
-	modelToAdd: IModelPreDTO;
+	// /** listado de categorias competenciales */
+	// catComps: ICatComp[];
+	// /** listado de competencias */
+	// comps: ICompetencia[];
+	// /** El modelo que se enviará al backend, sobre este se realizan las modificaciones */
+	// modelToAdd: IModelPreDTO;
 };
 
 @Component({
-	selector: 'app-select-comports-modal',
+	selector: 'app-select-comports-modal [idModal] [comportsToShow] ',
 	templateUrl: './select-comports-modal.component.html',
 	styleUrls: ['./select-comports-modal.component.scss'],
 })
@@ -48,23 +37,25 @@ export class SelectComportsModalComponent implements OnInit {
 		nivSelected: undefined,
 		comportsSelected: [],
 		comportDescObs: new BehaviorSubject<string | undefined>(undefined),
-		comportsFiltered: [],
-		comportsRemainingOfComp: [],
 	};
 	/** Objeto que tiene los datos usados para los select */
 	dbData: DbData = {
-		catComps: [],
-		comps: [],
 		comports: [],
-		niveles: [],
-		modelToAdd: {
-			catComp: undefined,
-			subModels: [],
-		},
 	};
-	constructor() {}
 
-	ngOnInit(): void {}
+	@Input() idModal!: string;
+	/** Son los comportamientos que mostrará para seleccionar o borrar este componente */
+	@Input() comportsToShow!: IComportamiento[];
+	@Output() comports = new EventEmitter<IComportamiento[]>();
+
+	constructor(private comportSv: ComportService) {}
+
+	async ngOnInit(): Promise<void> {
+		this.dbData.comports = await this.comportSv.getAll();
+		setInterval(() => {
+			console.log(this);
+		}, 5000);
+	}
 
 	/** Selecciona los comportamientos que va tener el submodelo
 	 *
@@ -73,7 +64,7 @@ export class SelectComportsModalComponent implements OnInit {
 	selectComportamiento(comport: IComportamiento) {
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);
-		if (index == -1) {
+		if (index === -1) {
 			arrToPush.push(comport);
 		} else {
 			arrToPush.splice(index, 1);
@@ -81,31 +72,7 @@ export class SelectComportsModalComponent implements OnInit {
 	}
 	/**Flush the "buffer" and moves the data into the model of type {@link IEvModel}*/
 	addAllComports(): void {
-		this.comportCtl.comportsSelected.forEach(comport =>
-			this.addComportToCompet(this.comportCtl.compSelected!, this.comportCtl.nivSelected!, comport),
-		);
-	}
-	/**
-	 * Añade un comportamiento con un nivel asociado a una competencia
-	 * @param comp La competencia a la que se quiere añadir el comportamiento
-	 * @param niv El nivel que relaciona comport y comp
-	 * @param comport El comportamiento que se añade a esa comp con ese nivel
-	 */
-	addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
-		let matchSubModel = this.dbData.modelToAdd.subModels.find(
-			x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
-		);
-		if (!matchSubModel) {
-			matchSubModel = {
-				nivel: niv,
-				competencia: comp,
-				comportamientos: [],
-			};
-			this.dbData.modelToAdd.subModels.push(matchSubModel);
-		}
-		const comportIndx = matchSubModel.comportamientos?.indexOf(comport);
-		if (comportIndx === -1) {
-			matchSubModel.comportamientos?.push(comport);
-		}
+		this.comports.emit(this.comportCtl.comportsSelected);
+		this.comportCtl.comportsSelected = [];
 	}
 }

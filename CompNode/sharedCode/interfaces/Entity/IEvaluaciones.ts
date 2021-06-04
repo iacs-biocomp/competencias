@@ -6,8 +6,8 @@ import { ICatComp } from './ICategorias';
  * @param Url /nest/evaluaciones/$USER (Username como parametro)
  */
 export interface IEvaluacion {
-	/** El id como string de la evaluación */
-	id: string;
+	/** El id de la evaluación */
+	id: number;
 	/** La descripción de la evaluación */
 	description: string;
 	/** El modelo que usa la evaluación (Donde se indican competencias comportamientos y niveles) */
@@ -29,7 +29,7 @@ export interface IEvaluacion {
 }
 
 export interface IEvModel {
-	id: string;
+	id: number;
 	catComp: ICatComp | undefined;
 	evs?: IEvaluacion[];
 	/**

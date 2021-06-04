@@ -8,9 +8,9 @@ import { ITrabajador } from './IUser';
  * @param Url
  */
 export interface IOrganigramaTrabajador {
-  superiores: ITrabajador[];
+	superiores: ITrabajador[];
 
-  pares: ITrabajador[];
+	pares: ITrabajador[];
 
-  inferiores: ITrabajador[];
+	inferiores: ITrabajador[];
 }

@@ -1,4 +1,4 @@
-import { ICompetencia, IComportamiento, INivel, ISubModel } from './interfaces/Entity';
+import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
 import { WithOptional } from './interfaces/Utility';
 
 export type changeMyName = {
@@ -75,6 +75,44 @@ export function getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[])
  */
 export function findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
 	return subModels.filter(subModel => subModel.competencia.id === comp.id);
+}
+
+/**
+ * @param model El modelo del cual se sacan las competencias
+ * @returns Un array que representa las competencias que tiene el modelo pasado como parametro
+ */
+export function getCompetOfModel(model: IEvModel): ICompetencia[] {
+	if (!model.subModels) return [];
+	const competencias = model.subModels.map(x => x.competencia);
+	return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
+}
+
+/**
+ *  Comprueba si cierta competencia tiene comportamientos asociados a un nivel pasado como parametro
+ * @param niv El codigo (no el id) del nivel u objeto a buscar
+ * @param comp La competencia a comprobar
+ * @param subModels Array de subModelos en los que se buscará uno con el niv y comp
+ * @returns `true` si se ha encontrado un subModelo con ese nivel y esa competencia `false` en caso contrario
+ */
+export function checkNivOnComp(
+	niv: INivel | string,
+	comp: ICompetencia | string,
+	subModels: ISubModel[],
+): boolean {
+	const compIdStr = typeof comp === 'string' ? comp : comp.id;
+	const nivIdStr = typeof niv === 'string' ? niv : niv.code;
+	return !!subModels.find(s => s.competencia.id === compIdStr && s.nivel.code === nivIdStr) ? true : false;
+}
+
+/**
+ *  TODO: Complete
+ * @param objToggle objeto a eliminar o añadir
+ * @param arrToPushRemove Donde se añade/elimina
+ */
+export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
+	arrToPushRemove;
+	const indx = arrToPushRemove.indexOf(objToggle);
+	indx === -1 ? arrToPushRemove.push(objToggle) : arrToPushRemove.splice(indx, 1);
 }
 
 // type SubModelFilterBy = {

@@ -1,5 +1,5 @@
 /* Estilo para que el texto no se salga de su contenedor*/
-*{
+* {
 	white-space: initial;
 }
 .inline {
@@ -16,20 +16,17 @@
 	background-color: #297fc5 !important;
 	color: white;
 }
-.modal-dialog{
+.modal-dialog {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	border: 0.15rem solid #09548d;
 	border-radius: 1%;
 	max-width: 60%;
-
 }
 .arrowBtn:hover {
-	color: #0D6EFD;
+	color: #0d6efd;
 }
 .list-group-item {
 	padding: 0.25rem;
 	text-align: left;
 	cursor: pointer;
 }
-
-

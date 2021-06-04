@@ -3,6 +3,7 @@ import { CanLoad, Route, Router } from '@angular/router';
 import { JWT_NAME } from '../modules/auth/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IJwtToken } from '../modules/auth/JWTlocal.interface';
+import { Roles } from 'sharedInterfaces/Entity';
 
 @Injectable()
 export class LoginGuard implements CanLoad {
@@ -12,7 +13,7 @@ export class LoginGuard implements CanLoad {
 	constructor(private jwtService: JwtHelperService, private router: Router) {}
 
 	canLoad(route: Route): boolean {
-		const token: string = localStorage.getItem(JWT_NAME)!;
+		const token = localStorage.getItem(JWT_NAME);
 
 		/**Redirige al usuario al login, añadiendo como parametro la url solicitada para poder volver al logarse
 		 * @see [Tutorial seguido](https://bit.ly/3qfwR4V) */
@@ -46,8 +47,7 @@ export class LoginGuard implements CanLoad {
 	 * @param role El rol a comprobar en el jwt
 	 * @returns `True` si el rol esta en el token y `false` en caso contrario
 	 */
-	//TODO: Añadir una interfaz que defina los roles que se guardan en la base de datos para no ser genericos con el string (Enum vale tambien)
-	hasRole(role: string): boolean {
+	hasRole(role: Roles): boolean {
 		const token: string = localStorage.getItem(JWT_NAME)!;
 		if (!token || this.jwtService.isTokenExpired(token)) {
 			return false;

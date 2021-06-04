@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, IEvModel } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
@@ -10,11 +11,15 @@ export class EvModelsAdmnService {
 	constructor(private httpClient: HttpClient) {}
 	/**
 	 * Envia un modelo al backend intentando guardarlo.
+	 *
 	 * @param evModel El modelo a guardar
 	 * @returns Una promesa que se resuelve como `true` si se ha guardado y `false` en caso contrario
 	 */
-	save(evModel: IModelDTO): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/modelos`, evModel).toPromise();
+	save(evModel: IModelDTO, reference: boolean): Promise<boolean> {
+		console.log(String(reference));
+		return this.httpClient
+			.post<boolean>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
+			.toPromise();
 	}
 	/**
 	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
@@ -31,5 +36,11 @@ export class EvModelsAdmnService {
 	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
+	}
+
+	updateRefModel(refModel: IRefModel): Promise<boolean> {
+		return this.httpClient
+			.put<boolean>(`${cnf.apiURL}/modelos/reference`, refModel, { params: { reference: 'true' } })
+			.toPromise();
 	}
 }

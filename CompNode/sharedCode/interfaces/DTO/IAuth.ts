@@ -1,4 +1,5 @@
-import { RoleType } from './roletype.enum';
+import { Roles } from '../Entity';
+
 /**
  * Esta interfaz es la que manda el login al backend, Usuario y contraseña
  */
@@ -17,6 +18,6 @@ export interface IJwtPayload {
 	email: string;
 	/**El hash con salt de la contraseña del usuario */
 	password: string;
-	roles: RoleType[];
+	roles: Roles[];
 	iat?: Date;
 }

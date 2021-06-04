@@ -1,9 +1,10 @@
-import { RoleType } from 'sharedInterfaces/DTO';
+import { Roles } from 'sharedInterfaces/Entity';
+
 export interface IJwtPayload {
 	username: string;
 	email: string;
 	password: string;
-	roles: RoleType[];
+	roles: Roles[];
 	iat?: Date;
 	exp?: Date;
 }

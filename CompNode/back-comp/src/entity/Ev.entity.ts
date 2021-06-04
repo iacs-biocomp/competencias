@@ -7,7 +7,7 @@ import { EvModel, CatComp, Valoracion } from '.';
 export class Ev extends BaseEntity implements IEvaluacion {
 	@ApiProperty()
 	@PrimaryGeneratedColumn()
-	id: string;
+	id: number;
 
 	//? Nullable?
 	@ApiProperty()

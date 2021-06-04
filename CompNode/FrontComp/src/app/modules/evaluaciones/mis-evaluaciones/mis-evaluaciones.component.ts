@@ -5,9 +5,9 @@ import { EvaluacionesService } from '../evaluaciones.service';
 
 /** Enumerador que tiene los 3 estados en los que puede estar una evaluacion */
 enum EvalStatus {
-	PeriodoEvaluar = 'PERIODOEVALUAR',
-	PeriodoResultados = 'PERIODORESULTADOS',
-	PeriodoEvaluadores = 'PERIODOEVALUADORES',
+	periodoEvaluar = 'PERIODOEVALUAR',
+	periodoResultados = 'PERIODORESULTADOS',
+	periodoEvaluadores = 'PERIODOEVALUADORES',
 }
 @Component({
 	selector: 'app-mis-evaluaciones',
@@ -33,18 +33,20 @@ export class MisEvaluacionesComponent implements OnInit {
 		this.buttonCalcular = true;
 	}
 
-	/** Funcion que calculará en que periodo se encuetra la evaluacion (los 3 del ENUM);
+	/**
+	 * Funcion que calculará en que periodo se encuetra la evaluacion (los 3 del ENUM);
 	 * y mostrará un botón u otro
 	 */
 	calcularPeriodoActual(evaluacionActual: IEvaluacion) {
-		var fecha = new Date();
+		// TODO: Corregir tipo usar IEv que tenga propiedades no undefined
+		const fecha = new Date();
 
 		if (evaluacionActual.finPropuestas! > fecha) {
-			return EvalStatus.PeriodoEvaluar;
+			return EvalStatus.periodoEvaluar;
 		} else if (evaluacionActual.endValidacion! > fecha) {
-			return EvalStatus.PeriodoResultados;
+			return EvalStatus.periodoResultados;
 		} else {
-			return EvalStatus.PeriodoEvaluadores;
+			return EvalStatus.periodoEvaluadores;
 		}
 	}
 }

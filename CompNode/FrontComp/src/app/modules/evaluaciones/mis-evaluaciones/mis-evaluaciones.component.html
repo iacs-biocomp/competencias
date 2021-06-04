@@ -9,12 +9,7 @@
 					<p>Descripcion de categoría competencial: {{ evaluacion.catComp?.description }}</p>
 					<p>Descripción de la evaluación: {{ evaluacion.description }}</p>
 				</div>
-				<button
-					type="button"
-
-					[routerLink]="'/evaluaciones/evaluar/' + evaluacion.id"
-					class="btn btn-primary"
-				>
+				<button type="button" [routerLink]="'/evaluaciones/evaluar/' + evaluacion.id" class="btn btn-primary">
 					Evaluar
 				</button>
 				<button

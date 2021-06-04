@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { RoleType } from 'sharedInterfaces/DTO';
+import { Roles } from 'sharedInterfaces/Entity';
 
 export class UserDto {
 	@IsNotEmpty()
@@ -12,5 +12,5 @@ export class UserDto {
 	email: string;
 
 	@IsNotEmpty()
-	roles: RoleType[];
+	roles: Roles[];
 }

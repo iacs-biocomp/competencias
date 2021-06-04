@@ -17,9 +17,9 @@ type ViewProps = {
 	styleUrls: ['./view-all-models.component.scss'],
 })
 export class ViewAllModelsComponent implements OnInit {
-	renderViewModels: boolean = false;
+	renderViewModels = false;
 	refModels: IRefModel[] = [];
-	modoEdicion: boolean = false;
+	modoEdicion = false;
 	dbData: DbData = {
 		catComps: [],
 		comps: [],
@@ -42,14 +42,17 @@ export class ViewAllModelsComponent implements OnInit {
 		this.viewProps = {
 			haveModels: this.refModels.length !== 0,
 		};
-		if (!this.viewProps) throw new Error('View Props no ha sido inicializado');
+		if (!this.viewProps) {
+			throw new Error('View Props no ha sido inicializado');
+		}
 		console.log(this);
 	}
 	evModelShowNotUndefined(subj: BehaviorSubject<IRefModel | undefined>): BehaviorSubject<IRefModel> {
-		if (!subj.value)
+		if (!subj.value) {
 			throw new Error(
 				'Se ha llamado a la función de casteo cuando BehaviorSubject tenia valor interno undefined',
 			);
+		}
 		return subj as BehaviorSubject<IRefModel>;
 	}
 

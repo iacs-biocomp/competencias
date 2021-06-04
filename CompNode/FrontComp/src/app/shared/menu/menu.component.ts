@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Roles } from 'sharedInterfaces/Entity';
 import { LoginGuard } from 'src/app/guards/login.guard';
 
 @Component({
@@ -13,7 +14,7 @@ export class MenuComponent implements OnInit {
 	constructor(private loginGuard: LoginGuard) {}
 
 	ngOnInit(): void {
-		this.isAdmin = this.loginGuard.hasRole('ADMIN');
+		this.isAdmin = this.loginGuard.hasRole(Roles.ADMIN);
 	}
 	collapse(): void {
 		this.collapsed = !this.collapsed;

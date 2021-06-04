@@ -13,23 +13,22 @@
 			</div>
 			<div class="modal-body">
 				<ul class="list-group">
-					<li
-						*ngFor="let competencia of competenciasModelos"
-						class="list-group-item p-3"
-					>
-						{{ competencia.descripcion }}
-						<select ngModel="competencia.id">
-							<option *ngFor="let nivel of niveles" [ngValue]="nivel">
+					<li *ngFor="let comp of compsObs | async" class="list-group-item p-3">
+						{{ comp.descripcion }}
+						<select ngModel="competencia.id" #selectNiv (change)="setNivel(comp,selectNiv.value)">
+							<option *ngFor="let nivel of niveles" [value]="nivel.code">
 								{{ nivel.code }}
 							</option>
 						</select>
+
 					</li>
 				</ul>
 			</div>
 
 			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="nivelClicked()"  >ENVIAR PADRE</button>
 				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-outline-success" >Guardar evaluación</button>
+				<button type="button" class="btn btn-outline-success">Guardar evaluación</button>
 			</div>
 		</div>
 	</div>

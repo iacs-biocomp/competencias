@@ -11,11 +11,12 @@
 				<h2 class="modal-title" id="selecCompModalLabel">Seleccione las competencias de la evaluación</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" #selectCompe>
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: competCtl.competenciasModelos.includes(competencia)}"
-						*ngFor="let competencia of competCtl.competenciasRepetidas"
+						[ngClass]="{ active: competCtl.compSelected.includes(competencia) }"
+						*ngFor="let competencia of competCtl.competencias"
+						[value]="competencia.id"
 						class="list-group-item p-3"
 						(click)="toggleCompet(competencia)"
 					>
@@ -31,13 +32,16 @@
 					data-bs-toggle="modal"
 					data-bs-target="#selectNivelCompsModal"
 					class="btn btn-primary"
-					(click)="closeModal.click()"
+					(click)="setCompe(); closeModal.click(); getCompetsNotMatch(competCtl.compSelected)"
 				>
-				Siguiente
-			</button>
+					Siguiente
+				</button>
 			</div>
 		</div>
 	</div>
 </div>
-<app-model-nivel4-comp-select *ngIf="!!competCtl.competenciasModelos" [competenciasModelos]="competCtl.competenciasModelos"></app-model-nivel4-comp-select>
-
+<app-model-nivel4-comp-select
+	*ngIf="(compsObs | async) !== (undefined && null)"
+	[compsObs]="compsObs"
+	(nivelClick)="onChildNivelClicked($event)"
+></app-model-nivel4-comp-select>

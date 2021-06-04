@@ -95,7 +95,9 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		this.subs.push(
 			//Suscripción 1
 			this.cv.orgFilterObs.subscribe(txt4filter => {
-				if (txt4filter === this.cv.previousFilterTxt) return;
+				if (txt4filter === this.cv.previousFilterTxt) {
+					return;
+				}
 				this.filteredOrgani = this.filterOrgani(txt4filter);
 				this.cv.previousFilterTxt = txt4filter;
 			}),
@@ -166,6 +168,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 
 	/**
 	 * Guarda las relaciones de un trabajador de un tipo determinado (par/inf/sup)
+	 *
 	 * @param dniId El identificador del elemento HTML al cual hay que volver una vez se sincronice la vista
 	 */
 	async saveRelations(dniId?: string) {
@@ -197,15 +200,19 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		}
 		this.closeModalAddRel.nativeElement.click();
 		await this.syncView();
-		if (!dniId) return;
+		if (!dniId) {
+			return;
+		}
 		this.scroll(dniId, {
 			removeHighlight: true,
 		});
 	}
 
 	async deleteRelations(dniId?: string) {
-		let trabajador = this.cv.modal.worker?.trabajador;
-		if (!trabajador) return;
+		const trabajador = this.cv.modal.worker?.trabajador;
+		if (!trabajador) {
+			return;
+		}
 		try {
 			switch (this.cv.modal.title) {
 				case 'Inferior':
@@ -223,7 +230,9 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		}
 		this.closeModalDeleteRel.nativeElement.click();
 		await this.syncView();
-		if (!dniId) return;
+		if (!dniId) {
+			return;
+		}
 		this.scroll(dniId, {
 			removeHighlight: true,
 		});
@@ -231,11 +240,14 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 
 	/**
 	 * Función que aplica una animación css (Clase highlight) y hace scroll hasta ver en pantalla el elemento dado.
+	 *
 	 * @param id Id del elemento HTML al que se quiere hacer scroll
 	 */
 	scroll(id: string, scrollOpts?: OrgScrollOpts) {
 		const element = document.getElementById(id);
-		if (!element) return;
+		if (!element) {
+			return;
+		}
 		if (!scrollOpts?.removeHighlight) {
 			element.classList.add('highlight');
 			setTimeout(() => {
@@ -274,6 +286,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 
 	/**
 	 * Metodo que filtra el organigrama, NO lo modifica, retorna el valor filtrado
+	 *
 	 * @param value El valor a usar como filtro
 	 * @returns Un organigrama filtrado de tipo IOrganigramaUsrDTO
 	 */

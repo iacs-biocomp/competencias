@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Param, Post, UnprocessableEntityException, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UnprocessableEntityException, Query, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { INewEvModelDTO } from 'sharedInterfaces/DTO';
-import { EvModel, SubModel } from 'src/entity';
+import { INewEvModelDTO, IRefModel } from 'sharedInterfaces/DTO';
+import { Competencia, Comportamiento, EvModel, Nivel, SubModel } from 'src/entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { EvModelRepo } from './modelos.repository';
 import { SubModelRepo } from './subModel.repository';
@@ -55,18 +55,18 @@ export class ModelosController {
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {
-			if (!!this.modelRepo.findOne({ catComp: cComp, reference: true })) {
+			if (!!(await this.modelRepo.findOne({ catComp: cComp, reference: true }))) {
 				throw new UnprocessableEntityException('Ya se ha creado el modelo de referencia de esa catComp');
 			}
 		}
 		/** El modelo que se va a guardar en la db*/
 		let evModel = new EvModel();
 		evModel.catComp = cComp;
-		const subModels = evModel.subModels.map(sub => {
+		const subModels = modeloDto.subModels.map(sub => {
 			let mutSub = new SubModel();
-			mutSub.competencia = sub.competencia;
-			mutSub.comportamientos = sub.comportamientos;
-			mutSub.nivel = sub.nivel;
+			mutSub.competencia = sub.competencia as Competencia;
+			mutSub.comportamientos = sub.comportamientos as Comportamiento[];
+			mutSub.nivel = sub.nivel as Nivel;
 			return mutSub;
 		});
 		evModel.subModels = subModels;
@@ -81,9 +81,45 @@ export class ModelosController {
 		);
 		return true;
 	}
-	@Post('')
-	editModel(@Body() modeloDto: INewEvModelDTO): boolean {
-		//TODO: Completar
+
+	@Put('reference')
+	async editModelfake(@Body() modeloDto: IRefModel, @Query('reference') isReference?: boolean): Promise<boolean> {
+		if (!isReference) isReference = false;
+		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
+		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
+		if (isReference) {
+			const dbModel = await this.modelRepo.findOne({ catComp: cComp, reference: true }, { relations: ['subModels'] });
+			if (!dbModel) {
+				throw new UnprocessableEntityException('No existe modelo de referencia de esa catComp');
+			}
+			const prevSubModels = dbModel.subModels;
+			dbModel.subModels = modeloDto.subModels as SubModel[];
+			console.log(modeloDto);
+			// this.subModelRepo.save(dbModel.subModels);
+			// this.modelRepo.save(dbModel);
+
+			return true;
+		}
+		return false;
+	}
+
+	@Put('reference2')
+	async editModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReference?: boolean): Promise<boolean> {
+		if (!isReference) isReference = false;
+		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
+		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
+		if (isReference) {
+			const dbModel = await this.modelRepo.findOne({ catComp: cComp, reference: true }, { relations: ['subModels'] });
+			if (!dbModel) {
+				throw new UnprocessableEntityException('No existe modelo de referencia de esa catComp');
+			}
+			const prevSubModels = dbModel.subModels;
+			dbModel.subModels = modeloDto.subModels as SubModel[];
+			this.subModelRepo.save(dbModel.subModels);
+			this.modelRepo.save(dbModel);
+
+			return true;
+		}
 		return false;
 	}
 }

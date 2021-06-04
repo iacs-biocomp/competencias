@@ -16,7 +16,7 @@ import { CatComp, Ev, SubModel } from '.';
 export class EvModel extends BaseEntity implements IEvModel {
 	@ApiProperty()
 	@PrimaryGeneratedColumn()
-	id: string;
+	id: number;
 
 	@ApiProperty({ type: () => Ev })
 	@OneToMany(type => Ev, ev => ev.model)
