@@ -32,6 +32,7 @@ specifiers:
   aos: ^2.3.4
   bootstrap: ^5.0.1
   codelyzer: ^6.0.0
+  commitizen: ^4.2.4
   cz-conventional-changelog: ^3.3.0
   d3: ^6.7.0
   eslint: ^7.24.0
@@ -104,6 +105,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 4.26.0_232658d597ee2d3fef8288f3ac9e8226
   '@typescript-eslint/parser': 4.26.0_eslint@7.27.0+typescript@4.1.5
   codelyzer: 6.0.2
+  commitizen: 4.2.4
   cz-conventional-changelog: 3.3.0
   eslint: 7.27.0
   eslint-plugin-import: 2.23.4_eslint@7.27.0
