@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
@@ -6,6 +6,7 @@ import { ICatComp, ICompetencia, IEvModel, INivel } from 'sharedInterfaces/Entit
 import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
 import { CompYnivel } from '../model-nivel4-comp-select/model-nivel4-comp-select.component';
+import { IEvSendDTO } from '../../../../../../../../sharedCode/interfaces/DTO/IEvaluacionesDTO'
 
 type CompetenciaCtrlView = {
 	/** Array with all the competences, type ICompetencia  */
@@ -14,6 +15,8 @@ type CompetenciaCtrlView = {
 	compSelected: ICompetencia[];
 };
 
+
+
 @Component({
 	selector: 'app-model-comp-select [catCompObs]',
 	templateUrl: './model-comp-select.component.html',
@@ -21,9 +24,14 @@ type CompetenciaCtrlView = {
 })
 export class ModelCompSelectComponent implements OnInit {
 	@Input() catCompObs!: BehaviorSubject<ICatComp | undefined>;
+	@Output() miEmitter = new EventEmitter<ds>();
+
 	//TODO: Tsdoc
 	modelReferenceShow!: IRefModel;
 	//TODO: Tsdoc
+
+	enviarData!: CompYnivel[];
+
 
 	//TODO: tsdoc
 	compsObs = new BehaviorSubject<ICompetencia[]>([]);
@@ -46,7 +54,7 @@ export class ModelCompSelectComponent implements OnInit {
 			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow);
 			this.flushCachedData();
 		});
-		setInterval(() => console.log(this), 5000);
+
 	}
 	/** Gets the competences of a specify model, this function is in Utility.ts */
 	getCompetsOfModel = getCompetOfModel;
@@ -62,7 +70,7 @@ export class ModelCompSelectComponent implements OnInit {
 		modelToSend.subModels = modelToSend.subModels.filter(subModel => {
 			return !!competencias.find(comp => comp.id === subModel.competencia.id) ? true : false;
 		});
-		console.log(modelToSend);
+
 		return modelToSend;
 	}
 
@@ -82,10 +90,10 @@ export class ModelCompSelectComponent implements OnInit {
 		const index = arrToPush.indexOf(comp);
 		if (index == -1) {
 			arrToPush.push(comp);
-			console.log(arrToPush);
+
 		} else {
 			arrToPush.splice(index, 1);
-			console.log(arrToPush);
+
 		}
 	}
 	//TODO: tsdoc
@@ -94,6 +102,14 @@ export class ModelCompSelectComponent implements OnInit {
 	}
 
 	onChildNivelClicked(event: CompYnivel[]): void {
-		console.log('Objeto emitido: ', event);
+		const modelToSend = this.getCompetsNotMatch(this.competCtl.compSelected);
+		const obj: ds= {a: modelToSend, b: event};
+	  this.miEmitter.emit(obj);
+
 	}
+
+}
+export type ds=  {
+	a: RequiredAndNotNull<IEvModel>;
+	b: CompYnivel[];
 }
