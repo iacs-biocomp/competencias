@@ -8,7 +8,7 @@
 			<div class="modal-body">
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: competCtl.compSelected.includes(competencia) }"
+						[ngClass]="{ active: competCtl.compSelectedIncludes(competencia) }"
 						*ngFor="let competencia of compsObs | async"
 						[value]="competencia.id"
 						class="list-group-item p-3"

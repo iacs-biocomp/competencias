@@ -33,11 +33,12 @@ export class EvModelsAdmnService {
 	getAllReference(): Promise<IRefModel[]> {
 		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();
 	}
+	//TODO: Tsdoc
 	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
 	}
-
+	//TODO: Tsdoc
 	updateRefModel(refModel: IRefModel): Promise<boolean> {
 		return this.httpClient
 			.put<boolean>(`${cnf.apiURL}/modelos/reference`, refModel, { params: { reference: 'true' } })
