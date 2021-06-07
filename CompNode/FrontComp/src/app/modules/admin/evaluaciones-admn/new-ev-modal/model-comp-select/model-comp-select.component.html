@@ -14,7 +14,7 @@
 			<div class="modal-body" #selectCompe>
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: competCtl.compSelected.includes(competencia) }"
+						[ngClass]="{ active: competCtl.compsSelected.includes(competencia) }"
 						*ngFor="let competencia of competCtl.competencias"
 						[value]="competencia.id"
 						class="list-group-item p-3"
@@ -32,16 +32,13 @@
 					data-bs-toggle="modal"
 					data-bs-target="#selectNivelCompsModal"
 					class="btn btn-primary"
-					(click)="setCompe(); closeModal.click(); getCompetsNotMatch(competCtl.compSelected)"
+					(click)="setCompe(); closeModal.click(); "
 				>
+
 					Siguiente
 				</button>
+				<!-- getCompetsNotMatch(competCtl.compsSelected)" -->
 			</div>
 		</div>
 	</div>
 </div>
-<app-model-nivel4-comp-select
-	*ngIf="(compsObs | async) !== (undefined && null)"
-	[compsObs]="compsObs"
-	(nivelClick)="onChildNivelClicked($event)"
-></app-model-nivel4-comp-select>

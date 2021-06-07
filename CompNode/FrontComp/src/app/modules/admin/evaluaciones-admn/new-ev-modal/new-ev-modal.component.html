@@ -11,10 +11,10 @@
 				<h2 class="modal-title" id="exampleModalLabel">Crear nueva evaluación</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div *ngIf="rangesForm" class="modal-body">
+			<div *ngIf="modelCtl.rangesForm" class="modal-body">
 				<input
 					type="text"
-					[(ngModel)]="evDescription"
+					[(ngModel)]="modelCtl.evDescription"
 					class="form-control"
 					#addRelation
 					placeholder="Nombre evaluación"
@@ -22,7 +22,7 @@
 				<hr />
 				<mat-form-field appearance="fill">
 					<mat-label>Periodo propuesta evaluadores</mat-label>
-					<mat-date-range-input [formGroup]="rangesForm" [rangePicker]="picker1">
+					<mat-date-range-input [formGroup]="modelCtl.rangesForm" [rangePicker]="picker1">
 						<input matStartDate formControlName="propuestaStart" placeholder="Fecha inicio" />
 						<input matEndDate formControlName="propuestaEnd" placeholder="Fecha final" />
 					</mat-date-range-input>
@@ -38,7 +38,7 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Periodo Validación evaluadores</mat-label>
-					<mat-date-range-input [formGroup]="rangesForm" [rangePicker]="pickerValidacion">
+					<mat-date-range-input [formGroup]="modelCtl.rangesForm" [rangePicker]="pickerValidacion">
 						<input matStartDate formControlName="validacionStart" placeholder="Fecha inicio" />
 						<input matEndDate formControlName="validacionEnd" placeholder="Fecha final" />
 					</mat-date-range-input>
@@ -54,7 +54,7 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Periodo valoraciones</mat-label>
-					<mat-date-range-input [formGroup]="rangesForm" [rangePicker]="pickerValoracion">
+					<mat-date-range-input [formGroup]="modelCtl.rangesForm" [rangePicker]="pickerValoracion">
 						<input matStartDate formControlName="valoracionStart" placeholder="Fecha inicio" />
 						<input matEndDate formControlName="valoracionEnd" placeholder="Fecha final" />
 					</mat-date-range-input>
@@ -70,7 +70,7 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Periodo Evaluado</mat-label>
-					<mat-date-range-input [formGroup]="rangesForm" [rangePicker]="pickerEvPeriodo">
+					<mat-date-range-input [formGroup]="modelCtl.rangesForm" [rangePicker]="pickerEvPeriodo">
 						<input matStartDate formControlName="evaluacionStart" placeholder="Fecha inicio" />
 						<input matEndDate formControlName="evaluacionEnd" placeholder="Fecha final" />
 					</mat-date-range-input>
@@ -88,7 +88,7 @@
 					<option selected hidden disabled [value]="evModelSelected">
 						Seleccione la categoría competencial
 					</option>
-					<option *ngFor="let catComp of catComps" [value]="catComp.id">{{ catComp.id }}</option>
+					<option *ngFor="let catComp of catCompCtl.catComps" [value]="catComp.id">{{ catComp.id }}</option>
 				</select>
 			</div>
 
@@ -97,10 +97,18 @@
 				<button
 					#nextModalBtn
 					data-bs-toggle="modal"
-					data-bs-target="#selectModelCompsModal"
+					data-bs-target="#modalSelectCompets"
 					class="btn btn-primary"
-					[disabled]="isFormValid()"
-					(click)="closeEvModal.click()"
+					[disabled]="!isFormValid()"
+					(click)="closeEvModal.click(); save()"
+				>
+					Siguiente
+				</button>
+				<button
+					#nivSelectBtn
+					data-bs-toggle="modal"
+					data-bs-target="#modalSelectNivObjective"
+					class="visually-hidden"
 				>
 					Siguiente
 				</button>
@@ -108,4 +116,14 @@
 		</div>
 	</div>
 </div>
-<app-model-comp-select *ngIf="!!(catCompObs | async)" [catCompObs]="catCompObs"></app-model-comp-select>
+
+<!-- TODO: Change idModal -->
+<app-comp-select-modal
+*ngIf="(compsObs | async) !== (undefined || null)"
+[compsObs]="compsObs" [cConfig]="{title: 'Seleccione las competencias a evaluar'}" [idModal]="'modalSelectCompets'" (onModalFinish)="onCompetenciasSetted($event)"> </app-comp-select-modal>
+<app-model-nivel4-comp-select
+	*ngIf="(compsObs | async) !== (undefined || null)"
+	[compsObs]="compsObs"
+	[idModal]="'modalSelectNivObjective'"
+	(onSaved)="onNivelesSetted($event)"
+></app-model-nivel4-comp-select>

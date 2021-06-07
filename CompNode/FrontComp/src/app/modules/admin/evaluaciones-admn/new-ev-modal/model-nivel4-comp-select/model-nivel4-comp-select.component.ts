@@ -1,47 +1,54 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, INivel } from 'sharedInterfaces/Entity';
 import { NivelService } from '../../../niveles-admin/services/nivel.service';
 
-//TODO: Change name
-export type CompYnivel = { comp: ICompetencia; niv: INivel };
+/** Tipo formado por una competencia y su nivel asociado */
+export type CompAndNiv = { comp: ICompetencia; niv: INivel };
+export type cConfigModelNivel4 = {
+	/** Title modelNiv */
+	title: string;
+}
 @Component({
-	selector: 'app-model-nivel4-comp-select',
+	selector: 'app-model-nivel4-comp-select [idModal] [compsObs]',
 	templateUrl: './model-nivel4-comp-select.component.html',
 	styleUrls: ['./model-nivel4-comp-select.component.scss'],
 })
 export class ModelNivel4CompSelectComponent implements OnInit {
+	/** Receives an array with the competencies selected to the evaluation */
 	@Input() compsObs!: BehaviorSubject<ICompetencia[]>;
-	@Output() nivelClick = new EventEmitter<CompYnivel[]>();
+	/** Sends an object made up of the selected level and its competence */
+	@Output('onSaved') compAndNivEmitter = new EventEmitter<CompAndNiv[]>();
+	@Input()idModal = '';
+	@Input()cConfig: cConfigModelNivel4 = {
+		title: 'Default title'
+	};
 
-	niveles: INivel[] = [];
-	refModel!: IRefModel;
-	bufferCosas: Partial<CompYnivel>[] = [];
-
-	competenciasModelo!: ICompetencia[];
+	/** Array que almacena todos lo niveles actuales */
+	nivs: INivel[] = [];
+	/** CompAndNiv[](comp, niv) partial  */
+	bufferCompNiv: Partial<CompAndNiv>[] = [];
 
 	constructor(private nivelSv: NivelService) {}
-	//TODO: Change names
+
 	async ngOnInit(): Promise<void> {
-		this.niveles = await this.nivelSv.getAllRefNivs();
-		this.compsObs.subscribe(comps => {
-			console.log(comps);
-			const aMeter = comps.map(c => ({ comp: c })) as Partial<CompYnivel>[];
-			this.bufferCosas = aMeter;
+		this.nivs = await this.nivelSv.getAllRefNivs(); // Se guardan en la var niveles los niveles de referencia
+			this.compsObs.subscribe(comps => {
+			const compToSave = comps.map(c => ({ comp: c })) as Partial<CompAndNiv>[]; //Map the coompetences and saves it in compToSave
+			this.bufferCompNiv = compToSave;
 		});
 	}
-	//TODO: Change names
+	/** Saves the level objetivo if they find it, with their competence */
 	setNivel(comp: ICompetencia, niv: string): void {
-		const nivObj = this.niveles.find(n => n.code === niv);
-		const indx = this.bufferCosas.findIndex(cosa => cosa.comp?.id === comp.id);
-		this.bufferCosas[indx].niv = nivObj;
+		const nivObj = this.nivs.find(n => n.code === niv); //busca si hay un nivel con ese codigo (string)
+		const indx = this.bufferCompNiv.findIndex(cn => cn.comp?.id === comp.id);
+		this.bufferCompNiv[indx].niv = nivObj;
 	}
-	//TODO: Change names
+	/** Creates the object type CompAndNiv[comp,niv] and emits it */
 	nivelClicked(): void {
-		const cosasAMandar = this.bufferCosas.filter(cosa =>
-			!cosa.comp && !cosa.niv ? false : true,
-		) as CompYnivel[];
-		this.nivelClick.emit(cosasAMandar);
+		const objCompNivel = this.bufferCompNiv.filter(objToCreate =>
+			!objToCreate.comp && !objToCreate.niv ? false : true,
+		) as CompAndNiv[]; // creates the object if is true
+		this.compAndNivEmitter.emit(objCompNivel); //emit the object to the parent
 	}
 }

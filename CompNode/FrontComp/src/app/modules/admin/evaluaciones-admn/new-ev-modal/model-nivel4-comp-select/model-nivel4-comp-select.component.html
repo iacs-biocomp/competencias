@@ -1,6 +1,6 @@
 <div
 	class="modal fade"
-	id="selectNivelCompsModal"
+	[id]="idModal"
 	tabindex="-1"
 	aria-labelledby="selectNivelLabel"
 	aria-hidden="true"
@@ -16,8 +16,8 @@
 					<li *ngFor="let comp of compsObs | async" class="list-group-item p-3">
 						{{ comp.descripcion }}
 						<select ngModel="competencia.id" #selectNiv (change)="setNivel(comp,selectNiv.value)">
-							<option *ngFor="let nivel of niveles" [value]="nivel.code">
-								{{ nivel.code }}
+							<option *ngFor="let niv of nivs" [value]="niv.code" >
+								{{ niv.code }}
 							</option>
 						</select>
 
@@ -26,9 +26,8 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="nivelClicked()"  >ENVIAR PADRE</button>
 				<button #closeModal type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-outline-success">Guardar evaluación</button>
+				<button type="button" class="btn btn-outline-success" (click)="nivelClicked()">Guardar evaluación</button>
 			</div>
 		</div>
 	</div>

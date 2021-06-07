@@ -8,7 +8,9 @@ type CompetenciaCtrlView = {
 	/** Array with the selected competences, type ICompetencia*/
 	compSelected: ICompetencia[];
 };
-
+export type CompSelectConfig = {
+	title: string;
+};
 @Component({
 	selector: 'app-comp-select-modal [compsObs] [idModal]',
 	templateUrl: './comp-select.component.html',
@@ -18,6 +20,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	@Input() compsObs = new BehaviorSubject<ICompetencia[]>([]);
 	@Input() preSelectedComps?: ICompetencia[];
 	@Input() idModal!: string;
+	@Input() cConfig: CompSelectConfig = { title: 'Seleccione las competencias' };
 	@Output('onModalFinish') finishEmitter = new EventEmitter<ICompetencia[]>();
 
 	//TODO: Tsdoc
