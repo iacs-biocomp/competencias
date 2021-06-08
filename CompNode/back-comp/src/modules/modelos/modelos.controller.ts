@@ -88,16 +88,45 @@ export class ModelosController {
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {
-			const dbModel = await this.modelRepo.findOne({ catComp: cComp, reference: true }, { relations: ['subModels'] });
+			const dbModel = await this.modelRepo.findOne(
+				{ catComp: cComp, reference: true },
+				{
+					relations: [
+						'subModels',
+						'subModels.competencia',
+						'subModels.nivel',
+						'subModels.comportamientos',
+						'subModels.modelos',
+						// 'subModels.modelos.catComp',
+					],
+				},
+			);
 			if (!dbModel) {
 				throw new UnprocessableEntityException('No existe modelo de referencia de esa catComp');
 			}
 			const prevSubModels = dbModel.subModels;
-			dbModel.subModels = modeloDto.subModels as SubModel[];
-			console.log(modeloDto);
-			// this.subModelRepo.save(dbModel.subModels);
-			// this.modelRepo.save(dbModel);
-
+			//Se eliminan todos los subModelos que no tienen otro modelo distinto al que se modifica
+			const promises = prevSubModels
+				.map(s => {
+					s.modelos = s.modelos.filter(modelo => modelo.id !== dbModel.id);
+					const mapResult = s.modelos.length === 0 ? this.subModelRepo.remove(s) : undefined;
+					console.log(mapResult);
+					return mapResult;
+				})
+				.filter(promise => promise !== undefined);
+			await Promise.all(promises);
+			//Se borra el id de los nuevos subModelos para guardarlos
+			const subModelsNoId = modeloDto.subModels.map(subM => {
+				delete subM.id;
+				return subM;
+			});
+			const subModelsSaved = await this.subModelRepo.save(subModelsNoId);
+			dbModel.subModels = subModelsSaved;
+			const subModelsDB = await this.subModelRepo.find({
+				relations: ['competencia', 'nivel', 'comportamientos', 'modelos', 'modelos.catComp'],
+			});
+			console.log('subModelsDB', subModelsDB);
+			await this.modelRepo.save(dbModel);
 			return true;
 		}
 		return false;
