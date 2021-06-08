@@ -51,8 +51,9 @@ export class ModelosController {
 
 	//TODO: TSdoc
 	@Post('')
-	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReference?: boolean): Promise<EvModel> {
+	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReferenceStr?: string): Promise<EvModel> {
 		console.log(modeloDto);
+		const isReference = isReferenceStr === 'true' ? true : false;
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {

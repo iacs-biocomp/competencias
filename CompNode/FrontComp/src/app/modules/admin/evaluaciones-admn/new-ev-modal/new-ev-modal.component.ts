@@ -69,7 +69,11 @@ export class NewEvModalComponent implements OnInit {
 	/** La evaluación que se añadirá a la bbdd */
 	evToAdd!: evAddDTO;
 
-	constructor(private evModelSv: EvModelsAdmnService, private fb: FormBuilder, private evSv: EvaluacionesAdmService) {}
+	constructor(
+		private evModelSv: EvModelsAdmnService,
+		private fb: FormBuilder,
+		private evSv: EvaluacionesAdmService,
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		this.modelCtl.allReferenceModels = await this.evModelSv.getAllReference();
@@ -145,12 +149,15 @@ export class NewEvModalComponent implements OnInit {
 		const form = this.modelCtl.rangesForm.value;
 
 		console.log('Save evaluation: ', this.evToAdd);
-		if (!modelo.subModels){
+		if (!modelo.subModels) {
 			throw new Error('Contacte con un administrador');
 		}
+
+		const idsComps = this.compsSelectedObs.value.map(c => c.id);
+		const subModelsFiltered = modelo.subModels.filter(subModel => idsComps.includes(subModel.competencia.id));
 		let modelToSend: IModelDTO = {
 			catComp: cComp,
-			subModels: modelo.subModels,
+			subModels: subModelsFiltered,
 		};
 		const evModelDB = await this.evModelSv.save(modelToSend, false);
 		this.evToAdd = {
@@ -168,10 +175,10 @@ export class NewEvModalComponent implements OnInit {
 			endPerEvaluado: form.evaluacionEnd as Date,
 		};
 		const saved = await this.evSv.save(this.evToAdd);
-	//	const saved = true;
-			if (saved) {
-				this.onEvSaved();
-			} //Actualiza la vista del componente padre, se pasa función por parametro
+		//	const saved = true;
+		if (saved) {
+			this.onEvSaved();
+		} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 
 	onNivelesSetted(niveles: CompAndNiv[]) {
@@ -183,7 +190,12 @@ export class NewEvModalComponent implements OnInit {
 	onCompetenciasSetted(competencias: ICompetencia[]) {
 		this.compsSelectedObs.next(competencias);
 		// TODO: Añadir la función que del modelo de referencia crea otro con las comps seleccionadas
-		 this.modelCtl.evModelSelected =
+		const cCompSelected = this.cCompCtl.cCompSelectedObs.value;
+		if (!cCompSelected) {
+			throw new Error('No se ha seleccionado una cComp, contacte con un programador');
+		}
+		const refModel = this.modelCtl.allReferenceModels.find(model => model.catComp.id === cCompSelected.id)!;
+		this.modelCtl.evModelSelected = refModel;
 
 		this.nivModal.nativeElement.click();
 	}
