@@ -9,6 +9,7 @@ import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { CompAndNiv } from './model-nivel4-comp-select/model-nivel4-comp-select.component';
 
 type modelCtrlView = {
+	// ?? Comprobar si sirve
 	evModels: IEvModel[];
 	/** Descripción de la evaluación, bindeado al input en el html */
 	evDescription?: string;
@@ -16,15 +17,18 @@ type modelCtrlView = {
 	rangesForm: FormGroup | undefined;
 	/** Gets all the reference models (array)  */
 	allReferenceModels: IRefModel[];
+	/** El modelo seleccionado, se settea cuando el componente hijo devuelve las comps seleccionadas */
+	evModelSelected: IEvModel | undefined;
 };
 
 type catCompCtrlView = {
 	catComps: ICatComp[];
-	catCompSelected?: ICatComp;
+	/** Sends the catComp selected to creates the evaluation */
+	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
 };
 
 /** Same type as IEvaluacion but without id because is not necesary for create a new one */
-export type evAddDTO = Omit<IEvaluacion, 'id'>;
+export type evAddDTO = RequiredAndNotNull<Omit<IEvaluacion, 'id'>>;
 /** Componente destinado a la creación de una nueva evaluación, modal de bootstrap */
 export type modelCompNiv = {
 	evModel: RequiredAndNotNull<IEvModel>;
@@ -37,41 +41,40 @@ export type modelCompNiv = {
 })
 export class NewEvModalComponent implements OnInit {
 	/** Observable to send an array of competences of a model reference selected by the cComp  */
-  compsObs = new BehaviorSubject<ICompetencia[]> ([]);
-	/** Sends the catComp selected to creates the evaluation */
-	catCompObs = new BehaviorSubject<ICatComp | undefined>(undefined);
+	compsObs = new BehaviorSubject<ICompetencia[]>([]);
+	//TODO: tsdoc
+	compsSelectedObs = new BehaviorSubject<ICompetencia[]>([]);
+
 	@ViewChild('nivSelectBtn') nivModal!: ElementRef;
 	/** Metodo que se ejecuta cuando se guarda una evaluación El componente padre debe pasarlo como parametro */
-  @Input() onEvSaved!: () => void | Promise<void>;
+	@Input() onEvSaved!: () => void | Promise<void>;
 
-	catCompCtl: catCompCtrlView = {
+	cCompCtl: catCompCtrlView = {
 		/** Array with all the current catComps */
 		catComps: [],
-		/** CatComp selected */
-		catCompSelected: undefined,
+		//TODO: Tsdoc
+		cCompSelectedObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 	};
 
 	modelCtl: modelCtrlView = {
+		// ?? Comprobar si sirve
 		evModels: [],
 		evDescription: undefined,
 		rangesForm: undefined,
 		allReferenceModels: [],
+		evModelSelected: undefined,
 	};
 
 	/** La evaluación que se añadirá a la bbdd */
 	evToAdd!: evAddDTO;
-	evModelSelected!: IEvModel;
 
-	constructor(
-		private evModelSv: EvModelsAdmnService,
-		private fb: FormBuilder,
-	) {}
+	constructor(private evModelSv: EvModelsAdmnService, private fb: FormBuilder) {}
 
 	async ngOnInit(): Promise<void> {
 		this.modelCtl.allReferenceModels = await this.evModelSv.getAllReference();
-		this.catCompCtl.catComps = this.modelCtl.allReferenceModels.map(refModel => refModel.catComp);
+		this.cCompCtl.catComps = this.modelCtl.allReferenceModels.map(refModel => refModel.catComp);
 
-		this.catCompCtl.catComps = this.catCompCtl.catComps.sort((a, b) => a.id.localeCompare(b.id));
+		this.cCompCtl.catComps = this.cCompCtl.catComps.sort((a, b) => a.id.localeCompare(b.id));
 		// TODO: Añadir validadores que comprueben que las fechas de inicio y final esten en orden Ejemplo: propuestaEnd < validacionStart
 		// ?? Preguntar a vega si tiene que ser asi o pueden solaparse (propuestaEnd > validacionStart)
 		this.modelCtl.rangesForm = this.fb.group({
@@ -84,30 +87,30 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 		});
-		this.catCompObs.subscribe(cComp => {
-		 //	console.log('suscription')
-		 //	console.log(cComp);
+		this.cCompCtl.cCompSelectedObs.subscribe(cComp => {
+			//	console.log('suscription')
+			//	console.log(cComp);
 			if (!cComp) {
 				return;
 			}
 			const comps = getCompetOfModel(this.modelCtl.allReferenceModels.find(m => m.catComp.id === cComp.id)!);
-		//	console.log(comps);
+			//	console.log(comps);
 			this.compsObs.next(comps);
 		});
 	}
 
 	/**
-	 * Filtra de this.evModels y elimina los que no tengan una catComp igual a this.catCompSelected
+	 * Filtra de this.evModels y elimina los que no tengan una catComp igual a this.cCompSelectedObs.value
 	 * Devuelve [] en caso de que este undefined cualquiera de estos dos.
 	 *
 	 * @returns El array de modelos de evaluaciones filtrado
 	 */
 	filterEvModels(): IEvModel[] {
-		if (!this.catCompCtl.catCompSelected || !this.modelCtl.evModels) {
+		if (!this.cCompCtl.cCompSelectedObs.value || !this.modelCtl.evModels) {
 			return [];
 		}
 		return this.modelCtl.evModels.filter(
-			evModel => evModel.catComp?.id === this.catCompCtl.catCompSelected?.id,
+			evModel => evModel.catComp?.id === this.cCompCtl.cCompSelectedObs.value?.id,
 		);
 	}
 	/**
@@ -120,7 +123,7 @@ export class NewEvModalComponent implements OnInit {
 		if (!this.modelCtl.evDescription || this.modelCtl.evDescription === '') {
 			return false;
 		}
-		if (!this.catCompCtl.catCompSelected) {
+		if (!this.cCompCtl.cCompSelectedObs.value) {
 			return false;
 		}
 		return this.modelCtl.rangesForm.valid;
@@ -128,22 +131,22 @@ export class NewEvModalComponent implements OnInit {
 
 	/** Sets the catComp selected for the new evaluation */
 	setCatComp(idCatComp: string): void {
-		this.catCompCtl.catCompSelected = this.catCompCtl.catComps.find(catComp => catComp.id === idCatComp); //Find if the catComp exists
-//		console.log('SetCatComp ',	this.catCompCtl.catCompSelected );
-		this.catCompObs.next(this.catCompCtl.catCompSelected);
+		this.cCompCtl.cCompSelectedObs.next(this.cCompCtl.catComps.find(catComp => catComp.id === idCatComp)); //Find if the catComp exists
 	}
 
 	/** Save in the backed the evaluation to create */
 	async save() {
-		if (!this.modelCtl.rangesForm || !this.catCompCtl.catCompSelected) {
+		const cComp = this.cCompCtl.cCompSelectedObs.value;
+		const modelo = this.modelCtl.evModelSelected;
+		if (!this.modelCtl.rangesForm || !cComp || !modelo) {
 			return;
 		} //Se quita undefined
 		const form = this.modelCtl.rangesForm.value;
 		this.evToAdd = {
 			description:
 				this.modelCtl.evDescription === undefined ? 'Descripción por defecto' : this.modelCtl.evDescription, //TODO: Return si desc == undefined, validator en formcontrol
-			catComp: this.catCompCtl.catCompSelected,
-			model: this.evModelSelected,
+			catComp: cComp,
+			model: modelo,
 			iniDate: form.propuestaStart as Date,
 			finPropuestas: form.propuestaEnd as Date,
 			iniValidacion: form.validacionStart as Date,
@@ -155,22 +158,23 @@ export class NewEvModalComponent implements OnInit {
 		};
 		console.log('Save evaluation: ', this.evToAdd);
 		//	const saved = await this.evSv.save(this.evToAdd);
-		//	if (saved) {
-		//		this.onEvSaved();
-		//	} //Actualiza la vista del componente padre, se pasa función por parametro
+		const saved = true;
+			if (saved) {
+				this.onEvSaved();
+			} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 
-	/** Collects the model creates by the child  */
-	modeloRecibido(model: modelCompNiv): void {
-		this.evModelSelected = model.evModel;
-	//	console.log(this.evModelSelected);
-		this.save();
-	}
 	onNivelesSetted(niveles: CompAndNiv[]) {
-//		console.log(niveles);
+		// TODO: Guardar evaluacion
+		this.save();
+		//		console.log(niveles);
 	}
+
 	onCompetenciasSetted(competencias: ICompetencia[]) {
-//		console.log(competencias, this.nivModal);
+		this.compsSelectedObs.next(competencias);
+		// TODO: Añadir la función que del modelo de referencia crea otro con las comps seleccionadas
+		// this.modelCtl.evModelSelected = ;
+		//		console.log(competencias, this.nivModal);
 		this.nivModal.nativeElement.click();
 	}
 }

@@ -85,10 +85,8 @@
 					> -->
 				</mat-form-field>
 				<select class="form-select mb-2" #selectCatComp (change)="setCatComp(selectCatComp.value)">
-					<option selected hidden disabled [value]="evModelSelected">
-						Seleccione la categoría competencial
-					</option>
-					<option *ngFor="let catComp of catCompCtl.catComps" [value]="catComp.id">{{ catComp.id }}</option>
+					<option selected hidden disabled [value]="">Seleccione la categoría competencial</option>
+					<option *ngFor="let catComp of cCompCtl.catComps" [value]="catComp.id">{{ catComp.id }}</option>
 				</select>
 			</div>
 
@@ -99,7 +97,7 @@
 					data-bs-toggle="modal"
 					data-bs-target="#modalSelectCompets"
 					class="btn btn-primary"
-					[disabled]="!isFormValid()"
+					[disabled]="isFormValid()"
 					(click)="closeEvModal.click(); save()"
 				>
 					Siguiente
@@ -119,11 +117,15 @@
 
 <!-- TODO: Change idModal -->
 <app-comp-select-modal
-*ngIf="(compsObs | async) !== (undefined || null)"
-[compsObs]="compsObs" [cConfig]="{title: 'Seleccione las competencias a evaluar'}" [idModal]="'modalSelectCompets'" (onModalFinish)="onCompetenciasSetted($event)"> </app-comp-select-modal>
-<app-model-nivel4-comp-select
 	*ngIf="(compsObs | async) !== (undefined || null)"
 	[compsObs]="compsObs"
+	[cConfig]="{ title: 'Seleccione las competencias a evaluar' }"
+	[idModal]="'modalSelectCompets'"
+	(onModalFinish)="onCompetenciasSetted($event)"
+></app-comp-select-modal>
+<app-model-nivel4-comp-select
+	*ngIf="(compsObs | async) !== (undefined || null)"
+	[compsObs]="compsSelectedObs"
 	[idModal]="'modalSelectNivObjective'"
 	(onSaved)="onNivelesSetted($event)"
 ></app-model-nivel4-comp-select>
