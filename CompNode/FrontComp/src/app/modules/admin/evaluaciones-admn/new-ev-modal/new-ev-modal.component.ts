@@ -2,10 +2,11 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
-import { IRefModel } from 'sharedInterfaces/DTO';
+import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, ICompetencia, IEvaluacion, IEvModel } from 'sharedInterfaces/Entity';
 import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
+import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
 import { CompAndNiv } from './model-nivel4-comp-select/model-nivel4-comp-select.component';
 
 type modelCtrlView = {
@@ -68,7 +69,7 @@ export class NewEvModalComponent implements OnInit {
 	/** La evaluación que se añadirá a la bbdd */
 	evToAdd!: evAddDTO;
 
-	constructor(private evModelSv: EvModelsAdmnService, private fb: FormBuilder) {}
+	constructor(private evModelSv: EvModelsAdmnService, private fb: FormBuilder, private evSv: EvaluacionesAdmService) {}
 
 	async ngOnInit(): Promise<void> {
 		this.modelCtl.allReferenceModels = await this.evModelSv.getAllReference();
@@ -134,19 +135,29 @@ export class NewEvModalComponent implements OnInit {
 		this.cCompCtl.cCompSelectedObs.next(this.cCompCtl.catComps.find(catComp => catComp.id === idCatComp)); //Find if the catComp exists
 	}
 
-	/** Save in the backed the evaluation to create */
+	/** Save in the backend the evaluation to create */
 	async save() {
 		const cComp = this.cCompCtl.cCompSelectedObs.value;
 		const modelo = this.modelCtl.evModelSelected;
 		if (!this.modelCtl.rangesForm || !cComp || !modelo) {
-			return;
+			throw new Error('Contacte con un administrador');
 		} //Se quita undefined
 		const form = this.modelCtl.rangesForm.value;
+
+		console.log('Save evaluation: ', this.evToAdd);
+		if (!modelo.subModels){
+			throw new Error('Contacte con un administrador');
+		}
+		let modelToSend: IModelDTO = {
+			catComp: cComp,
+			subModels: modelo.subModels,
+		};
+		const evModelDB = await this.evModelSv.save(modelToSend, false);
 		this.evToAdd = {
 			description:
 				this.modelCtl.evDescription === undefined ? 'Descripción por defecto' : this.modelCtl.evDescription, //TODO: Return si desc == undefined, validator en formcontrol
 			catComp: cComp,
-			model: modelo,
+			model: evModelDB,
 			iniDate: form.propuestaStart as Date,
 			finPropuestas: form.propuestaEnd as Date,
 			iniValidacion: form.validacionStart as Date,
@@ -156,9 +167,8 @@ export class NewEvModalComponent implements OnInit {
 			iniPerEvaluado: form.evaluacionStart as Date,
 			endPerEvaluado: form.evaluacionEnd as Date,
 		};
-		console.log('Save evaluation: ', this.evToAdd);
-	//	const saved = await this.evModelSv.save(this.evToAdd)
-		const saved = true;
+		const saved = await this.evSv.save(this.evToAdd);
+	//	const saved = true;
 			if (saved) {
 				this.onEvSaved();
 			} //Actualiza la vista del componente padre, se pasa función por parametro
@@ -173,8 +183,8 @@ export class NewEvModalComponent implements OnInit {
 	onCompetenciasSetted(competencias: ICompetencia[]) {
 		this.compsSelectedObs.next(competencias);
 		// TODO: Añadir la función que del modelo de referencia crea otro con las comps seleccionadas
-		// this.modelCtl.evModelSelected = ;
-		//		console.log(competencias, this.nivModal);
+		 this.modelCtl.evModelSelected =
+
 		this.nivModal.nativeElement.click();
 	}
 }

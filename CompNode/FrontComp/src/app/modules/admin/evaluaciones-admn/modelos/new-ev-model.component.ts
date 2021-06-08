@@ -6,7 +6,7 @@ import { CatCompetencialesService } from '../../cat-admn/services/CatCompetencia
 import { ComportService } from '../../comportamientos-admin/services/comport.service';
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
-import { ICatComp, ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
+import { ICatComp, ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { WithOptional } from 'sharedInterfaces/Utility';
 
 type IModelPreDTO = Partial<IModelDTO> & {
@@ -335,7 +335,7 @@ export class NewEvModelComponent implements OnInit {
 			return alert('Contacte con un programador');
 		}
 		evModel.subModels = evModel.subModels.filter(subM => !!subM.nivel);
-		let saved = false;
+		let saved : IEvModel | undefined;
 		try {
 			saved = await this.evModelSv.save(evModel as IModelDTO, true);
 		} catch (err) {

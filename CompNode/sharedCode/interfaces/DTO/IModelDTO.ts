@@ -1,7 +1,7 @@
 import { ICompetencia, IComportamiento, IEvModel, INivel } from '../Entity/IEvaluaciones';
 import { RequiredAndNotNull } from '../Utility';
 
-export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id'>;
+export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id' | 'evs'>;
 
 //TODO: Tsdoc, ruta en /modelos/reference/${catComp} y /modelos/references siendo Array<IRefModel>
 export type IRefModel = Omit<RequiredAndNotNull<IEvModel>, 'evs'>;
