@@ -8,7 +8,8 @@
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
-		"compodoc": "npx compodoc -p tsconfig.json -s"
+		"compodoc": "npx compodoc -p tsconfig.json -s",
+		"commit": "cz"
 	},
 	"private": true,
 	"dependencies": {
@@ -55,6 +56,7 @@
 		"@typescript-eslint/eslint-plugin": "4.26.0",
 		"@typescript-eslint/parser": "4.26.0",
 		"codelyzer": "^6.0.0",
+		"commitizen": "^4.2.4",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.24.0",
 		"eslint-plugin-import": "2.23.4",

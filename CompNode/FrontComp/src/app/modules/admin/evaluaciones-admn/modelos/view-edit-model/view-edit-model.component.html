@@ -5,7 +5,7 @@
 				<h2 class="modal-title">
 					Edite el modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}
 				</h2>
-				<button data-bs-toggle="modal" data-bs-target="#selectCompetsModal" class="btn btn-success">
+				<button data-bs-toggle="modal" data-bs-target="#selectCompetsModal" class="btn btn-success" (click)="updateAllComps()">
 					Añadir competencias
 				</button>
 			</ng-template>
@@ -122,6 +122,9 @@
 			*ngIf="modoEdicion"
 			[idModal]="'selectCompetsModal'"
 			[compsObs]="compsObs"
+			[preSelectedComps]="getCompet(evModel.value)"
+			[cConfig]="{ title: 'Seleccione las competencias del modelo' }"
+			(onModalFinish)="editCompets($event)"
 		></app-comp-select-modal>
 	</div>
 </div>

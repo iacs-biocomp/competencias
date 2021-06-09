@@ -213,6 +213,22 @@ export class ViewEditModelComponent implements OnInit {
 		//Se eliminan los subModelos que no tengan comportamientos
 		model.subModels = model.subModels.filter(subM => subM.comportamientos.length !== 0);
 		const response = await this.evModelSv.updateRefModel(model);
-		console.log(response);
+		if (response) {
+			alert('Se ha guardado correctamente');
+		} else {
+			alert('Ha habido un error contacte con un programador');
+		}
+	}
+	//TODO: TSdoc
+	editCompets(comps: ICompetencia[]) {
+		const model = this.evModel.value;
+		const compsIds = comps.map(c => c.id);
+		model.subModels = model.subModels.filter(s => compsIds.includes(s.competencia.id));
+		// TODO: Añadir submodelo vacio con las nuevas competencias
+		this.cv.competenciasModelo = comps;
+	}
+
+	updateAllComps() {
+		this.compsObs.next(this.dbData.comps);
 	}
 }

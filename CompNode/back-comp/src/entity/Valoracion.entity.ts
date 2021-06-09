@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IValoracion, ValoracionesNums } from 'sharedInterfaces/Entity';
 import { Entity, BaseEntity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, Column } from 'typeorm';
-import { Competencia, Comportamiento, Ev, Trabajador } from '.';
+import { Competencia, Comportamiento, Ev, Trabajador } from './index';
 
 @Entity()
 export class Valoracion extends BaseEntity implements IValoracion {

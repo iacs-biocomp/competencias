@@ -10,7 +10,7 @@ import {
 	ManyToMany,
 	JoinTable,
 } from 'typeorm';
-import { CatComp, CatContr, Trabajador } from '.';
+import { CatComp, CatContr, Trabajador } from './index';
 
 @Entity('periodo_trab')
 export class PeriodoTrab extends BaseEntity implements IPeriodoTrab {

@@ -7,8 +7,12 @@ import { ICompetencia } from 'sharedInterfaces/Entity';
 type CompetenciaCtrlView = {
 	/** Array with the selected competences, type ICompetencia*/
 	compSelected: ICompetencia[];
+	//TODO:Tsdoc
+	compSelectedIncludes(comp: ICompetencia): boolean;
 };
-
+export type CompSelectConfig = {
+	title: string;
+};
 @Component({
 	selector: 'app-comp-select-modal [compsObs] [idModal]',
 	templateUrl: './comp-select.component.html',
@@ -18,6 +22,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	@Input() compsObs = new BehaviorSubject<ICompetencia[]>([]);
 	@Input() preSelectedComps?: ICompetencia[];
 	@Input() idModal!: string;
+	@Input() cConfig: CompSelectConfig = { title: 'Seleccione las competencias' };
 	@Output('onModalFinish') finishEmitter = new EventEmitter<ICompetencia[]>();
 
 	//TODO: Tsdoc
@@ -26,6 +31,13 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	//TODO: Tsdoc
 	competCtl: CompetenciaCtrlView = {
 		compSelected: [],
+		compSelectedIncludes(comp: ICompetencia) {
+			if (!!this.compSelected.find(c => comp.id === c.id)) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 	};
 	subs: Subscription[] = [];
 
@@ -40,6 +52,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 		this.subs.push(
 			this.compsObs.subscribe(() => {
 				this.preSelectedComps = !this.preSelectedComps ? [] : this.preSelectedComps; //Se quita undefined
+				console.log(this.preSelectedComps);
 				this.competCtl.compSelected = this.preSelectedComps;
 			}),
 		);

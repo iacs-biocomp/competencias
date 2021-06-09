@@ -13,12 +13,12 @@ export class EvModelsAdmnService {
 	 * Envia un modelo al backend intentando guardarlo.
 	 *
 	 * @param evModel El modelo a guardar
-	 * @returns Una promesa que se resuelve como `true` si se ha guardado y `false` en caso contrario
+	 * @returns //TODO
 	 */
-	save(evModel: IModelDTO, reference: boolean): Promise<boolean> {
+	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
 		console.log(String(reference));
 		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
+			.post<IEvModel>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
 			.toPromise();
 	}
 	/**
@@ -33,11 +33,12 @@ export class EvModelsAdmnService {
 	getAllReference(): Promise<IRefModel[]> {
 		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();
 	}
+	//TODO: Tsdoc
 	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
 	}
-
+	//TODO: Tsdoc
 	updateRefModel(refModel: IRefModel): Promise<boolean> {
 		return this.httpClient
 			.put<boolean>(`${cnf.apiURL}/modelos/reference`, refModel, { params: { reference: 'true' } })

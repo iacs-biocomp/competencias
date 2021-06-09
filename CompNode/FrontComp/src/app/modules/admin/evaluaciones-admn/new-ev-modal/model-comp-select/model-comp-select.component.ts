@@ -1,17 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
-import { ICatComp, ICompetencia, IEvModel, INivel } from 'sharedInterfaces/Entity';
-import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
+import { ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
-import { CompYnivel } from '../model-nivel4-comp-select/model-nivel4-comp-select.component';
 
 type CompetenciaCtrlView = {
-	/** Array with all the competences, type ICompetencia  */
+	/** Array with all the competences */
 	competencias: ICompetencia[];
-	/** Array with the selected competences, type ICompetencia*/
-	compSelected: ICompetencia[];
+	/** Array with the competences selected */
+	compsSelected: ICompetencia[];
 };
 
 @Component({
@@ -20,18 +18,26 @@ type CompetenciaCtrlView = {
 	styleUrls: ['./model-comp-select.component.scss'],
 })
 export class ModelCompSelectComponent implements OnInit {
+	/** Receives the catComp selected to creates the evaluation */
 	@Input() catCompObs!: BehaviorSubject<ICatComp | undefined>;
-	//TODO: Tsdoc
-	modelReferenceShow!: IRefModel;
-	//TODO: Tsdoc
+	/** Send and array of competences selected */
+	@Output() compsEmitter = new EventEmitter<ICompetencia[]>();
 
-	//TODO: tsdoc
+	/** Imports a model reference (id, catComp, subModels[]) */
+	modelReferenceShow!: IRefModel;
+
+	/** Observer with the competences[] selected */
 	compsObs = new BehaviorSubject<ICompetencia[]>([]);
 
 	competCtl: CompetenciaCtrlView = {
+		/** Array with all the current competences */
 		competencias: [],
-		compSelected: [],
+		/** Array with the competences selected */
+		compsSelected: [],
 	};
+
+	/** Gets the competences of a specify model, this function is in Utility.ts */
+	getCompetsOfModel = getCompetOfModel;
 
 	constructor(private evModelSv: EvModelsAdmnService) {}
 
@@ -46,54 +52,30 @@ export class ModelCompSelectComponent implements OnInit {
 			this.competCtl.competencias = this.getCompetsOfModel(this.modelReferenceShow);
 			this.flushCachedData();
 		});
-		setInterval(() => console.log(this), 5000);
-	}
-	/** Gets the competences of a specify model, this function is in Utility.ts */
-	getCompetsOfModel = getCompetOfModel;
-
-	/**
-	 * A copy of the reference model is stored, submodels are searched with that/those competence/cies id
-	 * and returns those that match
-	 *
-	 * @param competencias the competence or competencies that you want to look for in the subModel
-	 */
-	getCompetsNotMatch(competencias: ICompetencia[]): RequiredAndNotNull<IEvModel> {
-		const modelToSend = { ...this.modelReferenceShow } as RequiredAndNotNull<IEvModel>;
-		modelToSend.subModels = modelToSend.subModels.filter(subModel => {
-			return !!competencias.find(comp => comp.id === subModel.competencia.id) ? true : false;
-		});
-		console.log(modelToSend);
-		return modelToSend;
 	}
 
-	/** Deletes both cached data, the compSelected and the compsObs, so, if one of these changed, its flushed */
+	/** Deletes both cached data, the compsSelected and the compsObs, so, if one of these changed, its flushed */
 	flushCachedData(): void {
-		this.competCtl.compSelected = [];
+		this.competCtl.compsSelected = [];
 		this.compsObs.next([]);
 	}
 
 	/**
 	 * Used for select the competence or competencies for the current evaluation
 	 *
-	 * @param comp the competence you want to add or remove to the array (compSelected)
+	 * @param comp the competence you want to add or remove to the array (compsSelected)
 	 */
 	toggleCompet(comp: ICompetencia): void {
-		const arrToPush = this.competCtl.compSelected;
+		const arrToPush = this.competCtl.compsSelected;
 		const index = arrToPush.indexOf(comp);
 		if (index == -1) {
 			arrToPush.push(comp);
-			console.log(arrToPush);
 		} else {
 			arrToPush.splice(index, 1);
-			console.log(arrToPush);
 		}
 	}
-	//TODO: tsdoc
+	/** Sets the competencies selected to the observer */
 	setCompe(): void {
-		this.compsObs.next(this.competCtl.compSelected);
-	}
-
-	onChildNivelClicked(event: CompYnivel[]): void {
-		console.log('Objeto emitido: ', event);
+		this.compsObs.next(this.competCtl.compsSelected);
 	}
 }
