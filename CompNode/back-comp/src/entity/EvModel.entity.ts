@@ -10,7 +10,7 @@ import {
 	JoinTable,
 	Column,
 } from 'typeorm';
-import { CatComp, Ev, SubModel } from '.';
+import { CatComp, Ev, SubModel } from './index';
 
 @Entity()
 export class EvModel extends BaseEntity implements IEvModel {

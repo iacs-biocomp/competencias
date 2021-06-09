@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { SignupDto } from '../modules/auth/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role, Trabajador } from '.';
+import { Role, Trabajador } from './index';
 import { IUserJson } from 'sharedInterfaces/Entity';
 
 @Entity('user')

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, BaseEntity, OneToMany, PrimaryColumn } from 'typeorm';
-import { PeriodoTrab, EvModel, Ev, CatContr } from '.';
+import { PeriodoTrab, EvModel, Ev, CatContr } from './index';
 import { ICatComp } from 'sharedInterfaces/Entity';
 
 @Entity()

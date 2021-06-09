@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { INivel } from 'sharedInterfaces/Entity';
 import { Entity, BaseEntity, OneToMany, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { SubModel } from '.';
+import { SubModel } from './index';
 
 @Entity()
 export class Nivel extends BaseEntity implements INivel {

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ISubModel } from 'sharedInterfaces/Entity';
 import { Entity, BaseEntity, ManyToOne, ManyToMany, PrimaryGeneratedColumn, JoinTable } from 'typeorm';
-import { Competencia, Comportamiento, EvModel, Nivel } from '.';
+import { Competencia, Comportamiento, EvModel, Nivel } from './index';
 
 @Entity()
 // TODO: Elegir un nombre correcto

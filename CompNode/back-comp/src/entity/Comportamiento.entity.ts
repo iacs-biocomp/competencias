@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IComportamiento } from 'sharedInterfaces/Entity';
 import { Entity, BaseEntity, PrimaryColumn, Column, ManyToMany } from 'typeorm';
-import { SubModel } from '.';
+import { SubModel } from './index';
 
 @Entity()
 export class Comportamiento extends BaseEntity implements IComportamiento {

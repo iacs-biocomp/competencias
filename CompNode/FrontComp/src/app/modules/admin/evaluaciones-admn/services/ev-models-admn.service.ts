@@ -13,12 +13,12 @@ export class EvModelsAdmnService {
 	 * Envia un modelo al backend intentando guardarlo.
 	 *
 	 * @param evModel El modelo a guardar
-	 * @returns Una promesa que se resuelve como `true` si se ha guardado y `false` en caso contrario
+	 * @returns //TODO
 	 */
-	save(evModel: IModelDTO, reference: boolean): Promise<boolean> {
+	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
 		console.log(String(reference));
 		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
+			.post<IEvModel>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
 			.toPromise();
 	}
 	/**

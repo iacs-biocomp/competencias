@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ICatContr } from 'sharedInterfaces/Entity';
 import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { CatComp, PeriodoTrab } from '.';
+import { CatComp, PeriodoTrab } from './index';
 
 @Entity()
 export class CatContr extends BaseEntity implements ICatContr {

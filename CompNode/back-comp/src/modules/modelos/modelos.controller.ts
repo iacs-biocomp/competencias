@@ -49,9 +49,11 @@ export class ModelosController {
 		});
 	}
 
+	//TODO: TSdoc
 	@Post('')
-	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReference?: boolean): Promise<boolean> {
+	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReferenceStr?: string): Promise<EvModel> {
 		console.log(modeloDto);
+		const isReference = isReferenceStr === 'true' ? true : false;
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {
@@ -71,7 +73,7 @@ export class ModelosController {
 		});
 		evModel.subModels = subModels;
 		evModel.reference = isReference;
-		await this.modelRepo.save(evModel);
+		const evModelSaved = await this.modelRepo.save(evModel);
 		// Se guardan los submodelos con la pk del modelo como fk
 		await Promise.all(
 			evModel.subModels.map(subModel => {
@@ -79,7 +81,7 @@ export class ModelosController {
 				return this.subModelRepo.save(subModel);
 			}),
 		);
-		return true;
+		return evModelSaved;
 	}
 
 	@Put('reference')
