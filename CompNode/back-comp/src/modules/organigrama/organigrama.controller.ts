@@ -3,28 +3,21 @@ import { PeriodosRepo } from '../trabajadores/periodos.repository';
 import { TrabajadorRepo } from '../trabajadores/trabajador.repository';
 import { UserRepository } from '../users/user.repository';
 import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
-import { Trabajador, CatComp, PeriodoTrab } from 'src/entity';
+import { CatComp, PeriodoTrab, Trabajador } from 'src/entity';
+import { ITrabajador } from 'sharedInterfaces/Entity';
+import { IOrganigramaUsrDTO } from 'sharedInterfaces/DTO';
 interface Organigrama {
 	inferiores: Trabajador[];
 	superiores: Trabajador[];
 	pares: Trabajador[];
 }
+
 interface UsrWithOrgani extends Organigrama {
-	trabajador: Trabajador & { catComp: CatComp };
+	trabajador: TrabWithCComp;
 }
-interface ITrabajador {
-	dni: string;
-
-	nombre: string;
-
-	apellidos: string;
-
-	area: string;
-
-	unidad: string;
-
-	departamento: string;
-}
+/** Trabajador con propiedad añadida catComp () */
+type TrabWithCComp = Trabajador & { catComp: CatComp };
+type RelType = 'inferiores' | 'superiores' | 'pares';
 
 @Controller('nest/organigrama')
 export class OrganigramaController {
@@ -38,25 +31,25 @@ export class OrganigramaController {
 	) {}
 
 	@Get('all')
-	async getAll(): Promise<UsrWithOrgani[]> {
+	async getAll(): Promise<IOrganigramaUsrDTO[]> {
 		const workers = await this.trabRepo.find({
 			relations: ['periodos', 'periodos.catComp', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
 		});
-		const organiFull: UsrWithOrgani[] = workers.map(wrk => {
+		return workers.map(wrk => {
 			//Filtro el periodo al actual
 			wrk.periodos = wrk.periodos.filter(per => per.actual);
-			const org: UsrWithOrgani = {
+			return {
 				inferiores: wrk.periodos[0].inferiores,
 				superiores: wrk.periodos[0].superiores,
 				pares: wrk.periodos[0].pares,
-				trabajador: wrk as Trabajador & { catComp: CatComp },
+				trabajador: (() => {
+					const cComp = wrk.periodos[0].catComp;
+					//Borro los periodos de cada trabajador (Info no necesaria)
+					delete wrk.periodos;
+					return { ...wrk, catComp: cComp };
+				})(),
 			};
-			org.trabajador.catComp = wrk.periodos[0].catComp;
-			//Borro los periodos de cada trabajador (Info no necesaria)
-			delete org.trabajador.periodos;
-			return org;
 		});
-		return organiFull;
 	}
 
 	//TODO: Completar para añadir los parametros como queryparams y no como el dni tal que :dni
@@ -76,12 +69,11 @@ export class OrganigramaController {
 		);
 		const worker = usr.trabajador;
 		const actualPer: PeriodoTrab = worker.periodos.filter(per => per.actual)[0];
-		const organi: Organigrama = {
+		return {
 			inferiores: actualPer.inferiores,
 			superiores: actualPer.superiores,
 			pares: actualPer.pares,
 		};
-		return organi;
 	}
 
 	@Post('inferiores/:dni')
@@ -89,7 +81,6 @@ export class OrganigramaController {
 		const trab = await this.parseTrab(dni, 'inferiores');
 		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'superiores')));
 		return this.changeRelations(trab, relsOfTrab, true, 'inferiores', 'add');
-		// return this.addRelation(dni, relations, 'addinf');
 	}
 
 	@Post('superiores/:dni')
@@ -97,7 +88,6 @@ export class OrganigramaController {
 		const trab = await this.parseTrab(dni, 'superiores');
 		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'inferiores')));
 		return this.changeRelations(trab, relsOfTrab, true, 'superiores', 'add');
-		// return this.addRelation(dni, relations, 'addsup');
 	}
 
 	@Post('pares/:dni')
@@ -105,7 +95,6 @@ export class OrganigramaController {
 		const trab = await this.parseTrab(dni, 'pares');
 		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'pares')));
 		return this.changeRelations(trab, relsOfTrab, true, 'pares', 'add');
-		// return this.addRelation(dni, relations, 'addpar');
 	}
 
 	@Delete('pares/:dni')
@@ -113,7 +102,6 @@ export class OrganigramaController {
 		const trab = await this.parseTrab(dni, 'pares');
 		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'pares')));
 		return this.changeRelations(trab, relsOfTrab, true, 'pares', 'remove');
-		// return this.removeRelations(trab, relsOfTrab, true, 'pares');
 	}
 
 	@Delete('inferiores/:dni')
@@ -121,7 +109,6 @@ export class OrganigramaController {
 		const trab = await this.parseTrab(dni, 'inferiores');
 		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'superiores')));
 		return this.changeRelations(trab, relsOfTrab, true, 'inferiores', 'remove');
-		// return this.removeRelations(trab, relsOfTrab, true, 'inferiores');
 	}
 
 	@Delete('superiores/:dni')
@@ -129,7 +116,6 @@ export class OrganigramaController {
 		const trab = await this.parseTrab(dni, 'superiores');
 		const relsOfTrab = await Promise.all(relations.map(rel => this.parseTrab(rel.dni, 'inferiores')));
 		return this.changeRelations(trab, relsOfTrab, true, 'superiores', 'remove');
-		// return this.removeRelations(trab, relsOfTrab, true, 'superiores');
 	}
 
 	/**
@@ -137,7 +123,7 @@ export class OrganigramaController {
 	 * @param relKey La relación que se quiere cargar de este trabajador (inf|sup|par)
 	 * @returns El trabajador con sus relaciones
 	 */
-	private async parseTrab(dni: string, relKey: 'inferiores' | 'superiores' | 'pares') {
+	private async parseTrab(dni: string, relKey: RelType) {
 		const trab = await this.trabRepo.findOne(
 			{ dni: dni },
 			{
@@ -163,7 +149,7 @@ export class OrganigramaController {
 		trab: Trabajador,
 		relations: Trabajador[],
 		recursive: boolean,
-		relationsType: 'inferiores' | 'superiores' | 'pares',
+		relationsType: RelType,
 		addOrRemove: 'add' | 'remove',
 	): Promise<boolean> {
 		/** Dates de utilidad en el metodo */
@@ -172,16 +158,8 @@ export class OrganigramaController {
 			deadline: new Date(new Date().setDate(-30)),
 			now: new Date(),
 		};
-		const relTypeReversed = (() => {
-			switch (relationsType) {
-				case 'inferiores':
-					return 'superiores';
-				case 'pares':
-					return 'pares';
-				case 'superiores':
-					return 'inferiores';
-			}
-		})();
+		/** La inversa del parametro relationsType */
+		const relTypeReversed = this.reverseRelType(relationsType);
 		/** Periodo actual de `trab` */
 		const actualPeri = trab.periodos.filter(p => p.actual)[0];
 		if (!actualPeri) {
@@ -207,11 +185,10 @@ export class OrganigramaController {
 			actualPeri.trabajador = trab;
 			this.concatenateRelations(addOrRemove, relations, actualPeri, relationsType);
 			await actualPeri.save();
-			if (!recursive) {
-				return true;
+			if (recursive) {
+				//Actualizo a los trabajadores que tienen a trab como relación
+				await Promise.all(relations.map(rel => this.changeRelations(rel, [trab], false, relTypeReversed, addOrRemove)));
 			}
-			//Actualizo a los trabajadores que tienen a trab como relación
-			await Promise.all(relations.map(rel => this.changeRelations(rel, [trab], false, relTypeReversed, addOrRemove)));
 		}
 		return true;
 	}
@@ -227,7 +204,7 @@ export class OrganigramaController {
 		addOrRemove: 'add' | 'remove',
 		relations: Trabajador[],
 		wrkPeriodo: PeriodoTrab,
-		relType: 'inferiores' | 'superiores' | 'pares',
+		relType: RelType,
 	): void {
 		if (!wrkPeriodo[relType]) throw new Error('No se han cargado las relaciones correctamente');
 		if (addOrRemove === 'add') {
@@ -237,6 +214,16 @@ export class OrganigramaController {
 				const indx = wrkPeriodo[relType].findIndex(r => r.dni === rel.dni);
 				wrkPeriodo[relType].splice(indx, 1);
 			});
+		}
+	}
+	private reverseRelType(relation: RelType): RelType {
+		switch (relation) {
+			case 'inferiores':
+				return 'superiores';
+			case 'pares':
+				return 'pares';
+			case 'superiores':
+				return 'inferiores';
 		}
 	}
 }
