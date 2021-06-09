@@ -73,6 +73,7 @@ export class ModelosController {
 		});
 		evModel.subModels = subModels;
 		evModel.reference = isReference;
+		//TODO: Circular structure en esta variable, error al convertir a json
 		const evModelSaved = await this.modelRepo.save(evModel);
 		// Se guardan los submodelos con la pk del modelo como fk
 		await Promise.all(
@@ -81,7 +82,7 @@ export class ModelosController {
 				return this.subModelRepo.save(subModel);
 			}),
 		);
-		return evModelSaved;
+		return this.modelRepo.findOne({ id: evModelSaved.id });
 	}
 
 	@Put('reference')

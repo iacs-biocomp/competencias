@@ -8,6 +8,7 @@ import { evAddDTO } from '../new-ev-modal/new-ev-modal.component';
 @Injectable({ providedIn: 'root' })
 export class EvaluacionesAdmService {
 	constructor(private httpClient: HttpClient) {}
+
 	/**
 	 * @returns Una promsesa que se resuelve como un array de todas las evaluaciones que tiene el backend
 	 */
