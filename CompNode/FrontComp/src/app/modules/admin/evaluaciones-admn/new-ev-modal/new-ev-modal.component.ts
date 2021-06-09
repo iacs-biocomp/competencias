@@ -177,7 +177,7 @@ export class NewEvModalComponent implements OnInit {
 		//	const saved = true;
 		if (saved) {
 			this.onEvSaved();
-			console.log("Vista actualizada");
+			console.log('Vista actualizada');
 		} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 
@@ -185,7 +185,7 @@ export class NewEvModalComponent implements OnInit {
 	onNivelesSetted(niveles: CompAndNiv[]) {
 		// TODO: Guardar evaluacion
 		this.save();
-		console.log("Saved");
+		console.log('Saved');
 		// console.log(niveles);
 	}
 

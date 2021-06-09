@@ -14,13 +14,13 @@ export class ListEvComponent implements OnInit {
 	/** Lista de las evaluaciones que hay en la bbdd */
 	evaluaciones: IEvaluacion[] = [];
 
-	constructor(private evalService: EvaluacionesAdmService) {}
+	constructor(private evSv: EvaluacionesAdmService) {}
 
 	async ngOnInit(): Promise<void> {
 		await this.updateEvalView();
 	}
 
 	async updateEvalView(): Promise<void> {
-		this.evaluaciones = await this.evalService.getAll();
+		this.evaluaciones = await this.evSv.getAll();
 	}
 }
