@@ -147,8 +147,6 @@ export class NewEvModalComponent implements OnInit {
 			throw new Error('Contacte con un administrador');
 		} //Se quita undefined
 		const form = this.modelCtl.rangesForm.value;
-
-		console.log('Save evaluation: ', this.evToAdd);
 		if (!modelo.subModels) {
 			throw new Error('Contacte con un administrador');
 		}
@@ -175,21 +173,25 @@ export class NewEvModalComponent implements OnInit {
 			endPerEvaluado: form.evaluacionEnd as Date,
 		};
 		const saved = await this.evSv.save(this.evToAdd);
+		console.log(this.evToAdd);
 		//	const saved = true;
 		if (saved) {
 			this.onEvSaved();
+			console.log("Vista actualizada");
 		} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 
+	// TODO: Tsdoc
 	onNivelesSetted(niveles: CompAndNiv[]) {
 		// TODO: Guardar evaluacion
 		this.save();
-		//		console.log(niveles);
+		console.log("Saved");
+		// console.log(niveles);
 	}
 
+	// TODO: Tsdoc
 	onCompetenciasSetted(competencias: ICompetencia[]) {
 		this.compsSelectedObs.next(competencias);
-		// TODO: Añadir la función que del modelo de referencia crea otro con las comps seleccionadas
 		const cCompSelected = this.cCompCtl.cCompSelectedObs.value;
 		if (!cCompSelected) {
 			throw new Error('No se ha seleccionado una cComp, contacte con un programador');
