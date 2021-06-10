@@ -93,13 +93,10 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionEnd: ['', Validators.required],
 		});
 		this.cCompCtl.cCompSelectedObs.subscribe(cComp => {
-			//	console.log('suscription')
-			//	console.log(cComp);
 			if (!cComp) {
 				return;
 			}
 			const comps = getCompetOfModel(this.modelCtl.allReferenceModels.find(m => m.catComp.id === cComp.id)!);
-			//	console.log(comps);
 			this.compsObs.next(comps);
 		});
 	}
@@ -134,7 +131,7 @@ export class NewEvModalComponent implements OnInit {
 		return this.modelCtl.rangesForm.valid;
 	}
 
-	/** Sets the catComp selected for the new evaluation */
+	/** Set the catComp selected for the new evaluation */
 	setCatComp(idCatComp: string): void {
 		this.cCompCtl.cCompSelectedObs.next(this.cCompCtl.catComps.find(catComp => catComp.id === idCatComp)); //Find if the catComp exists
 	}
@@ -186,7 +183,6 @@ export class NewEvModalComponent implements OnInit {
 		// TODO: Guardar evaluacion
 		this.save();
 		console.log('Saved');
-		// console.log(niveles);
 	}
 
 	// TODO: Tsdoc

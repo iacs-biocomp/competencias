@@ -12,11 +12,10 @@
 					Haga click en los comportamientos para añadirlos
 				</h2>
 				<button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				<span>Filtrar por descripcion:</span>
 			</div>
 			<div class="modal-body">
 				<div class="mb-1">
-					<p>Filtrar por descripcion:</p>
+					<p>Filtrar por descripción:</p>
 					<input
 						#comportDescInput
 						type="text"
@@ -25,15 +24,15 @@
 				</div>
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
-						class="list-group-item p-3"
-						*ngFor="let comport of comportsToShow; let i = index"
-						(click)="selectComportamiento(comport)"
-					>
-						<!-- TODO: Añadir ngIf para no mostrar mas de 10 o 20 comportamientos y un mostrar mas -->
+					[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
+					class="list-group-item p-3"
+					*ngFor='let comport of comportCtl.comportsFiltered | slice:cv.start:cv.numComportsMostrando; let i = index'
+					(click)="selectComportamiento(comport)"
+				>
 						{{ comport.descripcion }}
 					</li>
 				</ul>
+				<button class="btn btn-primary" (click)="showMoreComports()" title="Mostrar más">	Mostrar más </button>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

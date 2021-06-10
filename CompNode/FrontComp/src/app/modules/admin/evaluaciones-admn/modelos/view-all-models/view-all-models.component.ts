@@ -55,7 +55,7 @@ export class ViewAllModelsComponent implements OnInit {
 		}
 		return subj as BehaviorSubject<IRefModel>;
 	}
-
+// TODO: tsdoc /
 	newEvModelShow(model: IRefModel): BehaviorSubject<IRefModel> {
 		console.log(this.evModelToShow);
 		return new BehaviorSubject<IRefModel>(model);

@@ -115,7 +115,7 @@
 		</div>
 		<app-select-comports-modal
 			[idModal]="'comportsModal'"
-			[comportsToShow]="comportCtl.comportsToShow"
+			[comportsToShowObs]="comportsToShowObs"
 			(comports)="addComports($event)"
 		></app-select-comports-modal>
 		<app-comp-select-modal
