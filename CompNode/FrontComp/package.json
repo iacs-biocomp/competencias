@@ -27,6 +27,7 @@
 		"aos": "^2.3.4",
 		"bootstrap": "^5.0.1",
 		"d3": "^6.7.0",
+		"date-fns": "^2.22.1",
 		"flexsearch": "^0.6.32",
 		"js-cookie": "^2.2.1",
 		"keycloak-angular": "^8.1.0",
