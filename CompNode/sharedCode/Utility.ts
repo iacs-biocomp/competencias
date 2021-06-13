@@ -1,3 +1,5 @@
+import { parseISO } from 'date-fns';
+import { IEvAllRequired } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
 import { WithOptional } from './interfaces/Utility';
 
@@ -8,6 +10,17 @@ export type changeMyName = {
 	maxValoracion: number;
 	niveles: WithOptional<INivel, 'subModels'>[];
 };
+export type EvIntervals = {
+	periodoEvaluar: Interval;
+	periodoPropuesta: Interval;
+	periodoEvaluado: Interval;
+	periodoValidacion: Interval;
+};
+
+export const getKeyValue =
+	<T extends object, U extends keyof T>(key: U) =>
+	(obj: T) =>
+		obj[key];
 
 /**
  * Busca un nivel en un array de niveles donde le indicamos el id del nivel
@@ -113,6 +126,19 @@ export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
 	arrToPushRemove;
 	const indx = arrToPushRemove.indexOf(objToggle);
 	indx === -1 ? arrToPushRemove.push(objToggle) : arrToPushRemove.splice(indx, 1);
+}
+
+// TODO: Tsdoc
+export function getIntervalsOfEv(ev: IEvAllRequired): EvIntervals {
+	//TODO: Solventar error, aunque la ev tenga las fechas como date al pasarlas de backend a front se serializan como string.
+	//?? Tal vez una función que transforme las dates serializadas siempre que se piden evs?
+	// parseISO('2021-01-05T23:00:00.000Z');
+	const periodoEvaluar: Interval = { start: ev.iniValoracion, end: ev.endValoracion };
+	const periodoPropuesta: Interval = { start: ev.iniDate, end: ev.finPropuestas };
+	const periodoEvaluado: Interval = { start: ev.iniPerEvaluado, end: ev.endPerEvaluado };
+	const periodoValidacion: Interval = { start: ev.iniValidacion, end: ev.endValidacion };
+
+	return { periodoEvaluar, periodoPropuesta, periodoEvaluado, periodoValidacion };
 }
 
 // type SubModelFilterBy = {
