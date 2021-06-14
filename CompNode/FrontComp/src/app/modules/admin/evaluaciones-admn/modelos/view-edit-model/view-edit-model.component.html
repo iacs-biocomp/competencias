@@ -5,7 +5,12 @@
 				<h2 class="modal-title">
 					Edite el modelo de {{ evModel.value.catComp.description + ' (' + evModel.value.catComp.id + ')' }}
 				</h2>
-				<button data-bs-toggle="modal" data-bs-target="#selectCompetsModal" class="btn btn-success" (click)="updateAllComps()">
+				<button
+					data-bs-toggle="modal"
+					data-bs-target="#selectCompetsModal"
+					class="btn btn-success"
+					(click)="updateAllComps()"
+				>
 					Añadir competencias
 				</button>
 			</ng-template>

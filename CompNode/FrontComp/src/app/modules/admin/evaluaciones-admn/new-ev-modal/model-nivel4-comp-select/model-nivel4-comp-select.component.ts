@@ -8,7 +8,7 @@ export type CompAndNiv = { comp: ICompetencia; niv: INivel };
 export type cConfigModelNivel4 = {
 	/** Title modelNiv */
 	title: string;
-}
+};
 @Component({
 	selector: 'app-model-nivel4-comp-select [idModal] [compsObs]',
 	templateUrl: './model-nivel4-comp-select.component.html',
@@ -19,9 +19,9 @@ export class ModelNivel4CompSelectComponent implements OnInit {
 	@Input() compsObs!: BehaviorSubject<ICompetencia[]>;
 	/** Sends an object made up of the selected level and its competence */
 	@Output('onSaved') compAndNivEmitter = new EventEmitter<CompAndNiv[]>();
-	@Input()idModal = '';
-	@Input()cConfig: cConfigModelNivel4 = {
-		title: 'Default title'
+	@Input() idModal = '';
+	@Input() cConfig: cConfigModelNivel4 = {
+		title: 'Default title',
 	};
 
 	/** Array que almacena todos lo niveles actuales */
@@ -33,7 +33,7 @@ export class ModelNivel4CompSelectComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.nivs = await this.nivelSv.getAllRefNivs(); // Se guardan en la var niveles los niveles de referencia
-			this.compsObs.subscribe(comps => {
+		this.compsObs.subscribe(comps => {
 			const compToSave = comps.map(c => ({ comp: c })) as Partial<CompAndNiv>[]; //Map the coompetences and saves it in compToSave
 			this.bufferCompNiv = compToSave;
 		});

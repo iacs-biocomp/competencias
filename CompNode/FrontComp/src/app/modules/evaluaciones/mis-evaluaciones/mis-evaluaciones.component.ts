@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/services/jwt.service';
 import { EvaluacionesService } from '../evaluaciones.service';
-import { Interval, isWithinInterval } from 'date-fns';
+import { Interval, isWithinInterval, parseISO } from 'date-fns';
 import { IEvAllRequired } from 'sharedInterfaces/DTO';
 import { EvIntervals, getIntervalsOfEv } from 'sharedCode/Utility';
 
@@ -39,6 +39,7 @@ export class MisEvaluacionesComponent implements OnInit {
 		const decodedToken = this.jwtSv.getDecodedToken();
 		const evs = await this.evService.evaluacionesUsr(decodedToken.username);
 		this.evs = evs.map<IEvWithStatus>(ev => {
+			console.log(ev);
 			return { ...ev, status: this.computeEvStatus(ev) };
 		});
 		this.buttonEvaluar = true;
@@ -51,10 +52,13 @@ export class MisEvaluacionesComponent implements OnInit {
 	 */
 	computeEvStatus(ev: IEvAllRequired): EvStatus {
 		const intervals = getIntervalsOfEv(ev);
+		console.log(intervals);
 		const now = new Date();
 		const keys = Object.keys(intervals) as Array<keyof EvIntervals>;
 		let actualInterval: Interval | undefined;
 		keys.forEach(k => {
+			intervals[k].start = parseISO(intervals[k].start as unknown as string);
+			intervals[k].end = parseISO(intervals[k].end as unknown as string);
 			if (isWithinInterval(now, intervals[k])) {
 				actualInterval = intervals[k];
 			}

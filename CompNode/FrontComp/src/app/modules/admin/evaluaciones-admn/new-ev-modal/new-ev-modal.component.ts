@@ -36,7 +36,7 @@ export type modelCompNiv = {
 	compNivObj: CompAndNiv[];
 };
 @Component({
-	selector: 'app-new-ev-modal',
+	selector: 'app-new-ev-modal [onEvSaved]',
 	templateUrl: './new-ev-modal.component.html',
 	styleUrls: ['./new-ev-modal.component.scss'],
 })
