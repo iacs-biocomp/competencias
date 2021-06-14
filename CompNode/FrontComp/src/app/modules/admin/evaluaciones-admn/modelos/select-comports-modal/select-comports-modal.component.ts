@@ -8,7 +8,7 @@ type ComportCtrlView = {
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
 	comportDescObs: BehaviorSubject<string>;
-	//TODO: Tsdoc
+	/** Los compotamientos ya filtrados, son los que han de mostrarse en la vista */
 	comportsFiltered: IComportamiento[];
 };
 
@@ -57,6 +57,7 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	@Output() comports = new EventEmitter<IComportamiento[]>();
 
 	//TODO: Tsdoc
+	/** Array de todas las suscripciones realizadas en este componente */
 	subs: Subscription[] = [];
 
 	async ngOnInit(): Promise<void> {
@@ -70,7 +71,7 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 				this.comportCtl.comportDescObs.next('');
 			}),
 			this.comportCtl.comportDescObs.subscribe(txt => {
-				if (txt==='') {
+				if (txt === '') {
 					this.comportCtl.comportsFiltered = this.comportsToShowObs.value;
 					return;
 				}

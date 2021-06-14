@@ -6,7 +6,6 @@ import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { EvModelRepo } from './modelos.repository';
 import { SubModelRepo } from './subModel.repository';
 
-//Probablemente mejor un picker en vez de omit para quitar los metodos
 @Controller('nest/modelos')
 export class ModelosController {
 	constructor(
@@ -49,7 +48,12 @@ export class ModelosController {
 		});
 	}
 
-	//TODO: TSdoc
+	/**
+	 *
+	 * @param modeloDto The evModel to create in database
+	 * @param isReferenceStr QueryParam as string, parsed to true if equal to 'true' else false
+	 * @returns
+	 */
 	@Post('')
 	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReferenceStr?: string): Promise<EvModel> {
 		console.log(modeloDto);

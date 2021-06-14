@@ -7,7 +7,7 @@ import { ICatComp, ICompetencia, IEvaluacion, IEvModel } from 'sharedInterfaces/
 import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
-import { CompAndNiv } from './model-nivel4-comp-select/model-nivel4-comp-select.component';
+import { CompAndNiv } from './model-nivel4-comp-select/obj-niveles-select.component';
 
 type modelCtrlView = {
 	// ?? Comprobar si sirve
@@ -24,7 +24,7 @@ type modelCtrlView = {
 
 type catCompCtrlView = {
 	catComps: ICatComp[];
-	/** Sends the catComp selected to creates the evaluation */
+	/** Emits the cCompSelected that is used for the new ev */
 	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
 };
 
@@ -53,7 +53,6 @@ export class NewEvModalComponent implements OnInit {
 	cCompCtl: catCompCtrlView = {
 		/** Array with all the current catComps */
 		catComps: [],
-		//TODO: Tsdoc
 		cCompSelectedObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 	};
 
@@ -182,7 +181,6 @@ export class NewEvModalComponent implements OnInit {
 	onNivelesSetted(niveles: CompAndNiv[]) {
 		// TODO: Guardar evaluacion
 		this.save();
-		console.log('Saved');
 	}
 
 	// TODO: Tsdoc

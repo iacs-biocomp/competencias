@@ -50,7 +50,7 @@ export class CatCompController {
 	}
 
 	@Delete(':id')
-	async deleteCompt(@Param('id') id: string): Promise<boolean> {
+	async delete(@Param('id') id: string): Promise<boolean> {
 		const catComp = await this.catCompRepo.findOne({ id: id }, { relations: ['catContr'] });
 		if (!catComp) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
@@ -68,10 +68,10 @@ export class CatCompController {
 	 *
 	 * @param catComp La nueva catComp, no ha de existir en la base de datos
 	 * @returns	`true` si se ha creado `Exception` si ya existe
-	 * @throws //TODO: Complete
+	 * @throws {ConflictException} Si la catComp ya ha sido creada
 	 */
 	@Post('')
-	async createCompt(@Body() catComp: CatComp): Promise<boolean> {
+	async create(@Body() catComp: CatComp): Promise<boolean> {
 		const existingCompt = await this.catCompRepo.findOne({ id: catComp.id });
 		if (existingCompt) {
 			throw new ConflictException('CatComp ya creada');
@@ -86,11 +86,11 @@ export class CatCompController {
 	/**
 	 * metodo para actualizar una catComp
 	 * @param catComp La catComp con los nuevos datos, el id ha de ser el de la catComp a actualizar
-	 * @returns `true` si se ha actualizado `false caso contrario`
-	 * @throws {Error}
+	 * @returns `true` si se ha actualizado `false` caso contrario
+	 * @throws {NotFoundException} Si no existe una catComp con ese id en la bbdd
 	 */
 	@Put('')
-	async updateCompt(@Body() catComp: CatComp): Promise<boolean> {
+	async update(@Body() catComp: CatComp): Promise<boolean> {
 		const existingCompt = await this.catCompRepo.findOne({ id: catComp.id });
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');

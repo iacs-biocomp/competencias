@@ -16,13 +16,7 @@ export const nivRoutes: Routes = [
 
 @NgModule({
 	declarations: [NivTableComponent],
-	imports: [
-		CommonModule,
-		SharedModule,
-		// TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
-		FormsModule,
-		ReactiveFormsModule,
-	],
+	imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
 	providers: [NivelService],
 })
 export class NivelesAdminModule {}

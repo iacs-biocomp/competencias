@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, IEvModel } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';

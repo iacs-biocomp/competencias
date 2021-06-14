@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ICompetencia, IComportamiento, INivel } from 'sharedInterfaces/Entity';
 import { CompetenciasService } from '../../competencias-admin/services/competencias.service';
-import { DbData } from '../../evaluaciones-admn/modelos/new-ev-model.component';
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { ComportService } from '../services/comport.service';
 import { findNivelById, findCompById } from 'sharedCode/Utility';
+import { DbData } from 'src/app/types/data';
 
 type ComportCtrlView = {
 	filters: {
@@ -30,10 +30,7 @@ interface IComportEdit extends IComportamiento {
 })
 export class TableComportComponent implements OnInit, OnDestroy {
 	comportToAdd: IComportamiento[] = [];
-	//TODO: Eliminar
-	//TODO: Como varias vistas utilizan datos de la bbdd para hacer calculos seria preferible crear un servicio que tiene estos datos y los componentes leen de ahi en vez de pedir varias veces al backend, los componentes deciden cuando actualizar esos datos
-	//TODO: Generar interfaz en interfaces del frontend, DbData se utiliza en muchos componentes
-	dbData: Omit<DbData, 'modelToAdd' | 'catComps'> = {
+	dbData: Omit<DbData, 'cComps'> = {
 		comps: [],
 		comports: [],
 		niveles: [],
@@ -51,7 +48,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 			comportPlainDesc: {},
 		},
 	};
-	//TODO: Tsdoc (Array suscripciones)
+	/** Array de todas las suscripciones realizadas en este componente */
 	subs: Subscription[] = [];
 	constructor(
 		private comportService: ComportService,

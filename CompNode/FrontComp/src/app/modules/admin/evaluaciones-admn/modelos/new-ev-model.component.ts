@@ -6,22 +6,22 @@ import { CatCompetencialesService } from '../../cat-admn/services/CatCompetencia
 import { ComportService } from '../../comportamientos-admin/services/comport.service';
 import { NivelService } from '../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
-import { ICatComp, ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from 'sharedInterfaces/Entity';
+import {
+	ICatComp,
+	ICompetencia,
+	IComportamiento,
+	IEvModel,
+	INivel,
+	ISubModel,
+} from 'sharedInterfaces/Entity';
 import { WithOptional } from 'sharedInterfaces/Utility';
+import { DbData } from 'src/app/types/data';
 
 type IModelPreDTO = Partial<IModelDTO> & {
 	subModels: WithOptional<ISubModel, 'nivel'>[];
 };
 
-export type DbData = {
-	/** listado de categorias competenciales */
-	catComps: ICatComp[];
-	/** listado de competencias */
-	comps: ICompetencia[];
-	/** listado de comportamientos */
-	comports: IComportamiento[];
-	/** listado de niveles */
-	niveles: INivel[];
+export type DbDataEvModel = DbData & {
 	/** El modelo que se enviará al backend, sobre este se realizan las modificaciones */
 	modelToAdd: IModelPreDTO;
 };
@@ -68,8 +68,8 @@ interface EvModalValidators {
 })
 export class NewEvModelComponent implements OnInit {
 	/** Objeto que tiene los datos usados para los select */
-	dbData: DbData = {
-		catComps: [],
+	dbData: DbDataEvModel = {
+		cComps: [],
 		comps: [],
 		comports: [],
 		niveles: [],
@@ -120,7 +120,7 @@ export class NewEvModelComponent implements OnInit {
 			this.nivSv.getAllRefNivs(),
 			this.comportSv.getAll(),
 		]);
-		this.dbData.catComps = promises[0];
+		this.dbData.cComps = promises[0];
 		this.dbData.comps = promises[1];
 		this.dbData.niveles = promises[2];
 		this.dbData.comports = promises[3];
@@ -335,7 +335,7 @@ export class NewEvModelComponent implements OnInit {
 			return alert('Contacte con un programador');
 		}
 		evModel.subModels = evModel.subModels.filter(subM => !!subM.nivel);
-		let saved : IEvModel | undefined;
+		let saved: IEvModel | undefined;
 		try {
 			saved = await this.evModelSv.save(evModel as IModelDTO, true);
 		} catch (err) {

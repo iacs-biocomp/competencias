@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators
 import { CatComp, PeriodoTrab, Trabajador } from 'src/entity';
 import { ITrabajador } from 'sharedInterfaces/Entity';
 import { IOrganigramaUsrDTO } from 'sharedInterfaces/DTO';
+
+// TODO: refactor
 interface Organigrama {
 	inferiores: Trabajador[];
 	superiores: Trabajador[];

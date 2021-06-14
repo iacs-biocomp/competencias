@@ -39,7 +39,6 @@ export class JwtService {
 		if (!this.refresh.eventOcurred) {
 			return;
 		}
-		//TODO: Refactor, posibles fallos
 		const response: IAuthTokenRes = await this.httpClient
 			.post<IAuthTokenRes>(cnf.apiURL + '/jwtrefresh', { tokenStr: this.token() })
 			.toPromise();
@@ -66,7 +65,10 @@ export class JwtService {
 		this.refresh.eventOcurred = true;
 	}
 
-	private updateJwt(token: string): void {
+	/**
+	 * @param token El token firmado y codificado a settear en cookies y localStorage
+	 */
+	updateJwt(token: string): void {
 		localStorage.setItem(JWT_NAME, token);
 		document.cookie = JWT_NAME + '=' + encodeURIComponent(token);
 	}

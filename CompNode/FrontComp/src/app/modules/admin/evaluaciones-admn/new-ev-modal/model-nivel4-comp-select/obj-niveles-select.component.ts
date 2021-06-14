@@ -9,17 +9,23 @@ export type cConfigModelNivel4 = {
 	/** Title modelNiv */
 	title: string;
 };
+
+/**
+ //TODO: TSdoc de que hace este componente
+ */
 @Component({
-	selector: 'app-model-nivel4-comp-select [idModal] [compsObs]',
-	templateUrl: './model-nivel4-comp-select.component.html',
-	styleUrls: ['./model-nivel4-comp-select.component.scss'],
+	selector: 'app-obj-nivs-select [idModal] [compsObs]',
+	templateUrl: './obj-niveles-select.component.html',
+	styleUrls: ['./obj-niveles-select.component.scss'],
 })
-export class ModelNivel4CompSelectComponent implements OnInit {
+export class ObjectiveNivsSelectComponent implements OnInit {
 	/** Receives an array with the competencies selected to the evaluation */
 	@Input() compsObs!: BehaviorSubject<ICompetencia[]>;
-	/** Sends an object made up of the selected level and its competence */
+	/** Emits array of {@link CompAndNiv} (objective level paired to a comp) */
 	@Output('onSaved') compAndNivEmitter = new EventEmitter<CompAndNiv[]>();
+	/** The identifier used for toggle the modal */
 	@Input() idModal = '';
+	// TODO: Tsdoc
 	@Input() cConfig: cConfigModelNivel4 = {
 		title: 'Default title',
 	};

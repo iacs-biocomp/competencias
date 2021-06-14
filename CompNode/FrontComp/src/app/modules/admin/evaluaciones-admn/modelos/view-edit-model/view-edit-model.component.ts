@@ -8,7 +8,7 @@ import { CompetenciasService } from '../../../competencias-admin/services/compet
 import { ComportService } from '../../../comportamientos-admin/services/comport.service';
 import { NivelService } from '../../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
-import { DbData } from '../new-ev-model.component';
+import { DbData } from 'src/app/types/data';
 
 type ComportCtrlView = {
 	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
@@ -31,7 +31,6 @@ type CvChangeMyName = {
 	styleUrls: ['./view-edit-model.component.scss'],
 })
 export class ViewEditModelComponent implements OnInit {
-
 	comportsToShowObs = new BehaviorSubject<IComportamiento[]>([]);
 
 	/** Indica si el componente ha sido inicializado y se puede renderizar la vista */
@@ -72,7 +71,7 @@ export class ViewEditModelComponent implements OnInit {
 			this.nivSv.getAllRefNivs(),
 		]);
 		this.dbData = {
-			catComps: promises[0],
+			cComps: promises[0],
 			comps: promises[1],
 			comports: promises[2],
 			niveles: promises[3],
@@ -89,9 +88,6 @@ export class ViewEditModelComponent implements OnInit {
 			}),
 		);
 		this.initialized = true;
-
-
-
 	}
 
 	//Se redeclaran para que la vista pueda acceder a ellas
@@ -163,7 +159,6 @@ export class ViewEditModelComponent implements OnInit {
 		const comportsToSet = this.filterNonSelectedComports(comp, subModels);
 		// this.comportCtl.comportsToShow = comportsToSet;
 		this.comportsToShowObs.next(comportsToSet);
-
 	}
 	/**
 	 * Añade un comportamiento con un nivel asociado a una competencia

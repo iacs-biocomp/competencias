@@ -29,7 +29,6 @@ export class AuthService {
 		console.log(user);
 		try {
 			await user.save();
-			//TODO: Si todo va bien mandar el correo de confirmación al email
 			return true;
 		} catch (err) {
 			console.error(err);
