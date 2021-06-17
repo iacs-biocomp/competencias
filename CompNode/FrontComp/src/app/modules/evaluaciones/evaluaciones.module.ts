@@ -12,7 +12,7 @@ import { EvalPersonaComponent } from './eval-persona/eval-persona.component';
 /** Como se llama el parametro que identifica la evaluación a evaluar */
 const routes: Routes = [
 	{ path: '', component: MisEvaluacionesComponent },
-	{ path: `evaluar/:${evId}`, component: EvaluarEvConcretaComponent },
+	{ path: `evaluar/:${evId}`, component: EvalPersonaComponent },
 ];
 
 @NgModule({

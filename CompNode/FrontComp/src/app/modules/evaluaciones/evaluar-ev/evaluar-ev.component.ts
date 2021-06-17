@@ -171,5 +171,5 @@ export class EvaluarEvConcretaComponent implements OnInit {
 
 	/** Guarda la evaluacion por persona (una evaluacion se puede modificar siempre que
 	 * el plazo para evaluar esté activo) */
-	saveEvaluacion() {}
+	saveEvaluacion() {  }
 }
