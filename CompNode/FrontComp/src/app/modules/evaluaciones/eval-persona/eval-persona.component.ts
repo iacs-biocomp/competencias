@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IOrganigrama } from 'sharedInterfaces/DTO/IOrganigrama';
+import { IOrganigramaEvDTO } from 'sharedInterfaces/DTO';
 
 @Component({
 	selector: 'app-eval-persona',
@@ -10,10 +10,10 @@ export class EvalPersonaComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit(): void {
-		this.takeCatComp();
+		// this.takeCatComp();
 	}
 
-	organigramaExample: IOrganigrama = {
+	organigramaExample: IOrganigramaEvDTO = {
 		inferiores: [
 			{
 				dni: '90909096H',
@@ -66,16 +66,17 @@ export class EvalPersonaComponent implements OnInit {
 		propuestos: undefined,
 	};
 
-	/** Funcion para igualar la catcompetencial y buscar a los trabajadores con la
+	/**
+	 * Funcion para igualar la catcompetencial y buscar a los trabajadores con la
 	 * misma catcomp que se va a evaluar
 	 */
-	takeCatComp() {
-		for (let infer of this.organigramaExample.inferiores) {
-			if (this.organigramaExample.trabajador.catComp?.id === infer.catComp?.id) {
-				console.log(infer);
-				console.log( this.organigramaExample.inferiores);
-				return infer;
-			}
-		}
-	}
+	// takeCatComp() {
+	// 	for (let infer of this.organigramaExample.inferiores) {
+	// 		if (this.organigramaExample.trabajador.catComp?.id === infer.catComp?.id) {
+	// 			console.log(infer);
+	// 			console.log(this.organigramaExample.inferiores);
+	// 			return infer;
+	// 		}
+	// 	}
+	// }
 }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO/ITrabajadorDTO';
+import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({

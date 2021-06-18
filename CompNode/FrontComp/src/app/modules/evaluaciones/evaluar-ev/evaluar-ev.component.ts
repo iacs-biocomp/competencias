@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EvaluacionesService } from '../evaluaciones.service';
 import { ICompetencia, IComportamiento } from 'sharedInterfaces/Entity';
-import { IModelBasicIndxDTO, ITrabajadorDTO, IValoracionIndexadaDTO } from 'sharedInterfaces/DTO';
-import { IOrganigrama } from 'sharedInterfaces/DTO/IOrganigrama';
+import {
+	IModelBasicIndxDTO,
+	IOrganigramaEvDTO,
+	ITrabajadorDTO,
+	IValoracionIndexadaDTO,
+} from 'sharedInterfaces/DTO';
 export const evId = 'evId';
 
 type EvCompetencia = {
@@ -52,7 +56,7 @@ export class EvaluarEvConcretaComponent implements OnInit {
 		},
 	};
 
-	organigramaExample: IOrganigrama = {
+	organigramaExample: IOrganigramaEvDTO = {
 		inferiores: [
 			{
 				dni: '90909096H',
@@ -171,5 +175,5 @@ export class EvaluarEvConcretaComponent implements OnInit {
 
 	/** Guarda la evaluacion por persona (una evaluacion se puede modificar siempre que
 	 * el plazo para evaluar esté activo) */
-	saveEvaluacion() {  }
+	saveEvaluacion() {}
 }

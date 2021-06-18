@@ -1,5 +1,5 @@
-import { parseISO } from 'date-fns';
-import { IEvAllRequired } from 'sharedInterfaces/DTO';
+import { Interval } from 'date-fns';
+import { IEvAllRequired } from './interfaces/DTO';
 import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
 import { WithOptional } from './interfaces/Utility';
 
@@ -50,7 +50,7 @@ export function findCompById(competencias: ICompetencia[], compId: string): ICom
 export function maxYmin(data: changeMyName) {
 	const multiplicadores = data.niveles.map(nivel => nivel.valor);
 	const multOrderded = [...multiplicadores.sort((a, b) => a - b)];
-	const maxPunt = ((multOrderded: number[]) => {
+	return ((multOrderded: number[]) => {
 		const aSumar = multOrderded.map(mult => {
 			return mult > 0 ? mult * data.maxValoracion : mult * data.minValoracion;
 		});
@@ -65,7 +65,6 @@ export function maxYmin(data: changeMyName) {
 		aRestar.forEach(num => (sumaMin += num));
 		return { max: suma, min: sumaMin };
 	})(multOrderded);
-	return maxPunt;
 }
 
 /**
@@ -123,7 +122,6 @@ export function checkNivOnComp(
  * @param arrToPushRemove Donde se añade/elimina
  */
 export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
-	arrToPushRemove;
 	const indx = arrToPushRemove.indexOf(objToggle);
 	indx === -1 ? arrToPushRemove.push(objToggle) : arrToPushRemove.splice(indx, 1);
 }
