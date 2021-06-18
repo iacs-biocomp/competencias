@@ -5,8 +5,16 @@
 			<div class="card">
 				<div class="card-body">
 					<h2 class="card-title"> Dni: {{ org.dni }} </h2>
-					<p>  Categoría competencial: {{ org.nombre }} {{ org.apellidos }} </p>
+					<p> Nombre: {{ org.nombre }} {{ org.apellidos }} </p>
+					<p> Categoría competencial: {{ org.catComp?.id }} </p>
 				</div>
+				<div class="dls-menu-item">
+					<button class="btn btn-primary" (click)="onPress()"> EVALUAR </button>
+				</div>
+			</div>
+
+			<div id="comp-render" *ngIf="display">
+				<app-evaluar-ev></app-evaluar-ev>
 			</div>
 		</div>
 	</div>

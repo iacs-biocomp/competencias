@@ -14,7 +14,7 @@ type DbDataViewAllM = DbData & {
 	modelToAdd: Omit<IRefModel, 'id' | 'catComp'> & { catComp: ICatComp | undefined };
 };
 /**
- * TODO: Comentario de que hace este componente
+ * Componente para ver todos los modelos creados y su informacion
  */
 @Component({
 	selector: 'app-view-all-models',

@@ -53,10 +53,9 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	@Input() idModal!: string;
 	/** Son los comportamientos que mostrará para seleccionar o borrar este componente */
 	@Input() comportsToShowObs = new BehaviorSubject<IComportamiento[]>([]);
-	//TODO: Tsdoc
+	/** Emitidor de eventos de los comportamientos */
 	@Output() comports = new EventEmitter<IComportamiento[]>();
 
-	//TODO: Tsdoc
 	/** Array de todas las suscripciones realizadas en este componente */
 	subs: Subscription[] = [];
 

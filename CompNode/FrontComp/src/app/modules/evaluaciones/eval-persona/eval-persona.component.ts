@@ -13,6 +13,8 @@ export class EvalPersonaComponent implements OnInit {
 		// this.takeCatComp();
 	}
 
+	display = false;
+
 	organigramaExample: IOrganigramaEvDTO = {
 		inferiores: [
 			{
@@ -65,6 +67,10 @@ export class EvalPersonaComponent implements OnInit {
 		},
 		propuestos: undefined,
 	};
+
+	onPress(){
+		this.display = true;
+	}
 
 	/**
 	 * Funcion para igualar la catcompetencial y buscar a los trabajadores con la

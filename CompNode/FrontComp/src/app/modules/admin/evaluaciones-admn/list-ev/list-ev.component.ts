@@ -24,9 +24,10 @@ export class ListEvComponent implements OnInit {
 		this.evaluaciones = await this.evSv.getAll();
 	}
 
-	// TODO: Tsdoc
+	/**
+	 * Gets all the created evaluations
+	 */
 	async newEvSaved(updateEvalView: ListEvComponent['updateEvalView']) {
-		alert('Hola');
 		await updateEvalView();
 	}
 }

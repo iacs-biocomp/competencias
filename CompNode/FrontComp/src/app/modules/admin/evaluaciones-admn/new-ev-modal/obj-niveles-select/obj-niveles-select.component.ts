@@ -37,8 +37,12 @@ export class ObjectiveNivsSelectComponent implements OnInit {
 	 * @deprecated Usar el observable de niveles como input del componente
 	 */
 	nivs: INivel[] = [];
-	// TODO: Tsdoc explicativo
+
 	/** CompAndNiv[](comp, niv) partial  */
+
+	/**
+	 * partial(propiedades en opcional) de objeto compAndNiv (comp, niv)
+	 */
 	bufferCompNiv: Partial<CompAndNiv>[] = [];
 
 	constructor(private nivelSv: NivelService) {}

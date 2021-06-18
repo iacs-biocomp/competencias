@@ -152,7 +152,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	/**
 	 * Filtra los comportamientos sumando todas las funciones de filtro, estan hardcodeados los Observables de los que se obtienen los valores
 	 *
-	 * @returns TODO: Complete
+	 * @returns comports filtered
 	 */
 	filterByAll(): IComportamiento[] {
 		console.time('filterByAll');

@@ -130,7 +130,12 @@ export class ViewEditModelComponent implements OnInit {
 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
 	}
 
-	//TODO: Añadir tsdoc y llevar a utility, parametrizar con IComport en vez de ISubModel
+	/**
+	 * @param comp la competencia elegida para obtener los comportamientos
+	 * @param subModels submodelos para buscar la competencia
+	 * @returns los comportamientos por competencia filtrados
+	 */
+	//TODO: llevar a utility, parametrizar con IComport en vez de ISubModel
 	filterNonSelectedComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
 		/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
@@ -220,8 +225,9 @@ export class ViewEditModelComponent implements OnInit {
 	}
 
 	/**
-	// TODO: Completar tsdoc
-	 * @param comps
+	 * Edita el array de competencias de un submodelo
+	 *
+	 * @param comps las competencias a pasar
 	 */
 	editCompets(comps: ICompetencia[]): void {
 		const model = { ...this.evModel.value };
