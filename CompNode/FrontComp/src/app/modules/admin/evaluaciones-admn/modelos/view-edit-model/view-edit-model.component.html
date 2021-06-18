@@ -9,7 +9,7 @@
 					data-bs-toggle="modal"
 					data-bs-target="#selectCompetsModal"
 					class="btn btn-success"
-					(click)="updateAllComps()"
+					(click)="updateCompSelectView()"
 				>
 					Añadir competencias
 				</button>
@@ -21,7 +21,7 @@
 		<div class="modal-body">
 			<h4>COMPETENCIAS del modelo:</h4>
 			<div class="accordion" id="accordionCompo">
-				<div class="accordion-item" *ngFor="let comp of cv.competenciasModelo; let i = index">
+				<div class="accordion-item" *ngFor="let comp of cv.modelCompetences; let i = index">
 					<h2 class="accordion-header" [id]="'headerComp' + i">
 						<button
 							class="accordion-button collapsed"
@@ -66,7 +66,7 @@
 												(click)="
 													comportCtl.nivSelected = nivel;
 													comportCtl.compSelected = comp;
-													setComportsToShow(comp, cv.modelView.subModels)
+													setComportsToShow(comp, cv.modelToShow.subModels)
 												"
 												type="button"
 												class="btn btn-primary me-2 add-comports-btn"
@@ -93,11 +93,10 @@
 													"
 												>
 													{{ comport.descripcion }}
-													<!-- TODO: Estilo en archivo scss no en el botón -->
+													<!-- TODO: css boton sin usar la etiqueta float, o flex o grid -->
 													<button
 														*ngIf="modoEdicion"
 														class="btn btn-danger me-2"
-														style="float: right"
 														(click)="removeComport(comport, comp, nivel)"
 													>
 														<span class="material-icons" title="Eliminar comportamiento"> remove </span>

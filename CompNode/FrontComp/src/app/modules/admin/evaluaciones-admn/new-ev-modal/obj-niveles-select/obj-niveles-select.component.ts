@@ -5,13 +5,14 @@ import { NivelService } from '../../../niveles-admin/services/nivel.service';
 
 /** Tipo formado por una competencia y su nivel asociado */
 export type CompAndNiv = { comp: ICompetencia; niv: INivel };
-export type cConfigModelNivel4 = {
+/** Config type for the component itself */
+type cConfig = {
 	/** Title modelNiv */
 	title: string;
 };
 
 /**
- //TODO: TSdoc de que hace este componente
+ * Componente que muestra una lista de competencias y al lado un desplegable para selecionar un nivel
  */
 @Component({
 	selector: 'app-obj-nivs-select [idModal] [compsObs]',
@@ -21,17 +22,22 @@ export type cConfigModelNivel4 = {
 export class ObjectiveNivsSelectComponent implements OnInit {
 	/** Receives an array with the competencies selected to the evaluation */
 	@Input() compsObs!: BehaviorSubject<ICompetencia[]>;
+	/** Receives an array with the levels to show next to each competence */
+	@Input() nivsObs!: BehaviorSubject<INivel[]>;
 	/** Emits array of {@link CompAndNiv} (objective level paired to a comp) */
 	@Output('onSaved') compAndNivEmitter = new EventEmitter<CompAndNiv[]>();
 	/** The identifier used for toggle the modal */
 	@Input() idModal = '';
-	// TODO: Tsdoc
-	@Input() cConfig: cConfigModelNivel4 = {
+	@Input() cConfig: cConfig = {
 		title: 'Default title',
 	};
 
-	/** Array que almacena todos lo niveles actuales */
+	/**
+	 * Array que almacena todos lo niveles actuales
+	 * @deprecated Usar el observable de niveles como input del componente
+	 */
 	nivs: INivel[] = [];
+	// TODO: Tsdoc explicativo
 	/** CompAndNiv[](comp, niv) partial  */
 	bufferCompNiv: Partial<CompAndNiv>[] = [];
 
@@ -44,12 +50,24 @@ export class ObjectiveNivsSelectComponent implements OnInit {
 			this.bufferCompNiv = compToSave;
 		});
 	}
-	/** Saves the level objetivo if they find it, with their competence */
-	setNivel(comp: ICompetencia, niv: string): void {
-		const nivObj = this.nivs.find(n => n.code === niv); //busca si hay un nivel con ese codigo (string)
+
+	/**
+	 * Saves the objective level with their competence
+	 *
+	 * @param comp Competence with which the objective level is associated
+	 * @param niv The objective level or its code (NOT id) that will be associated with the competence
+	 * @throws Error if objective level is not valid
+	 */
+	setNivel(comp: ICompetencia, niv: INivel | string): void {
+		const nivId = typeof niv === 'string' ? niv : niv.code;
+		const nivObj = this.nivs.find(n => n.code === nivId);
+		if (!nivObj) {
+			throw new Error('Nivel objetivo no valido, codigo u objeto incorrecto');
+		}
 		const indx = this.bufferCompNiv.findIndex(cn => cn.comp?.id === comp.id);
 		this.bufferCompNiv[indx].niv = nivObj;
 	}
+
 	/** Creates the object type CompAndNiv[comp,niv] and emits it */
 	nivelClicked(): void {
 		const objCompNivel = this.bufferCompNiv.filter(objToCreate =>

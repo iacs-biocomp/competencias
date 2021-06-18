@@ -13,7 +13,8 @@ type CompetenciaCtrlView = {
 	 */
 	isCompSelected(comp: ICompetencia | string): boolean;
 };
-export type CompSelectConfig = {
+/** Type for component config */
+type CConfig = {
 	title: string;
 };
 
@@ -27,13 +28,17 @@ export type CompSelectConfig = {
 	styleUrls: ['./comp-select.component.scss'],
 })
 export class CompSelectComponent implements OnInit, OnDestroy {
+	/** Observable con todas las comps a mostrar, cuando emite nuevo valor se actualiza el componente */
 	@Input() compsObs = new BehaviorSubject<ICompetencia[]>([]);
+	/** Array de competencias pre-selecionadas */
 	@Input() preSelectedComps?: ICompetencia[];
+	/** Modal id for toggle it with bootstrap */
 	@Input() idModal!: string;
-	@Input() cConfig: CompSelectConfig = { title: 'Seleccione las competencias' };
+	@Input() cConfig: CConfig = { title: 'Seleccione las competencias' };
+	/** Emits the selected competences when finish button is clicked */
 	@Output('onModalFinish') finishEmitter = new EventEmitter<ICompetencia[]>();
 
-	/** Control view for html, all view variables and helper functions inside */
+	/** Control view for html, all view's variables and helper functions inside */
 	cv: CompetenciaCtrlView = {
 		compsSelected: [],
 		isCompSelected(comp: ICompetencia) {

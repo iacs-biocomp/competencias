@@ -16,7 +16,7 @@ import { SelectComportsModalComponent } from './modelos/select-comports-modal/se
 import { NivComportFilterPipe } from './modelos/pipes/niv-comport-filter.pipe';
 import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
 import { CompSelectComponent } from './comp-select/comp-select.component';
-import { ObjectiveNivsSelectComponent } from './new-ev-modal/model-nivel4-comp-select/obj-niveles-select.component';
+import { ObjectiveNivsSelectComponent } from './new-ev-modal/obj-niveles-select/obj-niveles-select.component';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: Routes = [

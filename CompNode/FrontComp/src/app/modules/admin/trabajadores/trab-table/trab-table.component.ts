@@ -85,7 +85,7 @@ export class TrabTableComponent implements OnInit {
 	async persistWorker(trab: ITrabajadorDTO): Promise<void> {
 		const guardado = await this.trabService.addTrabajador(trab);
 		if (guardado) {
-			//TODO: Modificar para añadir el trabajador a la lista sin pedir todos los trabajadores
+			//*PERF: Modificar para añadir el trabajador a la lista sin pedir todos los trabajadores
 			await this.updateWorkerView();
 			this.deleteWorkerToAdd(trab);
 		}
