@@ -1,5 +1,5 @@
 <div class="contrainer-fluid p-3">
-	<h1 class="layout-title">Evaluación {{ evId }}</h1>
+	<h1 class="layout-title">Evaluación {{ dniId }}</h1>
 	<h2 class="layout-subTitle">
 		La evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado,
 		por lo que puede modificarla siempre que quiera y cambiar la valoración.
@@ -32,6 +32,34 @@
 					<div *ngFor="let comport of competenciaYComports.comports">
 						<span class="ips-title">
 							{{ comport.descripcion }}
+							<div class="radio">
+								<label></label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" ng-model='value' ng-value=''  name='valueRes'> 1
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" ng-model='value' ng-value=''  name='valueRes'> 2
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" ng-model='value' ng-value=''  name='valueRes'> 3
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" ng-model='value' ng-value='' name='valueRes'> 4
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" ng-model='value' ng-value='' name='valueRes'> 5
+								</label>
+							</div>
 							<form class="form-value">
 								<input type="radio" id="1" name="values" value="1" />
 								<label for="1"> 1 </label>
@@ -43,6 +71,15 @@
 								<label for="4"> 4 </label>
 								<input type="radio" id="5" name="values" value="5" />
 								<label for="5"> 5 </label>
+								<div class="radio">
+									<label><input type="radio" ng-model='result' ng-value='"pass"' name="rdoResult">pass</label>
+							</div>
+							<div class="radio">
+									<label><input type="radio" ng-model='result' ng-value='"fail"' name="rdoResult">fail</label>
+							</div>
+
+
+
 							</form>
 						</span>
 						<hr/>

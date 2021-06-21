@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EvaluacionesService } from '../evaluaciones.service';
-import { ICompetencia, IComportamiento } from 'sharedInterfaces/Entity';
+import { ICompetencia, IComportamiento, IValoracion } from 'sharedInterfaces/Entity';
 import {
 	IModelBasicIndxDTO,
 	IOrganigramaEvDTO,
 	ITrabajadorDTO,
+	IValoracionDTO,
 	IValoracionIndexadaDTO,
 } from 'sharedInterfaces/DTO';
 
 /** Como se llama el parametro que identifica la evaluación a evaluar */
-export const evId = 'evId';
+export const dniId = 'dniId';
 
 type EvCompetencia = {
 	descripcion: string;
@@ -35,13 +36,57 @@ type EvaluarCtrlView = {
 	styleUrls: ['./evaluar-ev.component.scss'],
 })
 export class EvaluarEvConcretaComponent implements OnInit {
-	evId = this.route.snapshot.paramMap.get(evId)!;
+	/** Array de valoraciones ya puestas; radioButtons con su valor ya marcado */
+	currentVals: IValoracion[] | undefined;
+
+	dniId = this.route.snapshot.paramMap.get(dniId)!;
 	constructor(private route: ActivatedRoute, private evSv: EvaluacionesService) {}
+
 	competencias?: ICompetencia[];
 	trabajador: Partial<ITrabajadorDTO> = {};
 
 	cv: EvaluarCtrlView = {};
 	valoracion: Partial<IValoracionIndexadaDTO> = {};
+
+	valEj01: IValoracionDTO = {
+		evaluadoDni: '33213215134H',
+		evaluadorDni: '3999999934H',
+		valoraciones: [
+			{
+				compId: 'C1',
+				puntuaciones: [
+					{
+						comportId: 'C1.1.3',
+						puntuacion: 1,
+					},
+					{
+						comportId: 'C1.1.4',
+						puntuacion: 2,
+					},
+				],
+			},
+		],
+	};
+
+	valEj02: IValoracionDTO = {
+		evaluadoDni: '33213215134H',
+		evaluadorDni: '3999999934H',
+		valoraciones: [
+			{
+				compId: 'C3',
+				puntuaciones: [
+					{
+						comportId: 'C1.1.4',
+						puntuacion: 1,
+					},
+					{
+						comportId: 'C1.1.4',
+						puntuacion: 2,
+					},
+				],
+			},
+		],
+	};
 
 	valoracionExample: Partial<IValoracionIndexadaDTO> = {
 		evaluadoDni: '33213215134H',
@@ -127,8 +172,6 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	};
 
 	ngOnInit(): void {
-		// ?? Que hace esto aqui?
-		// this.evSv.evaluacionesUsr(this.evaluacion.id);
 		this.competencias = this.getCompetenciasModel(this.evaluacion);
 		this.cv.compsYComports = this.competencias.map(comp => ({
 			id: comp.id,
@@ -178,4 +221,9 @@ export class EvaluarEvConcretaComponent implements OnInit {
 	/** Guarda la evaluacion por persona (una evaluacion se puede modificar siempre que
 	 * el plazo para evaluar esté activo) */
 	saveEvaluacion() {}
+
+	/**
+	 *
+	 */
+	crearValoracion() {}
 }

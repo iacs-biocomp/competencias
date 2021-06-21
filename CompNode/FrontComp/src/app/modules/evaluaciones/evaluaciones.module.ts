@@ -6,13 +6,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { EvaluacionesService } from './evaluaciones.service';
 import { HttpClient } from '@angular/common/http';
 import { JwtService } from 'src/app/services/jwt.service';
-import { EvaluarEvConcretaComponent, evId } from './evaluar-ev/evaluar-ev.component';
-import { EvalPersonaComponent } from './eval-persona/eval-persona.component';
+import { EvaluarEvConcretaComponent, dniId } from './evaluar-ev/evaluar-ev.component';
+import { EvalPersonaComponent, evId } from './eval-persona/eval-persona.component';
 
 const routes: Routes = [
 	{ path: '', component: MisEvaluacionesComponent },
 	{ path: `evaluar/:${evId}`, component: EvalPersonaComponent },
-	{ path: `evaluaciones/eval-persona/:${evId}`, component: EvaluarEvConcretaComponent },
+	{ path: `evaluar/:${evId}/eval-persona/:${dniId}`, component: EvaluarEvConcretaComponent },
 ];
 
 /**
