@@ -39,7 +39,7 @@ export class EvaluacionesController {
 		let evs: Ev[] = [];
 		//Esto recoge las evaluaciones de cada periodo y las añade a un array vacío
 		worker.periodos.forEach(periodo => evs.push.apply(evs, periodo.catComp.evaluaciones));
-		return evs;
+		return evs.filter((ev, index) => evs.findIndex(evIndx => evIndx.id === ev.id) === index);
 	}
 
 	@Post('')
