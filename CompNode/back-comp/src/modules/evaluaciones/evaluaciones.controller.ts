@@ -20,6 +20,7 @@ export class EvaluacionesController {
 	getAll(): Promise<Ev[]> {
 		return this.evRepo.find();
 	}
+
 	@Get(':username')
 	async getEvsOfUser(@Param('username') username: string): Promise<Ev[]> {
 		const worker = await Trabajador.findOne({
