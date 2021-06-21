@@ -12,6 +12,7 @@ import { EvalPersonaComponent } from './eval-persona/eval-persona.component';
 const routes: Routes = [
 	{ path: '', component: MisEvaluacionesComponent },
 	{ path: `evaluar/:${evId}`, component: EvalPersonaComponent },
+	{ path: `evaluaciones/eval-persona/:${evId}`, component: EvaluarEvConcretaComponent },
 ];
 
 /**

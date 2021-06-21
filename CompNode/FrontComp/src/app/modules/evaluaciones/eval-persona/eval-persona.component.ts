@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IOrganigramaEvDTO } from 'sharedInterfaces/DTO';
+
+/** Como se llama el parametro que identifica la evaluación a evaluar */
+export const evId = 'evId'
 
 @Component({
 	selector: 'app-eval-persona',
@@ -7,7 +11,9 @@ import { IOrganigramaEvDTO } from 'sharedInterfaces/DTO';
 	styleUrls: ['./eval-persona.component.scss'],
 })
 export class EvalPersonaComponent implements OnInit {
-	constructor() {}
+	evId = this.route.snapshot.paramMap.get(evId)!;
+
+	constructor(private route: ActivatedRoute) {}
 
 	ngOnInit(): void {}
 

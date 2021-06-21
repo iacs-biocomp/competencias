@@ -10,7 +10,13 @@
 				</div>
 				<div class="dls-menu-item">
 					<!-- TODO: Usar routerLink y navegar a componente para evaluar a X persona, la persona como parametro de ruta -->
-					<button class="btn btn-primary">EVALUAR</button>
+					<button
+						type="button"
+						class="btn btn-primary"
+						[routerLink]="'evaluaciones/evaluarPersona/' + [evId]"
+						>
+						EVALUAR
+					</button>
 				</div>
 			</div>
 		</div>

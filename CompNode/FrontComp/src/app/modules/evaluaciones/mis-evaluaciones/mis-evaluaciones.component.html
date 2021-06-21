@@ -10,7 +10,7 @@
 				</div>
 				<!-- !Quitar negacion una vez se haya terminado de desarrollar -->
 				<button
-					type="button "
+					type="button"
 					[routerLink]="'/evaluaciones/evaluar/' + ev.id"
 					class="btn btn-primary"
 					[disabled]="!(computeEvStatus(ev) !== EvStatus.EVALUAR)"
