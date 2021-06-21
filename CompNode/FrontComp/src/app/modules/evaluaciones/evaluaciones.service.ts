@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IEvAllRequired } from 'sharedInterfaces/DTO';
+import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
-import { EvaluacionesAdmService } from '../admin/evaluaciones-admn/services/evaluaciones-adm.service';
 
 /**
  * Destinado a la obtención de datos relacionados con las evaluaciones de los usuarios, para la administración de las evs usar
@@ -22,5 +22,14 @@ export class EvaluacionesService {
 	public evaluacionesUsr(usr: string | { usuario: string }): Promise<IEvAllRequired[]> {
 		const username = typeof usr === 'string' ? usr : usr.usuario;
 		return this.httpClient.get<IEvAllRequired[]>(cnf.apiURL + `/evaluaciones/${username}`).toPromise();
+	}
+
+	/**
+	 * Obtiene una evaluación con todos los datos del modelo
+	 * @param evId El identificador de la evaluación
+	 * @returns La evaluación con todos los datos del modelo
+	 */
+	public getEvWithModel(evId: IEvaluacion['id']): Promise<IEvAllRequired> {
+		return this.httpClient.get<IEvAllRequired>(cnf.apiURL + `/evaluaciones/${evId}`).toPromise();
 	}
 }

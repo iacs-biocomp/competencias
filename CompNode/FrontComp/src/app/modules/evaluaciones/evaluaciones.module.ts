@@ -6,21 +6,31 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { EvaluacionesService } from './evaluaciones.service';
 import { HttpClient } from '@angular/common/http';
 import { JwtService } from 'src/app/services/jwt.service';
-import { EvaluarEvConcretaComponent, dniId } from './evaluar-ev/evaluar-ev.component';
-import { EvalPersonaComponent, evId } from './eval-persona/eval-persona.component';
+import { ValoracionesService } from './valoraciones.service';
+import { evId, ListPeopleToEvalComponent } from './list-people-to-eval/list-people-to-eval.component';
+import { ValoracionesEvPersonaComponent } from './valoracion-persona/valoraciones-ev-persona/valoraciones-ev-persona.component';
+import {
+	dniId,
+	ValoracionesEvPersonaLayoutComponent,
+} from './valoracion-persona/list-valoraciones-layout/list-valoraciones-layout.component';
 
 const routes: Routes = [
 	{ path: '', component: MisEvaluacionesComponent },
-	{ path: `evaluar/:${evId}`, component: EvalPersonaComponent },
-	{ path: `evaluar/:${evId}/eval-persona/:${dniId}`, component: EvaluarEvConcretaComponent },
+	{ path: `evaluar/:${evId}`, component: ListPeopleToEvalComponent },
+	{ path: `evaluar/:${evId}/eval-persona/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
 ];
 
 /**
  * TODO: Tsdoc de la utilidad de este modulo
  */
 @NgModule({
-	declarations: [MisEvaluacionesComponent, EvaluarEvConcretaComponent, EvalPersonaComponent],
+	declarations: [
+		MisEvaluacionesComponent,
+		ListPeopleToEvalComponent,
+		ValoracionesEvPersonaComponent,
+		ValoracionesEvPersonaLayoutComponent,
+	],
 	imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
-	providers: [EvaluacionesService, HttpClient, JwtService],
+	providers: [EvaluacionesService, HttpClient, JwtService, ValoracionesService],
 })
 export class EvaluacionesModule {}

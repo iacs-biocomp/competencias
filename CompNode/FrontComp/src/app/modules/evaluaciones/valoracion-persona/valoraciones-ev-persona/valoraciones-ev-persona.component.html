@@ -1,5 +1,5 @@
 <div class="contrainer-fluid p-3">
-	<h1 class="layout-title">Evaluación {{ dniId }}</h1>
+	<h1 class="layout-title">Evaluación {{ dniWorker }}</h1>
 	<h2 class="layout-subTitle">
 		La evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado,
 		por lo que puede modificarla siempre que quiera y cambiar la valoración.
@@ -35,54 +35,51 @@
 							<div class="radio">
 								<label></label>
 							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" ng-model='value' ng-value=''  name='valueRes'> 1
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" ng-model='value' ng-value=''  name='valueRes'> 2
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" ng-model='value' ng-value=''  name='valueRes'> 3
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" ng-model='value' ng-value='' name='valueRes'> 4
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" ng-model='value' ng-value='' name='valueRes'> 5
-								</label>
-							</div>
+
 							<form class="form-value">
-								<input type="radio" id="1" name="values" value="1" />
+								<input
+									type="radio"
+									id="radio1"
+									name="values"
+									value="1"
+									[checked]="radioChecked(competenciaYComports, comport, 1)"
+								/>
 								<label for="1"> 1 </label>
-								<input type="radio" id="2" name="values" value="2" />
+								<input
+									type="radio"
+									id="radio2"
+									name="values"
+									value="2"
+									[checked]="radioChecked(competenciaYComports, comport, 2)"
+								/>
 								<label for="2"> 2 </label>
-								<input type="radio" id="3" name="values" value="3" />
+								<input
+									type="radio"
+									id="radio3"
+									name="values"
+									value="3"
+									[checked]="radioChecked(competenciaYComports, comport, 3)"
+								/>
 								<label for="3"> 3 </label>
-								<input type="radio" id="4" name="values" value="4" />
+								<input
+									type="radio"
+									id="radio4"
+									name="values"
+									value="4"
+									[checked]="radioChecked(competenciaYComports, comport, 4)"
+								/>
 								<label for="4"> 4 </label>
-								<input type="radio" id="5" name="values" value="5" />
+								<input
+									type="radio"
+									id="radio5"
+									name="values"
+									value="5"
+									[checked]="radioChecked(competenciaYComports, comport, 5)"
+								/>
 								<label for="5"> 5 </label>
-								<div class="radio">
-									<label><input type="radio" ng-model='result' ng-value='"pass"' name="rdoResult">pass</label>
-							</div>
-							<div class="radio">
-									<label><input type="radio" ng-model='result' ng-value='"fail"' name="rdoResult">fail</label>
-							</div>
-
-
-
 							</form>
 						</span>
-						<hr/>
+						<hr />
 					</div>
 				</div>
 			</div>
