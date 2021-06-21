@@ -25,7 +25,7 @@ export const databaseProviders = [
 		inject: [ConfigService],
 		async useFactory(config: ConfigService) {
 			return {
-				type: 'postgres' as 'postgres',
+				type: 'postgres',
 				host: config.get(cnf.HOST),
 				username: config.get(cnf.USERNAME),
 				port: Number(config.get(cnf.DBPORT)),

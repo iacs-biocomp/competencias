@@ -18,6 +18,15 @@ export class NivelService {
 	}
 
 	/**
+	 * Metodo que obtiene todas los niveles del backend, usado solo para el ADMIN
+	 *
+	 * @returns Un `Array` de todos los niveles, sean o no de referencia
+	 */
+	getOne(id: INivel['id']): Promise<INivel> {
+		return this.httpClient.get<INivel>(`${cnf.apiURL}/niveles/${id}`).toPromise();
+	}
+
+	/**
 	 *
 	 * @returns Una promise que contiene todos los Niveles de referencia
 	 */
@@ -31,7 +40,7 @@ export class NivelService {
 	 * @param nivel El nivel a borrar o su identificador
 	 * @returns Una promesa que es `true` si se ha borrado `false` en caso contrario
 	 */
-	delete(nivel: INivel | number): Promise<boolean> {
+	delete(nivel: INivel | INivel['id']): Promise<boolean> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
 	}
@@ -46,6 +55,7 @@ export class NivelService {
 		//*QUAL: Crear INivelPostDto o similar
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
+
 	/**
 	 *
 	 * @param comp El nivel a editar en la base de datos

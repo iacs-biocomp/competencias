@@ -14,10 +14,6 @@ interface Organigrama {
 	pares: Trabajador[];
 }
 
-// interface UsrWithOrgani extends Organigrama {
-// 	trabajador: TrabWithCComp;
-// }
-
 /** Trabajador con propiedad añadida catComp () */
 type TrabWithCComp = Trabajador & { catComp: CatComp };
 type RelType = 'inferiores' | 'superiores' | 'pares';

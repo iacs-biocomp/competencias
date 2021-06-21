@@ -26,7 +26,7 @@ export class CatContractController {
 		if (!catContr) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
-		var oneWeekAgo: Date = new Date();
+		const oneWeekAgo = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
 		await catContr.remove();

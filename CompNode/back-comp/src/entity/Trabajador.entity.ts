@@ -1,8 +1,8 @@
 import { BaseEntity, Entity, Column, OneToMany, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { ITrabajadorDTO } from '../modules/trabajadores/trabajadores.controller';
 import { PeriodoTrab, User } from './index';
 import { ITrabajador } from 'sharedInterfaces/Entity';
+import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
 
 @Entity('trabajador')
 export class Trabajador extends BaseEntity implements ITrabajador {

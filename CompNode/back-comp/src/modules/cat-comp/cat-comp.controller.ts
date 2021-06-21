@@ -30,9 +30,8 @@ export class CatCompController {
 	 * @returns El DTO que contiene el id, descripcion y N°Modelos que usan una catComp
 	 */
 	@Get('withmodels')
-	async getWithNumberOfModels() {
-		//TODO: Refactor del metodo, buscar como usar Record y Omit, o una manera mas eficiente de convertir clases a interfaces/tipos DTO.
-		var catCompsDTO: CatCompWithNoModels[] = [];
+	async getWithNumberOfModels(): Promise<CatCompWithNoModels[]> {
+		const catCompsDTO: CatCompWithNoModels[] = [];
 		const catComps = await this.catCompRepo.find({ relations: ['models'] });
 		catComps.forEach(cat => {
 			catCompsDTO.push({ id: cat.id, description: cat.description, nModels: cat.models.length });
@@ -58,7 +57,7 @@ export class CatCompController {
 		if (catComp.catContr.length !== 0) {
 			throw new BadRequestException('No se puede borrar una catComp que tiene una catContr asociada');
 		}
-		var oneWeekAgo: Date = new Date();
+		const oneWeekAgo: Date = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 		await catComp.remove();
 		return true;
@@ -95,10 +94,6 @@ export class CatCompController {
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');
 		}
-		//? Preguntar a vega si se puede modificar una catComp si tiene alguna evaluación anterior o en curso
-		// if (catComp.createdAt != undefined && catComp.descripcion === undefined) {
-		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
-		// }
 		await this.catCompRepo.save(catComp);
 		return true;
 	}
