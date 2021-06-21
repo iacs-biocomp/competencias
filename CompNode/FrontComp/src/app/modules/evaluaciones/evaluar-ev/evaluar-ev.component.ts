@@ -8,6 +8,8 @@ import {
 	ITrabajadorDTO,
 	IValoracionIndexadaDTO,
 } from 'sharedInterfaces/DTO';
+
+/** Como se llama el parametro que identifica la evaluación a evaluar */
 export const evId = 'evId';
 
 type EvCompetencia = {

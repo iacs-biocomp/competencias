@@ -9,9 +9,7 @@ import { IOrganigramaEvDTO } from 'sharedInterfaces/DTO';
 export class EvalPersonaComponent implements OnInit {
 	constructor() {}
 
-	ngOnInit(): void {
-		// this.takeCatComp();
-	}
+	ngOnInit(): void {}
 
 	display = false;
 
@@ -67,22 +65,4 @@ export class EvalPersonaComponent implements OnInit {
 		},
 		propuestos: undefined,
 	};
-
-	onPress(){
-		this.display = true;
-	}
-
-	/**
-	 * Funcion para igualar la catcompetencial y buscar a los trabajadores con la
-	 * misma catcomp que se va a evaluar
-	 */
-	// takeCatComp() {
-	// 	for (let infer of this.organigramaExample.inferiores) {
-	// 		if (this.organigramaExample.trabajador.catComp?.id === infer.catComp?.id) {
-	// 			console.log(infer);
-	// 			console.log(this.organigramaExample.inferiores);
-	// 			return infer;
-	// 		}
-	// 	}
-	// }
 }
