@@ -11,15 +11,24 @@ export class NivelService {
 	/**
 	 * Metodo que obtiene todas los niveles del backend, usado solo para el ADMIN
 	 *
-	 * @returns Un `Array` de todos los niveles
+	 * @returns Un `Array` de todos los niveles, sean o no de referencia
 	 */
 	getAll(): Promise<INivel[]> {
 		return this.httpClient.get<INivel[]>(`${cnf.apiURL}/niveles/all`).toPromise();
 	}
 
 	/**
-	 * Obtiene todos los niveles de referencia
+	 * Metodo que obtiene todas los niveles del backend, usado solo para el ADMIN
 	 *
+	 * @returns Un `Array` de todos los niveles, sean o no de referencia
+	 */
+	getOne(id: INivel['id']): Promise<INivel> {
+		return this.httpClient.get<INivel>(`${cnf.apiURL}/niveles/${id}`).toPromise();
+	}
+
+	/**
+	 *
+	 * @returns Una promise que contiene todos los Niveles de referencia
 	 */
 	getAllRefNivs(): Promise<INivel[]> {
 		return this.httpClient.get<INivel[]>(`${cnf.apiURL}/niveles/reference`).toPromise();
@@ -28,10 +37,12 @@ export class NivelService {
 	/**
 	 * Metodo que borra un nivel del backend
 	 *
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
+	 * @param nivel El nivel a borrar o su identificador
+	 * @returns Una promesa que es `true` si se ha borrado `false` en caso contrario
 	 */
-	delete(nivel: INivel): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${nivel.id}`).toPromise();
+	delete(nivel: INivel | INivel['id']): Promise<boolean> {
+		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
 	}
 
 	/**
@@ -41,9 +52,10 @@ export class NivelService {
 	 * @returns `true` si se ha añadido correctamente el nivel a la bbdd o `false`/`exception` en otros casos
 	 */
 	add(nivel: INivelToAdd): Promise<boolean> {
-		// TODO: Crear INivelPostDto o similar
+		//*QUAL: Crear INivelPostDto o similar
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
+
 	/**
 	 *
 	 * @param comp El nivel a editar en la base de datos

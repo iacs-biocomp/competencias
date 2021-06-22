@@ -1,6 +1,11 @@
 // Estas interfaces pueden cambiar, si se modifican y
 // el cambio produce incompatibilidad, se deja en desuso con @deprecated y se genera una nueva
-// Cuando la vieja interfaz no se use, se eliminará y dará su nombre a la nueva.
+
+import { IValoracion } from '../Entity';
+
+/** Tipo usado para crear una nueva evaluación, SOLO en el endpoint POST /nest/valoraciones */
+export type IValoracionToAddDTO = Omit<IValoracion, 'id'>;
+
 export interface IValoracionDTO {
 	/** Es el dni del que emite la valoracion */ //! Posible cambio a username en vez de evaluadorDni
 	evaluadorDni: string;

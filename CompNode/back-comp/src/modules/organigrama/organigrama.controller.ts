@@ -6,15 +6,14 @@ import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators
 import { CatComp, PeriodoTrab, Trabajador } from 'src/entity';
 import { ITrabajador } from 'sharedInterfaces/Entity';
 import { IOrganigramaUsrDTO } from 'sharedInterfaces/DTO';
+
+// TODO: refactor
 interface Organigrama {
 	inferiores: Trabajador[];
 	superiores: Trabajador[];
 	pares: Trabajador[];
 }
 
-interface UsrWithOrgani extends Organigrama {
-	trabajador: TrabWithCComp;
-}
 /** Trabajador con propiedad añadida catComp () */
 type TrabWithCComp = Trabajador & { catComp: CatComp };
 type RelType = 'inferiores' | 'superiores' | 'pares';

@@ -1,0 +1,13 @@
+export { AuthModule } from './auth/auth.module';
+export { CatCompModule } from './cat-comp/cat-comp.module';
+export { CatContractModule } from './cat-contract/cat-contract.module';
+export { CompetenciasModule } from './competencias/competencias.module';
+export { ComportamientosModule } from './comportamientos/comportamientos.module';
+export { EvaluacionesModule } from './evaluaciones/evaluaciones.module';
+export { ModelosModule } from './modelos/modelos.module';
+export { NivelesModule } from './niveles/niveles.module';
+export { OrganigramaModule } from './organigrama/organigrama.module';
+export { RoleModule } from './role/role.module';
+export { TrabajadoresModule } from './trabajadores/trabajadores.module';
+export { UserModule } from './users/user.module';
+export { ValoracionesModule } from './valoraciones/valoraciones.module';

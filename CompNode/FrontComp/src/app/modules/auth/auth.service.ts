@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { IAuthLogin, IRegisterRequest } from './auth.intefaces';
+import { JwtService } from 'src/app/services/jwt.service';
 
 export type IAuthTokenRes = {
 	token: string;
@@ -10,7 +11,7 @@ export const JWT_NAME = 'login-token';
 
 @Injectable()
 export class AuthService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private jwtSv: JwtService) {}
 
 	/**
 	 * Function that send the login information to api and set the jwt token if the information given is valid
@@ -29,6 +30,12 @@ export class AuthService {
 		document.cookie = JWT_NAME + '=' + encodeURIComponent(response.token);
 		return true;
 	}
+
+	/**
+	 *
+	 * @param body  El cuerpo a enviar en la petición de registro
+	 * @returns Promise q se resuelve como `true` si todo ha ido bien, `false` en caso contrario
+	 */
 	async sendRegisterReq(body: IRegisterRequest): Promise<boolean> {
 		const response: IAuthTokenRes = await this.httpClient
 			.post<IAuthTokenRes>(cnf.apiURL + '/signup', body)
@@ -39,13 +46,12 @@ export class AuthService {
 		}
 		return true;
 	}
-	//TODO: Refactor, usar el servicio jwt.service para tema del token
+
 	/**
 	 * Guarda un token en el localStorage `key:value` La key (nombre del token) viene dado por env variable
-	 *
 	 * @param token El token jwt firmado
 	 */
 	setToken(token: string): void {
-		localStorage.setItem(JWT_NAME, token);
+		this.jwtSv.updateJwt(token);
 	}
 }

@@ -10,12 +10,12 @@ export class Valoracion extends BaseEntity implements IValoracion {
 	id: number;
 
 	@ApiProperty({ type: () => Trabajador })
-	@OneToOne(() => Trabajador)
+	@ManyToOne(() => Trabajador)
 	@JoinColumn()
 	evaluador: Trabajador;
 
 	@ApiProperty({ type: () => Trabajador })
-	@OneToOne(() => Trabajador)
+	@ManyToOne(() => Trabajador)
 	@JoinColumn()
 	evaluado: Trabajador;
 

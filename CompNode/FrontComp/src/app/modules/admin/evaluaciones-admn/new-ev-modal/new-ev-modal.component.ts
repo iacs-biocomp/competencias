@@ -7,13 +7,13 @@ import { ICatComp, ICompetencia, IEvaluacion, IEvModel } from 'sharedInterfaces/
 import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
 import { EvaluacionesAdmService } from '../services/evaluaciones-adm.service';
-import { CompAndNiv } from './model-nivel4-comp-select/model-nivel4-comp-select.component';
+import { CompAndNiv } from './obj-niveles-select/obj-niveles-select.component';
 
 type modelCtrlView = {
 	// ?? Comprobar si sirve
 	evModels: IEvModel[];
 	/** Descripción de la evaluación, bindeado al input en el html */
-	evDescription?: string;
+	evDescription: string | undefined;
 	/** Los rangos de fechas de esa evaluacion, periodo de propuesta, validación, valoración... */
 	rangesForm: FormGroup | undefined;
 	/** Gets all the reference models (array)  */
@@ -24,7 +24,7 @@ type modelCtrlView = {
 
 type catCompCtrlView = {
 	catComps: ICatComp[];
-	/** Sends the catComp selected to creates the evaluation */
+	/** Emits the cCompSelected that is used for the new ev */
 	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
 };
 
@@ -36,14 +36,14 @@ export type modelCompNiv = {
 	compNivObj: CompAndNiv[];
 };
 @Component({
-	selector: 'app-new-ev-modal',
+	selector: 'app-new-ev-modal [onEvSaved]',
 	templateUrl: './new-ev-modal.component.html',
 	styleUrls: ['./new-ev-modal.component.scss'],
 })
 export class NewEvModalComponent implements OnInit {
 	/** Observable to send an array of competences of a model reference selected by the cComp  */
 	compsObs = new BehaviorSubject<ICompetencia[]>([]);
-	//TODO: tsdoc
+	/** Observable with the array of competences selected */
 	compsSelectedObs = new BehaviorSubject<ICompetencia[]>([]);
 
 	@ViewChild('nivSelectBtn') nivModal!: ElementRef;
@@ -53,7 +53,6 @@ export class NewEvModalComponent implements OnInit {
 	cCompCtl: catCompCtrlView = {
 		/** Array with all the current catComps */
 		catComps: [],
-		//TODO: Tsdoc
 		cCompSelectedObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 	};
 
@@ -157,7 +156,8 @@ export class NewEvModalComponent implements OnInit {
 		const evModelDB = await this.evModelSv.save(modelToSend, false);
 		this.evToAdd = {
 			description:
-				this.modelCtl.evDescription === undefined ? 'Descripción por defecto' : this.modelCtl.evDescription, //TODO: Return si desc == undefined, validator en formcontrol
+				this.modelCtl.evDescription === undefined ? 'Descripción por defecto' : this.modelCtl.evDescription,
+			// TODO: Validator de descripción en form control
 			catComp: cComp,
 			model: evModelDB,
 			iniDate: form.propuestaStart as Date,
@@ -178,14 +178,18 @@ export class NewEvModalComponent implements OnInit {
 		} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 
-	// TODO: Tsdoc
+	/**
+	 * Method that saves the evaluation when the levels have been setted
+	 * @param niveles
+	 */
 	onNivelesSetted(niveles: CompAndNiv[]) {
-		// TODO: Guardar evaluacion
 		this.save();
-		console.log('Saved');
 	}
 
-	// TODO: Tsdoc
+	/**
+	 * Sets
+	 * @param niveles
+	 */
 	onCompetenciasSetted(competencias: ICompetencia[]) {
 		this.compsSelectedObs.next(competencias);
 		const cCompSelected = this.cCompCtl.cCompSelectedObs.value;

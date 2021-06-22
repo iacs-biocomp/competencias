@@ -1,4 +1,3 @@
-import { UnprocessableEntityException } from '@nestjs/common';
 import {
 	Body,
 	ConflictException,
@@ -10,6 +9,7 @@ import {
 	Post,
 	Put,
 	UnauthorizedException,
+	UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Competencia } from 'src/entity';
@@ -32,7 +32,7 @@ export class CompetenciasController {
 		if (!compt) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
-		var oneWeekAgo: Date = new Date();
+		const oneWeekAgo = new Date();
 		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 		if (oneWeekAgo >= compt.createdAt) {
 			throw new UnauthorizedException('No puedes borrar esa competencia');

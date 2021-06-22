@@ -8,20 +8,18 @@ import { CompetenciasService } from '../../../competencias-admin/services/compet
 import { ComportService } from '../../../comportamientos-admin/services/comport.service';
 import { NivelService } from '../../../niveles-admin/services/nivel.service';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
-import { DbData } from '../new-ev-model.component';
+import { DbData } from 'src/app/types/data';
 
 type ComportCtrlView = {
 	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
-	compSelected?: ICompetencia;
-	nivSelected?: INivel;
+	compSelected: ICompetencia | undefined;
+	nivSelected: INivel | undefined;
 	comportsToShow: IComportamiento[];
 };
 
-//TODO: Cambiar nombre elegir el correcto
-type CvChangeMyName = {
-	//TODO: Tsdoc
-	modelView: IRefModel;
-	competenciasModelo: ICompetencia[] | undefined;
+type ControlView = {
+	modelToShow: IRefModel;
+	modelCompetences: ICompetencia[] | undefined;
 };
 
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
@@ -31,7 +29,6 @@ type CvChangeMyName = {
 	styleUrls: ['./view-edit-model.component.scss'],
 })
 export class ViewEditModelComponent implements OnInit {
-
 	comportsToShowObs = new BehaviorSubject<IComportamiento[]>([]);
 
 	/** Indica si el componente ha sido inicializado y se puede renderizar la vista */
@@ -41,7 +38,7 @@ export class ViewEditModelComponent implements OnInit {
 	@Input() evModel!: BehaviorSubject<IRefModel>;
 	preSelectedComps: ICompetencia[] = [];
 
-	cv!: CvChangeMyName;
+	cv!: ControlView;
 	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
 	evModelIndx!: IModelBasicIndxDTO;
 	/** Objeto que tiene los datos usados para los select */
@@ -72,7 +69,7 @@ export class ViewEditModelComponent implements OnInit {
 			this.nivSv.getAllRefNivs(),
 		]);
 		this.dbData = {
-			catComps: promises[0],
+			cComps: promises[0],
 			comps: promises[1],
 			comports: promises[2],
 			niveles: promises[3],
@@ -82,16 +79,13 @@ export class ViewEditModelComponent implements OnInit {
 			this.evModel.subscribe(model => {
 				this.evModelIndx = this.mapIRefModelToIndexed(model);
 				this.cv = {
-					modelView: model,
-					competenciasModelo: this.getCompet(model),
+					modelToShow: model,
+					modelCompetences: this.getCompet(model),
 				};
 				this.preSelectedComps = getCompetOfModel(model);
 			}),
 		);
 		this.initialized = true;
-
-
-
 	}
 
 	//Se redeclaran para que la vista pueda acceder a ellas
@@ -131,21 +125,17 @@ export class ViewEditModelComponent implements OnInit {
 		return subModels.find(subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id);
 	}
 
-	/**
-	 * @deprecated Usar subModelos y sus funciones
-	 */
-	keysToArrayComport(comportIndxObj: { [key: string]: { descripcion: string } }): { descripcion: string }[] {
-		let arrayOfComports: { descripcion: string }[];
-		arrayOfComports = Object.keys(comportIndxObj).map(key => comportIndxObj[key]);
-		return arrayOfComports;
-	}
-
 	/**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
 	collapseId(compId: string, nivelCode: string) {
 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
 	}
 
-	//TODO: Añadir tsdoc y llevar a utility, parametrizar con IComport en vez de ISubModel
+	/**
+	 * @param comp la competencia elegida para obtener los comportamientos
+	 * @param subModels submodelos para buscar la competencia
+	 * @returns los comportamientos por competencia filtrados
+	 */
+	//TODO: llevar a utility, parametrizar con IComport en vez de ISubModel
 	filterNonSelectedComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
 		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
 		/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
@@ -163,8 +153,8 @@ export class ViewEditModelComponent implements OnInit {
 		const comportsToSet = this.filterNonSelectedComports(comp, subModels);
 		// this.comportCtl.comportsToShow = comportsToSet;
 		this.comportsToShowObs.next(comportsToSet);
-
 	}
+
 	/**
 	 * Añade un comportamiento con un nivel asociado a una competencia
 	 *
@@ -198,14 +188,19 @@ export class ViewEditModelComponent implements OnInit {
 	 * @param comp La competencia usada para filtrar
 	 * @param niv El nivel que junto con la competencia hacen de filtro
 	 */
-	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
+	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel): void {
 		const _model = this.evModel.value;
 		const subModel = this.findSubModel(_model.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
 		subModel?.comportamientos?.splice(indx, 1);
 	}
 
-	addComports(comports: IComportamiento[]) {
+	/**
+	 * Añade comportamientos a la Competencia & Nivel seleccionados (SubModelos)
+	 *
+	 * @param comports Los comportamientos a añadir
+	 */
+	addComports(comports: IComportamiento[]): void {
 		if (!this.comportCtl.compSelected || !this.comportCtl.nivSelected) {
 			alert('Contacte con un programador');
 			return;
@@ -217,7 +212,8 @@ export class ViewEditModelComponent implements OnInit {
 			this.evModel.value,
 		);
 	}
-	async updateModel(model: IRefModel) {
+
+	async updateModel(model: IRefModel): Promise<void> {
 		//Se eliminan los subModelos que no tengan comportamientos
 		model.subModels = model.subModels.filter(subM => subM.comportamientos.length !== 0);
 		const response = await this.evModelSv.updateRefModel(model);
@@ -227,16 +223,24 @@ export class ViewEditModelComponent implements OnInit {
 			alert('Ha habido un error contacte con un programador');
 		}
 	}
-	//TODO: TSdoc
-	editCompets(comps: ICompetencia[]) {
-		const model = this.evModel.value;
+
+	/**
+	 * Edita el array de competencias de un submodelo
+	 *
+	 * @param comps las competencias a pasar
+	 */
+	editCompets(comps: ICompetencia[]): void {
+		const model = { ...this.evModel.value };
 		const compsIds = comps.map(c => c.id);
 		model.subModels = model.subModels.filter(s => compsIds.includes(s.competencia.id));
 		// TODO: Añadir submodelo vacio con las nuevas competencias
-		this.cv.competenciasModelo = comps;
+		this.cv.modelCompetences = comps;
 	}
 
-	updateAllComps() {
+	/**
+	 * Manda todas las competencias que tiene este componente al componente hijo CompSelect
+	 */
+	updateCompSelectView(): void {
 		this.compsObs.next(this.dbData.comps);
 	}
 }

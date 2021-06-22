@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hashSync } from 'bcrypt';
 import { UserRepository } from '../users/user.repository';
@@ -29,7 +29,6 @@ export class AuthService {
 		console.log(user);
 		try {
 			await user.save();
-			//TODO: Si todo va bien mandar el correo de confirmación al email
 			return true;
 		} catch (err) {
 			console.error(err);
@@ -80,13 +79,11 @@ export class AuthService {
 	 *	la fecha de expiración y de expedición de este
 	 * @param tokenStr El jwt como string
 	 * @returns Retorna un token con el mismo payload pero distinto exp y iat.
+	 * @throws {ForbiddenException}
 	 */
 	async renewToken(tokenStr: string): Promise<{ token: string }> {
-		if (!tokenStr || tokenStr == null) {
-			return;
-		}
 		if (!this._jwtService.verify(tokenStr)) {
-			return;
+			throw new ForbiddenException('El token no es valido o ya ha expirado');
 		}
 		let tokenObj: IJwtPayload = this._jwtService.decode(tokenStr) as IJwtPayload;
 		delete tokenObj.iat;

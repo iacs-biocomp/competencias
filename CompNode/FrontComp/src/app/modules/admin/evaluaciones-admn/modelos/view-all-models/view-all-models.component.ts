@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { IRefModel } from 'sharedInterfaces/DTO';
+import { ICatComp } from 'sharedInterfaces/Entity';
+import { DbData } from 'src/app/types/data';
 import { EvModelsAdmnService } from '../../services/ev-models-admn.service';
-import { DbData } from '../new-ev-model.component';
 
 type ViewProps = {
 	/** Representa si hay modelos de referencia o no */
 	haveModels: boolean;
 };
+
+type DbDataViewAllM = DbData & {
+	modelToAdd: Omit<IRefModel, 'id' | 'catComp'> & { catComp: ICatComp | undefined };
+};
 /**
- * TODO: Comentario de que hace este componente
+ * Componente para ver todos los modelos creados y su informacion
  */
 @Component({
 	selector: 'app-view-all-models',
@@ -20,8 +25,8 @@ export class ViewAllModelsComponent implements OnInit {
 	renderViewModels = false;
 	refModels: IRefModel[] = [];
 	modoEdicion = false;
-	dbData: DbData = {
-		catComps: [],
+	dbData: DbDataViewAllM = {
+		cComps: [],
 		comps: [],
 		comports: [],
 		niveles: [],
@@ -38,7 +43,6 @@ export class ViewAllModelsComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.refModels = await this.evModelSv.getAllReference();
-
 		this.viewProps = {
 			haveModels: this.refModels.length !== 0,
 		};
@@ -54,10 +58,5 @@ export class ViewAllModelsComponent implements OnInit {
 			);
 		}
 		return subj as BehaviorSubject<IRefModel>;
-	}
-// TODO: tsdoc /
-	newEvModelShow(model: IRefModel): BehaviorSubject<IRefModel> {
-		console.log(this.evModelToShow);
-		return new BehaviorSubject<IRefModel>(model);
 	}
 }

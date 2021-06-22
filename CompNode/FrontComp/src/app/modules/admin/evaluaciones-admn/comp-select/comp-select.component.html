@@ -2,13 +2,13 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title">{{cConfig.title}}</h2>
+				<h2 class="modal-title">{{ cConfig.title }}</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<ul class="list-group">
 					<li
-						[ngClass]="{ active: competCtl.compSelectedIncludes(competencia) }"
+						[ngClass]="{ active: cv.isCompSelected(competencia) }"
 						*ngFor="let competencia of compsObs | async"
 						[value]="competencia.id"
 						class="list-group-item p-3"

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO/ITrabajadorDTO';
+import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({
@@ -8,42 +8,87 @@ import { environment as cnf } from 'src/environments/environment';
 })
 export class OrganiService {
 	constructor(private httpClient: HttpClient) {}
+
 	/**
-	 * Este metodo devuelve el organigrama completo de la base de datos
+	 * @returns {IOrganigramaUsrDTO} El organigrama completo de la bbdd
 	 */
 	getFullOrgani(): Promise<IOrganigramaUsrDTO[]> {
 		return this.httpClient.get<IOrganigramaUsrDTO[]>(`${cnf.apiURL}/organigrama/all`).toPromise();
 	}
 
-	setInferiores(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
+	/**
+	 *
+	 * @param wrk
+	 * @param relations Las relaciones que se quieren settear
+	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 */
+	setInferiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/organigrama/inferiores/${wrk.dni}`, relations)
+			.post<boolean>(`${cnf.apiURL}/organigrama/inferiores/${dni}`, relations)
 			.toPromise();
-	}
-	setSuperiores(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
-		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/organigrama/superiores/${wrk.dni}`, relations)
-			.toPromise();
-	}
-	setPares(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/organigrama/pares/${wrk.dni}`, relations).toPromise();
 	}
 
-	deleteInferiores(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
-		console.log('xd');
-		console.log(wrk, relations);
+	/**
+	 *
+	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
+	 * @param relations Las relaciones que se quieren settear
+	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 */
+	setSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
-			.delete<boolean>(`${cnf.apiURL}/organigrama/inferiores/${wrk.dni}`, this.getDeleteBody(relations))
+			.post<boolean>(`${cnf.apiURL}/organigrama/superiores/${dni}`, relations)
 			.toPromise();
 	}
-	deletePares(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
+
+	/**
+	 *
+	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
+	 * @param relations Las relaciones que se quieren settear
+	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 */
+	setPares(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
+		return this.httpClient.post<boolean>(`${cnf.apiURL}/organigrama/pares/${dni}`, relations).toPromise();
+	}
+
+	/**
+	 *
+	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
+	 * @param relations Las relaciones que se quieren eliminar
+	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 */
+	deleteInferiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
-			.delete<boolean>(`${cnf.apiURL}/organigrama/pares/${wrk.dni}`, this.getDeleteBody(relations))
+			.delete<boolean>(`${cnf.apiURL}/organigrama/inferiores/${dni}`, this.getDeleteBody(relations))
 			.toPromise();
 	}
-	deleteSuperiores(wrk: ITrabOrgani, relations: ITrabOrgani[]): Promise<boolean> {
+
+	/**
+	 *
+	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
+	 * @param relations Las relaciones que se quieren eliminar
+	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 */
+	deletePares(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
-			.delete<boolean>(`${cnf.apiURL}/organigrama/superiores/${wrk.dni}`, this.getDeleteBody(relations))
+			.delete<boolean>(`${cnf.apiURL}/organigrama/pares/${dni}`, this.getDeleteBody(relations))
+			.toPromise();
+	}
+
+	/**
+	 *
+	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
+	 * @param relations Las relaciones que se quieren eliminar
+	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 */
+	deleteSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
+		return this.httpClient
+			.delete<boolean>(`${cnf.apiURL}/organigrama/superiores/${dni}`, this.getDeleteBody(relations))
 			.toPromise();
 	}
 
