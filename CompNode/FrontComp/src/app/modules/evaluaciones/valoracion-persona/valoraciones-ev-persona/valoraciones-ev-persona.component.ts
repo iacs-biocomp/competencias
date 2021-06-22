@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ICompetencia, IComportamiento, IEvModel, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
+import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
 
-// type CompsYComports = {
-// 	id: string;
-// 	descripcion: string;
-// 	comports: IComportamiento[];
-// };
+type CompWithComports = ICompetencia & {
+	comports: IComportamiento[];
+};
 
 type ControlView = {
 	// //TODO: Tsdoc
-	// compsYComports: CompsYComports[] | undefined;
+	compsYComports: CompWithComports[];
 };
 
 /**
@@ -31,17 +30,27 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 	//TODO: Tsdoc
 	@Output() onValsSetted = new EventEmitter<IValoracion[]>();
 
-	cv: ControlView = {};
+	/** True cuando el componente puede renderizarse */
+	initialized = false;
+
+	cv!: ControlView;
+
+	getAllComportsOfComp = getAllComportsOfComp;
+	getCompetOfModel = getCompetOfModel;
 
 	async ngOnInit(): Promise<void> {
-		console.log(this.evModelObs);
-		console.log(this.savedVals);
+		console.log(this.evModelObs.value);
+		console.log(this.savedVals.value);
 		/** Subscription to the model that comes from the backend */
 		this.evModelObs.subscribe(evModel => {
-			if(!evModel){
-				return;
-			}
-		})
+			const comps = getCompetOfModel(evModel);
+			this.cv = {
+				compsYComports: comps.map(c => {
+					return { comports: getAllComportsOfComp(c, evModel.subModels!), ...c };
+				}),
+			};
+		});
+		this.initialized = true;
 	}
 
 	//TODO: tsdoc
@@ -66,16 +75,6 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 		return vals.find(val => val.comp.id === comp.id && val.comport.id === comport.id);
 	}
 
-	/* un trabajador, un modelo (observable), hacerlo con el subscribe (me suscribo al modelo que me viene)
-	/** Finds the model that belongs to the worker */
-	findModelWorker(idCatComp: string): void{
-	const x = this.worker.periodos?.find(cCo => cCo.catComp.id === ev.catComp?.id);
-	this.evModelObs.next(this.worker.periodos?.find(cC => cC.catComp.id === idCatComp));
-
-	//this.evModelObs.next();
-	}
-/*
-	cuando se le de al boton de guardar (emitir esas valoraciones)
-
+	/* cuando se le de al boton de guardar (emitir esas valoraciones)
 	evaluaciones ya guardadas (tienen que estar en checked) */
 }

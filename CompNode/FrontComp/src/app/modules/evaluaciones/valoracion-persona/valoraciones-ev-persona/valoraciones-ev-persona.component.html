@@ -1,5 +1,5 @@
-<div class="contrainer-fluid p-3">
-	<h1 class="layout-title">Evaluación {{ dniWorker }}</h1>
+<div class="contrainer-fluid p-3" *ngIf="initialized">
+	<h1 class="layout-title">Evaluación {{ worker.dni }}</h1>
 	<h2 class="layout-subTitle">
 		La evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado,
 		por lo que puede modificarla siempre que quiera y cambiar la valoración.

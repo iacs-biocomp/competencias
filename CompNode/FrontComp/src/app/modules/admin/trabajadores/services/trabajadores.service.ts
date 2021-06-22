@@ -2,15 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
+import { ITrabajador } from 'sharedInterfaces/Entity';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TrabajadoresService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private readonly httpClient: HttpClient) {}
 
+	//TODO: Refactor, combinar con borrarTrabajador y usar typeof para usar objetos y string
 	delete(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
+	}
+
+	getOneByDni(dni: ITrabajador['dni']): Promise<ITrabajador> {
+		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/${dni}`).toPromise();
 	}
 
 	/**
@@ -43,6 +49,7 @@ export class TrabajadoresService {
 	addTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
+
 	/**
 	 *
 	 * @param comp El worker con los datos editados
