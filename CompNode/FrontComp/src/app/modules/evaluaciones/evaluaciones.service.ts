@@ -21,7 +21,7 @@ export class EvaluacionesService {
 	 */
 	public evaluacionesUsr(usr: string | { usuario: string }): Promise<IEvAllRequired[]> {
 		const username = typeof usr === 'string' ? usr : usr.usuario;
-		return this.httpClient.get<IEvAllRequired[]>(cnf.apiURL + `/evaluaciones/${username}`).toPromise();
+		return this.httpClient.get<IEvAllRequired[]>(cnf.apiURL + `/evaluaciones/user/${username}`).toPromise();
 	}
 
 	/**
