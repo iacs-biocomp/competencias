@@ -18,12 +18,13 @@ type CompWithComports = ICompetencia & {
 };
 
 type ControlView = {
-	// //TODO: Tsdoc
+	/** Array con competencias y sus comportamientos */
 	compsYComports: CompWithComports[];
 };
 
 /**
- * TODO: Tsdoc de que hace el componente
+ * Este componente busca en las valoraciones, si algun comportamiento tiene asociada una valoracion, se la asigna; si no, crea y emite
+ * la valoracion al componente padre
  */
 @Component({
 	selector: 'app-valoraciones-ev-persona [evModelObs] [savedVals] [worker]',
@@ -31,13 +32,13 @@ type ControlView = {
 	styleUrls: ['./valoraciones-ev-persona.component.scss'],
 })
 export class ValoracionesEvPersonaComponent implements OnInit {
-	//TODO: Tsdoc
+	/** El trabajador a evaluar de tipo ITrabajador */
 	@Input() worker!: ITrabajador;
-	//TODO: Tsdoc
+	/** Un observable de IEvModel */
 	@Input() evModelObs!: BehaviorSubject<IEvModel>;
-	//TODO: Tsdoc
+	/** Evaluaciones almacenadas */
 	@Input() savedVals!: BehaviorSubject<IValoracion[]>;
-	//TODO: Tsdoc
+	/** Evaluaciones a emitir */
 	@Output() onValsSetted = new EventEmitter<IValoracion[]>();
 
 	/** True cuando el componente puede renderizarse */
@@ -65,7 +66,9 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 		this.initialized = true;
 	}
 
-	//TODO: tsdoc
+	/**
+	 * Si es comportamientos ya tenia una valoracion, la asigna
+	 */
 	radioChecked(comp: ICompetencia, comport: IComportamiento, puntuacion: number): boolean {
 		const val = this.changeName(this.savedVals.value, comp, comport);
 		if (!val) {
@@ -78,29 +81,33 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 	/**
 	 * Busca en un array si existe cierta valoración con una comp y comport determinado
 	 * TODO: Complete
-	 * @param vals
-	 * @param comp
-	 * @param comport
-	 * @returns
+	 * @param vals array de valoraciones
+	 * @param comp la competencia a buscar
+	 * @param comport el comportamiento a buscar
+	 * @returns la valoracion con ese competencia y ese comportamiento
 	 */
 	changeName(vals: IValoracion[], comp: ICompetencia, comport: IComportamiento): IValoracion | undefined {
 		return vals.find(val => val.comp.id === comp.id && val.comport.id === comport.id);
 	}
 
 	/**
-	 * TODO: Tsdoc
+	 * Funcion que emite la evaluacion con su valoracion al componente pade
 	 */
-	async btnChangeName() {
+	async emitValoraciones() {
 		const valoracionesAdd: IValoracion[] = [];
+		// se recoge el token para definir el evaluador
 		const workerTkn = this.jwtSv.getDecodedToken();
 		const usrInfo = await this.usrSv.getUserData(workerTkn.username);
 
 		this.cv.compsYComports.forEach(comp =>
 			comp.comports.forEach(comport => {
+				/** id del formulario se forma con 'form', el id de la competencia y el id del comportamiento */
 				const id = 'form' + comp.id + comport.id;
 				const form = document.getElementById(id) as any;
 				const resultadoStr = form?.elements.values.value as string;
+				/** Si resultados vale algo, se crea la valoracion */
 				if (resultadoStr !== '') {
+					/** Indica que valor de 1 a 5 tiene el comportamiento */
 					const resultado = Number.parseInt(resultadoStr);
 					const val: IValoracion = {
 						id: 1,
@@ -118,5 +125,4 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 		console.log(valoracionesAdd);
 		//this.onValsSetted.emit(valoracionesAdd);
 	}
-
 }
