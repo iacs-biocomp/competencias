@@ -36,6 +36,12 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 	async ngOnInit(): Promise<void> {
 		console.log(this.evModelObs);
 		console.log(this.savedVals);
+		/** Subscription to the model that comes from the backend */
+		this.evModelObs.subscribe(evModel => {
+			if(!evModel){
+				return;
+			}
+		})
 	}
 
 	//TODO: tsdoc
@@ -59,4 +65,17 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 	changeName(vals: IValoracion[], comp: ICompetencia, comport: IComportamiento): IValoracion | undefined {
 		return vals.find(val => val.comp.id === comp.id && val.comport.id === comport.id);
 	}
+
+	/* un trabajador, un modelo (observable), hacerlo con el subscribe (me suscribo al modelo que me viene)
+	/** Finds the model that belongs to the worker */
+	findModelWorker(idCatComp: string): void{
+	const x = this.worker.periodos?.find(cCo => cCo.catComp.id === ev.catComp?.id);
+	this.evModelObs.next(this.worker.periodos?.find(cC => cC.catComp.id === idCatComp));
+
+	//this.evModelObs.next();
+	}
+/*
+	cuando se le de al boton de guardar (emitir esas valoraciones)
+
+	evaluaciones ya guardadas (tienen que estar en checked) */
 }
