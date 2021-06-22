@@ -4,7 +4,7 @@
 		La evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado,
 		por lo que puede modificarla siempre que quiera y cambiar la valoración.
 	</h2>
-	<button type="submit" class="btn btn-primary mb-2">
+	<button type="submit" class="btn btn-primary mb-2" (click)="btnChangeName()">
 		Guardar evaluación
 		<span class="material-icons" title="Guardar evaluación"> save </span>
 	</button>
@@ -36,7 +36,7 @@
 								<label></label>
 							</div>
 
-							<form class="form-value">
+							<form class="form-value" [id]="'form'+competenciaYComports.id+comport.id">
 								<input
 									type="radio"
 									id="radio1"

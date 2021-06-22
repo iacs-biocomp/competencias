@@ -11,11 +11,12 @@ export class TrabajadoresService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	//TODO: Refactor, combinar con borrarTrabajador y usar typeof para usar objetos y string
-	delete(worker: ITrabajadorDTO): Promise<boolean> {
+	delete(worker: Pick<ITrabajador, 'dni'>): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
 	}
 
-	getOneByDni(dni: ITrabajador['dni']): Promise<ITrabajador> {
+	getOneByDni(dniOrObj: Pick<ITrabajador, 'dni'> | ITrabajador['dni']): Promise<ITrabajador> {
+		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
 		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/${dni}`).toPromise();
 	}
 

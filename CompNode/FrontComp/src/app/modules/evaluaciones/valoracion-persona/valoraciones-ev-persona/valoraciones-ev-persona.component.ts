@@ -1,7 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ICompetencia, IComportamiento, IEvModel, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
+import {
+	ICompetencia,
+	IComportamiento,
+	IEvaluacion,
+	IEvModel,
+	ITrabajador,
+	IValoracion,
+	ValoracionesNums,
+} from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
 import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
+import { JwtService } from 'src/app/services/jwt.service';
+import { UserDataService } from 'src/app/modules/usuario/datos/user-data.service';
 
 type CompWithComports = ICompetencia & {
 	comports: IComportamiento[];
@@ -34,6 +44,8 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 	initialized = false;
 
 	cv!: ControlView;
+
+	constructor(private jwtSv: JwtService, private usrSv: UserDataService) {}
 
 	getAllComportsOfComp = getAllComportsOfComp;
 	getCompetOfModel = getCompetOfModel;
@@ -75,6 +87,36 @@ export class ValoracionesEvPersonaComponent implements OnInit {
 		return vals.find(val => val.comp.id === comp.id && val.comport.id === comport.id);
 	}
 
-	/* cuando se le de al boton de guardar (emitir esas valoraciones)
-	evaluaciones ya guardadas (tienen que estar en checked) */
+	/**
+	 * TODO: Tsdoc
+	 */
+	async btnChangeName() {
+		const valoracionesAdd: IValoracion[] = [];
+		const workerTkn = this.jwtSv.getDecodedToken();
+		const usrInfo = await this.usrSv.getUserData(workerTkn.username);
+
+		this.cv.compsYComports.forEach(comp =>
+			comp.comports.forEach(comport => {
+				const id = 'form' + comp.id + comport.id;
+				const form = document.getElementById(id) as any;
+				const resultadoStr = form?.elements.values.value as string;
+				if (resultadoStr !== '') {
+					const resultado = Number.parseInt(resultadoStr);
+					const val: IValoracion = {
+						id: 1,
+						comp: comp,
+						comport: comport,
+						ev: undefined as unknown as IEvaluacion,
+						evaluado: this.worker,
+						evaluador: usrInfo.trabajador!,
+						valoracion: resultado as ValoracionesNums,
+					};
+					valoracionesAdd.push(val);
+				}
+			}),
+		);
+		console.log(valoracionesAdd);
+		//this.onValsSetted.emit(valoracionesAdd);
+	}
+
 }
