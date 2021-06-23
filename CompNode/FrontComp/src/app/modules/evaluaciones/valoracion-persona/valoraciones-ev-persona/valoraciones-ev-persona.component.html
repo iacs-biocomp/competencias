@@ -20,7 +20,7 @@
 						aria-expanded="false"
 						[attr.aria-controls]="'collEval' + i"
 					>
-						{{ competenciaYComports.id }}
+						{{ competenciaYComports.id }} - {{ competenciaYComports.descripcion }}
 					</button>
 				</h2>
 				<div
@@ -36,47 +36,57 @@
 								<label></label>
 							</div>
 
-							<form class="form-value" [id]="'form'+competenciaYComports.id+comport.id">
-								<input
-									type="radio"
-									id="radio1"
-									name="values"
-									value="1"
-									[checked]="radioChecked(competenciaYComports, comport, 1)"
-								/>
-								<label for="1"> 1 </label>
-								<input
-									type="radio"
-									id="radio2"
-									name="values"
-									value="2"
-									[checked]="radioChecked(competenciaYComports, comport, 2)"
-								/>
-								<label for="2"> 2 </label>
-								<input
-									type="radio"
-									id="radio3"
-									name="values"
-									value="3"
-									[checked]="radioChecked(competenciaYComports, comport, 3)"
-								/>
-								<label for="3"> 3 </label>
-								<input
-									type="radio"
-									id="radio4"
-									name="values"
-									value="4"
-									[checked]="radioChecked(competenciaYComports, comport, 4)"
-								/>
-								<label for="4"> 4 </label>
-								<input
-									type="radio"
-									id="radio5"
-									name="values"
-									value="5"
-									[checked]="radioChecked(competenciaYComports, comport, 5)"
-								/>
-								<label for="5"> 5 </label>
+							<form class="form-value" [id]="'form' + competenciaYComports.id + comport.id">
+								<label class="container">
+									1
+									<input
+										type="radio"
+										name="values"
+										value="1"
+										class="radio"
+										[checked]="radioChecked(competenciaYComports, comport, 1)"
+									/>
+								</label>
+								<label class="container">
+									2
+									<input
+										type="radio"
+										name="values"
+										value="2"
+										class="radio"
+										[checked]="radioChecked(competenciaYComports, comport, 2)"
+									/>
+								</label>
+								<label for="3" class="container">
+									3
+									<input
+										type="radio"
+										name="values"
+										value="3"
+										class="radio"
+										[checked]="radioChecked(competenciaYComports, comport, 3)"
+									/>
+								</label>
+								<label for="4" class="container">
+									4
+									<input
+										type="radio"
+										name="values"
+										value="4"
+										class="radio"
+										[checked]="radioChecked(competenciaYComports, comport, 4)"
+									/>
+								</label>
+								<label for="5" class="container">
+									5
+									<input
+										type="radio"
+										name="values"
+										value="5"
+										class="radio"
+										[checked]="radioChecked(competenciaYComports, comport, 5)"
+									/>
+								</label>
 							</form>
 						</span>
 						<hr />
