@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IEvaluacion, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
+import { IValoracionToAddDTO } from 'sharedInterfaces/DTO';
 
 @Injectable({ providedIn: 'root' })
 export class ValoracionesService {
@@ -28,7 +29,7 @@ export class ValoracionesService {
 	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
 	 * @throws TODO: Lanzar excepción
 	 */
-	async add(val: IValoracion): Promise<boolean> {
+	async add(val: IValoracionToAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}
 

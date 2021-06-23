@@ -1,8 +1,8 @@
-<!-- TODO: Completar componente layout y pasar todas las dependencias -->
 <app-valoraciones-ev-persona
-	*ngIf="!!evModelObs && !!trabajador && !!savedValsObs"
+	*ngIf="!!evModelObs && !!evaluado && !!evaluador && !!savedValsObs"
 	[evModelObs]="evModelObs"
-	[worker]="trabajador"
+	[evaluado]="evaluado"
+	[evaluador]="evaluador"
 	[savedVals]="savedValsObs"
 	(onValsSetted)="saveValoraciones($event)"
 ></app-valoraciones-ev-persona>

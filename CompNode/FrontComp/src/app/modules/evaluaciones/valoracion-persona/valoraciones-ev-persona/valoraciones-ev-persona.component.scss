@@ -2,19 +2,24 @@
 .form-value {
 	margin-left: 10px;
 }
+
 hr {
 	color: #0d6dfd;
 }
+
 .ips-title {
 	font-size: 1.1rem;
 }
-.container {
+
+// Nunca usar nombres de clases q tienen el mismo nombre q las de bootstrap
+.val-container {
 	display: inline;
 	position: relative;
 	padding-left: 35px;
 	margin-bottom: 12px;
 	font-size: 22px;
 }
+
 .radio {
 	position: absolute;
 	top: 0;
