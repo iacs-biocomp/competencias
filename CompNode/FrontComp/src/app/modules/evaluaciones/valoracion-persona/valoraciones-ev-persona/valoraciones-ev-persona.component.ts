@@ -2,18 +2,13 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import {
 	ICompetencia,
 	IComportamiento,
-	IEvaluacion,
 	IEvModel,
 	ITrabajador,
-	IUserJson,
 	IValoracion,
 	ValoracionesNums,
 } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
-import { JwtService } from 'src/app/services/jwt.service';
-import { UserDataService } from 'src/app/modules/usuario/datos/user-data.service';
-import { IJwtToken } from 'src/app/modules/auth/JWTlocal.interface';
 
 //TODO: Cambiar nombre
 // TODO: tsdoc
@@ -79,7 +74,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	 * @returns
 	 */
 	radioChecked(comp: ICompetencia, comport: IComportamiento, puntuacion: number): boolean {
-		const val = this.changeName(this.savedVals.value, comp, comport);
+		const val = this.evalConCompComport(this.savedVals.value, comp, comport);
 		if (!val) {
 			return false;
 		} else {
@@ -95,7 +90,11 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	 * @param comport el comportamiento a buscar
 	 * @returns la valoracion con ese competencia y ese comportamiento
 	 */
-	changeName(vals: IValoracion[], comp: ICompetencia, comport: IComportamiento): IValoracion | undefined {
+	evalConCompComport(
+		vals: IValoracion[],
+		comp: ICompetencia,
+		comport: IComportamiento,
+	): IValoracion | undefined {
 		return vals.find(val => val.comp.id === comp.id && val.comport.id === comport.id);
 	}
 
@@ -122,21 +121,6 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 			),
 		]);
 		console.log(valoracionesAdd);
-		// this.cv.compsYComports.forEach(comp =>
-		// 	comp.comports.forEach(comport => {
-		// 		const id = 'form' + comp.id + comport.id;
-		// 		const form = document.getElementById(id) as any;
-		// 		const resultadoStr = form?.elements.values.value as string;
-		// 		/** Si resultados vale algo, se crea la valoracion */
-		// 		if (resultadoStr !== '') {
-		// 			/** Indica que valor de 1 a 5 tiene el comportamiento */
-		// 			const resultado = Number.parseInt(resultadoStr);
-
-		// 			valoracionesAdd.push(val);
-		// 		}
-		// 	}),
-		// );
-		//this.onValsSetted.emit(valoracionesAdd);
 	}
 
 	/**

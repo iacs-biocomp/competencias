@@ -1,5 +1,6 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CContrAddDTO, CContrAndCComp } from 'sharedInterfaces/DTO';
 import { CatContr } from 'src/entity';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { PeriodosRepo } from '../trabajadores/periodos.repository';
@@ -16,8 +17,8 @@ export class CatContractController {
 	) {}
 
 	@Get('all')
-	async allContr(): Promise<CatContr[]> {
-		return this.contrRepo.find({ relations: ['catComp'] });
+	async allContr(): Promise<CContrAndCComp[]> {
+		return this.contrRepo.find({ relations: ['catComp'] }) as Promise<CContrAndCComp[]>;
 	}
 
 	@Delete(':id')
@@ -34,7 +35,7 @@ export class CatContractController {
 	}
 
 	@Post('')
-	async createCompt(@Body() catContr: CatContr): Promise<boolean> {
+	async createCompt(@Body() catContr: CContrAddDTO): Promise<boolean> {
 		const existingCompt = await this.contrRepo.findOne({ id: catContr.id });
 		if (existingCompt) {
 			throw new ConflictException('CatContr ya creada');

@@ -1,4 +1,4 @@
-import { RequiredAndNotNull } from 'interfaces/Utility';
+import { RequiredAndNotNull } from '../../Utility';
 import { ICatComp } from '../../Entity';
 
 /**

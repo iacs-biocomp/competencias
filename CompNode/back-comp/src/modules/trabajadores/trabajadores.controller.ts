@@ -19,7 +19,7 @@ export class TrabajadoresController {
 	) {}
 
 	@Get('all')
-	async getAllWorker() {
+	async getAllWorker(): Promise<ITrabajadorDTO[]> {
 		//Tutorial seguido: https://is.gd/nNxUyX
 		let trabajadores = await this.trabRepo.find({
 			join: {
@@ -34,8 +34,7 @@ export class TrabajadoresController {
 				qb.where('periodos.actual = true');
 			},
 		});
-		//Mapeo de Trabajador a ITrabajadorDTO
-		return trabajadores.map(trab => {
+		return trabajadores.map<ITrabajadorDTO>(trab => {
 			return {
 				dni: trab.dni,
 				apellidos: trab.apellidos,
@@ -45,6 +44,8 @@ export class TrabajadoresController {
 				departamento: trab.departamento,
 				nombre: trab.nombre,
 				unidad: trab.unidad,
+				// TODO: Comprobar si hay que mandar un ITrabajadorDTO
+				deleteable: false,
 			};
 		});
 	}
@@ -60,6 +61,7 @@ export class TrabajadoresController {
 		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.trabRepo.findOne({ dni: dni }, { relations: relaciones });
 	}
+
 	//Proablemente @deprecated y cambiar a usuario??
 	@Get('username/:usrname')
 	getWrkByUsername(
@@ -78,7 +80,7 @@ export class TrabajadoresController {
 		if (!worker) {
 			throw new NotFoundException('No existe ningun worker con ese dni');
 		}
-		await worker.remove();
+		await this.trabRepo.remove(worker);
 		return true;
 	}
 
@@ -91,8 +93,13 @@ export class TrabajadoresController {
 		let catComp: CatComp;
 		let catContr: CatContr;
 		try {
-			catComp = await this.catCompRepo.findOne({ id: worker.catComp });
-			catContr = await this.catContrRepo.findOne({ id: worker.catContr });
+			[catComp, catContr] = await Promise.all([
+				this.catCompRepo.findOne({ id: worker.catComp }),
+				this.catContrRepo.findOne({ id: worker.catContr }),
+			]);
+			if (!catComp || !catContr) {
+				throw new Error('');
+			}
 		} catch (error) {
 			throw new NotFoundException(
 				`No existe una catComp con este id: ${worker.catComp} o una catContr con este: ${worker.catContr}`,
@@ -109,7 +116,7 @@ export class TrabajadoresController {
 
 	@Put('')
 	async updateWorker(@Body() worker: ITrabajadorDTO): Promise<boolean> {
-		const promises = await Promise.all([
+		const [trab, catContr, catComp] = await Promise.all([
 			this.trabRepo.findOne(
 				{ dni: worker.dni },
 				{ relations: ['periodos', 'periodos.catContr', 'periodos.catComp', 'user'] },
@@ -117,13 +124,10 @@ export class TrabajadoresController {
 			this.catContrRepo.findOne({ id: worker.catContr }),
 			this.catCompRepo.findOne({ id: worker.catComp }),
 		]);
-		const trab = promises[0];
-		const catContr = promises[1];
-		const catComp = promises[2];
-
 		if (!trab) {
 			throw new NotFoundException('No existe un worker con ese dni');
 		}
+		//TODO: Refactor
 		//TODO: Pasar a un servicio el resto de este metodo https://is.gd/KUSLRU
 		//Si estan actualizando la catComp o catContr y han pasado mas de 7 dias desde la creación del anterior periodo,
 		//creo un nuevo periodo y cierro el actual
@@ -135,12 +139,10 @@ export class TrabajadoresController {
 				perActual.actual = false;
 				perActual.save();
 				delete latestPeriod.id;
-				latestPeriod.catComp = catComp;
-				latestPeriod.catContr = catContr;
+				[latestPeriod.catComp, latestPeriod.catContr] = [catComp, catContr];
 				latestPeriod.save();
 			} else {
-				perActual.catComp = catComp;
-				perActual.catContr = catContr;
+				[perActual.catComp, perActual.catContr] = [catComp, catContr];
 				perActual.save();
 			}
 		}

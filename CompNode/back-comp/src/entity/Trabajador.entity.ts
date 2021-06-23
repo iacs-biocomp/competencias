@@ -34,10 +34,11 @@ export class Trabajador extends BaseEntity implements ITrabajador {
 	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.trabajador, { nullable: false })
 	periodos?: PeriodoTrab[];
 
+	//TODO: Cambiar y poner null false?
 	@ApiProperty({ type: () => User })
 	@OneToOne(type => User, usr => usr.trabajador)
 	@JoinColumn()
-	user: User;
+	user?: User;
 
 	/**
 	 * Funcion que instancia un Trabajador (Patrón builder) Es necesario añadir la catComp y catContr al unico periodo que tiene.

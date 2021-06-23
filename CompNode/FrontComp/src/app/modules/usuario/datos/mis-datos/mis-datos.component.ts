@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IUserJson } from 'sharedInterfaces/Entity';
+import { IUser } from 'sharedInterfaces/Entity';
 import { JwtService } from 'src/app/services/jwt.service';
 import { UserDataService } from '../user-data.service';
 
@@ -9,7 +9,7 @@ import { UserDataService } from '../user-data.service';
 	styleUrls: ['./mis-datos.component.scss'],
 })
 export class MisDatosComponent implements OnInit {
-	userData?: IUserJson;
+	userData?: IUser;
 
 	constructor(private usrDataService: UserDataService, private jwtServ: JwtService) {}
 

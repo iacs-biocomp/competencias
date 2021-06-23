@@ -12,10 +12,10 @@ import {
 import { SignupDto } from '../modules/auth/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role, Trabajador } from './index';
-import { IUserJson } from 'sharedInterfaces/Entity';
+import { IUser } from 'sharedInterfaces/Entity';
 
 @Entity('user')
-export class User extends BaseEntity implements IUserJson {
+export class User extends BaseEntity implements IUser {
 	@ApiProperty()
 	@PrimaryColumn({ type: 'varchar', unique: true, length: 40, nullable: false })
 	username: string;

@@ -16,7 +16,7 @@ export class CatComp extends BaseEntity implements ICatComp {
 
 	@ApiProperty({ type: () => CatContr })
 	@OneToMany(type => CatContr, catContr => catContr.catComp)
-	catContr: CatContr[];
+	catContr?: CatContr[];
 
 	/** Los periodos en los que aparece esa categoria competencial, según la petición puede ser undefined */
 	@ApiProperty({ type: () => PeriodoTrab })

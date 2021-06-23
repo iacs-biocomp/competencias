@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IUserJson } from 'sharedInterfaces/Entity';
+import { IUser } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({
@@ -8,7 +8,10 @@ import { environment as cnf } from 'src/environments/environment';
 })
 export class UserDataService {
 	constructor(private httpClient: HttpClient) {}
-	getUserData(username: string): Promise<IUserJson> {
-		return this.httpClient.get<IUserJson>(`${cnf.apiURL}/users/${username}`).toPromise();
+
+	//TODO: Tsdoc
+	getUserData(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<IUser> {
+		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
+		return this.httpClient.get<IUser>(`${cnf.apiURL}/users/${username}`).toPromise();
 	}
 }

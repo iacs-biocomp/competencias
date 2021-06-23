@@ -10,17 +10,19 @@ export interface ITrabajador {
 	nombre: string;
 
 	apellidos: string;
-
+	// TODO: Tsdoc.
 	area: string;
-
+	// TODO: Tsdoc.
 	unidad: string;
-
+	// TODO: Tsdoc.
 	departamento: string;
-
+	// TODO: Tsdoc.
 	periodos?: IPeriodoTrab[];
-
-	user: IUserJson;
+	// TODO: Tsdoc.
+	user?: IUser;
 }
+
+// TODO: Tsdoc.
 export interface IPeriodoTrab {
 	id: number;
 	/** El trabajador al que corresponde este periodo */
@@ -46,8 +48,9 @@ export interface IPeriodoTrab {
 /**
  * Esquema del Json recibido al pedir los datos de un usuario al backend
  * @param Url /nest/users/{USERNAME}
+ * TODO: Cambiar url por DTOs
  */
-export interface IUserJson {
+export interface IUser {
 	username: string;
 
 	password: string;
@@ -61,14 +64,15 @@ export interface IUserJson {
 	createdAt?: Date;
 
 	updatedAt?: Date;
-
-	roles: Role[];
-
+	// TODO: Tsdoc.
+	roles: IRole[];
+	// TODO: Tsdoc.
 	active: boolean;
-
+	// TODO: Tsdoc.
 	trabajador?: ITrabajador;
 }
-export interface Role {
+
+export interface IRole {
 	id: number;
 	name: string;
 	description: string;
