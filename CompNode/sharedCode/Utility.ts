@@ -3,6 +3,7 @@ import { IEvAllRequired } from './interfaces/DTO';
 import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
 import { WithOptional } from './interfaces/Utility';
 
+//TODO: Cambiar nombre
 export type changeMyName = {
 	//TODO: Tsdoc (1)
 	minValoracion: number;
@@ -45,6 +46,7 @@ export function findCompById(competencias: ICompetencia[], compId: string): ICom
 }
 
 /**
+ * TODO: Refactor
  * Calcula la maxima puntuación que un trabajador puede tener si todos los apartados que son positivos son evaluados al maximo y los negativos al minimo
  */
 export function maxYmin(data: changeMyName) {
@@ -84,9 +86,14 @@ export function getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[])
  * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s
  * @param comp La competencia que se usará como filtrado
  * @returns El array de subModelos que tienen esa competencia
+ * TODO: usar T extends ISubModel
  */
-export function findSubModels(subModels: ISubModel[], comp: ICompetencia): ISubModel[] {
-	return subModels.filter(subModel => subModel.competencia.id === comp.id);
+export function findSubModels(
+	subModels: ISubModel[],
+	comp: Pick<ICompetencia, 'id'> | ICompetencia['id'],
+): ISubModel[] {
+	const compId = typeof comp === 'string' ? comp : comp.id;
+	return subModels.filter(subModel => subModel.competencia.id === compId);
 }
 
 /**
@@ -107,8 +114,8 @@ export function getCompetOfModel(model: IEvModel): ICompetencia[] {
  * @returns `true` si se ha encontrado un subModelo con ese nivel y esa competencia `false` en caso contrario
  */
 export function checkNivOnComp(
-	niv: INivel | string,
-	comp: ICompetencia | string,
+	niv: INivel | INivel['code'],
+	comp: ICompetencia | ICompetencia['id'],
 	subModels: ISubModel[],
 ): boolean {
 	const compIdStr = typeof comp === 'string' ? comp : comp.id;
@@ -127,7 +134,9 @@ export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
 }
 
 // TODO: Tsdoc
-export function getIntervalsOfEv(ev: IEvAllRequired): EvIntervals {
+export function getIntervalsOfEv(
+	ev: Omit<IEvAllRequired, 'id' | 'description' | 'model' | 'catComp'>,
+): EvIntervals {
 	//TODO: Solventar error, aunque la ev tenga las fechas como date al pasarlas de backend a front se serializan como string.
 	//?? Tal vez una función que transforme las dates serializadas siempre que se piden evs?
 	// parseISO('2021-01-05T23:00:00.000Z');
@@ -139,29 +148,6 @@ export function getIntervalsOfEv(ev: IEvAllRequired): EvIntervals {
 	return { periodoEvaluar, periodoPropuesta, periodoEvaluado, periodoValidacion };
 }
 
-// type SubModelFilterBy = {
-// 	competencia?: ICompetencia | string;
-// 	comportamientos?: IComportamiento[] | string[];
-// 	niveles?: INivel[] | string[];
-// };
-// export function filterSubModels(subModels: ISubModel[], filter: SubModelFilterBy): ISubModel[] {
-// 	subModels.filter(subModel => {
-// 		let passTheFilter = true;
-// 		compFilterLabel: {
-// 			if (!filter.competencia) break compFilterLabel;
-// 			if (typeof filter.competencia === 'string') {
-// 				passTheFilter = subModel.competencia.id === filter.competencia;
-// 			} else {
-// 				passTheFilter = subModel.competencia.id === filter.competencia.id;
-// 			}
-// 		}
-// 		comportFilterLabel: {
-// 			if (!filter.comportamientos) break comportFilterLabel;
-// 			if (typeof filter.comportamientos[0] === 'string') {
-// 			}
-// 		}
-// 	});
-// }
 // https://is.gd/Suahrg
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label
 // https://rangle.io/blog/how-to-use-typescript-type-guards/

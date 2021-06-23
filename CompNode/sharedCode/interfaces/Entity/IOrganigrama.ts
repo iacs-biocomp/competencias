@@ -8,9 +8,10 @@ import { ITrabajador } from './IUser';
  * @param Url
  */
 export interface IOrganigramaTrabajador {
+	//TODO: Tsdoc
 	superiores: ITrabajador[];
-
+	//TODO: Tsdoc
 	pares: ITrabajador[];
-
+	//TODO: Tsdoc
 	inferiores: ITrabajador[];
 }

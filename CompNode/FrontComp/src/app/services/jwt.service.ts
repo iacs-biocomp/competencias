@@ -66,6 +66,7 @@ export class JwtService {
 	}
 
 	/**
+	 * Actualiza el jwt del localStorage y de las cookies
 	 * @param token El token firmado y codificado a settear en cookies y localStorage
 	 */
 	updateJwt(token: string): void {
