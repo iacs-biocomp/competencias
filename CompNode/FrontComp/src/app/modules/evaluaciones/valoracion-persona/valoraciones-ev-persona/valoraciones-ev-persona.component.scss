@@ -7,9 +7,26 @@ hr {
 	color: #0d6dfd;
 }
 
-.radio {
-	display: inline;
+.ips-title {
+	font-size: 1.1rem;
 }
-.radio-style {
+
+// Nunca usar nombres de clases q tienen el mismo nombre q las de bootstrap
+.val-container {
 	display: inline;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	font-size: 22px;
+}
+
+.radio {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+	border-radius: 50%;
+	cursor: pointer;
 }

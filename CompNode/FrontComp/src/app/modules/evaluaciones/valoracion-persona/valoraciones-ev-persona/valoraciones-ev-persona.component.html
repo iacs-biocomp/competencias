@@ -1,16 +1,16 @@
-<div class="contrainer-fluid p-3" *ngIf="initialized">
-	<h1 class="layout-title">Evaluación {{ worker.dni }}</h1>
+<div class="contrainer-fluid p-3">
+	<h1 class="layout-title">Evaluación {{ evaluado.dni }}</h1>
 	<h2 class="layout-subTitle">
 		La evaluación tendrá la posibilidad de modificarse hasta que el tiempo de evaluación haya sido cerrado,
 		por lo que puede modificarla siempre que quiera y cambiar la valoración.
 	</h2>
-	<button type="submit" class="btn btn-primary mb-2" (click)="btnChangeName()">
+	<button type="button" class="btn btn-primary mb-2" (click)="emitValoraciones()">
 		Guardar evaluación
-		<span class="material-icons" title="Guardar evaluación"> save </span>
+		<span class="material-icons"> save </span>
 	</button>
 	<div class="accordion" id="accorEvaluaciones">
 		<div class="accordion-body">
-			<div class="accordion-item" *ngFor="let competenciaYComports of cv.compsYComports; let i = index">
+			<div class="accordion-item" *ngFor="let compComport of cv.compsYComports; let i = index">
 				<h2 class="accordion-header" [id]="'headingEval' + i">
 					<button
 						class="accordion-button collapsed"
@@ -20,7 +20,7 @@
 						aria-expanded="false"
 						[attr.aria-controls]="'collEval' + i"
 					>
-						{{ competenciaYComports.id }}
+						{{ compComport.id }} - {{ compComport.descripcion }}
 					</button>
 				</h2>
 				<div
@@ -29,56 +29,62 @@
 					[attr.aria-labelledby]="'headingEval' + i"
 					data-bs-parent="#accorEvaluaciones"
 				>
-					<div *ngFor="let comport of competenciaYComports.comports">
+					<div *ngFor="let comport of compComport.comports">
 						<span class="ips-title">
 							{{ comport.descripcion }}
-							<div class="radio">
-								<label></label>
-							</div>
-
-							<form class="form-value" [id]="'form'+competenciaYComports.id+comport.id">
+						</span>
+						<form class="form-value" [id]="'form' + compComport.id + comport.id">
+							<label class="val-container">
+								1
 								<input
 									type="radio"
-									id="radio1"
 									name="values"
 									value="1"
-									[checked]="radioChecked(competenciaYComports, comport, 1)"
+									class="radio"
+									[checked]="radioChecked(compComport, comport, 1)"
 								/>
-								<label for="1"> 1 </label>
+							</label>
+							<label class="val-container">
+								2
 								<input
 									type="radio"
-									id="radio2"
 									name="values"
 									value="2"
-									[checked]="radioChecked(competenciaYComports, comport, 2)"
+									class="radio"
+									[checked]="radioChecked(compComport, comport, 2)"
 								/>
-								<label for="2"> 2 </label>
+							</label>
+							<label for="3" class="val-container">
+								3
 								<input
 									type="radio"
-									id="radio3"
 									name="values"
 									value="3"
-									[checked]="radioChecked(competenciaYComports, comport, 3)"
+									class="radio"
+									[checked]="radioChecked(compComport, comport, 3)"
 								/>
-								<label for="3"> 3 </label>
+							</label>
+							<label for="4" class="val-container">
+								4
 								<input
 									type="radio"
-									id="radio4"
 									name="values"
 									value="4"
-									[checked]="radioChecked(competenciaYComports, comport, 4)"
+									class="radio"
+									[checked]="radioChecked(compComport, comport, 4)"
 								/>
-								<label for="4"> 4 </label>
+							</label>
+							<label for="5" class="val-container">
+								5
 								<input
 									type="radio"
-									id="radio5"
 									name="values"
 									value="5"
-									[checked]="radioChecked(competenciaYComports, comport, 5)"
+									class="radio"
+									[checked]="radioChecked(compComport, comport, 5)"
 								/>
-								<label for="5"> 5 </label>
-							</form>
-						</span>
+							</label>
+						</form>
 						<hr />
 					</div>
 				</div>

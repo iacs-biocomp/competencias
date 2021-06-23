@@ -7,8 +7,9 @@ import { ICatComp } from 'sharedInterfaces/Entity';
 export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient) {}
 
-	public delete(catComp: ICatComp): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catComp.id}`).toPromise();
+	public delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<boolean> {
+		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
 	}
 
 	/**
@@ -25,10 +26,11 @@ export class CatCompetencialesService {
 	 *
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
-	async borrarCatComp(id: string): Promise<boolean> {
+	async borrarCatComp(idOrObj: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<boolean> {
+		const cCompId = typeof idOrObj === 'string' ? idOrObj : idOrObj.id;
 		let borrado = false;
 		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${id}`).toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${cCompId}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			alert('No se ha podido borrar esa categoría competencial, contacte con un administrador.');

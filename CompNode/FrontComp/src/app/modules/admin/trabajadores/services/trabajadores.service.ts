@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
-import { ITrabajador } from 'sharedInterfaces/Entity';
+import { ITrabajador, IUserJson } from 'sharedInterfaces/Entity';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,10 +14,15 @@ export class TrabajadoresService {
 	delete(worker: Pick<ITrabajador, 'dni'>): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
 	}
-
+	//TODO: tsdoc
 	getOneByDni(dniOrObj: Pick<ITrabajador, 'dni'> | ITrabajador['dni']): Promise<ITrabajador> {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
 		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/${dni}`).toPromise();
+	}
+	//TODO: tsdoc
+	getOneByUsername(usrnameOrObj: Pick<IUserJson, 'username'> | IUserJson['username']): Promise<ITrabajador> {
+		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
+		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/username${username}`).toPromise();
 	}
 
 	/**

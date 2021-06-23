@@ -2,7 +2,7 @@
 {
 	"compileOnSave": false,
 	"compilerOptions": {
-		"baseUrl": "./",
+		// "baseUrl": "./",
 		"outDir": "./dist",
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,

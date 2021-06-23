@@ -60,6 +60,17 @@ export class TrabajadoresController {
 		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.trabRepo.findOne({ dni: dni }, { relations: relaciones });
 	}
+	//Proablemente @deprecated y cambiar a usuario??
+	@Get('username/:usrname')
+	getWrkByUsername(
+		@Param('usrname') usrname: string,
+		@Param('subModels') submodel: boolean,
+		@Param('evaluaciones') evaluaciones: boolean,
+	): Promise<Trabajador> {
+		let relaciones = submodel ? ['subModel'] : [];
+		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
+		return this.trabRepo.findOne({ user: { username: usrname } }, { relations: relaciones });
+	}
 
 	@Delete(':dni')
 	async deleteWorker(@Param('dni') dni: string): Promise<boolean> {
