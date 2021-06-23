@@ -115,7 +115,6 @@
 	</div>
 </div>
 
-<!-- TODO: Change idModal -->
 <app-comp-select-modal
 	*ngIf="(compsObs | async) !== (undefined || null)"
 	[compsObs]="compsObs"
@@ -123,9 +122,9 @@
 	[idModal]="'modalSelectCompets'"
 	(onModalFinish)="onCompetenciasSetted($event)"
 ></app-comp-select-modal>
-<app-model-nivel4-comp-select
+<app-obj-nivs-select
 	*ngIf="(compsObs | async) !== (undefined || null)"
 	[compsObs]="compsSelectedObs"
 	[idModal]="'modalSelectNivObjective'"
 	(onSaved)="onNivelesSetted($event)"
-></app-model-nivel4-comp-select>
+></app-obj-nivs-select>

@@ -15,14 +15,7 @@ export const comportRoutes: Routes = [
 ];
 @NgModule({
 	declarations: [TableComportComponent],
-	imports: [
-		CommonModule,
-		SharedModule,
-		RouterModule,
-		// TODO: En un futuro habría que reemplazar el modulo formulario por reactiveForms, mas eficientes para el uso dado
-		FormsModule,
-		ReactiveFormsModule,
-	],
+	imports: [CommonModule, SharedModule, RouterModule, FormsModule, ReactiveFormsModule],
 	providers: [ComportService],
 })
 export class ComportamientosAdminModule {}

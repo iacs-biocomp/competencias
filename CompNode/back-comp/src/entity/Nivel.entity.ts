@@ -26,12 +26,10 @@ export class Nivel extends BaseEntity implements INivel {
 	maxRango: number;
 
 	@ApiProperty()
-	// TODO: Añadir nullable: false???, comprobar
-	@Column({ type: 'boolean', default: false })
+	@Column({ type: 'boolean', default: false, nullable: false })
 	reference: boolean;
 
 	@ApiProperty({ type: () => SubModel })
 	@OneToMany(type => SubModel, subm => subm.nivel)
 	subModels: SubModel[];
-	// TODO: Elegir un nombre correcto
 }

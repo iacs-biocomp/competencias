@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, IEvModel } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
@@ -33,12 +32,21 @@ export class EvModelsAdmnService {
 	getAllReference(): Promise<IRefModel[]> {
 		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();
 	}
-	//TODO: Tsdoc
+
+	/**
+	 * @param catComp La catComp o su id con la que se busca su modelo de referencia
+	 * @returns El modelo de referencia que tiene esa catComp asociada
+	 */
 	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
 	}
-	//TODO: Tsdoc
+
+	/**
+	 *
+	 * @param refModel El modelo de referencia con toda la información actualizada
+	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 */
 	updateRefModel(refModel: IRefModel): Promise<boolean> {
 		return this.httpClient
 			.put<boolean>(`${cnf.apiURL}/modelos/reference`, refModel, { params: { reference: 'true' } })

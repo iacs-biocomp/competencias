@@ -37,8 +37,8 @@ export class NivelesController {
 		@Param('subModels') submodel: boolean,
 		@Param('evaluaciones') evaluaciones: boolean,
 	): Promise<Nivel> {
-		var relaciones = submodel ? ['subModel'] : [];
-		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
+		let relaciones = !!submodel ? ['subModel'] : [];
+		relaciones = !!evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.nivRepo.findOne({ id: id }, { relations: relaciones });
 	}
 

@@ -9,7 +9,6 @@ import { ConfigModule } from '../../config/config.module';
 import { Configuration as cnfKeys } from '../../config/config.keys';
 import { UserRepository } from '../users/user.repository';
 
-// TODO: JSDoc
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([UserRepository]),
@@ -30,12 +29,7 @@ import { UserRepository } from '../users/user.repository';
 		}),
 	],
 	controllers: [AuthController],
-	providers: [
-		AuthService,
-		ConfigService,
-		// JwtStrategy,
-		// KeycloakService
-	],
-	exports: [/* JwtStrategy, */ PassportModule],
+	providers: [AuthService, ConfigService],
+	exports: [PassportModule],
 })
 export class AuthModule {}

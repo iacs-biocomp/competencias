@@ -1,0 +1,8 @@
+<app-valoraciones-ev-persona
+	*ngIf="!!evModelObs && !!evaluado && !!evaluador && !!savedValsObs"
+	[evModelObs]="evModelObs"
+	[evaluado]="evaluado"
+	[evaluador]="evaluador"
+	[savedVals]="savedValsObs"
+	(onValsSetted)="saveValoraciones($event)"
+></app-valoraciones-ev-persona>

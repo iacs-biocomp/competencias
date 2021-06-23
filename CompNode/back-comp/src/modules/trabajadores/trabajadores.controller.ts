@@ -1,5 +1,6 @@
 import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
 import { Trabajador, CatComp, CatContr } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
@@ -20,7 +21,6 @@ export class TrabajadoresController {
 	@Get('all')
 	async getAllWorker() {
 		//Tutorial seguido: https://is.gd/nNxUyX
-
 		let trabajadores = await this.trabRepo.find({
 			join: {
 				alias: 'trabajador',
@@ -56,9 +56,20 @@ export class TrabajadoresController {
 		@Param('subModels') submodel: boolean,
 		@Param('evaluaciones') evaluaciones: boolean,
 	): Promise<Trabajador> {
-		var relaciones = submodel ? ['subModel'] : [];
+		let relaciones = submodel ? ['subModel'] : [];
 		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.trabRepo.findOne({ dni: dni }, { relations: relaciones });
+	}
+	//Proablemente @deprecated y cambiar a usuario??
+	@Get('username/:usrname')
+	getWrkByUsername(
+		@Param('usrname') usrname: string,
+		@Param('subModels') submodel: boolean,
+		@Param('evaluaciones') evaluaciones: boolean,
+	): Promise<Trabajador> {
+		let relaciones = submodel ? ['subModel'] : [];
+		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
+		return this.trabRepo.findOne({ user: { username: usrname } }, { relations: relaciones });
 	}
 
 	@Delete(':dni')
@@ -77,8 +88,8 @@ export class TrabajadoresController {
 		if (existingTrabajador) {
 			throw new ConflictException('Trabajador ya creado');
 		}
-		var catComp: CatComp;
-		var catContr: CatContr;
+		let catComp: CatComp;
+		let catContr: CatContr;
 		try {
 			catComp = await this.catCompRepo.findOne({ id: worker.catComp });
 			catContr = await this.catContrRepo.findOne({ id: worker.catContr });
@@ -116,7 +127,7 @@ export class TrabajadoresController {
 		//TODO: Pasar a un servicio el resto de este metodo https://is.gd/KUSLRU
 		//Si estan actualizando la catComp o catContr y han pasado mas de 7 dias desde la creación del anterior periodo,
 		//creo un nuevo periodo y cierro el actual
-		var perActual = trab.periodos.find(p => p.actual);
+		let perActual = trab.periodos.find(p => p.actual);
 		if (worker.catComp !== perActual.catComp.id || worker.catContr !== perActual.catContr.id) {
 			const todayMinus7 = new Date(new Date().setDate(-7));
 			if (perActual.createdAt < todayMinus7) {
@@ -136,22 +147,4 @@ export class TrabajadoresController {
 		await this.trabRepo.save(worker);
 		return true;
 	}
-}
-
-export interface ITrabajadorDTO {
-	dni: string;
-
-	nombre: string;
-
-	apellidos: string;
-
-	area: string;
-
-	unidad: string;
-
-	departamento: string;
-
-	catComp: string;
-
-	catContr: string;
 }

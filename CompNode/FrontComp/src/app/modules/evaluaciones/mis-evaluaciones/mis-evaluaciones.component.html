@@ -1,30 +1,35 @@
 <h1 class="layout-title">Mis evaluaciones</h1>
 <div class="container-fluid">
 	<div class="row gy-4">
-		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let evaluacion of evaluacionData">
+		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let ev of evs">
 			<div class="card">
 				<div class="card-body">
-					<h2 class="card-title">Evaluación: {{ evaluacion.id }}</h2>
-					<p>Categoría competencial: {{ evaluacion.catComp?.id }}</p>
-					<p>Descripcion de categoría competencial: {{ evaluacion.catComp?.description }}</p>
-					<p>Descripción de la evaluación: {{ evaluacion.description }}</p>
+					<h2 class="card-title">Evaluación: {{ ev.id }}</h2>
+					<p>Categoría competencial: {{ ev.catComp?.id }} {{ ev.catComp?.description }}</p>
+					<p>Descripción de la evaluación: {{ ev.description }}</p>
 				</div>
-				<button type="button" [routerLink]="'/evaluaciones/evaluar/' + evaluacion.id" class="btn btn-primary">
+				<!-- !Quitar negacion una vez se haya terminado de desarrollar -->
+				<button
+					type="button"
+					[routerLink]="'/evaluaciones/evaluar/' + ev.id"
+					class="btn btn-primary"
+					[disabled]="!(computeEvStatus(ev) !== EvStatus.EVALUAR)"
+				>
 					Evaluar
 				</button>
 				<button
 					type="button"
-					[disabled]="calcularPeriodoActual(evaluacion)"
-					[routerLink]="'/evaluaciones/proponer/' + evaluacion.id"
-					class="btn btn-primary"
+					[routerLink]="'/evaluaciones/proponer/' + ev.id"
+					class="btn btn-primary mt-1"
+					[disabled]="!(computeEvStatus(ev) !== EvStatus.PROPEVALUADORES)"
 				>
 					Proponer evaluadores
 				</button>
 				<button
 					type="button"
-					[disabled]="calcularPeriodoActual(evaluacion)"
-					[routerLink]="'/evaluaciones/verResultados/' + evaluacion.id"
-					class="btn btn-primary"
+					[routerLink]="'/evaluaciones/verResultados/' + ev.id"
+					class="btn btn-primary mt-1"
+					[disabled]="!(computeEvStatus(ev) !== EvStatus.RESULTADOS)"
 				>
 					Ver resultados
 				</button>

@@ -11,7 +11,7 @@
 						<li
 							[ngClass]="{ active: catComp === dbData.modelToAdd.catComp }"
 							class="list-group-item p-3"
-							*ngFor="let catComp of dbData.catComps"
+							*ngFor="let catComp of dbData.cComps"
 							(click)="selectCatComp(catComp); scrollToButton(target)"
 						>
 							{{ catComp.id }} - {{ catComp.description }}

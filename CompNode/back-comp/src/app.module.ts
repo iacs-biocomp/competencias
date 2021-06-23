@@ -1,3 +1,4 @@
+import { CompressionMiddleware } from '@aml360/nestjs-compression';
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -7,17 +8,19 @@ import { ConfigService } from './config/config.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { FrontendMiddleware } from './middlewares/frontend.middleware';
-import { UserModule } from './modules/users/user.module';
-import { EvaluacionesModule } from './modules/evaluaciones/evaluaciones.module';
-import { CompetenciasModule } from './modules/competencias/competencias.module';
-import { NivelesModule } from './modules/niveles/niveles.module';
-import { ComportamientosModule } from './modules/comportamientos/comportamientos.module';
-import { CatContractModule } from './modules/cat-contract/cat-contract.module';
-import { CatCompModule } from './modules/cat-comp/cat-comp.module';
-import { TrabajadoresModule } from './modules/trabajadores/trabajadores.module';
-import { OrganigramaModule } from './modules/organigrama/organigrama.module';
-import { ModelosModule } from './modules/modelos/modelos.module';
-import { CompressionMiddleware } from '@aml360/nestjs-compression';
+import {
+	CatCompModule,
+	CatContractModule,
+	CompetenciasModule,
+	ComportamientosModule,
+	EvaluacionesModule,
+	ModelosModule,
+	NivelesModule,
+	OrganigramaModule,
+	TrabajadoresModule,
+	UserModule,
+	ValoracionesModule,
+} from './modules';
 
 @Module({
 	imports: [
@@ -36,6 +39,7 @@ import { CompressionMiddleware } from '@aml360/nestjs-compression';
 		TrabajadoresModule,
 		OrganigramaModule,
 		ModelosModule,
+		ValoracionesModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AuthGuard, ConfigService],

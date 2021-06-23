@@ -33,8 +33,9 @@ export class ComportamientosController {
 		@Param('subModels') submodel: boolean,
 		@Param('evaluaciones') evaluaciones: boolean,
 	): Promise<Comportamiento> {
-		var relaciones = submodel ? ['subModel'] : [];
-		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
+		// TODO: Corregir, mirar manera de mandar boolean's queryParams
+		let relaciones = !!submodel ? ['subModel'] : [];
+		relaciones = !!evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.comportRepo.findOne({ id: id }, { relations: relaciones });
 	}
 

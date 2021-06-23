@@ -4,7 +4,6 @@ import { Entity, BaseEntity, ManyToOne, ManyToMany, PrimaryGeneratedColumn, Join
 import { Competencia, Comportamiento, EvModel, Nivel } from './index';
 
 @Entity()
-// TODO: Elegir un nombre correcto
 export class SubModel extends BaseEntity implements ISubModel {
 	@ApiProperty()
 	@PrimaryGeneratedColumn()

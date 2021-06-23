@@ -14,7 +14,7 @@ export interface IEvaluacion {
 	model?: IEvModel;
 	/** La categoría competencial de la evaluación */
 	catComp?: ICatComp;
-
+	//TODO:Tsdoc
 	iniDate?: Date;
 	finPropuestas?: Date;
 
