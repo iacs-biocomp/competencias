@@ -53,6 +53,7 @@ specifiers:
   ng-sidebar: ^9.4.2
   postcss: ^8.3.5
   protractor: ~7.0.0
+  purgecss: ^4.0.3
   rellax: ^1.12.1
   rxjs: ^6.6.7
   ts-node: ~10.0.0
@@ -122,6 +123,7 @@ devDependencies:
   karma-jasmine-html-reporter: 1.6.0_d3d9a1d04661e1ed0dd13239e59ff6ed
   postcss: 8.3.5
   protractor: 7.0.0
+  purgecss: 4.0.3
   ts-node: 10.0.0_272e909ac8a63138a09fc6b4ed53b9de
   typescript: 4.2.4
   webpack-bundle-analyzer: 4.4.2
@@ -9195,6 +9197,16 @@ packages:
   /punycode/2.1.1:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
     engines: {node: '>=6'}
+    dev: true
+
+  /purgecss/4.0.3:
+    resolution: {integrity: sha512-PYOIn5ibRIP34PBU9zohUcCI09c7drPJJtTDAc0Q6QlRz2/CHQ8ywGLdE7ZhxU2VTqB7p5wkvj5Qcm05Rz3Jmw==}
+    hasBin: true
+    dependencies:
+      commander: 6.2.1
+      glob: 7.1.7
+      postcss: 8.3.5
+      postcss-selector-parser: 6.0.6
     dev: true
 
   /q/1.4.1:
