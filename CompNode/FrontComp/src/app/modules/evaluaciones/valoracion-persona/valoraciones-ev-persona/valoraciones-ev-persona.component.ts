@@ -11,10 +11,11 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
 
 //TODO: Cambiar nombre
-// TODO: tsdoc
+/** Utilizado para crear IValoracion, al usar Pick se crea con X propiedades en vez de con todas las de IValoracion  */
 export type NotCompletedVal = Pick<IValoracion, 'evaluado' | 'evaluador' | 'comp' | 'comport' | 'valoracion'>;
 
 type CompWithComports = ICompetencia & {
+	/** Array de comportamientos */
 	comports: IComportamiento[];
 };
 
@@ -41,7 +42,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	@Input() savedVals!: BehaviorSubject<IValoracion[]>;
 	/** Emite todas las valoraciones sin distinguir si estaban ya guardadas o no (Cuando finaliza el componente) */
 	@Output() onValsSetted = new EventEmitter<NotCompletedVal[]>();
-	//TODO: Tsdoc
+	/** Control view for html view, all view's variables inside */
 	cv!: ControlView;
 	/** Array de todas las suscripciones del componente*/
 	subs: Subscription[] = [];
@@ -67,11 +68,11 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 *
-	 * @param comp
-	 * @param comport
-	 * @param puntuacion
-	 * @returns
+	 * Si el comportamiento ya tenia una valoracion asignada, muestra la puntuacion (de 1 a 5), en el radioButton
+	 * @param comp la competencia que se valora
+	 * @param comport el comportamiento que se valora
+	 * @param puntuacion el numero (de 1 a 5) que se le asiga a ese comportamiento a esa competencia
+	 * @returns si hay valoracion, retorna la puntuacion (el numero checked)
 	 */
 	radioChecked(comp: ICompetencia, comport: IComportamiento, puntuacion: number): boolean {
 		const val = this.evalConCompComport(this.savedVals.value, comp, comport);
@@ -83,12 +84,11 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Busca en un array si existe cierta valoración con una comp y comport determinado
-	 * TODO: Complete
+	 * Busca en un array de valoraciones si existe la valoración con una competencia y comportamiento determinado, si existe, la retorna
 	 * @param vals array de valoraciones
 	 * @param comp la competencia a buscar
 	 * @param comport el comportamiento a buscar
-	 * @returns la valoracion con ese competencia y ese comportamiento
+	 * @returns la valoracion encontrada con esa competencia y ese comportamiento
 	 */
 	evalConCompComport(
 		vals: IValoracion[],
@@ -99,7 +99,9 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Funcion que emite la evaluacion con su valoracion al componente pade
+	 * Funcion asincrona que crea un array con las valoraciones que se enviaran al componente padre,
+	 * busca por el id del formulario y recoge las valoraciones de los comportamientos,
+	 * construye el objeto IValoracion para enviarlo, lo pushea al array y lo emite al padre
 	 */
 	async emitValoraciones() {
 		const valoracionesAdd: NotCompletedVal[] = [];

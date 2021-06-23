@@ -11,15 +11,30 @@ export class TrabajadoresService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	//TODO: Refactor, combinar con borrarTrabajador y usar typeof para usar objetos y string
+	/**
+	 * Elimina un trabajador de la DB indicando su dni
+	 * @param worker el trabajador a borrar
+	 * @returns devuelve una promesa para eliminar el trabajador
+	 */
 	delete(worker: Pick<ITrabajador, 'dni'>): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
 	}
-	//TODO: tsdoc
+
+	/**
+	 * Metodo que obtiene un trabajador del backend por su dni
+	 * @param dniOrObj el dni del trabajador a buscar
+	 * @returns el trabajador encontrado
+	 */
 	getOneByDni(dniOrObj: Pick<ITrabajador, 'dni'> | ITrabajador['dni']): Promise<ITrabajador> {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
 		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/${dni}`).toPromise();
 	}
-	//TODO: tsdoc
+
+	/**
+	 * Metodo que obtiene un trabajador del backend por su username
+	 * @param usrnameOrObj el nombre de usuario del trabajador a buscar
+	 * @returns el trabajador encontrado
+	 */
 	getOneByUsername(usrnameOrObj: Pick<IUser, 'username'> | IUser['username']): Promise<ITrabajador> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
 		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/username${username}`).toPromise();

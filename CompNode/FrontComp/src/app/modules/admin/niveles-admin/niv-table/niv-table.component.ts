@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { maxYmin } from 'sharedCode/Utility';
 import { INivel } from 'sharedInterfaces/Entity';
 import { NivelService } from '../services/nivel.service';
 
 interface INivelEdit extends INivel {
 	editing?: boolean;
 }
-// Omit<INivel, 'id'>
 export type INivelToAdd = Omit<INivel, 'id'>;
 
 @Component({
@@ -16,18 +14,13 @@ export type INivelToAdd = Omit<INivel, 'id'>;
 })
 export class NivTableComponent implements OnInit {
 	constructor(private nivelService: NivelService) {}
+	// TODO:Tsdoc
 	nivelesToAdd: INivelToAdd[] = [];
+	// TODO:Tsdoc
 	niveles: INivelEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
 		this.updateNivelView();
-		console.log(
-			maxYmin({
-				maxValoracion: 5,
-				minValoracion: 1,
-				niveles: await this.nivelService.getAllRefNivs(),
-			}),
-		);
 	}
 
 	/** Metodo que sincroniza los niveles de la vista con los del backend */
@@ -68,6 +61,7 @@ export class NivTableComponent implements OnInit {
 		}
 	}
 
+	// TODO:Tsdoc
 	async persistNiv(nivel: INivelToAdd): Promise<void> {
 		const guardado = await this.nivelService.add(nivel);
 		if (guardado) {
@@ -77,6 +71,7 @@ export class NivTableComponent implements OnInit {
 		}
 	}
 
+	// TODO:Tsdoc
 	async deleteNivel(nivel: INivel) {
 		const borrado = await this.nivelService.delete(nivel);
 		if (borrado) {

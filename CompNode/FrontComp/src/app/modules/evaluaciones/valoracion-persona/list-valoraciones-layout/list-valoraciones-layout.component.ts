@@ -13,7 +13,7 @@ import { NotCompletedVal } from '../valoraciones-ev-persona/valoraciones-ev-pers
 /** Como se llama el parametro que identifica la evaluación a evaluar */
 export const dniId = 'dniId';
 /**
- * TODO: Tsdoc
+ * Muestra en diferentes cards la lista de personas a valorar en una evaluacion
  */
 @Component({
 	selector: 'app-list-valoraciones-ev-persona',
@@ -21,7 +21,7 @@ export const dniId = 'dniId';
 	styleUrls: ['./list-valoraciones-layout.component.scss'],
 })
 export class ValoracionesEvPersonaLayoutComponent implements OnInit {
-	//TODO: Tsdoc
+	/** Observable de modelo, cuando cambie el modelo debe actualizarse el valor */
 	evModelObs!: BehaviorSubject<IEvModel>;
 	evaluador!: ITrabajador;
 	evaluado!: ITrabajador;

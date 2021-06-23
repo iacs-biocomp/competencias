@@ -38,11 +38,15 @@ type MiComportamiento = {
  * Tipo que agrupa competencias seleccionadas, nivel seleccionado y comportamientos seleccionados
  */
 type ComportCtrlView = {
+	//?? Tal vez un Pick<Competencia>?
 	/** La ultima competencia seleccionada */
 	compSelected?: ICompetencia;
+	// TODO:Tsdoc
 	nivSelected?: INivel;
 	comportsSelected: IComportamiento[];
+	// TODO:Tsdoc
 	comportDescObs: BehaviorSubject<string | undefined>;
+	// TODO:Tsdoc
 	comportsFiltered: IComportamiento[];
 	/** Son los comportamientos restantes de la competencia seleccionada (Los que aun no se han añadido) */
 	comportsRemainingOfComp: IComportamiento[];
@@ -97,6 +101,7 @@ export class NewEvModelComponent implements OnInit {
 				return true;
 			}),
 	};
+	// TODO: Refactor y añadir controlView, cambiar nombre de MiCompetencia MiComportamiento, a futuro refactor ya que no es ICompetencia, IComportamiento sino el DTO
 	/** Guarda la lista de competencias seleccionadas */
 	//! Mejor en un objeto ctrlView o intentar no usar esta y añadir logica en el html para buscar en el dbData.modelToAdd
 	competenciasSelect: MiCompetencia[] = [];
@@ -130,15 +135,10 @@ export class NewEvModelComponent implements OnInit {
 				return;
 			}
 			const filterValue = txt.toLowerCase().replace(/\s/g, '');
-			console.log(filterValue);
 			this.comportCtl.comportsFiltered = this.comportCtl.comportsRemainingOfComp.filter(comport =>
 				comport.descripcion.toLowerCase().replace(/\s/g, '').includes(filterValue),
 			);
-			console.log(this.comportCtl.comportsFiltered);
 		});
-		setInterval(() => {
-			console.log(this);
-		}, 3500);
 	}
 
 	/** Selecciona la categoría competentencial que va a tener el modelo
@@ -238,6 +238,7 @@ export class NewEvModelComponent implements OnInit {
 	}
 
 	/**
+	 * TODO: Usar función de utility.ts si existe (tiene pinta)
 	 * Añade un comportamiento con un nivel asociado a una competencia
 	 *
 	 * @param comp La competencia a la que se quiere añadir el comportamiento
@@ -263,6 +264,7 @@ export class NewEvModelComponent implements OnInit {
 	}
 
 	/**
+	 * TODO: Usar función de utility.ts si existe (tiene pinta)
 	 * @param subModels El array de submodelos en el que se busca el submodelo
 	 * @param comp La competencia usada para filtrar
 	 * @param niv El nivel que junto con la competencia hacen de filtro
@@ -274,6 +276,7 @@ export class NewEvModelComponent implements OnInit {
 
 	/**
 	 * Elimina el comportamiento seleccionado de la lista de comportamientos que pertenecen a ese submodelo en concreto
+	 * TODO: Usar función de utility.ts si existe (tiene pinta)
 	 *
 	 * @param comport El comportamiento a eliminar del array
 	 * @param comp La competencia usada para filtrarCo1: {
@@ -297,6 +300,7 @@ export class NewEvModelComponent implements OnInit {
 	}
 
 	/**
+	 * TODO: Usar función de utility.ts
 	 * Concatena los arrays de comportamientos que puedan tener varios submodelos, con la MISMA competencia @see {@link ISubModel}
 	 *
 	 * @param comp La competencia con la que se filtran los subModelos
@@ -311,6 +315,8 @@ export class NewEvModelComponent implements OnInit {
 	}
 
 	/**
+	 * TODO: Usar función de utility.ts
+	 *
 	 * @param comp La competencia de la que se quiere obtener los comportamientos no asociados
 	 * @param subModels Array de todos los subModelos
 	 * @returns Un array de comportamientos que esa competencia aun no tiene asociados

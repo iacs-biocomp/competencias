@@ -10,8 +10,9 @@ export class ValoracionesService {
 
 	/**
 	 * TODO: Tsdoc
-	 * @param worker
-	 * @param evId
+	 * Obtiene una evaluacion indicando el id de la evaluacion y el dni del trabajador
+	 * @param worker el trabajador a buscar
+	 * @param evId el id de la evaluación
 	 * @returns
 	 */
 	async getUsrEvVals(

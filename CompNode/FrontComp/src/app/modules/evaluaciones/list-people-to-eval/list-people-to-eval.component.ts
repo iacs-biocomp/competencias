@@ -6,7 +6,7 @@ import { IOrganigramaEvDTO } from 'sharedInterfaces/DTO';
 export const evId = 'evId';
 
 /**
- * TODO: Tsdoc de q hace el componente
+ * Muestra la lista de trabajador a los que hay que evaluar en un determinado periodo
  */
 @Component({
 	selector: 'app-list-people-to-eval',

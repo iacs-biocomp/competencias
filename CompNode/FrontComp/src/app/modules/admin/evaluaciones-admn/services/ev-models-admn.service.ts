@@ -12,7 +12,7 @@ export class EvModelsAdmnService {
 	 * Envia un modelo al backend intentando guardarlo.
 	 *
 	 * @param evModel El modelo a guardar
-	 * @returns //TODO
+	 * @returns //TODO tsdoc
 	 */
 	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
 		console.log(String(reference));
@@ -20,12 +20,14 @@ export class EvModelsAdmnService {
 			.post<IEvModel>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
 			.toPromise();
 	}
+
 	/**
 	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
 	 */
 	getAll(): Promise<IEvModel[]> {
 		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos`).toPromise();
 	}
+
 	/**
 	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
 	 */
@@ -37,7 +39,7 @@ export class EvModelsAdmnService {
 	 * @param catComp La catComp o su id con la que se busca su modelo de referencia
 	 * @returns El modelo de referencia que tiene esa catComp asociada
 	 */
-	getOneReference(catComp: ICatComp | string): Promise<IRefModel> {
+	getOneReference(catComp: ICatComp | ICatComp['id']): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
 		return this.httpClient.get<IRefModel>(`${cnf.apiURL}/modelos/reference/${id}`).toPromise();
 	}

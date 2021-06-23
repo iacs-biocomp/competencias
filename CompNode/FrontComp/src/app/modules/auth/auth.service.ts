@@ -7,6 +7,7 @@ import { JwtService } from 'src/app/services/jwt.service';
 export type IAuthTokenRes = {
 	token: string;
 };
+//TODO: Llevar a environment.ts
 export const JWT_NAME = 'login-token';
 
 @Injectable()
