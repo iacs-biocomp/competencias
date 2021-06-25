@@ -1,8 +1,8 @@
-PG_HOST=yourDbHost
-PG_PORT=5433
+PG_HOST=pg-competencias
+PG_PORT=5432
 PG_USER=yourDbUser
 PG_PASS=yourDbPassword
-PGDB_NAME=yourDbName
+PGDB_NAME=node-competencias
 POSTGRES_PORT_EXTERNAL=5432
 PG_SYNC=true
 JWT_SECRET=secretkey
