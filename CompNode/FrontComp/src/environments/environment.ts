@@ -1,12 +1,12 @@
+import { Environment } from './environment-type';
+
 // This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// `ng build --configuration production` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+export const environment: Environment = {
 	production: false,
-	/** La url en la que se encuentra el backend */
 	apiURL: 'http://localhost:3000/nest',
-	/** El intervalo de tiempo en `ms` en el cual se renovará el jwt si ha habido interacción del usuario */
 	jwtInterval: 15000,
 };
 
@@ -17,4 +17,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-import 'zone.js/dist/zone-error'; // Included with Angular CLI.
+import 'zone.js/dist/zone-error'; // Included with Angular CLI.import { Environment } from './environment-type';import { Environment } from './environment-type';

@@ -1,8 +1,8 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "dcbf45cd-4780-40db-80c2-fe7aaf3c4426"
-  },
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"cli": {
+		"analytics": "dcbf45cd-4780-40db-80c2-fe7aaf3c4426"
+	},
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
@@ -62,8 +62,8 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "900kb",
+									"maximumError": "2mb"
 								},
 								{
 									"type": "anyComponentStyle",
@@ -71,6 +71,21 @@
 									"maximumError": "4kb"
 								}
 							]
+						},
+						"develop": {
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.develop.ts"
+								}
+							],
+							"optimization": true,
+							"outputHashing": "none",
+							"sourceMap": true,
+							"namedChunks": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true
 						}
 					}
 				},

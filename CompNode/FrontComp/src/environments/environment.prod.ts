@@ -1,4 +1,7 @@
-export const environment = {
+import { Environment } from './environment-type';
+
+/** Env para producción */
+export const environment: Environment = {
 	production: true,
 	/**URL donde la api (nest) estará localizada en producción. */
 	apiURL: 'http://yourdomainname.com/nest',

@@ -1,12 +1,23 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Roles } from 'sharedInterfaces/Entity';
 import { LoginGuard } from './guards/login.guard';
-import { Error404Component } from './modules/app/error404/error404.component';
+import { JwtService } from './services/jwt.service';
 import { BaseLayoutComponent } from './shared/layout/base/base-layout.component';
 
-const routes: Routes = [
+/**
+ * Usar este tipo de rutas y no las que tiene por defecto angular ya que aqui son extendidas
+ * y tipadas las propiedades adicionales
+ */
+type CompRoutes = CompRoute[];
+export type CompRoute = {
+	data?: {
+		roles: Roles[];
+	};
+} & Route;
+
+const routes: CompRoutes = [
 	//!La ruta con path = '' va la ultima, Explicación aqui https://is.gd/qRxAtW (Sino el guard hace loop infinito)
 	{
 		path: 'admin',
@@ -64,7 +75,6 @@ const routes: Routes = [
 	{
 		path: '',
 		canLoad: [LoginGuard],
-
 		data: {
 			roles: [Roles.PUBLIC],
 		},
@@ -72,20 +82,20 @@ const routes: Routes = [
 		loadChildren: () => import('./modules/public/public.module').then(mod => mod.PublicModule),
 	},
 	//*Redireccionar a public en caso de ruta erronea
-	/* {
-    path: '**',
-    redirectTo: '/',
-  }, */
-	//*Cargar 404 con enlace a public
 	{
 		path: '**',
-		component: Error404Component,
+		redirectTo: '/',
 	},
+	//*Cargar 404 con enlace a public
+	// {
+	// 	path: '**',
+	// 	component: Error404Component,
+	// },
 ];
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],
-	providers: [LoginGuard, JwtHelperService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }],
+	providers: [LoginGuard, JwtHelperService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, JwtService],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

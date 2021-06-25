@@ -48,12 +48,19 @@ export class JwtService {
 
 	/**
 	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
-	 *
 	 * @returns El token de tipo `IJwtToken` descodificado
 	 */
 	getDecodedToken(): IJwtToken {
 		return this.jwtHelper.decodeToken<IJwtToken>(this.token());
 	}
+
+	/**
+	 * @returns jwt as string or undefined.
+	 */
+	getToken(): string | undefined {
+		return this.token();
+	}
+
 	/**Metodo que borra el token de las cookies y del localStorage */
 	rmToken(): void {
 		cookieRm(JWT_NAME);
