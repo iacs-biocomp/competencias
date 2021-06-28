@@ -52,10 +52,11 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	}
 
 	/**
-	 * TODO: Tsdoc, testear
-	 * @param allVals
+	 * Guarda las valoraciones que recibe del componente hijo.
+	 * Las filtra para añadir o actualizar según si estaban o no guardadas.
+	 * @param allVals Array de todas las valoraciones, sin id (a actualizar y añadir)
 	 */
-	async saveValoraciones(allVals: NotCompletedVal[]) {
+	async saveValoraciones(allVals: NotCompletedVal[]): Promise<void> {
 		const alreadySavedVals = this.savedValsObs.value;
 		/** Fn de busqueda en el array de alreadySaved, si se niega y filtra se consiguen las nuevas Valoraciones,
 		 *  si se niega 2 veces las ya creadas pero actualizadas */

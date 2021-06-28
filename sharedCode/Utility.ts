@@ -5,10 +5,11 @@ import { WithOptional } from './interfaces/Utility';
 
 //TODO: Cambiar nombre
 export type changeMyName = {
-	//TODO: Tsdoc (1)
+	/** Minima valoración que tiene una competencia, calculada por la función {@link maxYmin}*/
 	minValoracion: number;
-	//TODO: Tsdoc (5)
+	/** Maxima valoración que tiene una competencia, calculada por la función {@link maxYmin}*/
 	maxValoracion: number;
+	/** Los niveles que tiene cierta evaluación (NUNCA los de referencia)*/
 	niveles: WithOptional<INivel, 'subModels'>[];
 };
 export type EvIntervals = {
@@ -94,6 +95,22 @@ export function findSubModels(
 ): ISubModel[] {
 	const compId = typeof comp === 'string' ? comp : comp.id;
 	return subModels.filter(subModel => subModel.competencia.id === compId);
+}
+
+/**
+ * Busca en el array de submodelos asociado con esa competencia
+ * y ese nivel en concreto
+ * @param subModels El array de submodelos en el que se busca el submodelo
+ * @param comp La competencia usada para filtrar
+ * @param niv El nivel que junto con la competencia hacen de filtro
+ * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
+ */
+export function findSubModelByCompNiv(
+	subModels: ISubModel[],
+	comp: ICompetencia,
+	niv: INivel,
+): ISubModel | undefined {
+	return subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
 }
 
 /**

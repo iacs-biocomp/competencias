@@ -41,7 +41,7 @@
 				<div class="modal-body">
 					<ul class="list-group">
 						<li
-							[ngClass]="{ active: competenciasSelect.includes(compete) }"
+							[ngClass]="{ active: cv.competenciasSelect.includes(compete) }"
 							class="list-group-item p-3"
 							*ngFor="let compete of dbData.comps"
 							(click)="toggleComp(compete)"
@@ -54,7 +54,7 @@
 					<button class="btn arrowBtn" (click)="move(false)">
 						<span class="material-icons"> arrow_back </span>
 					</button>
-					<button class="btn arrowBtn" [disabled]="competenciasSelect.length === 0" (click)="move(true)">
+					<button class="btn arrowBtn" [disabled]="cv.competenciasSelect.length === 0" (click)="move(true)">
 						<span class="material-icons"> arrow_forward </span>
 					</button>
 				</div>
@@ -74,7 +74,7 @@
 				<div class="modal-body">
 					<div class="accordion" id="accordionCompo">
 						<div class="accordion-body">
-							<div class="accordion-item" *ngFor="let nivelComp of competenciasSelect; let i = index">
+							<div class="accordion-item" *ngFor="let nivelComp of cv.competenciasSelect; let i = index">
 								<h2 class="accordion-header" [id]="'headerCompo ' + i">
 									<button
 										class="accordion-button collapsed"
@@ -106,11 +106,11 @@
 															{{ ' Nivel: ' + nivel.code }}
 															<button
 																(click)="
-																	comportCtl.nivSelected = nivel;
-																	comportCtl.compSelected = nivelComp;
-																	comportamientosSelect = [];
-																	comportCtl.comportsSelected = [];
-																	comportCtl.comportsRemainingOfComp = getRemainingComports(
+																	cv.nivSelected = nivel;
+																	cv.compSelected = nivelComp;
+																	cv.comportamientosSelect = [];
+																	cv.comportsSelected = [];
+																	cv.comportsRemainingOfComp = getRemainingComports(
 																		nivelComp,
 																		dbData.modelToAdd.subModels
 																	)
@@ -136,15 +136,18 @@
 																	class="list-group-item p-3"
 																	aria-current="true"
 																	*ngFor="
-																		let comport of findSubModel(dbData.modelToAdd.subModels, nivelComp, nivel)
-																			?.comportamientos;
+																		let comport of findSubModelByCompNiv(
+																			dbData.modelToAdd.subModels,
+																			nivelComp,
+																			nivel
+																		)?.comportamientos;
 																		let i = index
 																	"
 																>
 																	{{ comport.descripcion }}
 																	<button
 																		class="btn btn-danger me-2"
-																		(click)="removeComport(comport, comportCtl.compSelected!, nivel)"
+																		(click)="removeComport(comport, cv.compSelected!, nivel)"
 																		style="float: right"
 																	>
 																		<span class="material-icons" title="Eliminar comportamiento">
@@ -195,17 +198,13 @@
 				<div class="modal-body">
 					<div class="mb-1">
 						<p>Filtrar por descripcion:</p>
-						<input
-							#comportDescInput
-							type="text"
-							(keyup)="comportCtl.comportDescObs.next(comportDescInput.value)"
-						/>
+						<input #comportDescInput type="text" (keyup)="cv.comportDescObs.next(comportDescInput.value)" />
 					</div>
-					<ul class="list-group" *ngIf="comportCtl.compSelected">
+					<ul class="list-group" *ngIf="cv.compSelected">
 						<li
-							[ngClass]="{ active: comportCtl.comportsSelected?.includes(comport) }"
+							[ngClass]="{ active: cv.comportsSelected?.includes(comport) }"
 							class="list-group-item p-3"
-							*ngFor="let comport of comportCtl.comportsFiltered"
+							*ngFor="let comport of cv.comportsFiltered"
 							(click)="selectComportamiento(comport)"
 						>
 							{{ comport.descripcion }}

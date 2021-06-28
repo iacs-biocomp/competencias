@@ -9,11 +9,10 @@ export class ValoracionesService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * TODO: Tsdoc
 	 * Obtiene una evaluacion indicando el id de la evaluacion y el dni del trabajador
 	 * @param worker el trabajador a buscar
 	 * @param evId el id de la evaluación
-	 * @returns
+	 * @returns Promise<Array> de valoraciones de un usuario de cierta evaluación
 	 */
 	async getUsrEvVals(
 		worker: ITrabajador | ITrabajador['dni'],

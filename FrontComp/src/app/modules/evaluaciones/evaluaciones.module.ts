@@ -21,7 +21,7 @@ const routes: Routes = [
 ];
 
 /**
- * TODO: Tsdoc de la utilidad de este modulo
+ * Modulo con componentes relacionados con las evaluaciones/valoraciones/resultados del Usuario.
  */
 @NgModule({
 	declarations: [

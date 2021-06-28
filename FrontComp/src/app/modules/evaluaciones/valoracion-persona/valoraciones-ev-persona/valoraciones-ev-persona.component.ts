@@ -130,7 +130,6 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	 * @param comport El comportamiento de una competencia valorado
 	 * @returns Un objeto construido a partir de los parametros
 	 */
-	//TODO: Cambiar nombre
 	returnValoracionesFromNumber(
 		puntuacion: ValoracionesNums,
 		comp: ICompetencia,
