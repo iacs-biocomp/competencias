@@ -10,7 +10,6 @@ import {
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
 
-//TODO: Cambiar nombre
 /** Utilizado para crear IValoracion, al usar Pick se crea con X propiedades en vez de con todas las de IValoracion  */
 export type NotCompletedVal = Pick<IValoracion, 'evaluado' | 'evaluador' | 'comp' | 'comport' | 'valoracion'>;
 

@@ -14,9 +14,9 @@ export type INivelToAdd = Omit<INivel, 'id'>;
 })
 export class NivTableComponent implements OnInit {
 	constructor(private nivelService: NivelService) {}
-	// TODO:Tsdoc
+	/** Array con los niveles que se añadiran y mandaran al backend  */
 	nivelesToAdd: INivelToAdd[] = [];
-	// TODO:Tsdoc
+	/** Array con las referencias de los niveles */
 	niveles: INivelEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
@@ -61,7 +61,10 @@ export class NivTableComponent implements OnInit {
 		}
 	}
 
-	// TODO:Tsdoc
+	/**
+	 *
+	 * @param nivel el objeto que queremos guardar en el backend
+	 */
 	async persistNiv(nivel: INivelToAdd): Promise<void> {
 		const guardado = await this.nivelService.add(nivel);
 		if (guardado) {
@@ -71,7 +74,10 @@ export class NivTableComponent implements OnInit {
 		}
 	}
 
-	// TODO:Tsdoc
+	/**
+	 *
+	 * @param nivel el nivel que se borrara de la base de datos
+	 */
 	async deleteNivel(nivel: INivel) {
 		const borrado = await this.nivelService.delete(nivel);
 		if (borrado) {

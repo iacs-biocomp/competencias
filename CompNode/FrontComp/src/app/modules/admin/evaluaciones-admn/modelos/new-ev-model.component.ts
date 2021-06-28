@@ -29,7 +29,7 @@ export type DbDataEvModel = DbData & {
 type MiCompetencia = {
 	nivObjetivo?: INivel;
 } & ICompetencia;
-/** Tipo que sirve para concatena nivel, competencia e IComportortamiento */
+/** Tipo que sirve para concatena nivel, competencia e IComportamiento */
 type MiComportamiento = {
 	nivel?: INivel;
 	competencia?: ICompetencia;
@@ -41,12 +41,13 @@ type ComportCtrlView = {
 	//?? Tal vez un Pick<Competencia>?
 	/** La ultima competencia seleccionada */
 	compSelected?: ICompetencia;
-	// TODO:Tsdoc
+	/** El nivel que tendra la competencia seleccionada */
 	nivSelected?: INivel;
+	/** Array con los comportamientos que tendra la evaluacion  */
 	comportsSelected: IComportamiento[];
-	// TODO:Tsdoc
+	/** Observable con los comportamientos, si cambia el modelo deben actualizarse y mostrar los correctos */
 	comportDescObs: BehaviorSubject<string | undefined>;
-	// TODO:Tsdoc
+	/** Array con los comportamientos filtrados */
 	comportsFiltered: IComportamiento[];
 	/** Son los comportamientos restantes de la competencia seleccionada (Los que aun no se han añadido) */
 	comportsRemainingOfComp: IComportamiento[];
@@ -82,6 +83,7 @@ export class NewEvModelComponent implements OnInit {
 			subModels: [],
 		},
 	};
+
 
 	comportCtl: ComportCtrlView = {
 		compSelected: undefined,
