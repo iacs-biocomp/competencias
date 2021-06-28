@@ -7,4 +7,6 @@ export const environment: Environment = {
 	apiURL: 'http://yourdomainname.com/nest',
 	/** El intervalo de tiempo en `ms` en el cual se renovará el jwt si ha habido interacción del usuario */
 	jwtInterval: 45000,
+	isApiUrlDynamic: true,
+	apiURLtoAdd: '/nest',
 };

@@ -7,7 +7,9 @@ import { environment } from './environments/environment';
 if (environment.production) {
 	enableProdMode();
 }
-
+if(environment.isApiUrlDynamic){
+	environment.apiURL = `${location.origin}${environment.apiURLtoAdd}`;
+}
 platformBrowserDynamic()
 	.bootstrapModule(AppModule)
 	.catch(err => console.error(err));

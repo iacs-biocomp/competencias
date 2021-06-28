@@ -6,6 +6,8 @@ import { Environment } from './environment-type';
 
 export const environment: Environment = {
 	production: false,
+	isApiUrlDynamic: false,
+	apiURLtoAdd: undefined,
 	apiURL: 'http://localhost:3000/nest',
 	jwtInterval: 15000,
 };
