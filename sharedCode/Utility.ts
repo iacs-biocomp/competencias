@@ -47,7 +47,7 @@ export function findCompById(competencias: ICompetencia[], compId: string): ICom
 }
 
 /**
- * TODO: Refactor
+ * TODO: Refactor y cambiar nombre
  * Calcula la maxima puntuación que un trabajador puede tener si todos los apartados que son positivos son evaluados al maximo y los negativos al minimo
  */
 export function maxYmin(data: changeMyName) {

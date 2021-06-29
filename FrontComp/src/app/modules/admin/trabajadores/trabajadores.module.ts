@@ -6,6 +6,7 @@ import { TrabTableComponent } from './trab-table/trab-table.component';
 import { TrabajadoresService } from './services/trabajadores.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// TODO: CompRoutes, circular dependency
 /** Rutas relacionadas con el modulo de trabajadores */
 export const trabRoutes: Routes = [
 	{
@@ -14,6 +15,7 @@ export const trabRoutes: Routes = [
 	},
 ];
 
+// TODO: Tsdoc del MODULO
 @NgModule({
 	declarations: [TrabTableComponent],
 	imports: [CommonModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule],

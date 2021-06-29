@@ -10,6 +10,7 @@ import { EvaluacionesAdmnModule, evRoutes } from './evaluaciones-admn/evaluacion
 import { TrabajadoresModule, trabRoutes } from './trabajadores/trabajadores.module';
 import { OrganiAdmnModule, organiRoutes } from './organigrama-admin/organi-admin.module';
 
+// TODO: CompRoutes, circular dependency
 const routes: Routes = [
 	{ path: 'comportamientos', children: comportRoutes },
 	{ path: 'competencias', children: compRoutes },
@@ -23,6 +24,8 @@ const routes: Routes = [
 	// { path: '', component: CompetenciasAdminComponent },
 ];
 
+/** De este modulo cuelga toda la interfaz que el administrador utilizará,
+ * para asi al servirla en Nest sea mas facil autorizar la descarga de este */
 @NgModule({
 	declarations: [],
 	imports: [
@@ -38,6 +41,4 @@ const routes: Routes = [
 	],
 	exports: [SharedModule],
 })
-/** De este modulo cuelga toda la interfaz que el administrador utilizará,
- * para asi al servirla en Nest sea mas facil autorizar la descarga de este */
 export class AdminModule {}

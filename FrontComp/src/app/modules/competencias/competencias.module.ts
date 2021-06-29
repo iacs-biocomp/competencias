@@ -6,6 +6,7 @@ import { CurrCompetComponent } from './curr-compet/curr-compet.component';
 
 const routes: Routes = [{ path: '', component: CurrCompetComponent }];
 
+// TODO: Tsdoc de que hace el MODULO, tal vez cambiar nombre e incluir en otro modulo
 @NgModule({
 	declarations: [CurrCompetComponent],
 	imports: [CommonModule, RouterModule.forChild(routes), SharedModule],

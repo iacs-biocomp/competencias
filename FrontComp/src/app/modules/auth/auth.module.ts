@@ -19,6 +19,7 @@ const routes: Routes = [
 	},
 ];
 
+// TODO: Tsdoc del modulo
 @NgModule({
 	declarations: [LoginComponent, RegisterComponent],
 	imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],

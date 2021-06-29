@@ -6,6 +6,7 @@ import { OrganiGeneralView } from './general-organi-view/organigrama-admin.compo
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
 
+// TODO: CompRoutes, circular dependency
 /** Rutas relacionadas con el modulo del organigrama */
 export const organiRoutes: Routes = [
 	{

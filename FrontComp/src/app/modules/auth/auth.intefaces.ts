@@ -1,3 +1,4 @@
+// TODO: Son DTO asi que a la carpeta SharedCode y refactor en el backend
 export interface IAuthLogin {
 	username: string;
 	password: string;

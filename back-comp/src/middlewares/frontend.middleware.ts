@@ -42,5 +42,6 @@ export class FrontendMiddleware implements NestMiddleware {
 		} else {
 			next();
 		}
+		// TODO: Encapsular en modulo y juntar con libreria MidasJs.
 	}
 }

@@ -6,6 +6,7 @@ import { Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// TODO: CompRoutes, circular dependency
 /** Rutas relacionadas con el subModulo de comportamientos */
 export const nivRoutes: Routes = [
 	{
