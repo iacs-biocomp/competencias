@@ -1,4 +1,8 @@
-/** TODO: Complete */
+/**
+ * TODO: HECHO
+ * @param target el objeto al que se la añade la propiedad
+ * @param propertyKey la propiedad requerida para añadirle al objeto
+ */
 export function Required(target: object, propertyKey: string) {
 	Object.defineProperty(target, propertyKey, {
 		get() {

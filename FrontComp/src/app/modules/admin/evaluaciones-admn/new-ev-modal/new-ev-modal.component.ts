@@ -155,9 +155,8 @@ export class NewEvModalComponent implements OnInit {
 		};
 		const evModelDB = await this.evModelSv.save(modelToSend, false);
 		this.evToAdd = {
-			description:
-				this.modelCtl.evDescription === undefined ? 'Descripción por defecto' : this.modelCtl.evDescription,
-			// TODO: Validator de descripción en form control
+			/** TODO: DONE */
+			description: this.modelCtl.evDescription as string,
 			catComp: cComp,
 			model: evModelDB,
 			iniDate: form.propuestaStart as Date,

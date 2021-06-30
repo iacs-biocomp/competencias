@@ -97,7 +97,7 @@
 					data-bs-toggle="modal"
 					data-bs-target="#modalSelectCompets"
 					class="btn btn-primary"
-					[disabled]="isFormValid()"
+					[disabled]="!isFormValid()"
 					(click)="closeEvModal.click()"
 				>
 					Siguiente

@@ -20,7 +20,10 @@ const routes: CompRoutes = [
 	},
 ];
 
-// TODO: Tsdoc del modulo
+/**
+ * TODO: HECHO
+ * Modulo destinado a la autenticacion de los usuarios (login y registro)
+ */
 @NgModule({
 	declarations: [LoginComponent, RegisterComponent],
 	imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],

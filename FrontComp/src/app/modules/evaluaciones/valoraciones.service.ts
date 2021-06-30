@@ -27,9 +27,13 @@ export class ValoracionesService {
 	 * de ser así no realiza cambios y lanza excepción. Para actualizar usar {@link update}
 	 * @param val La valoración sin el ID con comp, comport y puntuación.
 	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
-	 * @throws TODO: Lanzar excepción
+	 * @throws Lanza excepcion si no se ha encontrado la valoracion
+	 * TODO: HECHO
 	 */
 	async add(val: IValoracionToAddDTO): Promise<boolean> {
+		if (!val){
+			throw new Error('Valoracion no valida o incorrecta')
+		}
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}
 
@@ -37,9 +41,13 @@ export class ValoracionesService {
 	 * Actualiza la puntuación de una valoración ya creada
 	 * @param val La valoración con el ID y la puntuación actualizada
 	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
-	 * @throws TODO: Lanzar excepción
+	 * @throws Lanza excepcion si no se ha encontrado la valoracion
+	 * TODO: HECHO
 	 */
 	async update(val: IValoracion): Promise<boolean> {
+		if (!val){
+			throw new Error('Valoracion no valida o incorrecta')
+		}
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}
 }

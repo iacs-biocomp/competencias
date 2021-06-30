@@ -10,8 +10,6 @@ import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
 export class TrabajadoresService {
 	constructor(private readonly httpClient: HttpClient) {}
 
-	//TODO: Refactor, combinar con borrarTrabajador y usar typeof para usar objetos y string
-
 	/**
 	 * Metodo que obtiene un trabajador del backend por su dni
 	 * @param dniOrObj el dni del trabajador a buscar
@@ -42,6 +40,8 @@ export class TrabajadoresService {
 	}
 
 	/**
+	 * TODO: HECHO
+	 * @deprecated
 	 * Metodo que borra un worker del backend
 	 *
 	 * @throws Excepción http si la petición sale mal
