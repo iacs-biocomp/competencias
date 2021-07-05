@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IRegisterRequest } from '../auth.intefaces';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IRegisterRequestDTO } from 'sharedInterfaces/DTO';
 
 interface form {
 	username: string;
@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
 
 	constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {}
 	async sendForm() {
-		let registerReq: IRegisterRequest;
+		let registerReq: IRegisterRequestDTO;
 		const value: form = this.signupForm.value;
 		if (this.signupForm.valid) {
 			const logued: boolean = await this.authService.sendRegisterReq({

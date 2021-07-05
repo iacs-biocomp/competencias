@@ -5,17 +5,7 @@ import { Roles } from 'sharedInterfaces/Entity';
 import { LoginGuard } from './guards/login.guard';
 import { JwtService } from './services/jwt.service';
 import { BaseLayoutComponent } from './shared/layout/base/base-layout.component';
-
-/**
- * Usar este tipo de rutas y no las que tiene por defecto angular ya que aqui son extendidas
- * y tipadas las propiedades adicionales
- */
-type CompRoutes = CompRoute[];
-export type CompRoute = {
-	data?: {
-		roles: Roles[];
-	};
-} & Route;
+import { CompRoutes } from './types/angular-modified-types';
 
 const routes: CompRoutes = [
 	//!La ruta con path = '' va la ultima, Explicación aqui https://is.gd/qRxAtW (Sino el guard hace loop infinito)

@@ -98,6 +98,38 @@ export function findSubModels(
 }
 
 /**
+ * @param subModels El array de submodelos en el que se busca el submodelo
+ * @param comp La competencia usada para filtrar
+ * @param niv El nivel que junto con la competencia hacen de filtro
+ * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
+ */
+export function findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel): ISubModel | undefined {
+	return subModels.find(subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id);
+}
+
+/**
+ * @param comp la competencia elegida para obtener los comportamientos
+ * @param subModels submodelos para buscar la competencia
+ * @returns los comportamientos por competencia filtrados
+ */
+export function filterNonSelectedComports(
+	comports: IComportamiento[],
+	comp: ICompetencia,
+	subModels: ISubModel[],
+): IComportamiento[] {
+	const comportsOfComp = getAllComportsOfComp(comp, subModels);
+	/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
+	const nExcluded = 0;
+	return comports.filter(dbComport => {
+		if (nExcluded !== comportsOfComp.length - 1) {
+			return !comportsOfComp.find(c4filter => c4filter.id === dbComport.id);
+		} else {
+			return true;
+		}
+	});
+}
+
+/**
  * Busca en el array de submodelos asociado con esa competencia
  * y ese nivel en concreto
  * @param subModels El array de submodelos en el que se busca el submodelo

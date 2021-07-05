@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MisEvaluacionesComponent } from './mis-evaluaciones/mis-evaluaciones.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EvaluacionesService } from './evaluaciones.service';
 import { HttpClient } from '@angular/common/http';
@@ -13,11 +13,12 @@ import {
 	dniId,
 	ValoracionesEvPersonaLayoutComponent,
 } from './valoracion-persona/list-valoraciones-layout/list-valoraciones-layout.component';
+import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-const routes: Routes = [
+const routes: CompRoutes = [
 	{ path: '', component: MisEvaluacionesComponent },
 	{ path: `evaluar/:${evId}`, component: ListPeopleToEvalComponent },
-	{ path: `evaluar/:${evId}/eval-persona/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
+	{ path: `evaluar/:${evId}/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
 ];
 
 /**

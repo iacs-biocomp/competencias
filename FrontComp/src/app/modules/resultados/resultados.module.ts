@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MisResultadosComponent } from './mis-resultados/mis-resultados.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-const routes: Routes = [{ path: '', component: MisResultadosComponent }];
+const routes: CompRoutes = [{ path: '', component: MisResultadosComponent }];
 
 @NgModule({
 	declarations: [MisResultadosComponent],

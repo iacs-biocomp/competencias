@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IAuthLogin } from '../auth.intefaces';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { SignInDto } from 'sharedInterfaces/DTO';
 
 /** Formulario extendido para forzar los tipos de los value de los controles */
 type ExtFormGroup = FormGroup & {
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
 		const username = this.loginForm.controls.username.value;
 		const password = this.loginForm.controls.password.value;
 		if (username && password) {
-			const body: IAuthLogin = {
+			const body: SignInDto = {
 				username,
 				password,
 			};

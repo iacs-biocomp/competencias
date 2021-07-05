@@ -11,14 +11,6 @@ export class TrabajadoresService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	//TODO: Refactor, combinar con borrarTrabajador y usar typeof para usar objetos y string
-	/**
-	 * Elimina un trabajador de la DB indicando su dni
-	 * @param worker el trabajador a borrar
-	 * @returns devuelve una promesa para eliminar el trabajador
-	 */
-	delete(worker: Pick<ITrabajador, 'dni'>): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
-	}
 
 	/**
 	 * Metodo que obtiene un trabajador del backend por su dni
@@ -60,6 +52,28 @@ export class TrabajadoresService {
 		borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${id}`).toPromise();
 		//Si la petición delete sale mal lanza excepción
 		return borrado;
+	}
+
+	/**
+	 * @deprecated
+	 * Elimina un trabajador de la DB indicando su dni
+	 * @param worker el trabajador a borrar
+	 * @returns devuelve una promesa para eliminar el trabajador
+	 */
+	delete(worker: Pick<ITrabajador, 'dni'>): Promise<boolean> {
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
+	}
+
+	/**
+	 * Metodo que elimina un trabajador del backend
+	 *
+	 * @param id el id del trabajador o su dni
+	 * @returns una promesa que si es 'true' se ha borrado y 'false' en caso contrario
+	 */
+
+	deleteWorker(id: ITrabajador | ITrabajador['dni']): Promise<boolean> {
+		const dniWorker = typeof id === 'string' ? id : id.dni;
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${dniWorker}`).toPromise();
 	}
 
 	/**

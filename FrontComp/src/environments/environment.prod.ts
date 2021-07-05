@@ -9,4 +9,5 @@ export const environment: Environment = {
 	jwtInterval: 45000,
 	isApiUrlDynamic: true,
 	apiURLtoAdd: '/nest',
+	jwtName: 'login-token',
 };

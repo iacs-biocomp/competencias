@@ -10,14 +10,13 @@ import {
 
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { JWT_NAME } from '../modules/auth/auth.service';
-
+import { environment as cnf } from 'src/environments/environment';
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
 	constructor() {}
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		console.log('Interceptor');
-		const token: string = localStorage.getItem(JWT_NAME)!;
+		const token: string = localStorage.getItem(cnf.jwtName)!;
 
 		if (token) {
 			request = request.clone({

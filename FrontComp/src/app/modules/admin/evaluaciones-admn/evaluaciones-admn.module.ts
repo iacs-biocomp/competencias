@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListEvComponent } from './list-ev/list-ev.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EvaluacionesAdmService } from './services/evaluaciones-adm.service';
@@ -17,9 +17,10 @@ import { NivComportFilterPipe } from './modelos/pipes/niv-comport-filter.pipe';
 import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
 import { CompSelectComponent } from './comp-select/comp-select.component';
 import { ObjectiveNivsSelectComponent } from './new-ev-modal/obj-niveles-select/obj-niveles-select.component';
+import { CompRoutes } from 'src/app/types/angular-modified-types';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
-export const evRoutes: Routes = [
+export const evRoutes: CompRoutes = [
 	{
 		path: '',
 		component: ListEvComponent,

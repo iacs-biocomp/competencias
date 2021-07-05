@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { IAuthLogin, IRegisterRequest } from './auth.intefaces';
 import { JwtService } from 'src/app/services/jwt.service';
+import { IAuthTokenRes, IRegisterRequestDTO, SignInDto } from 'sharedInterfaces/DTO';
 
-export type IAuthTokenRes = {
-	token: string;
-};
-//TODO: Llevar a environment.ts
-export const JWT_NAME = 'login-token';
+// TODO: DONE
 
 @Injectable()
 export class AuthService {
@@ -20,7 +16,7 @@ export class AuthService {
 	 * @param body Is the json object with username and password, email optional
 	 * @return Return `true` if successful authentication, otherwise return `false`.
 	 */
-	async sendLoginInfo(body: IAuthLogin): Promise<boolean> {
+	async sendLoginInfo(body: SignInDto): Promise<boolean> {
 		const response: IAuthTokenRes = await this.httpClient
 			.post<IAuthTokenRes>(cnf.apiURL + '/signin', body)
 			.toPromise();
@@ -28,7 +24,7 @@ export class AuthService {
 			return false;
 		}
 		this.setToken(response.token);
-		document.cookie = JWT_NAME + '=' + encodeURIComponent(response.token);
+		document.cookie = cnf.jwtName + '=' + encodeURIComponent(response.token);
 		return true;
 	}
 
@@ -37,7 +33,7 @@ export class AuthService {
 	 * @param body  El cuerpo a enviar en la petición de registro
 	 * @returns Promise q se resuelve como `true` si todo ha ido bien, `false` en caso contrario
 	 */
-	async sendRegisterReq(body: IRegisterRequest): Promise<boolean> {
+	async sendRegisterReq(body: IRegisterRequestDTO): Promise<boolean> {
 		const response: IAuthTokenRes = await this.httpClient
 			.post<IAuthTokenRes>(cnf.apiURL + '/signup', body)
 			.toPromise();

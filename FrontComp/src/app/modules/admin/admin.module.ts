@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CompetenciasAdminModule, compRoutes } from './competencias-admin/competencias-admin.module';
 import { comportRoutes } from './comportamientos-admin/comportamientos-admin.module';
@@ -9,9 +9,10 @@ import { CatAdmnModule, catRoutes } from './cat-admn/cat-admn.module';
 import { EvaluacionesAdmnModule, evRoutes } from './evaluaciones-admn/evaluaciones-admn.module';
 import { TrabajadoresModule, trabRoutes } from './trabajadores/trabajadores.module';
 import { OrganiAdmnModule, organiRoutes } from './organigrama-admin/organi-admin.module';
+import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-// TODO: CompRoutes, circular dependency
-const routes: Routes = [
+// TODO: DONE
+const routes: CompRoutes = [
 	{ path: 'comportamientos', children: comportRoutes },
 	{ path: 'competencias', children: compRoutes },
 	{ path: 'niveles', children: nivRoutes },

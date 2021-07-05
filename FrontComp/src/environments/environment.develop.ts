@@ -7,4 +7,5 @@ export const environment: Environment = {
 	jwtInterval: 45000,
 	isApiUrlDynamic: false,
 	apiURLtoAdd: undefined,
+	jwtName: 'login-token',
 };

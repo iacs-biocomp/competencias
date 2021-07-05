@@ -8,14 +8,8 @@
 					<p>Nombre: {{ org.nombre }} {{ org.apellidos }}</p>
 					<p>Categoría competencial: {{ org.catComp?.id }}</p>
 				</div>
-					<!-- TODO: Usar routerLink y navegar a componente para evaluar a X persona, la persona como parametro de ruta -->
-					<button
-						type="button"
-						class="btn btn-primary"
-						[routerLink]="'eval-persona/' + org.dni"
-						>
-						EVALUAR TRABAJADOR
-					</button>
+				<!-- TODO: DONE -->
+				<button type="button" class="btn btn-primary" [routerLink]="org.dni">EVALUAR TRABAJADOR</button>
 			</div>
 		</div>
 	</div>

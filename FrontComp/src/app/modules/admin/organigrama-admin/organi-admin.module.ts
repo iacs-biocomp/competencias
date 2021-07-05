@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { OrganiGeneralView } from './general-organi-view/organigrama-admin.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
+import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-// TODO: CompRoutes, circular dependency
+// TODO: DONE
 /** Rutas relacionadas con el modulo del organigrama */
-export const organiRoutes: Routes = [
+export const organiRoutes: CompRoutes = [
 	{
 		path: '',
 		component: OrganiGeneralView,

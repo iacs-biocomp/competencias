@@ -10,4 +10,6 @@ export type Environment = {
 	apiURLtoAdd: string | undefined;
 	/** El intervalo de tiempo en `ms` en el cual se renovará el jwt si ha habido interacción del usuario */
 	jwtInterval: number;
+	/** Nombre que se le da a la cookie/objeto guardado en las cookies/localStorage (Usado para buscar luego por clave-valor)*/
+	jwtName: string;
 };

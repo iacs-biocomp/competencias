@@ -1,4 +1,4 @@
-// TODO: https://is.gd/DgGLkB reducir scss
+// TODO: DONE
 
 /* .collapse {
 	display: none;
@@ -53,20 +53,6 @@
 		height: auto;
 	}
 }
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-html {
-	font-family: arial, sans-serif;
-	font-size: 12px;
-}
-body {
-	font-family: arial, sans-serif;
-	font-size: 12px;
-}
 .site-header {
 	overflow: hidden;
 	padding: 25px 20px;
@@ -117,8 +103,6 @@ img {
 		font-size: 24px;
 		line-height: 1;
 		text-align: center;
-		-webkit-transition: all 200ms ease-in-out 0s;
-		-o-transition: all 200ms ease-in-out 0s;
 		transition: all 200ms ease-in-out 0s;
 	}
 }

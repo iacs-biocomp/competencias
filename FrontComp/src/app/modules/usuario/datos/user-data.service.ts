@@ -9,7 +9,12 @@ import { environment as cnf } from 'src/environments/environment';
 export class UserDataService {
 	constructor(private httpClient: HttpClient) {}
 
-	//TODO: Tsdoc
+	//TODO: DONE
+	/**
+	 * Api request that gets user info
+	 * @param usrnameOrObj Username or object that have username property
+	 * @returns The user info, type IUser
+	 */
 	getUserData(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<IUser> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
 		return this.httpClient.get<IUser>(`${cnf.apiURL}/users/${username}`).toPromise();

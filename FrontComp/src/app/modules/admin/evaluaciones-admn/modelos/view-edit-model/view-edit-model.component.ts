@@ -1,6 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { findSubModels, getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
+import {
+	filterNonSelectedComports,
+	findSubModel,
+	findSubModels,
+	getAllComportsOfComp,
+	getCompetOfModel,
+} from 'sharedCode/Utility';
 import { IModelBasicIndxDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, IComportamiento, INivel, ISubModel } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../../cat-admn/services/CatCompetenciales.service';
@@ -90,6 +96,8 @@ export class ViewEditModelComponent implements OnInit {
 
 	//Se redeclaran para que la vista pueda acceder a ellas
 	findSubModels = findSubModels;
+	findSubModel = findSubModel;
+	filterNonSelectedComports = filterNonSelectedComports;
 	getAllComportsOfComp = getAllComportsOfComp;
 	getCompet = getCompetOfModel;
 
@@ -115,42 +123,17 @@ export class ViewEditModelComponent implements OnInit {
 		});
 		return model as IModelBasicIndxDTO;
 	}
-	/**
-	 * @param subModels El array de submodelos en el que se busca el submodelo
-	 * @param comp La competencia usada para filtrar
-	 * @param niv El nivel que junto con la competencia hacen de filtro
-	 * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
-	 */
-	findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel): ISubModel | undefined {
-		return subModels.find(subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id);
-	}
 
 	/**Devuelve un string el cual es identificador de un elemento html que tiene la clase collapsable */
 	collapseId(compId: string, nivelCode: string) {
 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
 	}
 
-	/**
-	 * @param comp la competencia elegida para obtener los comportamientos
-	 * @param subModels submodelos para buscar la competencia
-	 * @returns los comportamientos por competencia filtrados
-	 */
-	//TODO: llevar a utility, parametrizar con IComport en vez de ISubModel
-	filterNonSelectedComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
-		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
-		/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
-		const nExcluded = 0;
-		return this.dbData.comports.filter(dbComport => {
-			if (nExcluded !== comportsOfComp.length - 1) {
-				return !comportsOfComp.find(c4filter => c4filter.id === dbComport.id);
-			} else {
-				return true;
-			}
-		});
-	}
+	//TODO: DONE
+
 	/** Setea los comportamientos que no tiene cierta competencia */
 	setComportsToShow(comp: ICompetencia, subModels: ISubModel[]): void {
-		const comportsToSet = this.filterNonSelectedComports(comp, subModels);
+		const comportsToSet = this.filterNonSelectedComports(this.dbData.comports, comp, subModels);
 		// this.comportCtl.comportsToShow = comportsToSet;
 		this.comportsToShowObs.next(comportsToSet);
 	}
@@ -233,7 +216,7 @@ export class ViewEditModelComponent implements OnInit {
 		const model = { ...this.evModel.value };
 		const compsIds = comps.map(c => c.id);
 		model.subModels = model.subModels.filter(s => compsIds.includes(s.competencia.id));
-		// TODO: Añadir submodelo vacio con las nuevas competencias
+		// TODO: Añadir submodelo vacio con las nuevas competencias, para ello modificar la interfaz ISubModel, arreglar tipos
 		this.cv.modelCompetences = comps;
 	}
 

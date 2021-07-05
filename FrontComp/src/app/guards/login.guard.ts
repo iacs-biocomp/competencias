@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
-import { JWT_NAME } from '../modules/auth/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IJwtToken } from '../modules/auth/JWTlocal.interface';
 import { Roles } from 'sharedInterfaces/Entity';
 import { JwtService } from '../services/jwt.service';
-import { CompRoute } from '../app-routing.module';
+import { CompRoute } from '../types/angular-modified-types';
+import { environment as cnf } from 'src/environments/environment';
 
 @Injectable()
 export class LoginGuard implements CanLoad {
@@ -54,7 +54,7 @@ export class LoginGuard implements CanLoad {
 	 * @returns `True` si el rol esta en el token y `false` en caso contrario
 	 */
 	hasRole(role: Roles): boolean {
-		const token: string = localStorage.getItem(JWT_NAME)!;
+		const token: string = localStorage.getItem(cnf.jwtName)!;
 		if (!token || this.jwtHelperSv.isTokenExpired(token)) {
 			return false;
 		}

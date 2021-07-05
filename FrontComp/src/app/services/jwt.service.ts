@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { IAuthTokenRes, JWT_NAME } from '../modules/auth/auth.service';
 import { IJwtToken } from '../modules/auth/JWTlocal.interface';
 import { remove as cookieRm } from 'js-cookie';
 import { environment as cnf } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LoginGuard } from '../guards/login.guard';
+import { IAuthTokenRes } from 'sharedInterfaces/DTO';
 
 @Injectable({
 	providedIn: 'root',
@@ -63,8 +63,8 @@ export class JwtService {
 
 	/**Metodo que borra el token de las cookies y del localStorage */
 	rmToken(): void {
-		cookieRm(JWT_NAME);
-		localStorage.removeItem(JWT_NAME);
+		cookieRm(cnf.jwtName);
+		localStorage.removeItem(cnf.jwtName);
 	}
 
 	/** Debe ser llamado cuando ha ocurrido un evento que representa interación del usuario  */
@@ -77,13 +77,13 @@ export class JwtService {
 	 * @param token El token firmado y codificado a settear en cookies y localStorage
 	 */
 	updateJwt(token: string): void {
-		localStorage.setItem(JWT_NAME, token);
-		document.cookie = JWT_NAME + '=' + encodeURIComponent(token);
+		localStorage.setItem(cnf.jwtName, token);
+		document.cookie = cnf.jwtName + '=' + encodeURIComponent(token);
 	}
 
 	/** Token codificado en base64 */
 	private token = () => {
-		const tkn = localStorage.getItem(JWT_NAME);
+		const tkn = localStorage.getItem(cnf.jwtName);
 		return tkn === null ? undefined : tkn;
 	};
 }
