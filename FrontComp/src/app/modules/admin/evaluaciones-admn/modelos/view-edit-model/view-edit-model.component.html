@@ -39,23 +39,24 @@
 						data-bs-parent="#accordionCompo"
 					>
 						<div class="accordion-body">
-							<!-- TODO: Errores con accordion, se pueden abrir varios niveles a la vez, error en etiquetas accordion -->
-							<div class="accordion" id="accordionLast">
+							<!-- TODO: DONE (error acordeones) -->
+							<!-- TODO: Refactor y crear otros componentes -->
+							<div class="accordion" [id]="'accordionNiveles' + i">
 								<div
 									class="accordion-item"
 									*ngFor="
 										let nivel of modoEdicion === false
 											? (dbData.niveles | haveComportFilter: evModel.value.subModels:comp)
-											: dbData.niveles;
-										let i = index
+											: dbData.niveles
 									"
 								>
-									<h2 class="accordion-header" [id]="'headerLast ' + i">
+									<h2 class="accordion-header" [id]="'headerLast' + i">
 										<div class="comports-toggle-header">
 											<button
 												class="accordion-button collapsed"
 												data-bs-toggle="collapse"
 												type="button"
+												z
 												[attr.data-bs-target]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
 												[attr.aria-controls]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
 											>
@@ -81,7 +82,7 @@
 										[id]="collapseId(comp.id, nivel.code)"
 										class="accordion-collapse collapse"
 										[attr.aria-labelledby]="'headerLast' + i"
-										data-bs-parent="#accordionLast"
+										[attr.data-bs-parent]="'#accordionNiveles' + i"
 									>
 										<div class="accordion-body">
 											<ul class="list-group">
