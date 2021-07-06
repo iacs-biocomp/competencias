@@ -81,7 +81,7 @@
 	},
 	"config": {
 		"commitizen": {
-			"path": "./CompNode/FrontComp/node_modules/cz-conventional-changelog"
+			"path": "./FrontComp/node_modules/cz-conventional-changelog"
 		}
 	}
 }

@@ -1,11 +1,2 @@
-.vscode
-.settings
-mvn.log
-.project
-bin
-.tern-project
-node_modules
-dist
-target
-.classpath
-.factorypath
+.npmrc
+.vscode/settings.json

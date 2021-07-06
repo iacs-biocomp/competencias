@@ -109,7 +109,7 @@
 	},
 	"config": {
 		"commitizen": {
-			"path": "./CompNode/back-comp/node_modules/cz-conventional-changelog"
+			"path": "./back-comp/node_modules/cz-conventional-changelog"
 		}
 	}
 }
