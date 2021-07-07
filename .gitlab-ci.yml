@@ -1,0 +1,45 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo hola
+    - whoami
+    - ifconfig
+
+test_paralel:
+  stage: test
+  only:
+    refs:
+      - develop
+  script:
+    - echo "Prueba de pnpm"
+    - pnpm -v
+    - pwd
+    - exit 0
+
+test:
+  stage: test
+  only:
+    refs:
+      - develop
+  script:
+    - echo "solo en develop"
+    - pwd
+    - exit 0
+
+deploy_dev:
+  stage: deploy
+  image: alpine
+  script:
+    - echo hola
+    - whoami
+    - ifconfig
+  dependencies:
+    - test
