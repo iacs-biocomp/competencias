@@ -1,45 +1,46 @@
 stages:
   - build
-  - test
-  - deploy
+  # - test
+  # - deploy
 
 build:
+  # image: docker:latest
+  # services:
+  #   - docker:dind
+  only:
+    refs:
+      - develop
+      - master
   stage: build
-  image: docker:latest
-  services:
-    - docker:dind
   script:
-    - echo hola
-    - whoami
-    - ifconfig
+    - cd ./scripts
+    - ./build_multi-stage.sh
+# test_paralel:
+#   stage: test
+#   only:
+#     refs:
+#       - develop
+#   script:
+#     - echo "Prueba de pnpm"
+#     - pnpm -v
+#     - pwd
+#     - exit 0
+# test:
+#   stage: test
+#   only:
+#     refs:
+#       - develop
+#   script:
+#     - echo "solo en develop"
+#     - pwd
+#     - exit 0
 
-test_paralel:
-  stage: test
-  only:
-    refs:
-      - develop
-  script:
-    - echo "Prueba de pnpm"
-    - pnpm -v
-    - pwd
-    - exit 0
-
-test:
-  stage: test
-  only:
-    refs:
-      - develop
-  script:
-    - echo "solo en develop"
-    - pwd
-    - exit 0
-
-deploy_dev:
-  stage: deploy
-  image: alpine
-  script:
-    - echo hola
-    - whoami
-    - ifconfig
-  dependencies:
-    - test
+# deploy_dev:
+#   stage: deploy
+#   image: alpine
+#   script:
+#     - echo hola
+#     - whoami
+#     - ifconfig
+#   dependencies:
+#     - test
