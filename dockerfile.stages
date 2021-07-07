@@ -1,36 +1,48 @@
-
+# Node modificado en el que se le añade el manejador de paquetes PNPM
 FROM node:alpine as base
 RUN npm i -g pnpm && \
 	pnpm config set shamefully-hoist=true
 
-FROM base AS prodDependencies
+# Imagen que tiene solo las dependencias de producción del backend
+FROM base AS backProdDependencies
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY ./back-comp/package.json ./back-comp/pnpm-lock.yaml ./
 RUN pnpm install -P
 
-FROM prodDependencies AS builder
+# Imagen que tiene todas las dependencias y construye el backend (genera el dist)
+FROM base AS backBuilder
 LABEL stage=intermediate
 WORKDIR /app
-COPY "pnpm-lock.yaml" ./
+COPY "./back-comp/pnpm-lock.yaml" ./back-comp/
 RUN pnpm fetch
-COPY ./src ./src
-COPY ["./package.json", "pnpm-lock.yaml", ".envProd", "tsconfig.build.json", "tsconfig.json", "./"]
-RUN pnpm install
-RUN mv .envProd .env &&\
+COPY ./back-comp/src ./back-comp/src
+COPY ./sharedCode ./sharedCode
+COPY ["./back-comp/package.json", "./back-comp/pnpm-lock.yaml", "./back-comp/.envProd",\
+	"./back-comp/tsconfig.build.json", "./back-comp/tsconfig.json",\
+	"./back-comp/"]
+RUN cd ./back-comp/ && pnpm install && ls -al && mv .envProd .env &&\
 	pnpm run build
 
+# Imagen que tiene todas las dependencias y construye el frontend
+FROM base AS frontBuilder
+LABEL stage=intermediate
+WORKDIR /FrontComp/src
+COPY ./FrontComp/src ./
+WORKDIR /
+COPY ./sharedCode ./sharedCode
+COPY "./FrontComp/pnpm-lock.yaml" ./FrontComp
+COPY ["./FrontComp/package.json", "./FrontComp/tsconfig.json", "./FrontComp/tsconfig.app.json", \
+	"/FrontComp/.browserslistrc", "./FrontComp/angular.json", "./FrontComp/"]
+RUN cd ./FrontComp && pnpm install
+RUN cd ./FrontComp && pnpm run build:prod
+
+# Imagen final que se copia el compilado del backend (dist), la dependencias de producción y el compilado del front
 FROM node:alpine
 WORKDIR /app
-COPY --from=prodDependencies ["/app/package.json", "/app/pnpm-lock.yaml", "./"]
-COPY --from=prodDependencies ["/app/node_modules", "./node_modules"]
-COPY --from=builder /app/dist ./dist
-
+COPY --from=backProdDependencies ["/app/package.json", "/app/pnpm-lock.yaml", "./"]
+COPY --from=backProdDependencies ["/app/node_modules", "./node_modules"]
+COPY --from=backBuilder /app/back-comp/dist ./dist
+COPY --from=backBuilder /app/back-comp/.env ./
+COPY --from=frontBuilder /FrontComp/dist/FrontComp ./ngDist
 EXPOSE 3000
 CMD [ "npm", "run", "start:prod" ]
-
-# FROM  alpine:latest AS base
-# ENV ALPINE_MIRROR "http://dl-cdn.alpinelinux.org/alpine"
-# RUN echo "${ALPINE_MIRROR}/edge/main" >> /etc/apk/repositories \
-# 	&& apk add --no-cache nodejs-current curl --repository="http://dl-cdn.alpinelinux.org/alpine/edge/community"  \
-# 	&& curl -f https://get.pnpm.io/v6.js | node - add --global pnpm \
-# 	&& pnpm config set shamefully-hoist=true
