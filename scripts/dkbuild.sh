@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd ../back-comp
 sudo docker stop nodecompetencias
 sudo docker rm nodecompetencias
 sudo docker rmi iacs/nodecompetencias:latest
