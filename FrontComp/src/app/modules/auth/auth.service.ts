@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { JwtService } from 'src/app/services/jwt.service';
 import { IAuthTokenRes, IRegisterRequestDTO, SignInDto } from 'sharedInterfaces/DTO';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 
 // TODO: DONE
 

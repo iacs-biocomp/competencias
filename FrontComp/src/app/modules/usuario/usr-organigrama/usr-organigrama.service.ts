@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IOrganigramaTrabajador } from 'sharedInterfaces/Entity';
-import { JwtService } from 'src/app/services/jwt.service';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({

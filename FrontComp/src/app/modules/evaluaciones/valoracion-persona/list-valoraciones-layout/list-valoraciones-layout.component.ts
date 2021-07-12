@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { IEvAllRequired, IValoracionToAddDTO } from 'sharedInterfaces/DTO';
 import { IEvModel, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
 import { TrabajadoresService } from 'src/app/modules/admin/trabajadores/services/trabajadores.service';
-import { JwtService } from 'src/app/services/jwt.service';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from '../../evaluaciones.service';
 import { evId } from '../../list-people-to-eval/list-people-to-eval.component';
 import { ValoracionesService } from '../../valoraciones.service';

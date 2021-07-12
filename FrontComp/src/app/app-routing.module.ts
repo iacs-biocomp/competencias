@@ -3,7 +3,7 @@ import { RouterModule, Route } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Roles } from 'sharedInterfaces/Entity';
 import { LoginGuard } from './guards/login.guard';
-import { JwtService } from './services/jwt.service';
+import { JwtService } from './services/auth/jwt.service';
 import { BaseLayoutComponent } from './shared/layout/base/base-layout.component';
 import { CompRoutes } from './types/angular-modified-types';
 

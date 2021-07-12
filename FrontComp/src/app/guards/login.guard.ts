@@ -3,9 +3,9 @@ import { CanLoad, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IJwtToken } from '../modules/auth/JWTlocal.interface';
 import { Roles } from 'sharedInterfaces/Entity';
-import { JwtService } from '../services/jwt.service';
-import { CompRoute } from '../types/angular-modified-types';
 import { environment as cnf } from 'src/environments/environment';
+import { JwtService } from '../services/auth/jwt.service';
+import { CompRoute } from '../types/angular-modified-types';
 
 @Injectable()
 export class LoginGuard implements CanLoad {

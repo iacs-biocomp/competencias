@@ -4,7 +4,7 @@ import { MenuComponent } from './menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { LoginGuard } from '../guards/login.guard';
 import { SessionComponent } from './session/session.component';
-import { JwtService } from '../services/jwt.service';
+import { JwtService } from '../services/auth/jwt.service';
 import { BaseLayoutComponent } from './layout/base/base-layout.component';
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtService } from 'src/app/services/jwt.service';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from '../evaluaciones.service';
 import { Interval, isWithinInterval, parseISO } from 'date-fns';
 import { IEvAllRequired } from 'sharedInterfaces/DTO';

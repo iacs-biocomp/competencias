@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginGuard } from 'src/app/guards/login.guard';
-import { JwtService } from 'src/app/services/jwt.service';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 
 @Component({
 	selector: 'app-session',

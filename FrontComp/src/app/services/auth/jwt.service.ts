@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { IJwtToken } from '../modules/auth/JWTlocal.interface';
+import { IJwtToken } from '../../modules/auth/JWTlocal.interface';
 import { remove as cookieRm } from 'js-cookie';
 import { environment as cnf } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { LoginGuard } from '../guards/login.guard';
 import { IAuthTokenRes } from 'sharedInterfaces/DTO';
+import { LoginGuard } from '../../guards/login.guard';
 
 @Injectable({
 	providedIn: 'root',

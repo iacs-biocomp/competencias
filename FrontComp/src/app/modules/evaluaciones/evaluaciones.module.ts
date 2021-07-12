@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EvaluacionesService } from './evaluaciones.service';
 import { HttpClient } from '@angular/common/http';
-import { JwtService } from 'src/app/services/jwt.service';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 import { ValoracionesService } from './valoraciones.service';
 import { evId, ListPeopleToEvalComponent } from './list-people-to-eval/list-people-to-eval.component';
 import { ValoracionesEvPersonaComponent } from './valoracion-persona/valoraciones-ev-persona/valoraciones-ev-persona.component';
