@@ -149,11 +149,12 @@ export class NewEvModelComponent implements OnInit {
 		});
 	}
 
-	/** Selecciona la categoría competentencial que va a tener el modelo
+	/** Selecciona la categoría competencial que va a tener el modelo
 	 *
 	 * @param catCompet la categoría competencial elegida
 	 */
 	selectCatComp(catCompet: ICatComp) {
+		//LOG: `se selecciona la catCompetencial ${catCompet}`
 		this.dbData.modelToAdd.catComp = catCompet;
 	}
 
@@ -163,6 +164,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comp La competencia que se usa para buscar los subModelos que la poseen
 	 */
 	toggleComp(comp: ICompetencia) {
+		//LOG: `se buscan los submodelos con esa comp ${comp}`
 		const _modelToAdd = this.dbData.modelToAdd;
 		console.log(this.findSubModels(_modelToAdd.subModels, comp));
 		if (this.findSubModels(_modelToAdd.subModels, comp).length === 0) {
@@ -186,6 +188,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comport comportamiento seleccionado
 	 */
 	selectComportamiento(comport: IComportamiento) {
+		//LOG: `se seleccionan los comports del submodelo ${comport}`
 		const arrToPush = this.cv.comportsSelected;
 		const index = this.cv.comportsSelected.indexOf(comport);
 		if (index === -1) {
@@ -202,6 +205,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param compet competencia seleccionada
 	 */
 	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
+		//LOG: `se selecciona el nivel objetivo del modelo ${nivel}, ${compet}`
 		const index = this.cv.competenciasSelect.indexOf(compet);
 		this.cv.competenciasSelect[index].nivObjetivo = nivel;
 	}
@@ -235,6 +239,7 @@ export class NewEvModelComponent implements OnInit {
 	 * Va añadiendo los comportamientos que se seleccionan a cv
 	 */
 	addAllComports(): void {
+		//LOG: `se añaden los comports seleccionados`
 		const cSelected = this.cv.compSelected;
 		const nivSelected = this.cv.nivSelected;
 		if (!cSelected || !nivSelected) {
@@ -251,6 +256,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comport El comportamiento que se añade a esa comp con ese nivel
 	 */
 	addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
+		//LOG: `se muestran más comportamientos al darle a click`
 		let matchSubModel = this.dbData.modelToAdd.subModels.find(
 			x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
 		);
@@ -277,6 +283,7 @@ export class NewEvModelComponent implements OnInit {
         },
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
+		//LOG: `se muestran más comportamientos al darle a click`
 		const _model = this.dbData.modelToAdd;
 		const subModel = this.findSubModelByCompNiv(_model.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
@@ -290,6 +297,8 @@ export class NewEvModelComponent implements OnInit {
 	 * @returns Un array de comportamientos que esa competencia aun no tiene asociados
 	 */
 	getRemainingComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
+		//LOG: `se muestran más comportamientos al darle a click`
+
 		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
 		console.log(comportsOfComp);
 		const comports = this.dbData.comports.filter(
@@ -305,6 +314,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param evModel
 	 */
 	async saveEvModel(evModel: IModelPreDTO) {
+		//LOG: `se muestran más comportamientos al darle a click`
 		if (!evModel.catComp) {
 			return alert('Contacte con un programador');
 		}

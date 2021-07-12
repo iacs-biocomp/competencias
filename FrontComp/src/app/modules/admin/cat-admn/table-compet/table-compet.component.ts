@@ -29,6 +29,7 @@ export class TableCatCompComponent implements OnInit {
 	 * Actualiza las categorías competenciales de manera asincrona
 	 */
 	async updateCatCompView(): Promise<void> {
+		//LOG: `se actualiza la vista de las catCompetenciales`
 		this.catComps = await this.catCompService.getAll();
 	}
 
@@ -38,6 +39,7 @@ export class TableCatCompComponent implements OnInit {
 	 * @param row La catComp a borrar
 	 */
 	deleteCatCompToAdd(cComp: ICatComp): void {
+		//LOG: `se elimina una catComp ${cComp}`
 		this.catCompToAdd.splice(this.catCompToAdd.indexOf(cComp), 1);
 	}
 
@@ -45,6 +47,7 @@ export class TableCatCompComponent implements OnInit {
 	 * Anade una categoría competencial a la lista catCompToAdd (cComps no grabadas en la bbdd)
 	 */
 	newEmptyCatComp(): void {
+		//LOG: `se añade una catComp vacia a la lista de catCompetenciales`
 		this.catCompToAdd.push({
 			id: '',
 			description: '',
@@ -58,6 +61,7 @@ export class TableCatCompComponent implements OnInit {
 	 * @param send	`true` si se quiere mandar esa categoria competencia al backend `false` si no
 	 */
 	async editingCatComp(catComp: ICatCompetEdit, editing: boolean, send: boolean): Promise<void> {
+		//LOG: `se edita una catComp ${catComp}, ${editing}, ${send}`
 		catComp.editing = editing;
 		if (send) {
 			delete catComp.editing;
@@ -72,6 +76,7 @@ export class TableCatCompComponent implements OnInit {
 	 * @returns Una promesa void
 	 */
 	async persistCatComp(catComp: ICCompAddDTO): Promise<void> {
+		//LOG: `se persiste una catComp ${catComp}`
 		const guardado = await this.catCompService.add(catComp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
@@ -87,6 +92,7 @@ export class TableCatCompComponent implements OnInit {
 	 * @returns Una promesa de tipo void
 	 */
 	async deleteCatComp(catComp: ICatComp) {
+		//LOG: `se elimina una catComp ${catComp}`
 		const borrado = await this.catCompService.delete(catComp);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets

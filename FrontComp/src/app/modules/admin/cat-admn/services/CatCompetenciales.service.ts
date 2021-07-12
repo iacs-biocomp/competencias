@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICCompAddDTO, ICCompDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
-
 @Injectable({ providedIn: 'root' })
 export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient) {}
 
 	public async getAll(): Promise<ICCompDTO[]> {
+		//LOG: httpGet a ${apiUrlReq} obteniendo todas las catComp
 		return this.httpClient.get<ICCompDTO[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
@@ -19,7 +19,9 @@ export class CatCompetencialesService {
 	 * @throws TODO: complete
 	 */
 	async delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<true> {
+		//LOG: `se elimina una catComp ${cComp}`
 		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
+		//LOG: httpDelete a ${apiUrlReq} borrando la catComp ${catCompId}
 		return this.httpClient.delete<true>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
 	}
 
@@ -31,6 +33,7 @@ export class CatCompetencialesService {
 	 *
 	 */
 	add(catComp: ICCompAddDTO): Promise<true> {
+		//LOG: httpPost a ${apiUrlReq} añadiendo la catComp ${catComp}
 		return this.httpClient.post<true>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 
@@ -42,6 +45,7 @@ export class CatCompetencialesService {
 	 *
 	 */
 	edit(catComp: ICCompDTO): Promise<true> {
+		//LOG: httpPut a ${apiUrlReq} editando la catComp ${catComp}
 		return this.httpClient.put<true>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 }

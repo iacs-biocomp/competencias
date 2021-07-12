@@ -21,6 +21,7 @@ export class ListEvComponent implements OnInit {
 	}
 
 	async updateEvalView(): Promise<void> {
+		//LOG: `se actualiza una evaluacion`
 		this.evaluaciones = await this.evSv.getAll();
 	}
 
@@ -28,6 +29,7 @@ export class ListEvComponent implements OnInit {
 	 * Gets all the created evaluations
 	 */
 	async newEvSaved(updateEvalView: ListEvComponent['updateEvalView']) {
+		//LOG: `se guarda una evaluacion ${updateEvalView}`
 		await updateEvalView();
 	}
 }

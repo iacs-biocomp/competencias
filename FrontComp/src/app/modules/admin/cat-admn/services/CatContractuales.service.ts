@@ -9,6 +9,7 @@ export class CatContractService {
 	constructor(private httpClient: HttpClient) {}
 
 	getAll(): Promise<ICContrAndCCompDTO[]> {
+		//LOG: httpGet a ${apiUrlReq} obteniendo todas las catContractuales
 		return this.httpClient.get<ICContrAndCCompDTO[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
 	}
 
@@ -20,6 +21,7 @@ export class CatContractService {
 	 */
 	delete(cContr: ICatContr['id'] | Pick<ICatContr, 'id'>): Promise<boolean> {
 		const catContrId = typeof cContr === 'string' ? cContr : cContr.id;
+		//LOG: httpDelete a ${apiUrlReq} borrando la catContractual con id ${id}
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${catContrId}`).toPromise();
 	}
 
@@ -30,6 +32,7 @@ export class CatContractService {
 	 * @throws TODO: complete
 	 */
 	add(catContract: ICContrAddDTO): Promise<boolean> {
+		//LOG: httpPost a ${apiUrlReq} añadiendo nueva catContractual ${catContract}
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 
@@ -41,6 +44,7 @@ export class CatContractService {
 	 * TODO: DONE, testear
 	 */
 	update(catContract: ICContrAndCCompDTO): Promise<true> {
+		//LOG: httpPut a ${apiUrlReq} actualizando la catContractual ${catContract}
 		return this.httpClient.put<true>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 }

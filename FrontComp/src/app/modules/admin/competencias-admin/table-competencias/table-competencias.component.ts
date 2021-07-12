@@ -30,6 +30,7 @@ export class TableCompetenciasComponent implements OnInit {
 
 	/** Actualiza la vista de competencias */
 	async updateCompeView(): Promise<void> {
+		//LOG: `se actualiza la vista de las comps`
 		this.compets = await this.comptService.getAll();
 		console.log('update');
 	}
@@ -41,6 +42,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * @param competencia la competencia que queremos intentar borrar
 	 */
 	canDelete<T extends Pick<ICompetencia, 'createdAt'>>(competencia: T): boolean {
+		//LOG: `comprueba si se puede borrar la comp o no ${competencia}`
 		return competencia.createdAt <= this.OneWeekAgo ? false : true;
 	}
 
@@ -49,6 +51,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * @param row competencia que se quiere borrar
 	 */
 	deleteCompeToAdd(row: ICompAddDTO): void {
+		//LOG: `se elimina una comp ${row}`
 		const indx = this.compeToAdd.indexOf(row);
 		this.compeToAdd.splice(indx, 1);
 	}
@@ -57,6 +60,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * fecha de creacion (puede ser undefined)
 	 */
 	newEmptyCompe(): void {
+		//LOG: `se crea una comp vacia`
 		this.compeToAdd.push({
 			id: '',
 			descripcion: '',
@@ -70,6 +74,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * @param send	`true` si se quiere mandar esa competencia al backend `false` si no
 	 */
 	editingCompt(compet: IComptEdit, editing: boolean, send: boolean): void {
+		//LOG: `se edita una comp ${compet}, ${editing}, ${send}`
 		compet.editing = editing;
 		if (send) {
 			delete compet.editing;
@@ -84,6 +89,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 */
 	async persistCompe(competencia: ICompAddDTO): Promise<void> {
 		const guardado = await this.comptService.add(competencia);
+		//LOG: `se periste una comp ${competencia}`
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.deleteCompeToAdd(competencia);
@@ -97,6 +103,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * @param competencia la competencia a borrar
 	 */
 	async deleteCompe(competencia: ICompetencia) {
+		//LOG: `se elimina una comp ${competencia}`
 		const borrado = await this.comptService.delete(competencia);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
