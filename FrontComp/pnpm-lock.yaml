@@ -52,6 +52,7 @@ specifiers:
   keycloak-angular: ^8.2.0
   keycloak-js: ^13
   ng-sidebar: ^9.4.2
+  ngx-logger: ^4.2.2
   postcss: ^8.3.5
   protractor: ~7.0.0
   purgecss: ^4.0.3
@@ -85,7 +86,8 @@ dependencies:
   js-cookie: 2.2.1
   keycloak-angular: 8.2.0_179c02f4ed4e6ae5cce0ad4ddab99f2f
   keycloak-js: 13.0.1
-  ng-sidebar: 9.4.2_6efa59bcccafe8909b294d693ddcd62f
+  ng-sidebar: 9.4.2_09ab570107e4e7adac1eb322d034195d
+  ngx-logger: 4.2.2_801f9937061df69c5bedc4e3d9094b47
   rellax: 1.12.1
   rxjs: 6.6.7
   ts-toolbelt: 9.6.0
@@ -6428,6 +6430,17 @@ packages:
       toidentifier: 1.0.0
     dev: true
 
+  /http-errors/1.7.3:
+    resolution: {integrity: sha512-ZTTX0MWrsQ2ZAhA1cejAwDLycFsd7I7nVtnkT3Ol0aqodaKW+0CTZDQ1uBv5whptCnc8e8HeRRJxRs0kmm/Qfw==}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      depd: 1.1.2
+      inherits: 2.0.4
+      setprototypeof: 1.1.1
+      statuses: 1.5.0
+      toidentifier: 1.0.0
+    dev: true
+
   /http-parser-js/0.5.3:
     resolution: {integrity: sha512-t7hjvef/5HEK7RWTdUzVUhl8zkEu+LlaE0IYzdMuvbSDipxBRpOn4Uhw8ZyECEa808iVT8XCjzo6xmYt4CiLZg==}
     dev: true
@@ -8065,6 +8078,20 @@ packages:
     dependencies:
       '@angular/common': 12.1.2_@angular+core@12.1.2+rxjs@6.6.7
       '@angular/core': 12.1.2_rxjs@6.6.7+zone.js@0.11.4
+    dev: false
+
+  /ngx-logger/4.2.2_801f9937061df69c5bedc4e3d9094b47:
+    resolution: {integrity: sha512-77YtD80b6of0tU+6l7ztU1RHLjHHjEcVLsRrf68N9EQwewvoIv3SJsV+l+dpRxDz6dFj8/24gtJcpHClZnXBww==}
+    peerDependencies:
+      '@angular/common': '>6.0.0'
+      '@angular/core': '>6.0.0'
+      rxjs: '>6.0.0'
+    dependencies:
+      '@angular/common': 12.1.1_@angular+core@12.1.1+rxjs@6.6.7
+      '@angular/core': 12.1.1_rxjs@6.6.7+zone.js@0.11.4
+      rxjs: 6.6.7
+      tslib: 2.3.0
+      vlq: 1.0.1
     dev: false
 
   /nice-try/1.0.5:
@@ -10165,7 +10192,7 @@ packages:
       escape-html: 1.0.3
       etag: 1.8.1
       fresh: 0.5.2
-      http-errors: 1.7.2
+      http-errors: 1.7.3
       mime: 1.6.0
       ms: 2.1.1
       on-finished: 2.3.0
@@ -11373,6 +11400,10 @@ packages:
       core-util-is: 1.0.2
       extsprintf: 1.3.0
     dev: true
+
+  /vlq/1.0.1:
+    resolution: {integrity: sha512-gQpnTgkubC6hQgdIcRdYGDSDc+SaujOdyesZQMv6JlfQee/9Mp0Qhnys6WxDWvQnL5WZdT7o2Ul187aSt0Rq+w==}
+    dev: false
 
   /void-elements/2.0.1:
     resolution: {integrity: sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=}

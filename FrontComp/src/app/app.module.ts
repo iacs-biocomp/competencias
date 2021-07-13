@@ -13,11 +13,19 @@ import { registerLocaleData } from '@angular/common';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularDateHttpInterceptor } from './interceptors/date-interceptor';
+import { LoggerLevel0_0_1, LoggerModule } from './shared/log/logger.module';
 registerLocaleData(localeEs);
 
 @NgModule({
 	declarations: [AppComponent, Error404Component],
-	imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, SharedModule],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		AppRoutingModule,
+		HttpClientModule,
+		SharedModule,
+		LoggerModule.forRoot({ level: LoggerLevel0_0_1.INFO, loggerType: 'CONSOLE', timeToSendToBackend: 5 }),
+	],
 	exports: [SharedModule],
 	providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, AngularDateHttpInterceptor],
 	bootstrap: [AppComponent],
