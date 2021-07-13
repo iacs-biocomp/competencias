@@ -4,6 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { SignInDto } from 'sharedInterfaces/DTO';
 
+enum ServerErrorsLogin {
+	NotConnected = 0,
+	Unauthorized = 401,
+}
+type ServerResponse = {
+	status: ServerErrorsLogin;
+};
+
 /** Formulario extendido para forzar los tipos de los value de los controles */
 type ExtFormGroup = FormGroup & {
 	controls: {
@@ -61,7 +69,16 @@ export class LoginComponent implements OnInit {
 			try {
 				await this.authService.sendLoginInfo(body);
 				this.router.navigate([this.returnUrl]);
-			} catch (error) {
+			} catch (error: unknown) {
+				let err = error as ServerResponse;
+				if (err.status === ServerErrorsLogin.NotConnected) {
+					console.log('No se ha podido conectar con el servidor');
+				} else {
+					console.log('Contraseña y/o Usuario incorrectos');
+				}
+
+				// TODO: Usar en los errores https://is.gd/zecX4U
+				console.log(error);
 				this.loginForm.reset();
 				// TODO: Mirar el tipo de error e imprimir una u otra cosa según el error
 				// (Timed out/ Connection refused/ JWT expired/ Invalid password)

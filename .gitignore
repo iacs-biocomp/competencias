@@ -1,2 +1,4 @@
 .npmrc
 .vscode/settings.json
+node_modules
+dist
