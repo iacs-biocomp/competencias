@@ -5,6 +5,7 @@ specifiers:
   '@compodoc/compodoc': ^1.1.13
   '@mapbox/node-pre-gyp': ^1.0.5
   '@nestjs-modules/mailer': ^1.6.0
+  '@nestjs/axios': ^0.0.1
   '@nestjs/cli': ^8.0.2
   '@nestjs/common': ^8.0.1
   '@nestjs/core': ^8.0.1
@@ -66,6 +67,7 @@ dependencies:
   '@aml360/nestjs-compression': 6.0.103_@nestjs+common@8.0.1
   '@mapbox/node-pre-gyp': 1.0.5
   '@nestjs-modules/mailer': 1.6.0_1d3982a3146285faca229314653bb7a9
+  '@nestjs/axios': 0.0.1_06bfbc76822bda7aae0377337a16bb51
   '@nestjs/common': 8.0.1_e911b02ebc86a0e92191a7b133b2fcd0
   '@nestjs/core': 8.0.1_8ab32fdcf61f8b5b474bf0c201c78c30
   '@nestjs/jwt': 8.0.0_@nestjs+common@8.0.1
@@ -1814,6 +1816,21 @@ packages:
       pug: 3.0.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@nestjs/axios/0.0.1_06bfbc76822bda7aae0377337a16bb51:
+    resolution: {integrity: sha512-6H06VmDp5mmjjjLgglEdtzwtmli5pz5UdcY7E9v5SPoz5KeM4uLQvOF5ZJ1S/R4wub0WAqXUQL8mwuXxdjKIQQ==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0
+      reflect-metadata: ^0.1.12
+      rxjs: ^6.0.0 || ^7.0.0
+    dependencies:
+      '@nestjs/common': 8.0.1_e911b02ebc86a0e92191a7b133b2fcd0
+      axios: 0.21.1
+      reflect-metadata: 0.1.13
+      rxjs: 7.2.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@nestjs/cli/8.0.2:
@@ -5669,6 +5686,17 @@ packages:
       setprototypeof: 1.1.1
       statuses: 1.5.0
       toidentifier: 1.0.0
+    dev: false
+
+  /http-errors/1.7.3:
+    resolution: {integrity: sha512-ZTTX0MWrsQ2ZAhA1cejAwDLycFsd7I7nVtnkT3Ol0aqodaKW+0CTZDQ1uBv5whptCnc8e8HeRRJxRs0kmm/Qfw==}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      depd: 1.1.2
+      inherits: 2.0.4
+      setprototypeof: 1.1.1
+      statuses: 1.5.0
+      toidentifier: 1.0.0
 
   /http-parser-js/0.5.3:
     resolution: {integrity: sha512-t7hjvef/5HEK7RWTdUzVUhl8zkEu+LlaE0IYzdMuvbSDipxBRpOn4Uhw8ZyECEa808iVT8XCjzo6xmYt4CiLZg==}
@@ -8703,7 +8731,7 @@ packages:
       escape-html: 1.0.3
       etag: 1.8.1
       fresh: 0.5.2
-      http-errors: 1.7.2
+      http-errors: 1.7.3
       mime: 1.6.0
       ms: 2.1.1
       on-finished: 2.3.0

@@ -31,6 +31,7 @@
 		"@aml360/nestjs-compression": "^6.0.103",
 		"@mapbox/node-pre-gyp": "^1.0.5",
 		"@nestjs-modules/mailer": "^1.6.0",
+		"@nestjs/axios": "^0.0.1",
 		"@nestjs/common": "^8.0.1",
 		"@nestjs/core": "^8.0.1",
 		"@nestjs/jwt": "^8.0.0",
