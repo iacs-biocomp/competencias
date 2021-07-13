@@ -1,0 +1,49 @@
+# Node modificado en el que se le añade el manejador de paquetes PNPM
+FROM node:alpine as base
+RUN npm i -g pnpm && \
+	pnpm config set shamefully-hoist=true
+
+# Store de pnpm con todas las dependencias (producción y desarrollo) del back-front
+FROM base as back-front_Store
+WORKDIR /cacheDeps
+COPY ./back-comp/pnpm-lock.yaml ./back-comp/
+COPY ./FrontComp/pnpm-lock.yaml ./FrontComp/
+RUN cd ./back-comp && pnpm fetch && cd ../FrontComp && pnpm fetch && cd ../.. && rm -rf cacheDeps
+
+
+# Imagen que tiene solo las dependencias de producción del backend
+FROM back-front_Store AS backBuilder
+LABEL stage=intermediate
+WORKDIR /srcBack
+COPY ./back-comp/pnpm-lock.yaml ./back-comp/
+# RUN pnpm fetch
+COPY ./back-comp ./back-comp
+COPY ./sharedCode ./sharedCode
+WORKDIR /srcBack/back-comp
+RUN pnpm i --offline &&\
+	mv .envProd .env &&\
+	pnpm run build
+RUN pnpm i -P --offline &&\
+	rm -rf *
+
+# Imagen que tiene todas las dependencias y construye el frontend
+FROM back-front_Store AS frontBuilder
+LABEL stage=intermediate
+WORKDIR /FrontComp/src
+COPY ./FrontComp/src ./
+WORKDIR /
+COPY ./sharedCode ./sharedCode
+COPY "./FrontComp/pnpm-lock.yaml" ./FrontComp
+COPY ["./FrontComp/package.json", "./FrontComp/tsconfig.json", "./FrontComp/tsconfig.app.json", \
+	"/FrontComp/.browserslistrc", "./FrontComp/angular.json", "./FrontComp/"]
+RUN cd ./FrontComp && pnpm install
+RUN cd ./FrontComp && pnpm run build:prod
+
+# Imagen final que se copia el compilado del backend (dist), la dependencias de producción y el compilado del front
+FROM node:alpine
+WORKDIR /app
+COPY --from=backBuilder ./srcBack/back-comp ./
+COPY --from=frontBuilder ./FrontComp/dist/FrontComp ./ngDist
+RUN ls -al
+EXPOSE 3000
+CMD [ "npm", "run", "start:prod" ]
