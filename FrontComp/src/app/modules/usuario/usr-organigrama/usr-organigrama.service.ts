@@ -15,6 +15,7 @@ export class UsrOrganigramaService {
 	 * @returns The user organization chart type {@link IOrganigramaTrabajadorDTO}
 	 */
 	organigramaUsr(): Promise<IOrganigramaTrabajadorDTO> {
+		// LOG: organigramaUsrLlamado
 		const token = this.jwtSv.getDecodedToken();
 		return this.httpClient
 			.get<IOrganigramaTrabajadorDTO>(`${cnf.apiURL}/organigrama/${token.username}`)

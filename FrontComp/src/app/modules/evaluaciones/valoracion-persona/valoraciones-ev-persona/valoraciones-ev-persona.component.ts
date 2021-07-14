@@ -51,6 +51,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	getCompetOfModel = getCompetOfModel;
 
 	ngOnInit(): void {
+		// LOG: Inicializando ValoracionesEvPersonaComponent
 		console.log(this.evModelObs.value);
 		console.log(this.savedVals.value);
 		this.evModelObs.subscribe(evModel => {
@@ -61,9 +62,11 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 				}),
 			};
 		});
+		// LOG: ValoracionesEvPersonaComponent inicializado
 	}
 
 	ngOnDestroy(): void {
+		// LOG: destruyendo ValoracionesEvPersonaComponent
 		this.subs.forEach(sub => sub.unsubscribe());
 	}
 
@@ -95,7 +98,9 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 		comp: ICompetencia,
 		comport: IComportamiento,
 	): IValoracion | undefined {
-		return vals.find(val => val.comp.id === comp.id && val.comport.id === comport.id);
+		const [compId, comportId] = [comp.id, comport.id];
+		// LOG: Buscando valoracion con compId: ${compId} y comportId: ${comportId}
+		return vals.find(val => val.comp.id === compId && val.comport.id === comportId);
 	}
 
 	/**
@@ -103,7 +108,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	 * busca por el id del formulario y recoge las valoraciones de los comportamientos,
 	 * construye el objeto IValoracion para enviarlo, lo pushea al array y lo emite al padre
 	 */
-	async emitValoraciones() {
+	async emitValoraciones(): Promise<void> {
 		const valoracionesAdd: NotCompletedVal[] = [];
 		await Promise.all([
 			this.cv.compsYComports.map<Promise<void>[]>(comp =>

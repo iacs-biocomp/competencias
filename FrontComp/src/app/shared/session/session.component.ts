@@ -14,12 +14,15 @@ export class SessionComponent implements OnInit {
 	constructor(private jwtService: JwtService, private router: Router) {}
 
 	ngOnInit(): void {
+		// LOG:
 		this.username = this.jwtService.getDecodedToken().username;
 	}
 	/** Función que cierra sesión (Borra el token de las cookies y localStorage), redirige al login y recarga la pagina */
 	closeSession(): void {
 		this.jwtService.rmToken();
+		// LOG: navegando
 		this.router.navigate([LoginGuard.loginRoute]);
+		// LOG: recargando pagina
 		//Recarga la página para asi no tener problemas con el cache de la aplicación
 		location.reload();
 	}

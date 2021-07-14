@@ -24,6 +24,7 @@ export class JwtService {
 	 * & Ha ocurrido interación del usuario
 	 */
 	async refreshToken() {
+		// LOG: llamado refresh token
 		const tkn = this.token();
 		if (!tkn) {
 			return;
@@ -50,6 +51,7 @@ export class JwtService {
 	 * @returns El token de tipo `IJwtToken` descodificado
 	 */
 	getDecodedToken(): IJwtToken {
+		// LOG: obteniendo token decodificado
 		return this.jwtHelper.decodeToken<IJwtToken>(this.token());
 	}
 
@@ -57,6 +59,7 @@ export class JwtService {
 	 * @returns jwt as string or undefined.
 	 */
 	getToken(): string | undefined {
+		// LOG: logar token
 		return this.token();
 	}
 
@@ -68,6 +71,7 @@ export class JwtService {
 
 	/** Debe ser llamado cuando ha ocurrido un evento que representa interación del usuario  */
 	refreshEvent(): void {
+		// LOG: refresh event called
 		this.refresh.eventOcurred = true;
 	}
 

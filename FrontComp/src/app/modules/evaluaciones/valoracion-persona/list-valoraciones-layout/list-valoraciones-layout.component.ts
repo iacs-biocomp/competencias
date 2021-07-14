@@ -57,6 +57,7 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	 * @param allVals Array de todas las valoraciones, sin id (a actualizar y añadir)
 	 */
 	async saveValoraciones(allVals: NotCompletedVal[]): Promise<void> {
+		// TODO: Refactor (reducir complejidad trozeando la función)
 		const alreadySavedVals = this.savedValsObs.value;
 		/** Fn de busqueda en el array de alreadySaved, si se niega y filtra se consiguen las nuevas Valoraciones,
 		 *  si se niega 2 veces las ya creadas pero actualizadas */
@@ -76,6 +77,7 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 				})
 				.filter(val => !!val) as IValoracion[],
 		]);
+		// LOG: Se van a guardar las valoraciones ${newVals} y a actualizar las valoraciones ${updatedVals}
 		newVals.forEach(v => this.valSv.add(v));
 		updatedVals.forEach(v => this.valSv.update(v));
 	}

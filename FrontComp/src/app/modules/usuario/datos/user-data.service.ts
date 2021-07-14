@@ -18,6 +18,7 @@ export class UserDataService {
 	 */
 	getUserData(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<IUserDTO> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
+		// LOG: obteniendo datos del usuario ${username}
 		return this.httpClient.get<IUserDTO>(`${cnf.apiURL}/users/${username}`).toPromise();
 	}
 }
