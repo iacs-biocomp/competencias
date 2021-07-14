@@ -7,7 +7,6 @@ import { TrabajadoresService } from './services/trabajadores.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-// TODO: DONE
 /** Rutas relacionadas con el modulo de trabajadores */
 export const trabRoutes: CompRoutes = [
 	{

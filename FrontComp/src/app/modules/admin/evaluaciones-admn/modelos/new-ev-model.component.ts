@@ -221,7 +221,7 @@ export class NewEvModelComponent implements OnInit {
 	 * Comprueba que las vistas del modelo pueden moverse izquierda y derecha si existe otra vista contigua
 	 *
 	 */
-	//TODO: los numeros no pueden ser estáticos
+	//TODO: [7]{N2} los numeros no pueden ser estáticos
 	move(derecha: boolean) {
 		if (derecha && this.current < 3) {
 			this.current++;
@@ -313,7 +313,7 @@ export class NewEvModelComponent implements OnInit {
 		try {
 			saved = await this.evModelSv.save(evModel as IModelDTO, true);
 		} catch (err) {
-			// TODO: En todas las excepciones del front mandar un log con todos los datos al backend (Crear servicio provided in root)
+			//! LOG
 		}
 		if (!saved) {
 			alert(

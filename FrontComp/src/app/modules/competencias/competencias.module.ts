@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 
 const routes: CompRoutes = [{ path: '', component: CurrCompetComponent }];
 
-// TODO: DONE, revisar
 // ?? tal vez cambiar nombre e incluir en otro modulo
 /**
  * Modulo destinado a mostrar datos sobre las competencias (actuales pasadas etc...) Lo pueden ver los usuarios.

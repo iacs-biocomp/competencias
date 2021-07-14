@@ -129,8 +129,6 @@ export class ViewEditModelComponent implements OnInit {
 		return `coll${compId.replace('\u0027', '')}${nivelCode}`;
 	}
 
-	//TODO: DONE
-
 	/** Setea los comportamientos que no tiene cierta competencia */
 	setComportsToShow(comp: ICompetencia, subModels: ISubModel[]): void {
 		const comportsToSet = this.filterNonSelectedComports(this.dbData.comports, comp, subModels);
@@ -216,7 +214,7 @@ export class ViewEditModelComponent implements OnInit {
 		const model = { ...this.evModel.value };
 		const compsIds = comps.map(c => c.id);
 		model.subModels = model.subModels.filter(s => compsIds.includes(s.competencia.id));
-		// TODO: Añadir submodelo vacio con las nuevas competencias, para ello modificar la interfaz ISubModel, arreglar tipos
+		// TODO: [5]{N2} Añadir submodelo vacio con las nuevas competencias, para ello modificar la interfaz ISubModel, arreglar tipos
 		this.cv.modelCompetences = comps;
 	}
 

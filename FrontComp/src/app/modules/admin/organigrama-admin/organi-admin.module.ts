@@ -6,7 +6,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-// TODO: DONE
 /** Rutas relacionadas con el modulo del organigrama */
 export const organiRoutes: CompRoutes = [
 	{

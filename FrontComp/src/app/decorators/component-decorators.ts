@@ -1,5 +1,4 @@
 /**
- * TODO: HECHO
  * @param target el objeto al que se la añade la propiedad
  * @param propertyKey la propiedad requerida para añadirle al objeto
  */

@@ -28,7 +28,6 @@ export class ValoracionesService {
 	 * @param val La valoración sin el ID con comp, comport y puntuación.
 	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
 	 * @throws Lanza excepcion si no se ha encontrado la valoracion
-	 * TODO: HECHO
 	 */
 	async add(val: IValoracionToAddDTO): Promise<boolean> {
 		if (!val){
@@ -42,7 +41,6 @@ export class ValoracionesService {
 	 * @param val La valoración con el ID y la puntuación actualizada
 	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
 	 * @throws Lanza excepcion si no se ha encontrado la valoracion
-	 * TODO: HECHO
 	 */
 	async update(val: IValoracion): Promise<boolean> {
 		if (!val){

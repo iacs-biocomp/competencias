@@ -21,7 +21,6 @@ const routes: CompRoutes = [
 ];
 
 /**
- * TODO: HECHO
  * Modulo destinado a la autenticacion de los usuarios (login y registro)
  */
 @NgModule({

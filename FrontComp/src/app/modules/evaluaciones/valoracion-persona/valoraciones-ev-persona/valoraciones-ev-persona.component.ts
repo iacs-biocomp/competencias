@@ -109,7 +109,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 				comp.comports.map(async comport => {
 					/** id del formulario se forma con 'form', el id de la competencia y el id del comportamiento */
 					const id = 'form' + comp.id + comport.id;
-					//TODO: Refactor, usar reactiveForms o similar
+					//TODO: [3]{N2} Refactor, usar reactiveForms o similar
 					/** Html form with radiobtn checked value */
 					const form = document.getElementById(id) as any;
 					const resultadoStr = form?.elements.values.value as string;

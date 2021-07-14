@@ -6,7 +6,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-// TODO: DONE
 /** Rutas relacionadas con el subModulo de comportamientos */
 export const nivRoutes: CompRoutes = [
 	{

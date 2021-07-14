@@ -1,8 +1,9 @@
 <h1>Mi organigrama</h1>
 <div class="container-fluid">
 	<div class="row">
-		<div class="column" *ngIf="miOrganigramaData">
+		<div class="column" *ngIf="!!miOrganigramaData">
 			<div class="card">
+				<!-- TODO: [11]{N1} Refactor, añadir css y mejorar la visualización  -->
 				<h2>Mis Superiores:</h2>
 				<p *ngIf="miOrganigramaData.superiores.length == 0">No tienes superiores</p>
 				<p *ngFor="let superior of miOrganigramaData.superiores">{{ superior.nombre }}</p>

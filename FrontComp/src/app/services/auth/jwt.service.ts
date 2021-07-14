@@ -28,7 +28,6 @@ export class JwtService {
 		if (!tkn) {
 			return;
 		}
-
 		if (this.jwtHelper.getTokenExpirationDate(tkn)! < new Date()) {
 			this.rmToken();
 			this.router.navigate([LoginGuard.loginRoute], {

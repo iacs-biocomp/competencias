@@ -4,8 +4,6 @@ import { environment as cnf } from 'src/environments/environment';
 import { IAuthTokenRes, IRegisterRequestDTO, SignInDto } from 'sharedInterfaces/DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 
-// TODO: DONE
-
 @Injectable()
 export class AuthService {
 	constructor(private httpClient: HttpClient, private jwtSv: JwtService) {}

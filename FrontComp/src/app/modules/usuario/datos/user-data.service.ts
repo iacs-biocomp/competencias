@@ -9,7 +9,6 @@ import { environment as cnf } from 'src/environments/environment';
 export class UserDataService {
 	constructor(private httpClient: HttpClient) {}
 
-	//TODO: DONE
 	/**
 	 * Api request that gets user info
 	 * @param usrnameOrObj Username or object that have username property

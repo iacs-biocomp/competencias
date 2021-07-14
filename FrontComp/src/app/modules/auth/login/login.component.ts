@@ -15,7 +15,7 @@ type ServerResponse = {
 /** Formulario extendido para forzar los tipos de los value de los controles */
 type ExtFormGroup = FormGroup & {
 	controls: {
-		// TODO: Comprobar si puede ser (| null) o solo string
+		// TODO: [1]{N1} Comprobar si puede ser (| null) o solo string
 		username: Omit<AbstractControl, 'value'> & { value: string | null };
 		password: Omit<AbstractControl, 'value'> & { value: string | null };
 	};
@@ -76,13 +76,10 @@ export class LoginComponent implements OnInit {
 				} else {
 					console.log('Contraseña y/o Usuario incorrectos');
 				}
-
-				// TODO: Usar en los errores https://is.gd/zecX4U
+				// TODO: [2]{N3} Usar en los errores https://is.gd/zecX4U
 				console.log(error);
 				this.loginForm.reset();
-				// TODO: Mirar el tipo de error e imprimir una u otra cosa según el error
 				// (Timed out/ Connection refused/ JWT expired/ Invalid password)
-				// TODO: Tal vez crear un servicio o algo que active un componente (Modal) que este en el layout y ahi mostrar mensajes tipo alert
 				alert('Contraseña y/o Usuario incorrectos');
 			}
 		}

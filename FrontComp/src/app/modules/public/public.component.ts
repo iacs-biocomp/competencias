@@ -5,19 +5,4 @@ import { Component, OnInit } from '@angular/core';
 	templateUrl: 'public.component.html',
 	styleUrls: ['./public.component.scss'],
 })
-export class PublicComponent implements OnInit {
-	//Test de imagenes random
-	imgs: string[] = ['../../../assets/images/test.jpg', '../../../assets/images/test1.jpg'];
-	myImg: string;
-	constructor() {
-		const random = Math.floor(Math.random() * 2);
-		this.myImg = this.imgs[random];
-	}
-
-	ngOnInit() {
-		setInterval(() => {
-			const numRnd = Math.floor(Math.random() * this.imgs.length);
-			this.myImg = this.imgs[numRnd];
-		}, 1000);
-	}
-}
+export class PublicComponent {}

@@ -9,6 +9,8 @@ import { environment as cnf } from 'src/environments/environment';
 })
 export class UsrOrganigramaService {
 	constructor(private httpClient: HttpClient, private jwtSv: JwtService) {}
+
+	// TODO: [12]{N1} Añadir Tsdoc
 	organigramaUsr(): Promise<IOrganigramaTrabajador> {
 		const token = this.jwtSv.getDecodedToken();
 		return this.httpClient

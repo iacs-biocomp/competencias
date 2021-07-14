@@ -8,7 +8,7 @@ import { UsrOrganigramaService } from '../usr-organigrama.service';
 	styleUrls: ['./usr-organigrama.component.scss'],
 })
 export class UsrOrganigramaComponent implements OnInit {
-	miOrganigramaData!: IOrganigramaTrabajador;
+	miOrganigramaData: IOrganigramaTrabajador | undefined;
 
 	constructor(private orgService: UsrOrganigramaService) {}
 

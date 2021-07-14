@@ -57,7 +57,7 @@ export class NewEvModalComponent implements OnInit {
 	};
 
 	modelCtl: modelCtrlView = {
-		// ?? Comprobar si sirve
+		// TODO: [8]{N1} Comprobar si sirve
 		evModels: [],
 		evDescription: undefined,
 		rangesForm: undefined,
@@ -79,7 +79,7 @@ export class NewEvModalComponent implements OnInit {
 		this.cCompCtl.catComps = this.modelCtl.allReferenceModels.map(refModel => refModel.catComp);
 
 		this.cCompCtl.catComps = this.cCompCtl.catComps.sort((a, b) => a.id.localeCompare(b.id));
-		// TODO: Añadir validadores que comprueben que las fechas de inicio y final esten en orden Ejemplo: propuestaEnd < validacionStart
+		// TODO: [4]{N2} Añadir validadores que comprueben que las fechas de inicio y final esten en orden Ejemplo: propuestaEnd < validacionStart
 		// ?? Preguntar a vega si tiene que ser asi o pueden solaparse (propuestaEnd > validacionStart)
 		this.modelCtl.rangesForm = this.fb.group({
 			propuestaStart: ['', Validators.required],
@@ -155,7 +155,6 @@ export class NewEvModalComponent implements OnInit {
 		};
 		const evModelDB = await this.evModelSv.save(modelToSend, false);
 		this.evToAdd = {
-			/** TODO: DONE */
 			description: this.modelCtl.evDescription as string,
 			catComp: cComp,
 			model: evModelDB,

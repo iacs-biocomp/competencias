@@ -35,6 +35,8 @@ export class ObjectiveNivsSelectComponent implements OnInit {
 	/**
 	 * Array que almacena todos lo niveles actuales
 	 * @deprecated Usar el observable de niveles como input del componente
+	 * TODO: [9]{N1} modificar para usar el observable de niveles
+	 *
 	 */
 	nivs: INivel[] = [];
 

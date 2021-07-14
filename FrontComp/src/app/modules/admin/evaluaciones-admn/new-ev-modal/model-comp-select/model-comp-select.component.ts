@@ -60,12 +60,14 @@ export class ModelCompSelectComponent implements OnInit {
 		this.compsObs.next([]);
 	}
 
+
 	/**
 	 * Used for select the competence or competencies for the current evaluation
 	 *
 	 * @param comp the competence you want to add or remove to the array (compsSelected)
 	 */
 	toggleCompet(comp: ICompetencia): void {
+	// TODO: [10]{N1} Refactor, usar toggle inArray
 		const arrToPush = this.competCtl.compsSelected;
 		const index = arrToPush.indexOf(comp);
 		if (index == -1) {

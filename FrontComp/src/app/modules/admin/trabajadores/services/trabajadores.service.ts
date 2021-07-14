@@ -40,7 +40,6 @@ export class TrabajadoresService {
 	}
 
 	/**
-	 * TODO: HECHO
 	 * @deprecated
 	 * Metodo que borra un worker del backend
 	 *

@@ -11,7 +11,6 @@ import { TrabajadoresModule, trabRoutes } from './trabajadores/trabajadores.modu
 import { OrganiAdmnModule, organiRoutes } from './organigrama-admin/organi-admin.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
-// TODO: DONE
 const routes: CompRoutes = [
 	{ path: 'comportamientos', children: comportRoutes },
 	{ path: 'competencias', children: compRoutes },
