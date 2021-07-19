@@ -5,12 +5,14 @@ import { CatCompetencialesService } from '../services/CatCompetenciales.service'
 interface ICatCompetEdit extends ICatComp {
 	editing?: boolean;
 }
+
+// TODO: Tsdoc
 @Component({
 	selector: 'app-table-compet',
 	templateUrl: './table-compet.component.html',
 	styleUrls: ['./table-compet.component.scss'],
 })
-export class TableCompetComponent implements OnInit {
+export class TableCatCompComponent implements OnInit {
 	constructor(private catCompService: CatCompetencialesService) {}
 
 	catCompToAdd: ICatComp[] = [];

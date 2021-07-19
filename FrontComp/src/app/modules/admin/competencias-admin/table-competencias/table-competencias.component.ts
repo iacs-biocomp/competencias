@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ICompetencia } from 'sharedInterfaces/Entity';
 import { CompetenciasService } from '../services/competencias.service';
+import { addDays } from 'date-fns';
+import { CompetAddDTO } from 'sharedInterfaces/DTO';
 
 interface IComptEdit extends ICompetencia {
 	editing?: boolean;
 }
+
 // type ICompetenciaDTO = Omit<ICompetencia, 'createdAt'> & {
 // 	createdAt: Date | undefined;
 // };
@@ -14,16 +17,14 @@ interface IComptEdit extends ICompetencia {
 	styleUrls: ['./table-competencias.component.scss'],
 })
 export class TableCompetenciasComponent implements OnInit {
-	compeToAdd: ICompetencia[] = [];
+	compeToAdd: CompetAddDTO[] = [];
 	compets: IComptEdit[] = [];
-	hoy: Date = new Date();
-	OneWeekAgo!: Date;
+	today = new Date();
+	OneWeekAgo = addDays(new Date(), -7);
 
 	constructor(private comptService: CompetenciasService) {}
 
 	async ngOnInit(): Promise<void> {
-		this.OneWeekAgo = new Date();
-		this.OneWeekAgo.setDate(this.hoy.getDate() - 7);
 		this.updateCompeView();
 	}
 
@@ -40,14 +41,14 @@ export class TableCompetenciasComponent implements OnInit {
 	 * @param competencia la competencia que queremos intentar borrar
 	 */
 	canDelete(competencia: ICompetencia): boolean {
-		return competencia.createdAt! <= this.OneWeekAgo ? false : true;
+		return competencia.createdAt <= this.OneWeekAgo ? false : true;
 	}
 
-	/** Busca la competencia a borrar y la elimina
-	 *
+	/**
+	 * Busca la competencia a borrar y la elimina
 	 * @param row competencia que se quiere borrar
 	 */
-	deleteCompeToAdd(row: ICompetencia): void {
+	deleteCompeToAdd(row: CompetAddDTO): void {
 		const indx = this.compeToAdd.indexOf(row);
 		this.compeToAdd.splice(indx, 1);
 	}
@@ -59,7 +60,6 @@ export class TableCompetenciasComponent implements OnInit {
 		this.compeToAdd.push({
 			id: '',
 			descripcion: '',
-			createdAt: undefined,
 		});
 	}
 
@@ -82,7 +82,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 *
 	 * @param competencia la competencia para guardar
 	 */
-	async persistCompe(competencia: ICompetencia): Promise<void> {
+	async persistCompe(competencia: CompetAddDTO): Promise<void> {
 		const guardado = await this.comptService.addCompeten(competencia);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets

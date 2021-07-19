@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICompetencia } from 'sharedInterfaces/Entity';
+import { CompetAddDTO } from 'sharedInterfaces/DTO';
 
 @Injectable({ providedIn: 'root' })
 export class CompetenciasService {
 	constructor(private httpClient: HttpClient) {}
 
-	public delete(compet: ICompetencia): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${compet.id}`).toPromise();
+	public delete(compet: ICompetencia | ICompetencia['id']): Promise<boolean> {
+		const id = typeof compet === 'string' ? compet : compet.id;
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${id}`).toPromise();
 	}
 
 	/**
@@ -37,7 +39,7 @@ export class CompetenciasService {
 	}
 
 	/** POST: add a new competencia to the server */
-	addCompeten(comp: ICompetencia): Promise<boolean> {
+	addCompeten(comp: CompetAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();
 	}
 	/**

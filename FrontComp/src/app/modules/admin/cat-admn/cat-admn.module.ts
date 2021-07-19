@@ -4,14 +4,14 @@ import { CatCompetencialesService } from './services/CatCompetenciales.service';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TableContracComponent } from './table-contrac/table-contrac.component';
-import { TableCompetComponent } from './table-compet/table-compet.component';
+import { TableCatCompComponent } from './table-compet/table-compet.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
 export const catRoutes: CompRoutes = [
 	{
 		path: 'competenciales',
-		component: TableCompetComponent,
+		component: TableCatCompComponent,
 	},
 	{
 		path: 'contractuales',
@@ -20,7 +20,7 @@ export const catRoutes: CompRoutes = [
 ];
 
 @NgModule({
-	declarations: [TableContracComponent, TableCompetComponent],
+	declarations: [TableContracComponent, TableCatCompComponent],
 	imports: [CommonModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule],
 	providers: [CatCompetencialesService],
 })
