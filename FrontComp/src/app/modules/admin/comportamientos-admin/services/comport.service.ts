@@ -11,6 +11,7 @@ export class ComportService {
 	 * Metodo que obtiene todas los comportamientos del backend, usado solo para el ADMIN
 	 *
 	 * @returns Un `Array` de todos los comportamientos
+	 * TODO: DTO return type
 	 */
 	public getAll(): Promise<IComportamiento[]> {
 		return this.httpClient.get<IComportamiento[]>(`${cnf.apiURL}/comportamientos/all`).toPromise();
@@ -21,6 +22,8 @@ export class ComportService {
 	 *
 	 * @throws Exception de tipo http con el codigo de error, si el comportamiento no se ha podido borrar
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
+	 * TODO: DTO param type
+	 *
 	 */
 	delete(comport: IComportamiento): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${comport.id}`).toPromise();
@@ -32,6 +35,8 @@ export class ComportService {
 	 * @throws Exception de tipo http si no se ha podido añadir el comportamiento.
 	 * @param comp El comportamiento a añadir
 	 * @returns Una promesa que se resuelve como `true` si se ha añadido correctamente y `false` en caso contrario
+	 * TODO: DTO param type
+	 *
 	 */
 	addComport(comp: IComportamiento): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/comportamientos`, comp).toPromise();
@@ -41,6 +46,8 @@ export class ComportService {
 	 *
 	 * @param comport El comportamiento a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 * TODO: DTO param type
+	 *
 	 */
 	editCompt(comport: IComportamiento): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/comportamientos`, comport).toPromise();

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
+import { ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
 import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class TrabajadoresService {
 	 * Metodo que obtiene un trabajador del backend por su dni
 	 * @param dniOrObj el dni del trabajador a buscar
 	 * @returns el trabajador encontrado
+	 * TODO: DTO return type
 	 */
 	getOneByDni(dniOrObj: Pick<ITrabajador, 'dni'> | ITrabajador['dni']): Promise<ITrabajador> {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
@@ -24,6 +25,8 @@ export class TrabajadoresService {
 	 * Metodo que obtiene un trabajador del backend por su username
 	 * @param usrnameOrObj el nombre de usuario del trabajador a buscar
 	 * @returns el trabajador encontrado
+	 * TODO: DTO return type
+	 *
 	 */
 	getOneByUsername(usrnameOrObj: Pick<IUser, 'username'> | IUser['username']): Promise<ITrabajador> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
@@ -35,8 +38,8 @@ export class TrabajadoresService {
 	 *
 	 * @returns Un `Array` de todos los trabajadores
 	 */
-	public getAllTrabajadores(): Promise<ITrabajadorDTO[]> {
-		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
+	public getAllTrabajadores(): Promise<ITrabCCompCContrDTO[]> {
+		return this.httpClient.get<ITrabCCompCContrDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
 	}
 
 	/**
@@ -80,7 +83,7 @@ export class TrabajadoresService {
 	 *
 	 * @returns Una promise que se puede resolver como `true` si se ha añadido el trabajador y `false`/Excepción si no se ha podido añadir
 	 */
-	addTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
+	addTrabajador(worker: ITrabCCompCContrDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 
@@ -89,7 +92,7 @@ export class TrabajadoresService {
 	 * @param comp El worker con los datos editados
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
 	 */
-	editTrabajador(worker: ITrabajadorDTO): Promise<boolean> {
+	editTrabajador(worker: ITrabCCompCContrDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 }

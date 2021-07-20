@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICompetencia } from 'sharedInterfaces/Entity';
-import { CompetAddDTO } from 'sharedInterfaces/DTO';
+import { ICompAddDTO } from 'sharedInterfaces/DTO';
 
 @Injectable({ providedIn: 'root' })
 export class CompetenciasService {
@@ -17,6 +17,8 @@ export class CompetenciasService {
 	 * Metodo que obtiene todas las competencias del backend, usado solo para el ADMIN
 	 *
 	 * @returns Un `Array` de todas las competencias
+	 * TODO: DTO return type
+	 *
 	 */
 	public getAll(): Promise<ICompetencia[]> {
 		return this.httpClient.get<ICompetencia[]>(`${cnf.apiURL}/competencias/all`).toPromise();
@@ -38,14 +40,20 @@ export class CompetenciasService {
 		return borrado;
 	}
 
-	/** POST: add a new competencia to the server */
-	addCompeten(comp: CompetAddDTO): Promise<boolean> {
+	/**
+	 * POST: add a new competencia to the server
+	 * TODO: DTO param type
+	 *
+	 */
+	addCompeten(comp: ICompAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();
 	}
 	/**
 	 *
 	 * @param comp La competencia a editar en la base de datos
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 * TODO: DTO param type
+	 *
 	 */
 	editCompt(comp: ICompetencia): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();

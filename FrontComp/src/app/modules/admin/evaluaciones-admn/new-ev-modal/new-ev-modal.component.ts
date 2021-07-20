@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
-import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
+import { IEvSendDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, ICompetencia, IEvaluacion, IEvModel } from 'sharedInterfaces/Entity';
 import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 import { EvModelsAdmnService } from '../services/ev-models-admn.service';
@@ -28,8 +28,6 @@ type catCompCtrlView = {
 	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
 };
 
-/** Same type as IEvaluacion but without id because is not necesary for create a new one */
-export type evAddDTO = RequiredAndNotNull<Omit<IEvaluacion, 'id'>>;
 /** Componente destinado a la creación de una nueva evaluación, modal de bootstrap */
 export type modelCompNiv = {
 	evModel: RequiredAndNotNull<IEvModel>;
@@ -66,7 +64,7 @@ export class NewEvModalComponent implements OnInit {
 	};
 
 	/** La evaluación que se añadirá a la bbdd */
-	evToAdd!: evAddDTO;
+	evToAdd!: IEvSendDTO;
 
 	constructor(
 		private evModelSv: EvModelsAdmnService,

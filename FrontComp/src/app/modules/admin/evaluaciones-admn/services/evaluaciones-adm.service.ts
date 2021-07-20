@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IEvSendDTO } from 'sharedInterfaces/DTO';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
-import { evAddDTO } from '../new-ev-modal/new-ev-modal.component';
 
 /** Tiene todos los metodos necesarios para la administración de las Evaluaciones y Modelos */
 @Injectable({ providedIn: 'root' })
@@ -11,6 +11,7 @@ export class EvaluacionesAdmService {
 
 	/**
 	 * @returns Una promsesa que se resuelve como un array de todas las evaluaciones que tiene el backend
+	 * TODO: DTO return type
 	 */
 	public async getAll(): Promise<IEvaluacion[]> {
 		return this.httpClient.get<IEvaluacion[]>(`${cnf.apiURL}/evaluaciones`).toPromise();
@@ -29,7 +30,7 @@ export class EvaluacionesAdmService {
 	 * @param evalu la evaluacion a guardar
 	 * @returns una promesa que se resuelve como boolean `true` si se puede guardar, `false` si no
 	 */
-	save(evalu: evAddDTO): Promise<boolean> {
+	save(evalu: IEvSendDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 
@@ -37,6 +38,8 @@ export class EvaluacionesAdmService {
 	 *
 	 * @param evalu la evaluacion que se quiere editar
 	 * @returns una promesa que se resuelve como boolean `true` si se puede editar, `false` si no
+	 * TODO: DTO param type
+	 *
 	 */
 	editEval(evalu: IEvaluacion): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();

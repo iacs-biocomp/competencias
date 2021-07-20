@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICompetencia } from 'sharedInterfaces/Entity';
 import { CompetenciasService } from '../services/competencias.service';
 import { addDays } from 'date-fns';
-import { CompetAddDTO } from 'sharedInterfaces/DTO';
+import { ICompAddDTO } from 'sharedInterfaces/DTO';
 
 interface IComptEdit extends ICompetencia {
 	editing?: boolean;
@@ -17,7 +17,7 @@ interface IComptEdit extends ICompetencia {
 	styleUrls: ['./table-competencias.component.scss'],
 })
 export class TableCompetenciasComponent implements OnInit {
-	compeToAdd: CompetAddDTO[] = [];
+	compeToAdd: ICompAddDTO[] = [];
 	compets: IComptEdit[] = [];
 	today = new Date();
 	OneWeekAgo = addDays(new Date(), -7);
@@ -48,7 +48,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * Busca la competencia a borrar y la elimina
 	 * @param row competencia que se quiere borrar
 	 */
-	deleteCompeToAdd(row: CompetAddDTO): void {
+	deleteCompeToAdd(row: ICompAddDTO): void {
 		const indx = this.compeToAdd.indexOf(row);
 		this.compeToAdd.splice(indx, 1);
 	}
@@ -82,7 +82,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 *
 	 * @param competencia la competencia para guardar
 	 */
-	async persistCompe(competencia: CompetAddDTO): Promise<void> {
+	async persistCompe(competencia: ICompAddDTO): Promise<void> {
 		const guardado = await this.comptService.addCompeten(competencia);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets

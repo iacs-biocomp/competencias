@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
+import { ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
 import { ICatComp, ICatContr } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { CatContractService } from '../../cat-admn/services/CatContractuales.service';
 import { TrabajadoresService } from '../services/trabajadores.service';
 
-interface ITrabajadorDTOEdit extends ITrabajadorDTO {
+interface ITrabajadorDTOEdit extends ITrabCCompCContrDTO {
 	editing?: boolean;
 }
 
@@ -48,7 +48,7 @@ export class TrabTableComponent implements OnInit {
 	}
 
 	/** Metodo que borra un trabajador de los que se iban a añadir y aun no se habian mandado al backend */
-	deleteWorkerToAdd(row: ITrabajadorDTO): void {
+	deleteWorkerToAdd(row: ITrabCCompCContrDTO): void {
 		const indx = this.listaTrabaToAdd.indexOf(row);
 		this.listaTrabaToAdd.splice(indx, 1);
 	}
@@ -82,7 +82,7 @@ export class TrabTableComponent implements OnInit {
 		}
 	}
 
-	async persistWorker(trab: ITrabajadorDTO): Promise<void> {
+	async persistWorker(trab: ITrabCCompCContrDTO): Promise<void> {
 		const guardado = await this.trabService.addTrabajador(trab);
 		if (guardado) {
 			//*PERF: Modificar para añadir el trabajador a la lista sin pedir todos los trabajadores

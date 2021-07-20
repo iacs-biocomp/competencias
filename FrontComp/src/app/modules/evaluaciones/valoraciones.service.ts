@@ -13,6 +13,8 @@ export class ValoracionesService {
 	 * @param worker el trabajador a buscar
 	 * @param evId el id de la evaluación
 	 * @returns Promise<Array> de valoraciones de un usuario de cierta evaluación
+	 * TODO: DTO return type
+	 *
 	 */
 	async getUsrEvVals(
 		worker: ITrabajador | ITrabajador['dni'],
@@ -41,6 +43,8 @@ export class ValoracionesService {
 	 * @param val La valoración con el ID y la puntuación actualizada
 	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
 	 * @throws Lanza excepcion si no se ha encontrado la valoracion
+	 * TODO: DTO param type
+	 *
 	 */
 	async update(val: IValoracion): Promise<boolean> {
 		if (!val){

@@ -34,6 +34,8 @@ export class OrganiService {
 	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
 	 * @param relations Las relaciones que se quieren settear
 	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 * TODO: DTO param
+	 *
 	 */
 	setSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -47,6 +49,8 @@ export class OrganiService {
 	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
 	 * @param relations Las relaciones que se quieren settear
 	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 * TODO: DTO param
+	 *
 	 */
 	setPares(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -58,6 +62,8 @@ export class OrganiService {
 	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
 	 * @param relations Las relaciones que se quieren eliminar
 	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 * TODO: DTO param
+	 *
 	 */
 	deleteInferiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -71,6 +77,8 @@ export class OrganiService {
 	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
 	 * @param relations Las relaciones que se quieren eliminar
 	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 * TODO: DTO param
+	 *
 	 */
 	deletePares(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -84,6 +92,8 @@ export class OrganiService {
 	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
 	 * @param relations Las relaciones que se quieren eliminar
 	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 * TODO: DTO param
+	 *
 	 */
 	deleteSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -96,8 +106,10 @@ export class OrganiService {
 	 *
 	 * @param relations El objeto a poner en el body
 	 * @returns El objeto options  que se le puede pasar al httpClient.delete()
+	 * TODO: DTO param
+	 *
 	 */
-	private getDeleteBody(relations: ITrabOrgani[]) {
+	private getDeleteBody<T>(relations: T) {
 		return {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',

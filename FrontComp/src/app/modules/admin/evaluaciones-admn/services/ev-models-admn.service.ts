@@ -13,6 +13,8 @@ export class EvModelsAdmnService {
 	 *
 	 * @param evModel El modelo a guardar
 	 * @returns //TODO tsdoc
+	 * TODO: DTO return type
+	 *
 	 */
 	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
 		console.log(String(reference));
@@ -23,6 +25,8 @@ export class EvModelsAdmnService {
 
 	/**
 	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
+	 * TODO: DTO return type
+	 *
 	 */
 	getAll(): Promise<IEvModel[]> {
 		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos`).toPromise();
@@ -48,6 +52,8 @@ export class EvModelsAdmnService {
 	 *
 	 * @param refModel El modelo de referencia con toda la información actualizada
 	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 * TODO: DTO param type
+	 *
 	 */
 	updateRefModel(refModel: IRefModel): Promise<boolean> {
 		return this.httpClient

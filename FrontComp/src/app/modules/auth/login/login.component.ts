@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { SignInDto } from 'sharedInterfaces/DTO';
+import { ISignInDto } from 'sharedInterfaces/DTO';
 
 enum ServerErrorsLogin {
 	NotConnected = 0,
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 		const username = this.loginForm.controls.username.value;
 		const password = this.loginForm.controls.password.value;
 		if (username && password) {
-			const body: SignInDto = {
+			const body: ISignInDto = {
 				username,
 				password,
 			};

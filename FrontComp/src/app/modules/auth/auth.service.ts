@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { IAuthTokenRes, IRegisterRequestDTO, SignInDto } from 'sharedInterfaces/DTO';
+import { IAuthTokenRes, IRegisterRequestDTO, ISignInDto } from 'sharedInterfaces/DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AuthService {
 	 * @param body Is the json object with username and password, email optional
 	 * @return Return `true` if successful authentication, otherwise return `false`.
 	 */
-	async sendLoginInfo(body: SignInDto): Promise<boolean> {
+	async sendLoginInfo(body: ISignInDto): Promise<boolean> {
 		const response: IAuthTokenRes = await this.httpClient
 			.post<IAuthTokenRes>(cnf.apiURL + '/signin', body)
 			.toPromise();
