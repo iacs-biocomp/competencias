@@ -3,6 +3,34 @@ import { IEvAllRequired } from './interfaces/DTO';
 import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
 import { WithOptional } from './interfaces/Utility';
 
+type Without<T, K extends keyof T> = {
+	[P in Exclude<keyof T, K>]: T[P];
+};
+
+/**
+ *
+ * @param obj
+ * @param keys
+ * @returns
+ *
+ * @example
+ *
+ * ```ts
+ *
+ * type TestType = {
+ * 	prop1: number;
+ * 	prop2: number;
+ * };
+ *
+ * const toTransform: TestType = { prop1: 1, prop2: 2 };
+ * const transformed = deleteProps(toTransform, ['prop1']);
+ * ```
+ */
+export function deleteProps<T, K extends keyof T, U extends Without<T, K>>(obj: T, keys: K[]): U {
+	keys.forEach(key => delete obj[key]);
+	return obj as unknown as U;
+}
+
 //TODO: Cambiar nombre
 export type changeMyName = {
 	/** Minima valoración que tiene una competencia, calculada por la función {@link maxYmin}*/
