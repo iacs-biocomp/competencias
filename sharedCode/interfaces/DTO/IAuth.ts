@@ -3,7 +3,7 @@ import { Roles } from '../Entity';
 /**
  * Esta interfaz es la que manda el login al backend, Usuario y contraseña
  */
-export interface SignInDto {
+export interface ISignInDto {
 	/**El nombre de usuario */
 	username: string;
 	/**La contraseña sin cifrar del usuario */
@@ -20,7 +20,6 @@ export interface IRegisterRequestDTO {
 	email: string;
 	iat?: number;
 }
-
 
 /**
  *El payload (contenido) del JWT de autentificación, tiene username, contraseña (Su hash+salt) y los roles que posee el usuario

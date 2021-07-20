@@ -90,8 +90,25 @@ export interface IComportamiento {
 	subModels?: ISubModel[];
 }
 
-/** Representa una competencia, tiene la misma estructura que la entidad en el backend
- * y solo se debería usar para crear nuevos tipos como los DTO */
+/**
+ * TODO: Complete
+ *  Representa una competencia, tiene la misma estructura que la entidad en el backend
+ * y solo se debería usar para crear nuevos tipos como los DTO
+ *
+ * ```ts
+ * const comp: ICompetencia = {
+ * id: 'C1',
+ * descripcion: 'Default description',
+ * createdAt: new Date(),
+ * subModels: [{
+ * 	id: 1,
+ * 	nivel:{
+ * 	id:
+ * 	}
+ * }]
+ * }
+ * ```
+ *  */
 export interface ICompetencia {
 	// TODO: Tsdoc con ejemplos de posibles id de comps
 	id: string;

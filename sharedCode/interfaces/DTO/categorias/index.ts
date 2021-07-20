@@ -1,2 +1,2 @@
-export * from './CCompDTO';
-export * from './CContrDTO';
+export * from './ICompetencial.DTO';
+export * from './IContractual.DTO';

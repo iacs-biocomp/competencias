@@ -1,9 +1,11 @@
 import { ICompetencia, IComportamiento, IEvModel, INivel } from '../Entity/IEvaluaciones';
 import { RequiredAndNotNull } from '../Utility';
 
+// TODO: Refactor to DTO
 export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id' | 'evs'>;
 
 //TODO: Tsdoc, ruta en /modelos/reference/${catComp} y /modelos/references siendo Array<IRefModel>
+// TODO: Refactor to DTO
 export type IRefModel = Omit<RequiredAndNotNull<IEvModel>, 'evs'>;
 
 type ICompNoId = Omit<ICompetencia, 'id' | 'createdAt'>;
