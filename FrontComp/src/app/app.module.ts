@@ -12,13 +12,14 @@ import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { AngularDateHttpInterceptor } from './interceptors/date-interceptor';
 registerLocaleData(localeEs);
 
 @NgModule({
 	declarations: [AppComponent, Error404Component],
 	imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, SharedModule],
 	exports: [SharedModule],
-	providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }],
+	providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, AngularDateHttpInterceptor],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}
