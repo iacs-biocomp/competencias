@@ -46,9 +46,7 @@ export interface IPeriodoTrab {
 }
 
 /**
- * Esquema del Json recibido al pedir los datos de un usuario al backend
- * @param Url /nest/users/{USERNAME}
- * TODO: Cambiar url por DTOs
+ * TODO: tsdoc in english, add example
  */
 export interface IUser {
 	username: string;

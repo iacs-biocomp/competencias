@@ -1,4 +1,5 @@
-import { ICompetencia, IComportamiento, IEvaluacion, ITrabajador } from '.';
+import { ITrabajador, IEvaluacion, ICompetencia, IComportamiento } from '.';
+
 //Se podría hacer una clase que tuviese el numero y comprobase
 export type ValoracionesNums = 1 | 2 | 3 | 4 | 5;
 
