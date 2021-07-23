@@ -9,9 +9,7 @@ import { ICatComp, ICatContr } from '../../Entity';
  * Objeto de ejemplo aqui
  * ```
  */
-export type ICCompAddDTO = ICCompDTO & {
-	catContr: RemovePropsInU<ICatContr, object>;
-};
+export type ICCompAddDTO = ICCompDTO;
 
 /**
  * TODO: Tsdoc
@@ -31,5 +29,5 @@ export type ICCompDTO = RemovePropsInU<RequiredAndNotNull<ICatComp>, object>;
  * TODO: Posiblemente deprecated y llamar catContrs
  */
 export type ICCompCContrDTO = ICCompDTO & {
-	catContr: RemovePropsInU<ICatContr, object>[];
+	catContr: RemovePropsInU<RequiredAndNotNull<ICatContr>, object>[];
 };

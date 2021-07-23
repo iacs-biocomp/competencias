@@ -22,15 +22,18 @@ export interface IRegisterRequestDTO {
 }
 
 /**
- *El payload (contenido) del JWT de autentificación, tiene username, contraseña (Su hash+salt) y los roles que posee el usuario
+ *	El payload (contenido) del JWT de autentificación, tiene username, contraseña (Su hash+salt) y los roles que posee el usuario
  */
 export interface IJwtPayload {
 	username: string;
 	email: string;
-	/**El hash con salt de la contraseña del usuario */
+	/** Password hash+salt */
 	password: string;
 	roles: Roles[];
-	iat?: Date;
+	/** Have to parse, stringified as number */
+	iat: Date;
+	/** Have to parse, stringified as number */
+	exp: Date;
 }
 
 //TODO: Tsdoc

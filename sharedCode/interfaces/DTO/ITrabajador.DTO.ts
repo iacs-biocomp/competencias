@@ -3,9 +3,15 @@ import { ITrabajador } from '../Entity/IUser';
 import { PickPropsInU, TsPrimitiveTypes } from '../Utility';
 
 //TODO: Tsdoc
+/**
+ * @author aml360 <aml360esp@gmail.com>
+ */
 export type ITrabajadorDTO = PickPropsInU<ITrabajador, TsPrimitiveTypes>;
 
 //TODO: Tsdoc
+/**
+ * @author aml360 <aml360esp@gmail.com>
+ */
 export type ITrabCCompCContrDTO = ITrabajadorDTO & {
 	//TODO: Tsdoc
 	catComp: ICatComp['id'];

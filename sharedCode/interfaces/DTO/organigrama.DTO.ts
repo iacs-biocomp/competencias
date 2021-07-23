@@ -1,4 +1,4 @@
-import { ITrabOrgani } from './ITrabajadorDTO';
+import { ITrabajadorDTO, ITrabOrgani } from './ITrabajador.DTO';
 
 //TODO: TSdoc
 export interface IOrganigramaEvDTO extends IOrganigramaUsrDTO {
@@ -15,4 +15,18 @@ export interface IOrganigramaUsrDTO {
 	superiores: ITrabOrgani[];
 	/** Son los pares del Trabajador de este mismo objeto*/
 	pares: ITrabOrgani[];
+}
+
+/**
+ *
+ * @author aml360 <aml360esp@gmail.com>
+ *
+ */
+export interface IOrganigramaTrabajadorDTO {
+	//TODO: Tsdoc
+	superiores: ITrabajadorDTO[];
+	//TODO: Tsdoc
+	pares: ITrabajadorDTO[];
+	//TODO: Tsdoc
+	inferiores: ITrabajadorDTO[];
 }

@@ -59,9 +59,9 @@ export interface IUser {
 
 	lastname: string;
 
-	createdAt?: Date;
+	createdAt: Date;
 
-	updatedAt?: Date;
+	updatedAt: Date;
 	// TODO: Tsdoc.
 	roles: IRole[];
 	// TODO: Tsdoc.

@@ -1,7 +1,9 @@
 import { Interval } from 'date-fns';
-import { IEvAllRequired } from './interfaces/DTO';
-import { ICompetencia, IComportamiento, IEvModel, INivel, ISubModel } from './interfaces/Entity';
-import { WithOptional } from './interfaces/Utility';
+import { ISubModel, IEvModel, IEvaluacion } from './interfaces/Entity';
+import { ICompetencia } from './interfaces/Entity/ICompetencia';
+import { IComportamiento } from './interfaces/Entity/IComportamientos';
+import { INivel } from './interfaces/Entity/INiveles';
+import { PickPropsInU, RequiredAndNotNull, WithOptional } from './interfaces/Utility';
 
 type Without<T, K extends keyof T> = {
 	[P in Exclude<keyof T, K>]: T[P];
@@ -25,6 +27,8 @@ type Without<T, K extends keyof T> = {
  * const toTransform: TestType = { prop1: 1, prop2: 2 };
  * const transformed = deleteProps(toTransform, ['prop1']);
  * ```
+ * @author aml360 <aml360esp@gmail.com>
+ *
  */
 export function deleteProps<T, K extends keyof T, U extends Without<T, K>>(obj: T, keys: K[]): U {
 	keys.forEach(key => delete obj[key]);
@@ -211,9 +215,7 @@ export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
 }
 
 // TODO: Tsdoc
-export function getIntervalsOfEv(
-	ev: Omit<IEvAllRequired, 'id' | 'description' | 'model' | 'catComp'>,
-): EvIntervals {
+export function getIntervalsOfEv(ev: PickPropsInU<RequiredAndNotNull<IEvaluacion>, Date>): EvIntervals {
 	//TODO: Solventar error, aunque la ev tenga las fechas como date al pasarlas de backend a front se serializan como string.
 	//?? Tal vez una función que transforme las dates serializadas siempre que se piden evs?
 	// parseISO('2021-01-05T23:00:00.000Z');
