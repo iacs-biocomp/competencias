@@ -33,7 +33,6 @@ export type RemovePropsInU<T, U> = {
 	[P in keyof T as T[P] extends U ? never : P]: T[P];
 };
 
-
 /**
  * Type that remove all properties of Object<T> which extends type U
  *
@@ -54,6 +53,16 @@ export type RemovePropsInU<T, U> = {
  * @author aml360 <aml360esp@gmail.com>
  * @see https://is.gd/MM3L37
  */
- export type PickPropsInU<T, U> = {
+export type PickPropsInU<T, U> = {
 	[P in keyof T as T[P] extends U ? P : never]: T[P];
 };
+
+/**
+ * Type that validates in compilation time that type T does not contain more properties than type Shape
+ * @see {@link TODO: Link de donde lo saque}
+ */
+type ValidateShape<T, Shape> = T extends Shape
+	? Exclude<keyof T, keyof Shape> extends never
+		? T
+		: never
+	: never;
