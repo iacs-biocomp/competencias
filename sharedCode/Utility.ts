@@ -1,5 +1,5 @@
 import { Interval } from 'date-fns';
-import { ISubModel, IEvModel, IEvaluacion } from './interfaces/Entity';
+import { IEvaluacion } from './interfaces/Entity';
 import { ICompetencia } from './interfaces/Entity/ICompetencia';
 import { IComportamiento } from './interfaces/Entity/IComportamientos';
 import { INivel } from './interfaces/Entity/INiveles';
@@ -56,6 +56,9 @@ export const getKeyValue =
 	(obj: T) =>
 		obj[key];
 
+type MinNivel = {
+	code: INivel['code'];
+};
 /**
  * Busca un nivel en un array de niveles donde le indicamos el id del nivel
  *
@@ -63,7 +66,7 @@ export const getKeyValue =
  * @param nivId id del nivel que queremos buscar
  * @returns si ha encontrado un nivel con ese id, retorna el nivel, si no undefined
  */
-export function findNivelById(niveles: INivel[], nivCode: string): INivel | undefined {
+export function findNivelById<T extends MinNivel>(niveles: T[], nivCode: string): T | undefined {
 	return niveles.find(nivel => nivel.code === nivCode);
 }
 
@@ -74,33 +77,40 @@ export function findNivelById(niveles: INivel[], nivCode: string): INivel | unde
  * @param compId id de la competencia que queremos buscar
  * @returns si ha encontrado una competencia con ese id la devuelve, si no undefined
  */
-export function findCompById(competencias: ICompetencia[], compId: string): ICompetencia | undefined {
+export function findCompById<T extends MinCompetencia>(competencias: T[], compId: string): T | undefined {
 	return competencias.find(comp => comp.id === compId);
 }
 
 /**
- * TODO: Refactor y cambiar nombre
  * Calcula la maxima puntuación que un trabajador puede tener si todos los apartados que son positivos son evaluados al maximo y los negativos al minimo
  */
-export function maxYmin(data: changeMyName) {
+export function computeEvScoringLimits(data: EvScoringParamData) {
 	const multiplicadores = data.niveles.map(nivel => nivel.valor);
-	const multOrderded = [...multiplicadores.sort((a, b) => a - b)];
-	return ((multOrderded: number[]) => {
-		const aSumar = multOrderded.map(mult => {
+	const multOrderded = [...multiplicadores].sort((a, b) => a - b);
+	return ((mults: number[]) => {
+		const aSumar = mults.map(mult => {
 			return mult > 0 ? mult * data.maxValoracion : mult * data.minValoracion;
 		});
-		const aRestar = multOrderded.map(mult => {
+		const aRestar = mults.map(mult => {
 			return mult < 0 ? mult * data.maxValoracion : mult * data.minValoracion;
 		});
 		let suma = 0;
 		let sumaMin = 0;
-		aSumar.forEach(aSumar => {
-			suma += aSumar;
+		aSumar.forEach(toSum => {
+			suma += toSum;
 		});
 		aRestar.forEach(num => (sumaMin += num));
 		return { max: suma, min: sumaMin };
 	})(multOrderded);
 }
+
+type MinComport = {
+	id: IComportamiento['id'];
+};
+
+type MinSubModel2<T extends MinComport> = MinSubModel & {
+	comportamientos: T[];
+};
 
 /**
  * Concatena los arrays de comportamientos que puedan tener varios submodelos, con la MISMA competencia @see {@link ISubModel}
@@ -108,23 +118,29 @@ export function maxYmin(data: changeMyName) {
  * @param subModels Array de subModelos del cual se devuelven sus comportamientos (concatenados donde comp==subModel.comp)
  * @returns El array de comportamientos que tiene esa competencia
  */
-export function getAllComportsOfComp(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
+export function getAllComportsOfComp<U extends MinComport, T extends MinSubModel2<U>>(
+	comp: ICompetencia['id'] | Pick<ICompetencia, 'id'>,
+	subModels: T[],
+): U[] {
 	const subModelos = findSubModels(subModels, comp);
-	let comports: IComportamiento[] = [];
+	let comports: U[] = [];
 	subModelos.forEach(s => (comports = comports.concat(s.comportamientos)));
 	return comports;
 }
+
+type MinSubModel = {
+	competencia: MinCompetencia;
+};
 
 /**
  * @param subModels El array de submodelos en el cual se buscaran el/los submodelo/s coincidente/s
  * @param comp La competencia que se usará como filtrado
  * @returns El array de subModelos que tienen esa competencia
- * TODO: usar T extends ISubModel
  */
-export function findSubModels(
-	subModels: ISubModel[],
+export function findSubModels<T extends MinSubModel>(
+	subModels: T[],
 	comp: Pick<ICompetencia, 'id'> | ICompetencia['id'],
-): ISubModel[] {
+): T[] {
 	const compId = typeof comp === 'string' ? comp : comp.id;
 	return subModels.filter(subModel => subModel.competencia.id === compId);
 }
@@ -135,8 +151,12 @@ export function findSubModels(
  * @param niv El nivel que junto con la competencia hacen de filtro
  * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
  */
-export function findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: INivel): ISubModel | undefined {
-	return subModels.find(subModel => subModel.competencia?.id === comp.id && subModel.nivel?.id === niv.id);
+export function findSubModel<T extends MinSubModel3>(
+	subModels: T[],
+	comp: MinCompetencia,
+	niv: MinNivel,
+): T | undefined {
+	return subModels.find(subModel => subModel.competencia.id === comp.id && subModel.nivel.code === niv.code);
 }
 
 /**
@@ -144,11 +164,11 @@ export function findSubModel(subModels: ISubModel[], comp: ICompetencia, niv: IN
  * @param subModels submodelos para buscar la competencia
  * @returns los comportamientos por competencia filtrados
  */
-export function filterNonSelectedComports(
-	comports: IComportamiento[],
-	comp: ICompetencia,
-	subModels: ISubModel[],
-): IComportamiento[] {
+export function filterNonSelectedComports<T extends MinComport>(
+	comports: T[],
+	comp: MinCompetencia,
+	subModels: MinSubModel2<MinComport>[],
+): T[] {
 	const comportsOfComp = getAllComportsOfComp(comp, subModels);
 	/** Numero de comportamientos ya excluidos, si es igual a comportsOfComp.lenght-1 romper el filtro (innecesaio) */
 	const nExcluded = 0;
@@ -161,6 +181,11 @@ export function filterNonSelectedComports(
 	});
 }
 
+type MinSubModel3 = {
+	competencia: MinCompetencia;
+	nivel: MinNivel;
+};
+
 /**
  * Busca en el array de submodelos asociado con esa competencia
  * y ese nivel en concreto
@@ -169,19 +194,29 @@ export function filterNonSelectedComports(
  * @param niv El nivel que junto con la competencia hacen de filtro
  * @returns El submodelo que tiene ese nivel y competencia o undefined si no se encuentra ninguno
  */
-export function findSubModelByCompNiv(
-	subModels: ISubModel[],
-	comp: ICompetencia,
-	niv: INivel,
-): ISubModel | undefined {
-	return subModels.find(subModel => subModel.competencia === comp && subModel.nivel === niv);
+export function findSubModelByCompNiv<T extends MinSubModel3>(
+	subModels: T[],
+	comp: MinCompetencia,
+	niv: MinNivel,
+): T | undefined {
+	return subModels.find(subModel => subModel.competencia.id === comp.id && subModel.nivel.code === niv.code);
 }
+
+type MinCompetencia = {
+	id: ICompetencia['id'];
+};
+
+type MinEvModel<T extends MinCompetencia> = {
+	subModels: {
+		competencia: T;
+	}[];
+};
 
 /**
  * @param model El modelo del cual se sacan las competencias
  * @returns Un array que representa las competencias que tiene el modelo pasado como parametro
  */
-export function getCompetOfModel(model: IEvModel): ICompetencia[] {
+export function getCompetOfModel<U extends MinCompetencia>(model: MinEvModel<U>): U[] {
 	if (!model.subModels) return [];
 	const competencias = model.subModels.map(x => x.competencia);
 	return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
@@ -195,13 +230,13 @@ export function getCompetOfModel(model: IEvModel): ICompetencia[] {
  * @returns `true` si se ha encontrado un subModelo con ese nivel y esa competencia `false` en caso contrario
  */
 export function checkNivOnComp(
-	niv: INivel | INivel['code'],
-	comp: ICompetencia | ICompetencia['id'],
-	subModels: ISubModel[],
+	niv: MinNivel | INivel['code'],
+	comp: MinCompetencia | ICompetencia['id'],
+	subModels: MinSubModel3[],
 ): boolean {
 	const compIdStr = typeof comp === 'string' ? comp : comp.id;
 	const nivIdStr = typeof niv === 'string' ? niv : niv.code;
-	return !!subModels.find(s => s.competencia.id === compIdStr && s.nivel.code === nivIdStr) ? true : false;
+	return !!subModels.find(s => s.competencia.id === compIdStr && s.nivel.code === nivIdStr);
 }
 
 /**
@@ -216,14 +251,10 @@ export function toggleInArray<T>(objToggle: T, arrToPushRemove: T[]) {
 
 // TODO: Tsdoc
 export function getIntervalsOfEv(ev: PickPropsInU<RequiredAndNotNull<IEvaluacion>, Date>): EvIntervals {
-	//TODO: Solventar error, aunque la ev tenga las fechas como date al pasarlas de backend a front se serializan como string.
-	//?? Tal vez una función que transforme las dates serializadas siempre que se piden evs?
-	// parseISO('2021-01-05T23:00:00.000Z');
 	const periodoEvaluar: Interval = { start: ev.iniValoracion, end: ev.endValoracion };
 	const periodoPropuesta: Interval = { start: ev.iniDate, end: ev.finPropuestas };
 	const periodoEvaluado: Interval = { start: ev.iniPerEvaluado, end: ev.endPerEvaluado };
 	const periodoValidacion: Interval = { start: ev.iniValidacion, end: ev.endValidacion };
-
 	return { periodoEvaluar, periodoPropuesta, periodoEvaluado, periodoValidacion };
 }
 
