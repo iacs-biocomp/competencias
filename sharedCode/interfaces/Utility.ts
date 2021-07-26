@@ -3,7 +3,13 @@ export type RequiredAndNotNull<T> = {
 	[P in keyof T]-?: Exclude<T[P], null | undefined>;
 };
 
-/** Type que permite cambiar las keys K a parciales de un objeto tipo T */
+/**
+ * Type that allows to change keys K to partial of object type T
+ * TODO: example
+ * ```ts
+ * Example here
+ * ```
+ */
 export type WithOptional<T, K extends keyof T> = Partial<T> & Omit<T, K>;
 
 /** Primitive types of typescript including Function */

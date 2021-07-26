@@ -11,9 +11,9 @@ type Without<T, K extends keyof T> = {
 
 /**
  *
- * @param obj
- * @param keys
- * @returns
+ * @param obj The object that will be truncated
+ * @param keys Array of keys which will be removed of obj.
+ * @returns The object without keys in `keys` array param
  *
  * @example
  *
@@ -35,15 +35,15 @@ export function deleteProps<T, K extends keyof T, U extends Without<T, K>>(obj: 
 	return obj as unknown as U;
 }
 
-//TODO: Cambiar nombre
-export type changeMyName = {
-	/** Minima valoración que tiene una competencia, calculada por la función {@link maxYmin}*/
+export type EvScoringParamData = {
+	/** Minima valoración que tiene una competencia, calculada por la función {@link computeEvScoringLimits}*/
 	minValoracion: number;
-	/** Maxima valoración que tiene una competencia, calculada por la función {@link maxYmin}*/
+	/** Maxima valoración que tiene una competencia, calculada por la función {@link computeEvScoringLimits}*/
 	maxValoracion: number;
 	/** Los niveles que tiene cierta evaluación (NUNCA los de referencia)*/
 	niveles: WithOptional<INivel, 'subModels'>[];
 };
+
 export type EvIntervals = {
 	periodoEvaluar: Interval;
 	periodoPropuesta: Interval;
