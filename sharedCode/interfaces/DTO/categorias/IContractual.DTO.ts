@@ -19,7 +19,7 @@ export type ICContrAndCComp = RemovePropsInU<ICatContr, object> & {
 /**
  * Tipo usado al pedir la información basica de una cContractual y su cComp asociada
  */
-export type ICContrAndCCompDTO = RemovePropsInU<ICatContr, object> & {
+export type ICContrAndCCompDTO = RemovePropsInU<RequiredAndNotNull<ICatContr>, object> & {
 	catComp: RemovePropsInU<RequiredAndNotNull<ICatComp>, object>;
 };
 

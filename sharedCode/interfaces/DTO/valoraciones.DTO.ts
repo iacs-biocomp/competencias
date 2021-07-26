@@ -1,10 +1,20 @@
 // Estas interfaces pueden cambiar, si se modifican y
 // el cambio produce incompatibilidad, se deja en desuso con @deprecated y se genera una nueva
 
-import { IValoracion } from '../Entity';
+import { ICompetencia, IComportamiento, IEvaluacion, ITrabajador, IValoracion } from '../Entity';
 
 /** Tipo usado para crear una nueva evaluación, SOLO en el endpoint POST /nest/valoraciones */
-export type IValoracionToAddDTO = Omit<IValoracion, 'id'>;
+export type IValoracionAddDTO = Pick<IValoracion, 'valoracion'> & {
+	evaluador: ITrabajador['dni'];
+	/** El trabajador evaluado */
+	evaluado: ITrabajador['dni'];
+	/** La evaluación a la que corresponde esta valoración */
+	ev: IEvaluacion['id'];
+	/** La competencia que junto con el comportamiento hacen la valoracion */
+	comp: ICompetencia['id'];
+	/** El comportamiento valorado */
+	comport: IComportamiento['id'];
+};
 
 /**
  *
