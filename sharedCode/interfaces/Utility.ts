@@ -66,3 +66,19 @@ type ValidateShape<T, Shape> = T extends Shape
 		? T
 		: never
 	: never;
+
+/**
+ * TODO: Tsdoc de que hace
+ * @see https://is.gd/EPR552
+ */
+export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+
+/**
+ * TODO: Tsdoc de que hace
+ * @see https://is.gd/EPR552
+ */
+export type ExpandRecursively<T> = T extends object
+	? T extends infer O
+		? { [K in keyof O]: ExpandRecursively<O[K]> }
+		: never
+	: T;

@@ -1,0 +1,12 @@
+{
+	"Expand type": {
+		"prefix": "expand-type",
+		"body": ["type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;\ntype typeExpanded = Expand<${1:ExampleType}>;"],
+		"description": "Expand type"
+	},
+	"Expand type Recursive": {
+		"prefix": "expand-type-recursively",
+		"body": ["type ExpandRecursively<T> = T extends object ? T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> }:never:T;\ntype typeExpanded = ExpandRecursively<${1:ExampleType}>;"],
+		"description": "Expand type recursively"
+	}
+}
