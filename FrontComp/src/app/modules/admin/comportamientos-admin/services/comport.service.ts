@@ -29,16 +29,9 @@ export class ComportService {
 	 * TODO: DONE, testear
 	 *
 	 */
-	async delete(comport: Comportamiento['id'] | Pick<Comportamiento, 'id'>): Promise<boolean> {
+	delete(comport: Comportamiento['id'] | Pick<Comportamiento, 'id'>): Promise<boolean> {
 		const id = typeof comport === 'string' ? comport : comport.id;
-		let borrado = false;
-		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${id}`).toPromise();
-		} catch (error) {
-			console.log(error);
-			alert('No se ha podido borrar ese comportamiento, contacte con un administrador.');
-		}
-		return borrado;
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${id}`).toPromise();
 	}
 
 	/**

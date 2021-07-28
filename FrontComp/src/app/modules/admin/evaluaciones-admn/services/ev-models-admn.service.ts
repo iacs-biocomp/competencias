@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
+import { IEvModelGetDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp, IEvModel } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -9,31 +9,23 @@ import { environment as cnf } from 'src/environments/environment';
 export class EvModelsAdmnService {
 	constructor(private httpClient: HttpClient) {}
 	/**
-	 * POST: save a model to the server
 	 *
 	 * @param evModel The model to save
 	 * @param reference
 	 * TODO: complete
 	 * @returns The dto with the evModel info to save
-	 * TODO: DONE, testear
 	 *
 	 */
-	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
+	save(evModel: IModelDTO, reference: boolean): Promise<IEvModelGetDTO> {
 		// console.log(String(reference));
 		// TODO: Cambiado a boolean, al serializar se queda true en vez de "true", comprobar en backend que es boolean con pipe
 		return this.httpClient
-			.post<IEvModel>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: reference } })
+			.post<IEvModelGetDTO>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: reference } })
 			.toPromise();
 	}
 
-	/**
-	 * GET: get all the categorias competenciales to the server
-	 *
-	 * @returns `Array` with all the EvModel availables, regardless of for catComp to be
-	 * TODO: Falta DTO?
-	 */
-	getAll(): Promise<IEvModel[]> {
-		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos`).toPromise();
+	getAll(): Promise<IEvModelGetDTO[]> {
+		return this.httpClient.get<IEvModelGetDTO[]>(`${cnf.apiURL}/modelos`).toPromise();
 	}
 
 	/**

@@ -27,14 +27,7 @@ export class CatCompetencialesService {
 	 */
 	async delete(cComp: CatComp['id'] | Pick<CatComp, 'id'>): Promise<boolean> {
 		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
-		let borrado = false;
-		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
-		} catch (error) {
-			console.log(error);
-			alert('No se ha podido borrar esa categoría competencial, contacte con un administrador.');
-		}
-		return borrado;
+		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
 	}
 
 	/**
@@ -49,7 +42,6 @@ export class CatCompetencialesService {
 	}
 
 	/**
-	 * PUT: edit a catComp to the server
 	 *
 	 * @param catComp the catComp to edit in the ddbb
 	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't

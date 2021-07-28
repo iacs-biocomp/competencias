@@ -21,7 +21,8 @@ export class EvaluacionesAdmService {
 	 * @param id id de la evaluacion a borrar
 	 * @returns una promesa que se resulelve como boolean `true` si se puede borar, `false` si no
 	 */
-	delete(id: number): Promise<boolean> {
+	delete(idOrObj: IEvaluacion['id'] | Pick<IEvaluacion, 'id'>): Promise<boolean> {
+		const id = typeof idOrObj === 'number' ? idOrObj : idOrObj.id;
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/evaluaciones/${id}`).toPromise();
 	}
 

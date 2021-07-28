@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ICCompAddDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../services/CatCompetenciales.service';
 
@@ -17,7 +18,7 @@ interface ICatCompetEdit extends ICatComp {
 export class TableCatCompComponent implements OnInit {
 	constructor(private catCompService: CatCompetencialesService) {}
 
-	catCompToAdd: ICatComp[] = [];
+	catCompToAdd: ICCompAddDTO[] = [];
 	catComps: ICatCompetEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
@@ -70,7 +71,7 @@ export class TableCatCompComponent implements OnInit {
 	 * @param catComp La categoria competencial a persistir
 	 * @returns Una promesa void
 	 */
-	async persistCatComp(catComp: ICatComp): Promise<void> {
+	async persistCatComp(catComp: ICCompAddDTO): Promise<void> {
 		const guardado = await this.catCompService.add(catComp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets

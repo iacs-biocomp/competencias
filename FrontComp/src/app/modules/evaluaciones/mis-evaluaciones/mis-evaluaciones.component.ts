@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from '../evaluaciones.service';
 import { Interval, isWithinInterval, parseISO } from 'date-fns';
-import { IEvAllRequired, ITrabOrgani } from 'sharedInterfaces/DTO';
+import { IEvAllRequiredDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { EvIntervals, getIntervalsOfEv } from 'sharedCode/Utility';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
@@ -24,7 +24,7 @@ type catCompCtrlView = {
 	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
 };
 
-type IEvWithStatus = IEvAllRequired & { status: EvStatus };
+type IEvWithStatus = IEvAllRequiredDTO & { status: EvStatus };
 @Component({
 	selector: 'app-mis-evaluaciones',
 	templateUrl: './mis-evaluaciones.component.html',
@@ -88,7 +88,7 @@ export class MisEvaluacionesComponent implements OnInit {
 	 * Funcion que calculará en que periodo se encuetra la evaluacion (los 3 del ENUM);
 	 * y mostrará un botón u otro
 	 */
-	computeEvStatus(ev: IEvAllRequired): EvStatus {
+	computeEvStatus(ev: IEvAllRequiredDTO): EvStatus {
 		const intervals = getIntervalsOfEv(ev);
 		//	console.log(intervals);
 		const now = new Date();
