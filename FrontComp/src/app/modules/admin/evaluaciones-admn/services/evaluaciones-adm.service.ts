@@ -20,29 +20,31 @@ export class EvaluacionesAdmService {
 	/**
 	 * @param id id de la evaluacion a borrar
 	 * @returns una promesa que se resulelve como boolean `true` si se puede borar, `false` si no
+	 * @throws completar
 	 */
-	delete(idOrObj: IEvaluacion['id'] | Pick<IEvaluacion, 'id'>): Promise<boolean> {
+	delete(idOrObj: IEvaluacion['id'] | Pick<IEvaluacion, 'id'>): Promise<true> {
 		const id = typeof idOrObj === 'number' ? idOrObj : idOrObj.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/evaluaciones/${id}`).toPromise();
+		return this.httpClient.delete<true>(`${cnf.apiURL}/evaluaciones/${id}`).toPromise();
 	}
 
 	/**
 	 *
 	 * @param evalu la evaluacion a guardar
 	 * @returns una promesa que se resuelve como boolean `true` si se puede guardar, `false` si no
+	 * @throws completar a futuro
 	 */
-	save(evalu: IEvSendDTO): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
+	add(evalu: IEvSendDTO): Promise<true> {
+		return this.httpClient.post<true>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 
-	/**
-	 *
-	 * @param evalu la evaluacion que se quiere editar
-	 * @returns una promesa que se resuelve como boolean `true` si se puede editar, `false` si no
-	 * TODO: DONE, testear
-	 *
-	 */
-	edit(evalu: IEvSendDTO): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
-	}
+	// /**
+	//  *
+	//  * @param evalu la evaluacion que se quiere editar
+	//  * @returns una promesa que se resuelve como boolean `true` si se puede editar, `false` si no
+	//  * TODO: DONE, testear
+	//  *
+	//  */
+	// edit(evalu: IEvSendDTO): Promise<boolean> {
+	// 	return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
+	// }
 }

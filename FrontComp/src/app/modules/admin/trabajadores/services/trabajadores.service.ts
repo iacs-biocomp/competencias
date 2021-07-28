@@ -57,9 +57,9 @@ export class TrabajadoresService {
 	 *
 	 * @returns A `Promise` that it's `true` if it has been getted, exception if not
 	 * @throws TODO: exception
-	 * TODO: DONE, testear
+	 * TODO: DONE
 	 */
-	add(worker: ITrabajadorDTO): Promise<boolean> {
+	add(worker: ITrabCCompCContrDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 
@@ -68,9 +68,9 @@ export class TrabajadoresService {
 	 * @param wrk The worker to update
 	 * @returns A `Promise` that it's `true` if it has been edited, exception if not
 	 * @throws TODO: exception
-	 * TODO: DONE, testear
+	 * TODO: DONE,
 	 */
-	edit(wrk: ITrabajadorDTO): Promise<boolean> {
+	edit(wrk: ITrabCCompCContrDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, wrk).toPromise();
 	}
 }

@@ -37,9 +37,10 @@ export class CatContractService {
 	 *
 	 * @param catContract the catContract to edit in the ddbb
 	 * @returns A `Promise` that it's `true` if it has been edited, exception if not
+	 * @throws TODO: complete
 	 * TODO: DONE, testear
 	 */
-	update(catContract: ICContrAddDTO): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
+	update(catContract: ICContrAndCCompDTO): Promise<true> {
+		return this.httpClient.put<true>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 }

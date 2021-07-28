@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
+import { IOrganigramaUsrDTO, IRelationsPostDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { environment as cnf } from 'src/environments/environment';
 
 @Injectable({
@@ -10,7 +10,8 @@ export class OrganiService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * @returns {IOrganigramaUsrDTO} The organigrama of the user
+	 * @returns The full organization chart of all saved users in db
+	 * TODO: test if correct
 	 */
 	getFullOrgani(): Promise<IOrganigramaUsrDTO[]> {
 		return this.httpClient.get<IOrganigramaUsrDTO[]>(`${cnf.apiURL}/organigrama/all`).toPromise();
@@ -23,7 +24,7 @@ export class OrganiService {
 	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
 	 * @throws TODO: complete
 	 */
-	setInferiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+	setInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
 			.post<boolean>(`${cnf.apiURL}/organigrama/inferiores/${dni}`, relations)
@@ -38,7 +39,7 @@ export class OrganiService {
 	 * @throws TODO: complete
 	 *
 	 */
-	setSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+	setSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
 			.post<boolean>(`${cnf.apiURL}/organigrama/superiores/${dni}`, relations)
@@ -51,10 +52,12 @@ export class OrganiService {
 	 * @param relations The relations to set
 	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
 	 * @throws TODO: complete
-	 * TODO: DTO param
 	 *
 	 */
-	setPares(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+	setPares(
+		wrk: Pick<ITrabOrgani, 'dni'> | ITrabOrgani['dni'],
+		relations: IRelationsPostDTO[],
+	): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/organigrama/pares/${dni}`, relations).toPromise();
 	}
@@ -64,10 +67,9 @@ export class OrganiService {
 	 * @param wrk The worker whose inferiores will be delete
 	 * @param relations The relations to delete
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
-	 * TODO: DTO param
 	 *
 	 */
-	deleteInferiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+	deleteInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
 			.delete<boolean>(`${cnf.apiURL}/organigrama/inferiores/${dni}`, this.getDeleteBody(relations))
@@ -79,10 +81,9 @@ export class OrganiService {
 	 * @param wrk The worker whose pares will be delete
 	 * @param relations The relations to delete
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
-	 * TODO: DTO param
 	 *
 	 */
-	deletePares(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+	deletePares(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
 			.delete<boolean>(`${cnf.apiURL}/organigrama/pares/${dni}`, this.getDeleteBody(relations))
@@ -94,9 +95,8 @@ export class OrganiService {
 	 * @param wrk The worker whose superiores will be delete
 	 * @param relations The relations to delete
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
-	 * TODO: DTO param
 	 */
-	deleteSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
+	deleteSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		return this.httpClient
 			.delete<boolean>(`${cnf.apiURL}/organigrama/superiores/${dni}`, this.getDeleteBody(relations))
@@ -105,9 +105,9 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param relations The object to put in the body
-	 * @returns The object options that can be stay in httpClient.delete()
-	 * TODO: DTO param
+	 * @param relations The object to set in the body
+	 * @returns Wrap relations param adding `headers` key which is Content-Type application/json
+	 * TODO: return type, extract type from method body
 	 *
 	 */
 	private getDeleteBody<T>(relations: T) {
@@ -119,3 +119,4 @@ export class OrganiService {
 		};
 	}
 }
+type ChangeName = {};

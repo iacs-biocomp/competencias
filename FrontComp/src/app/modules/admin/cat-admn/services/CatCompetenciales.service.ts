@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICCompAddDTO, ICCompDTO } from 'sharedInterfaces/DTO';
-import { CatComp } from '../../../../../../../back-comp/src/entity/CatComp.entity';
+import { ICatComp } from 'sharedInterfaces/Entity';
 
 @Injectable({ providedIn: 'root' })
 export class CatCompetencialesService {
@@ -14,13 +14,13 @@ export class CatCompetencialesService {
 
 	/**
 	 *
-	 * @param cComp The id from the cComp to delete
+	 * @param cComp The id of the cComp to delete
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 * @throws TODO: complete
 	 */
-	async delete(cComp: CatComp['id'] | Pick<CatComp, 'id'>): Promise<boolean> {
+	async delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<true> {
 		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
+		return this.httpClient.delete<true>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
 	}
 
 	/**
@@ -30,17 +30,18 @@ export class CatCompetencialesService {
 	 * @throws TODO: complete ()
 	 *
 	 */
-	add(catComp: ICCompAddDTO): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+	add(catComp: ICCompAddDTO): Promise<true> {
+		return this.httpClient.post<true>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 
 	/**
 	 *
 	 * @param catComp the catComp to edit in the ddbb
 	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
+	 * @throws TODO: complete ()
 	 *
 	 */
-	edit(catComp: ICCompDTO): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+	edit(catComp: ICCompDTO): Promise<true> {
+		return this.httpClient.put<true>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 }

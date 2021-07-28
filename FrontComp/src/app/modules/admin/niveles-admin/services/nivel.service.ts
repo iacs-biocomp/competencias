@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { INivel } from 'sharedInterfaces/Entity';
-import { INivelAddDTO, INivelGetDTO } from 'sharedInterfaces/DTO';
-import { Nivel } from '../../../../../../../back-comp/src/entity';
+import { INivelAddDTO, INivelGetDTO, INivelPutDTO } from 'sharedInterfaces/DTO';
 
 @Injectable({ providedIn: 'root' })
 export class NivelService {
@@ -37,13 +36,10 @@ export class NivelService {
 	}
 
 	/**
-	 * DELETE: delete a nivel to the server
-	 *
-	 * @param nivel The id from the nivel that we want to delete
+	 * @param nivel level's id which will be deleted
 	 * @returns A `Promise` that it's `true` if it has been deleted, `false` if it hasn't
-	 *
 	 */
-	delete(nivel: Nivel['id'] | Pick<Nivel, 'id'>): Promise<boolean> {
+	delete(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<boolean> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
 	}
@@ -53,7 +49,7 @@ export class NivelService {
 	 *
 	 * @param nivel The nivel we want to add
 	 * @returns A `Promise` that it's `true` if it has been add, `false` if it hasn't
-	 * TODO: DONE, testear
+	 * TODO: DONE, reference falta, bien?
 	 */
 	add(nivel: INivelAddDTO): Promise<boolean> {
 		//*QUAL: Crear INivelPostDto o similar
@@ -65,10 +61,10 @@ export class NivelService {
 	 * @param nivel the nivel to edit in the ddbb
 	 * @returns A `Promise` that it's `true` if it has been edited, `false` if it hasn't
 	 *
-	 * TODO: DONE, testear
+	 * TODO: DONE, reference falta, bien?
 	 *
 	 */
-	edit(nivel: INivelAddDTO): Promise<boolean> {
+	edit(nivel: INivelPutDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
 }

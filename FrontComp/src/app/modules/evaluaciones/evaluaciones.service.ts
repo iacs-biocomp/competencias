@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IEvAllRequiredDTO, IEvWithModelGetDTO } from 'sharedInterfaces/DTO';
 import { IEvaluacion, IUser } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -14,20 +15,22 @@ export class EvaluacionesService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * TODO: Return parameter correcto??
+	 * TODO: Probablemente así, completar en el backend ya que manda Ev[]
 	 */
-	public evaluacionesUsr(usr: IUser['username'] | Pick<IUser, 'username'>): Promise<IEvaluacion[]> {
+	public evaluacionesUsr(usr: IUser['username'] | Pick<IUser, 'username'>): Promise<IEvAllRequiredDTO[]> {
 		const username = typeof usr === 'string' ? usr : usr.username;
-		return this.httpClient.get<IEvaluacion[]>(cnf.apiURL + `/evaluaciones/user/${username}`).toPromise();
+		return this.httpClient
+			.get<IEvAllRequiredDTO[]>(`${cnf.apiURL}/evaluaciones/user/${username}`)
+			.toPromise();
 	}
 
 	/**
 	 * @param evId El identificador de la evaluación
 	 * @returns La evaluación con todos los datos del modelo
-	 * TODO: DTO return type (cambiar sharedInterfaces)
+	 * TODO: DONE
 	 *
 	 */
-	public getEvWithModel(evId: IEvaluacion['id']): Promise<IEvaluacion> {
-		return this.httpClient.get<IEvaluacion>(cnf.apiURL + `/evaluaciones/${evId}`).toPromise();
+	public getEvWithModel(evId: IEvaluacion['id']): Promise<IEvWithModelGetDTO> {
+		return this.httpClient.get<IEvWithModelGetDTO>(cnf.apiURL + `/evaluaciones/${evId}`).toPromise();
 	}
 }
