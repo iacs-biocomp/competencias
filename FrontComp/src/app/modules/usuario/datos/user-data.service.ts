@@ -14,7 +14,7 @@ export class UserDataService {
 	 * Api request that gets user info
 	 * @param usrnameOrObj Username or object that have username property
 	 * @returns The user info, type IUser
-	 * TODO: DTO return type
+	 * TODO: DONE, testear
 	 */
 	getUserData(usrnameOrObj: IUserGetDTO['username'] | Pick<IUserGetDTO, 'username'>): Promise<IUserDTO> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;

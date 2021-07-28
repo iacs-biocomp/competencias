@@ -2,36 +2,37 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IEvaluacion, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
-import { IValoracionToAddDTO } from 'sharedInterfaces/DTO';
+import { IValoracionAddDTO, IValoracionDTO } from 'sharedInterfaces/DTO';
 
 @Injectable({ providedIn: 'root' })
 export class ValoracionesService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * Obtiene una evaluacion indicando el id de la evaluacion y el dni del trabajador
-	 * @param worker el trabajador a buscar
-	 * @param evId el id de la evaluación
+	 * Get an evaluation indicating the id and the worker dni
+	 * @param worker the worker to search
+	 * @param evId the id of the evaluation
 	 * @returns Promise<Array> de valoraciones de un usuario de cierta evaluación
-	 * TODO: DTO return type
+	 * TODO: return correcto o usar IValoracionAddDTO ??
 	 *
 	 */
 	async getUsrEvVals(
 		worker: ITrabajador | ITrabajador['dni'],
 		evId: IEvaluacion['id'],
-	): Promise<IValoracion[]> {
+	): Promise<IValoracionDTO[]> {
 		const dni = typeof worker === 'string' ? worker : worker.dni;
-		return this.httpClient.get<IValoracion[]>(`${cnf.apiURL}/valoraciones/${dni}/${evId}`).toPromise();
+		return this.httpClient.get<IValoracionDTO[]>(`${cnf.apiURL}/valoraciones/${dni}/${evId}`).toPromise();
 	}
 
 	/**
-	 * Añade una nueva valoración a la DB, el backend busca si existe una valoración con esa comp y comport,
-	 * de ser así no realiza cambios y lanza excepción. Para actualizar usar {@link update}
-	 * @param val La valoración sin el ID con comp, comport y puntuación.
-	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
-	 * @throws Lanza excepcion si no se ha encontrado la valoracion
+	 * Add a new valoracion to the ddbb, the backend searches if a valoracion with that comp and comport exists,
+	 * if so, it does NOT make changes and throws and exception. To update use {@link update}
+	 *
+	 * @param val The valoracion without the ID with comp, comport and puntuacion
+	 * @returns A `Promise` that it's `true` if it has been added, exception if not
+	 * @throws exception if the valoracion has not been found
 	 */
-	async add(val: IValoracionToAddDTO): Promise<boolean> {
+	async add(val: IValoracionAddDTO): Promise<boolean> {
 		if (!val) {
 			throw new Error('Valoracion no valida o incorrecta');
 		}
@@ -39,14 +40,14 @@ export class ValoracionesService {
 	}
 
 	/**
-	 * Actualiza la puntuación de una valoración ya creada
-	 * @param val La valoración con el ID y la puntuación actualizada
-	 * @returns `true` si se ha actualizado, `false` o excepción en caso contrario
-	 * @throws Lanza excepcion si no se ha encontrado la valoracion
-	 * TODO: DTO param type
+	 * Update the puntacion of a valoracion already created
+	 * @param val The valoracion to update
+	 * @returns A `Promise` that it's `true` if it has been updated, exception if not
+	 * @throws exception if the valoracion has not been found
+	 * TODO: DONE, testear
 	 *
 	 */
-	async update(val: IValoracion): Promise<boolean> {
+	async update(val: IValoracionDTO): Promise<boolean> {
 		if (!val) {
 			throw new Error('Valoracion no valida o incorrecta');
 		}

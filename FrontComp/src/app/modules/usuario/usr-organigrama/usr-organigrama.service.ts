@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IOrganigramaTrabajadorDTO } from 'sharedInterfaces/DTO/organigrama.DTO';
+import { IOrganigramaUsrDTO } from 'sharedInterfaces/DTO/organigrama.DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -13,14 +13,14 @@ export class UsrOrganigramaService {
 	/**
 	 * TODO: DTO return type
 	 * Fetch the user organization chart from the API
-	 * @returns The user organization chart type {@link IOrganigramaTrabajadorDTO}
+	 * @returns The user organization chart type {@link IOrganigramaUsrDTO}
 	 *
 	 *
 	 */
-	organigramaUsr(): Promise<IOrganigramaTrabajadorDTO> {
+	organigramaUsr(): Promise<IOrganigramaUsrDTO> {
 		const token = this.jwtSv.getDecodedToken();
 		return this.httpClient
-			.get<IOrganigramaTrabajadorDTO>(`${cnf.apiURL}/organigrama/${token.username}`)
+			.get<IOrganigramaUsrDTO>(`${cnf.apiURL}/organigrama/${token.username}`)
 			.toPromise();
 	}
 }

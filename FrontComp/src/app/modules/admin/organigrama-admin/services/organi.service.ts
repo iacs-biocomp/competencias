@@ -10,7 +10,7 @@ export class OrganiService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * @returns {IOrganigramaUsrDTO} El organigrama completo de la bbdd
+	 * @returns {IOrganigramaUsrDTO} The organigrama of the user
 	 */
 	getFullOrgani(): Promise<IOrganigramaUsrDTO[]> {
 		return this.httpClient.get<IOrganigramaUsrDTO[]>(`${cnf.apiURL}/organigrama/all`).toPromise();
@@ -18,9 +18,10 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk
-	 * @param relations Las relaciones que se quieren settear
-	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 * @param wrk the worker whose inferiors to search
+	 * @param relations The relations to set
+	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
+	 * @throws TODO: complete
 	 */
 	setInferiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -31,10 +32,10 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
-	 * @param relations Las relaciones que se quieren settear
-	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
-	 * TODO: DTO param
+	 * @param wrk the worker whose superiores to search
+	 * @param relations The relations to set
+	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
+	 * @throws TODO: complete
 	 *
 	 */
 	setSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
@@ -46,9 +47,10 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
-	 * @param relations Las relaciones que se quieren settear
-	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 * @param wrk the worker whose pares to search
+	 * @param relations The relations to set
+	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
+	 * @throws TODO: complete
 	 * TODO: DTO param
 	 *
 	 */
@@ -59,9 +61,9 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
-	 * @param relations Las relaciones que se quieren eliminar
-	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 * @param wrk The worker whose inferiores will be delete
+	 * @param relations The relations to delete
+	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 * TODO: DTO param
 	 *
 	 */
@@ -74,9 +76,9 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
-	 * @param relations Las relaciones que se quieren eliminar
-	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 * @param wrk The worker whose pares will be delete
+	 * @param relations The relations to delete
+	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 * TODO: DTO param
 	 *
 	 */
@@ -89,11 +91,10 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk El trabajador del que se quiere eliminar superiores o su dni como string
-	 * @param relations Las relaciones que se quieren eliminar
-	 * @returns `true` si se ha borrado correctamente `false` en caso contrario
+	 * @param wrk The worker whose superiores will be delete
+	 * @param relations The relations to delete
+	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 * TODO: DTO param
-	 *
 	 */
 	deleteSuperiores(wrk: ITrabOrgani | string, relations: ITrabOrgani[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -104,8 +105,8 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param relations El objeto a poner en el body
-	 * @returns El objeto options  que se le puede pasar al httpClient.delete()
+	 * @param relations The object to put in the body
+	 * @returns The object options that can be stay in httpClient.delete()
 	 * TODO: DTO param
 	 *
 	 */

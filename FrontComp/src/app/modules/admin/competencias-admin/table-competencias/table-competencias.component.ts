@@ -73,7 +73,7 @@ export class TableCompetenciasComponent implements OnInit {
 		compet.editing = editing;
 		if (send) {
 			delete compet.editing;
-			this.comptService.editCompt(compet);
+			this.comptService.edit(compet);
 		}
 	}
 
@@ -83,7 +83,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 * @param competencia la competencia para guardar
 	 */
 	async persistCompe(competencia: ICompAddDTO): Promise<void> {
-		const guardado = await this.comptService.addCompeten(competencia);
+		const guardado = await this.comptService.add(competencia);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.deleteCompeToAdd(competencia);

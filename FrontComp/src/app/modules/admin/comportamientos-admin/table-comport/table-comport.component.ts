@@ -121,7 +121,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 		comport.editing = editing;
 		if (send) {
 			delete comport.editing;
-			this.comportService.editCompt(comport);
+			this.comportService.edit(comport);
 		}
 	}
 
@@ -130,7 +130,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	}
 
 	async persistComport(comport: IComportamiento): Promise<void> {
-		const guardado = await this.comportService.addComport(comport);
+		const guardado = await this.comportService.add(comport);
 		if (guardado) {
 			await this.updateComportView();
 			this.deleteComptToAdd(comport);

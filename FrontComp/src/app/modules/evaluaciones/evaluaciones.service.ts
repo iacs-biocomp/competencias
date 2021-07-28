@@ -14,18 +14,14 @@ export class EvaluacionesService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 *
-	 * @param usr El nombre de usuario como string o objeto que tenga la propiedad usuario
-	 * @returns Todas las evaluaciones de un usuario
-	 * TODO: DTO return type (cambiar sharedInterfaces)
+	 * TODO: Return parameter correcto??
 	 */
-	public evaluacionesUsr(usr: string | Pick<IUser, 'username'>): Promise<IEvaluacion[]> {
+	public evaluacionesUsr(usr: IUser['username'] | Pick<IUser, 'username'>): Promise<IEvaluacion[]> {
 		const username = typeof usr === 'string' ? usr : usr.username;
 		return this.httpClient.get<IEvaluacion[]>(cnf.apiURL + `/evaluaciones/user/${username}`).toPromise();
 	}
 
 	/**
-	 * Obtiene una evaluación con todos los datos del modelo
 	 * @param evId El identificador de la evaluación
 	 * @returns La evaluación con todos los datos del modelo
 	 * TODO: DTO return type (cambiar sharedInterfaces)

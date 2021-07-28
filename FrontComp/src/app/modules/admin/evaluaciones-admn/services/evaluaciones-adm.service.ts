@@ -39,10 +39,10 @@ export class EvaluacionesAdmService {
 	 *
 	 * @param evalu la evaluacion que se quiere editar
 	 * @returns una promesa que se resuelve como boolean `true` si se puede editar, `false` si no
-	 * TODO: DTO param type
+	 * TODO: DONE, testear
 	 *
 	 */
-	edit(evalu: IEvaluacion): Promise<boolean> {
+	edit(evalu: IEvSendDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 }

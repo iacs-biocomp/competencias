@@ -44,7 +44,7 @@ export class TrabTableComponent implements OnInit {
 	}
 
 	async updateWorkerView(): Promise<void> {
-		this.trabajadores = await this.trabService.getAllTrabajadores();
+		this.trabajadores = await this.trabService.getAll();
 	}
 
 	/** Metodo que borra un trabajador de los que se iban a añadir y aun no se habian mandado al backend */
@@ -78,12 +78,12 @@ export class TrabTableComponent implements OnInit {
 		trab.editing = editing;
 		if (send) {
 			delete trab.editing;
-			this.trabService.editTrabajador(trab);
+			this.trabService.edit(trab);
 		}
 	}
 
 	async persistWorker(trab: ITrabCCompCContrDTO): Promise<void> {
-		const guardado = await this.trabService.addTrabajador(trab);
+		const guardado = await this.trabService.add(trab);
 		if (guardado) {
 			//*PERF: Modificar para añadir el trabajador a la lista sin pedir todos los trabajadores
 			await this.updateWorkerView();

@@ -57,7 +57,7 @@ export class NivTableComponent implements OnInit {
 		nivel.editing = editing;
 		if (send) {
 			delete nivel.editing;
-			this.nivelService.editNivel(nivel);
+			this.nivelService.edit(nivel);
 		}
 	}
 

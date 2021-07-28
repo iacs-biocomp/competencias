@@ -14,7 +14,7 @@ export class CatCompetencialesService {
 
 	/**
 	 *
-	 * @param cComp The id from the cComp that we want to delete
+	 * @param cComp The id from the cComp to delete
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 * @throws TODO: complete
 	 */

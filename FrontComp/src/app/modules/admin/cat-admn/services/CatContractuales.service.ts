@@ -16,6 +16,7 @@ export class CatContractService {
 	 *
 	 * @param cContr The id of cContr or cContr that will be deleted
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
+	 * @throws TODO: complete
 	 */
 	delete(cContr: ICatContr['id'] | Pick<ICatContr, 'id'>): Promise<boolean> {
 		const catContrId = typeof cContr === 'string' ? cContr : cContr.id;
@@ -24,7 +25,7 @@ export class CatContractService {
 
 	/**
 	 *
-	 * @param catContract The catContract we want to add
+	 * @param catContract The catContract to add
 	 * @returns A `Promise` that it's `true` if it has been add, exception if not
 	 * @throws TODO: complete
 	 */
@@ -35,7 +36,7 @@ export class CatContractService {
 	/**
 	 *
 	 * @param catContract the catContract to edit in the ddbb
-	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
+	 * @returns A `Promise` that it's `true` if it has been edited, exception if not
 	 * TODO: DONE, testear
 	 */
 	update(catContract: ICContrAddDTO): Promise<boolean> {
