@@ -8,16 +8,10 @@ import { CatComp } from '../../../../../../../back-comp/src/entity/CatComp.entit
 export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient) {}
 
-	public delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<boolean> {
-		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
-	}
-
 	/**
-	 * Metodo que obtiene todas las categorias competenciales del backend, usado solo para el ADMIN
+	 * GET: get all the categorias competenciales to the server, used only for the ADMIN
 	 *
-	 * @returns Un `Array` de todas las categorias competenciales
-	 * TODO: DTO return type
+	 * @returns `Array` with all the CatComps
 	 *
 	 */
 	public async getAll(): Promise<ICCompDTO[]> {
@@ -25,9 +19,10 @@ export class CatCompetencialesService {
 	}
 
 	/**
-	 * Metodo que borra una categoria competencial del backend
+	 * DELETE: delete a categoria competencial to the server
 	 *
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
+	 * @param cComp The id from the cComp that we want to delete
+	 * @returns A `Promise` that it's `True` if it has been deleted, `False` if it hasn't
 	 *
 	 */
 	async delete(cComp: CatComp['id'] | Pick<CatComp, 'id'>): Promise<boolean> {
@@ -43,10 +38,10 @@ export class CatCompetencialesService {
 	}
 
 	/**
-	 * Añade una nueva categoría competencial a la base de datos
+	 * POST: add a new categoria competencial to the server
 	 *
-	 * @param catComp La categoría competencial a añadir
-	 * TODO: DTO param type
+	 * @param catComp The catComp we want to add
+	 * @returns A `Promise` that it's `True` if it has been add, `False` if it hasn't
 	 *
 	 */
 	add(catComp: ICCompAddDTO): Promise<boolean> {
@@ -54,10 +49,10 @@ export class CatCompetencialesService {
 	}
 
 	/**
+	 * PUT: edit a catComp to the server
 	 *
-	 * @param catComp La competencia a editar en la base de datos
-	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
-	 * TODO: DTO param type
+	 * @param catComp the catComp to edit in the ddbb
+	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
 	 *
 	 */
 	edit(catComp: ICCompDTO): Promise<boolean> {

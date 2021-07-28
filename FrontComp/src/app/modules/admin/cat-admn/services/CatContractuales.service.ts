@@ -9,21 +9,19 @@ export class CatContractService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * Metodo que obtiene todas las categorias competenciales del backend, usado solo para el ADMIN
+	 * GET: get all the categorias contractuales to the server, used only for the ADMIN
 	 *
-	 * @returns Un `Array` de todas las categorias competenciales
-	 * TODO: DTO param type
-	 *
+	 * @returns `Array` with all the CatContact and his cComp
 	 */
 	public getAll(): Promise<ICContrAndCCompDTO[]> {
 		return this.httpClient.get<ICContrAndCCompDTO[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
 	}
 
 	/**
-	 * Metodo que borra una categoria competencial del backend
+	 * DELETE: delete a categoria contractual to the server
 	 *
-	 * @throws Exception si no se ha podido borrar la CatContractual
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
+	 * @param cContr The id from the cContr that we want to delete
+	 * @returns A `Promise` that it's `True` if it has been deleted, `False` if it hasn't
 	 */
 	async delete(cContr: CatContr['id'] | Pick<CatContr, 'id'>): Promise<boolean> {
 		const catContrId = typeof cContr === 'string' ? cContr : cContr.id;
@@ -38,22 +36,21 @@ export class CatContractService {
 	}
 
 	/**
-	 *POST: add a new categoria competencial to the server
-	 * @param catContract
-	 * @returns
-	 * TODO: DTO param type
+	 * POST: add a new categoria contractual to the server
+	 *
+	 * @param catContract The catContract we want to add
+	 * @returns A `Promise` that it's `True` if it has been add, `False` if it hasn't
 	 */
 	add(catContract: ICContrAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 
 	/**
+	 * PUT: edit a catContr to the server
 	 *
-	 * @param catContract
-	 * @returns
-	 * TODO: DTO param type
-	 * TODO: Tsdoc
-	 *
+	 * @param catContract the catContract to edit in the ddbb
+	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
+	 * TODO: DONE, testear
 	 */
 	update(catContract: ICContrAddDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();

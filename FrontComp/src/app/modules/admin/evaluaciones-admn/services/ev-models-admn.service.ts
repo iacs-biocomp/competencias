@@ -9,11 +9,13 @@ import { environment as cnf } from 'src/environments/environment';
 export class EvModelsAdmnService {
 	constructor(private httpClient: HttpClient) {}
 	/**
-	 * Envia un modelo al backend intentando guardarlo.
+	 * POST: save a model to the server
 	 *
-	 * @param evModel El modelo a guardar
-	 * @returns //TODO tsdoc
-	 * TODO: DTO return type
+	 * @param evModel The model to save
+	 * @param reference
+	 * TODO: complete
+	 * @returns The dto with the evModel info to save
+	 * TODO: DONE, testear
 	 *
 	 */
 	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
@@ -25,16 +27,17 @@ export class EvModelsAdmnService {
 	}
 
 	/**
-	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
-	 * TODO: DTO return type
+	 * GET: get all the categorias competenciales to the server
 	 *
+	 * @returns `Array` with all the EvModel availables, regardless of for catComp to be
+	 * TODO: Falta DTO?
 	 */
 	getAll(): Promise<IEvModel[]> {
 		return this.httpClient.get<IEvModel[]>(`${cnf.apiURL}/modelos`).toPromise();
 	}
 
 	/**
-	 * @returns Un array de todos los modelos de evaluaciones disponibles, independientemente de para que catComp sean
+	 * @returns `Array` with all the EvModel availables, regardless of for catComp to be
 	 */
 	getAllReference(): Promise<IRefModel[]> {
 		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();

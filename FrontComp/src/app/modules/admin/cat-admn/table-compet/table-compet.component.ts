@@ -6,7 +6,9 @@ interface ICatCompetEdit extends ICatComp {
 	editing?: boolean;
 }
 
-// TODO: Tsdoc
+/**
+ * Component used for competency category viewing / editing
+ */
 @Component({
 	selector: 'app-table-compet',
 	templateUrl: './table-compet.component.html',

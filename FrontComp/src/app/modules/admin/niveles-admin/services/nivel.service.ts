@@ -10,20 +10,21 @@ export class NivelService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * Metodo que obtiene todas los niveles del backend, usado solo para el ADMIN
+	 * GET: get all the niveles to the server, used only for the ADMIN
 	 *
-	 * @returns Un `Array` de todos los niveles, sean o no de referencia
-	 * TODO: DTO return type
+	 * @returns `Array` with all the CatComps
+	 * TODO: DTO return type, no esta hecho?
 	 */
 	getAll(): Promise<INivel[]> {
 		return this.httpClient.get<INivel[]>(`${cnf.apiURL}/niveles/all`).toPromise();
 	}
 
 	/**
-	 * Metodo que obtiene todas los niveles del backend, usado solo para el ADMIN
+	 * GET: get one nivel by ID to the server
 	 *
 	 * @returns Un `Array` de todos los niveles, sean o no de referencia
-	 * TODO: DTO return type
+	 * @returns `Promise` with all the niveles, whether or not they are for reference
+	 * TODO: DONE, testear
 	 *
 	 */
 	getOne(nivel: Nivel['id'] | Pick<Nivel, 'id'>): Promise<INivel> {
@@ -32,9 +33,10 @@ export class NivelService {
 	}
 
 	/**
+	 * GET: get all the niveles for reference to the server
 	 *
-	 * @returns Una promise que contiene todos los Niveles de referencia
-	 * TODO: DTO return type
+	 * @returns `Promise` with all the reference niveles
+	 * TODO: DTO return type, no esta hecho?
 	 *
 	 */
 	getAllRefNivs(): Promise<INivel[]> {
@@ -42,10 +44,10 @@ export class NivelService {
 	}
 
 	/**
-	 * Metodo que borra un nivel del backend
+	 * DELETE: delete a nivel to the server
 	 *
-	 * @param nivel El nivel a borrar o su identificador
-	 * @returns Una promesa que es `true` si se ha borrado `false` en caso contrario
+	 * @param nivel The id from the nivel that we want to delete
+	 * @returns A `Promise` that it's `True` if it has been deleted, `False` if it hasn't
 	 *
 	 */
 	async delete(nivel: Nivel['id'] | Pick<Nivel, 'id'>): Promise<boolean> {
@@ -61,12 +63,11 @@ export class NivelService {
 	}
 
 	/**
-	 * Petición de tipo POST, añade a la base de datos un nuevo nivel
+	 * POST: add a new nivel to the server
 	 *
-	 * @throws Exception, de tipo http con su codigo de error si ya existe ese nivel
-	 * @returns `true` si se ha añadido correctamente el nivel a la bbdd o `false`/`exception` en otros casos
-	 * TODO: DTO param type
-	 *
+	 * @param nivel The nivel we want to add
+	 * @returns A `Promise` that it's `True` if it has been add, `False` if it hasn't
+	 * TODO: DONE, testear
 	 */
 	add(nivel: INivelAddDTO): Promise<boolean> {
 		//*QUAL: Crear INivelPostDto o similar
@@ -74,9 +75,11 @@ export class NivelService {
 	}
 
 	/**
+	 * PUT: edit a catComp to the server
 	 *
-	 * @param comp El nivel a editar en la base de datos
-	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 * @param nivel the nivel to edit in the ddbb
+	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
+	 *
 	 * TODO: DTO param type
 	 *
 	 */

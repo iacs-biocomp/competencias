@@ -10,21 +10,23 @@ export class ComportService {
 	constructor(private httpClient: HttpClient) {}
 
 	/**
-	 * Metodo que obtiene todas los comportamientos del backend, usado solo para el ADMIN
+	 * GET: get all the comportamientos to the server, used only for the ADMIN
 	 *
-	 * @returns Un `Array` de todos los comportamientos
-	 * TODO: DTO return type
+	 * @returns `Array` with all the comportamientos
+	 * TODO: DTO return type, falta DTO
+	 *
 	 */
 	public getAll(): Promise<IComportamiento[]> {
 		return this.httpClient.get<IComportamiento[]>(`${cnf.apiURL}/comportamientos/all`).toPromise();
 	}
 
 	/**
-	 * Metodo que borra una comportamiento del backend
+	 * DELETE: delete a comport to the server
 	 *
-	 * @throws Exception de tipo http con el codigo de error, si el comportamiento no se ha podido borrar
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
-	 * TODO: DTO param type
+	 * @param cComp The id from the cComp that we want to delete
+	 * @throws Exception type http with the error code, if the comportamiento could not be deleted
+	 * @returns A `Promise` that it's `True` if it has been deleted, `False` if it hasn't
+	 * TODO: DONE, testear
 	 *
 	 */
 	async delete(comport: Comportamiento['id'] | Pick<Comportamiento, 'id'>): Promise<boolean> {
@@ -40,12 +42,12 @@ export class ComportService {
 	}
 
 	/**
-	 * Añade un comportamiento a la base de datos
+	 * POST: add a new comportamiento to the server
+
 	 *
-	 * @throws Exception de tipo http si no se ha podido añadir el comportamiento.
-	 * @param comp El comportamiento a añadir
-	 * @returns Una promesa que se resuelve como `true` si se ha añadido correctamente y `false` en caso contrario
-	 * TODO: DTO param type
+	 * @param comp The comp we want to add
+	 * @returns A `Promise` that it's `True` if it has been add, `False` if it hasn't
+	 * TODO: DONE, testear
 	 *
 	 */
 	add(comp: IComportAddDTO): Promise<boolean> {
@@ -53,10 +55,11 @@ export class ComportService {
 	}
 
 	/**
+	 * PUT: edit a catComp to the server
 	 *
-	 * @param comport El comportamiento a editar en la base de datos
-	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
-	 * TODO: DTO param type
+	 * @param comport the comport to edit in the ddbb
+	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
+	 * TODO: DONE, testear
 	 *
 	 */
 	edit(comport: IComportAddDTO): Promise<boolean> {

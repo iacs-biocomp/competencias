@@ -8,16 +8,10 @@ import { Competencia } from '../../../../../../../back-comp/src/entity';
 export class CompetenciasService {
 	constructor(private httpClient: HttpClient) {}
 
-	public delete(compet: ICompetencia | ICompetencia['id']): Promise<boolean> {
-		const id = typeof compet === 'string' ? compet : compet.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${id}`).toPromise();
-	}
-
 	/**
-	 * Metodo que obtiene todas las competencias del backend, usado solo para el ADMIN
+	 * GET: get all the competencias to the server, used only for the ADMIN
 	 *
-	 * @returns Un `Array` de todas las competencias
-	 * TODO: DTO return type
+	 * @returns `Array` with all the competencias
 	 *
 	 */
 	public getAll(): Promise<ICompGetDTO[]> {
@@ -25,11 +19,11 @@ export class CompetenciasService {
 	}
 
 	/**
-	 * Metodo que borra una competencia del backend
+	 * DELETE: delete a competencia to the server
 	 *
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
-	 */
-	async borrarCompeten(id: string): Promise<boolean> {
+	 * @param cComp The id from the competencia that we want to delete
+	 * @returns A `Promise` that it's `True` if it has been deleted, `False` if it hasn't
+	 *	 */
 	async delete(comp: Competencia['id'] | Pick<Competencia, 'id'>): Promise<boolean> {
 		const compId = typeof comp === 'string' ? comp : comp.id;
 		let borrado = false;
@@ -44,7 +38,9 @@ export class CompetenciasService {
 
 	/**
 	 * POST: add a new competencia to the server
-	 * TODO: DTO param type
+	 *
+	 * @param comp The competencia we want to add
+	 * @returns A `Promise` that it's `True` if it has been add, `False` if it hasn't
 	 *
 	 */
 	add(comp: ICompAddDTO): Promise<boolean> {
@@ -52,10 +48,10 @@ export class CompetenciasService {
 	}
 
 	/**
+	 * PUT: edit a catComp to the server
 	 *
-	 * @param comp La competencia a editar en la base de datos
-	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
-	 * TODO: DTO param type
+	 * @param comp the competencia to edit in the ddbb
+	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
 	 *
 	 */
 	edit(comp: ICompAddDTO): Promise<boolean> {
