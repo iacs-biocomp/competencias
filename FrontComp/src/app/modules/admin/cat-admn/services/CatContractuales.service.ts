@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ICatContr } from 'sharedInterfaces/Entity';
+import { ICContrAddDTO, ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
+import { CatContr } from '../../../../../../../back-comp/src/entity';
 
 @Injectable({ providedIn: 'root' })
 export class CatContractService {
@@ -14,8 +15,8 @@ export class CatContractService {
 	 * TODO: DTO param type
 	 *
 	 */
-	public getAll(): Promise<ICatContr[]> {
-		return this.httpClient.get<ICatContr[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
+	public getAll(): Promise<ICContrAndCCompDTO[]> {
+		return this.httpClient.get<ICContrAndCCompDTO[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
 	}
 
 	/**
@@ -24,8 +25,16 @@ export class CatContractService {
 	 * @throws Exception si no se ha podido borrar la CatContractual
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 */
-	async delete(id: string): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${id}`).toPromise();
+	async delete(cContr: CatContr['id'] | Pick<CatContr, 'id'>): Promise<boolean> {
+		const catContrId = typeof cContr === 'string' ? cContr : cContr.id;
+		let borrado = false;
+		try {
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${catContrId}`).toPromise();
+		} catch (error) {
+			console.log(error);
+			alert('No se ha podido borrar esa categoría contractual, contacte con un administrador.');
+		}
+		return borrado;
 	}
 
 	/**
@@ -34,7 +43,7 @@ export class CatContractService {
 	 * @returns
 	 * TODO: DTO param type
 	 */
-	add(catContract: ICatContr): Promise<boolean> {
+	add(catContract: ICContrAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 
@@ -46,7 +55,7 @@ export class CatContractService {
 	 * TODO: Tsdoc
 	 *
 	 */
-	update(catContract: ICatContr): Promise<boolean> {
+	update(catContract: ICContrAddDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
 	}
 }

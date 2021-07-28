@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { INivel } from 'sharedInterfaces/Entity';
-import { INivelToAdd } from '../niv-table/niv-table.component';
+import { INivelAddDTO, INivelGetDTO } from 'sharedInterfaces/DTO';
+import { Nivel } from '../../../../../../../back-comp/src/entity';
 
 @Injectable({ providedIn: 'root' })
 export class NivelService {
@@ -25,8 +26,9 @@ export class NivelService {
 	 * TODO: DTO return type
 	 *
 	 */
-	getOne(id: INivel['id']): Promise<INivel> {
-		return this.httpClient.get<INivel>(`${cnf.apiURL}/niveles/${id}`).toPromise();
+	getOne(nivel: Nivel['id'] | Pick<Nivel, 'id'>): Promise<INivel> {
+		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
+		return this.httpClient.get<INivel>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
 	}
 
 	/**
@@ -46,9 +48,16 @@ export class NivelService {
 	 * @returns Una promesa que es `true` si se ha borrado `false` en caso contrario
 	 *
 	 */
-	delete(nivel: INivel | INivel['id']): Promise<boolean> {
+	async delete(nivel: Nivel['id'] | Pick<Nivel, 'id'>): Promise<boolean> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
+		let borrado = false;
+		try {
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
+		} catch (error) {
+			console.log(error);
+			alert('No se ha podido borrar ese nivel, contacte con un administrador.');
+		}
+		return borrado;
 	}
 
 	/**
@@ -59,7 +68,7 @@ export class NivelService {
 	 * TODO: DTO param type
 	 *
 	 */
-	add(nivel: INivelToAdd): Promise<boolean> {
+	add(nivel: INivelAddDTO): Promise<boolean> {
 		//*QUAL: Crear INivelPostDto o similar
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
@@ -71,7 +80,7 @@ export class NivelService {
 	 * TODO: DTO param type
 	 *
 	 */
-	editNivel(nivel: INivel): Promise<boolean> {
+	edit(nivel: INivelAddDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
 	}
 }

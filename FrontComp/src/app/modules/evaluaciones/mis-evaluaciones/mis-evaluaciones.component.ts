@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from '../evaluaciones.service';
 import { Interval, isWithinInterval, parseISO } from 'date-fns';
-import { IEvAllRequired } from 'sharedInterfaces/DTO';
+import { IEvAllRequired, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { EvIntervals, getIntervalsOfEv } from 'sharedCode/Utility';
-import { ITrabOrgani } from '../../../../../../sharedCode/interfaces/DTO/ITrabajadorDTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { BehaviorSubject } from 'rxjs';
 
@@ -50,8 +49,6 @@ export class MisEvaluacionesComponent implements OnInit {
 	constructor(private evService: EvaluacionesService, private jwtSv: JwtService) {}
 
 	async ngOnInit(): Promise<void> {
-		const interval: Interval = { start: new Date(2020, 6, 21), end: new Date(2020, 6, 23) };
-		//		console.log(isWithinInterval(new Date(2020, 6, 22), interval));
 		const decodedToken = this.jwtSv.getDecodedToken();
 		const evs = await this.evService.evaluacionesUsr(decodedToken.username);
 		this.evs = evs.map<IEvWithStatus>(ev => {

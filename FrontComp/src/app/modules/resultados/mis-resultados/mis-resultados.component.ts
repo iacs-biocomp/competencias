@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IResultadoDTO } from 'sharedInterfaces/DTO';
 
 /** Ancho alto */
 type ChartView = [number, number];
@@ -32,10 +33,10 @@ export class MisResultadosComponent implements OnInit {
 	colorScheme = {
 		domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
 	};
-	data1: obj1[] = [];
+	//data1: obj1[] = [];
 	domainNames: string[] = [];
 
-	constructor(resultadosSv: ResultadosService) {
+	constructor() {
 		Object.assign(this, { single: this.single });
 	}
 

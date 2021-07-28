@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IUserDTO, IUserGetDTO } from 'sharedInterfaces/DTO';
 import { IUser } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -15,8 +16,8 @@ export class UserDataService {
 	 * @returns The user info, type IUser
 	 * TODO: DTO return type
 	 */
-	getUserData(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<IUser> {
+	getUserData(usrnameOrObj: IUserGetDTO['username'] | Pick<IUserGetDTO, 'username'>): Promise<IUserDTO> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
-		return this.httpClient.get<IUser>(`${cnf.apiURL}/users/${username}`).toPromise();
+		return this.httpClient.get<IUserDTO>(`${cnf.apiURL}/users/${username}`).toPromise();
 	}
 }

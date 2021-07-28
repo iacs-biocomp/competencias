@@ -32,8 +32,8 @@ export class ValoracionesService {
 	 * @throws Lanza excepcion si no se ha encontrado la valoracion
 	 */
 	async add(val: IValoracionToAddDTO): Promise<boolean> {
-		if (!val){
-			throw new Error('Valoracion no valida o incorrecta')
+		if (!val) {
+			throw new Error('Valoracion no valida o incorrecta');
 		}
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}
@@ -47,8 +47,8 @@ export class ValoracionesService {
 	 *
 	 */
 	async update(val: IValoracion): Promise<boolean> {
-		if (!val){
-			throw new Error('Valoracion no valida o incorrecta')
+		if (!val) {
+			throw new Error('Valoracion no valida o incorrecta');
 		}
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}

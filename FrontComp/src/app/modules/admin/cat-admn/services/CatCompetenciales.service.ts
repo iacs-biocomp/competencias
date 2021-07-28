@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ICatComp } from 'sharedInterfaces/Entity';
+import { ICCompAddDTO, ICCompDTO } from 'sharedInterfaces/DTO';
+import { CatComp } from '../../../../../../../back-comp/src/entity/CatComp.entity';
 
 @Injectable({ providedIn: 'root' })
 export class CatCompetencialesService {
@@ -19,8 +20,8 @@ export class CatCompetencialesService {
 	 * TODO: DTO return type
 	 *
 	 */
-	public async getAll(): Promise<ICatComp[]> {
-		return this.httpClient.get<ICatComp[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
+	public async getAll(): Promise<ICCompDTO[]> {
+		return this.httpClient.get<ICCompDTO[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
 	}
 
 	/**
@@ -29,11 +30,11 @@ export class CatCompetencialesService {
 	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
 	 *
 	 */
-	async borrarCatComp(idOrObj: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<boolean> {
-		const cCompId = typeof idOrObj === 'string' ? idOrObj : idOrObj.id;
+	async delete(cComp: CatComp['id'] | Pick<CatComp, 'id'>): Promise<boolean> {
+		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
 		let borrado = false;
 		try {
-			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${cCompId}`).toPromise();
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
 		} catch (error) {
 			console.log(error);
 			alert('No se ha podido borrar esa categoría competencial, contacte con un administrador.');
@@ -48,7 +49,7 @@ export class CatCompetencialesService {
 	 * TODO: DTO param type
 	 *
 	 */
-	add(catComp: ICatComp): Promise<boolean> {
+	add(catComp: ICCompAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 
@@ -59,7 +60,7 @@ export class CatCompetencialesService {
 	 * TODO: DTO param type
 	 *
 	 */
-	edit(catComp: ICatComp): Promise<boolean> {
+	edit(catComp: ICCompDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
 	}
 }

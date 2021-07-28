@@ -21,7 +21,7 @@ export class EvaluacionesAdmService {
 	 * @param id id de la evaluacion a borrar
 	 * @returns una promesa que se resulelve como boolean `true` si se puede borar, `false` si no
 	 */
-	deleteById(id: number): Promise<boolean> {
+	delete(id: number): Promise<boolean> {
 		return this.httpClient.delete<boolean>(`${cnf.apiURL}/evaluaciones/${id}`).toPromise();
 	}
 
@@ -41,7 +41,7 @@ export class EvaluacionesAdmService {
 	 * TODO: DTO param type
 	 *
 	 */
-	editEval(evalu: IEvaluacion): Promise<boolean> {
+	edit(evalu: IEvaluacion): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	}
 }

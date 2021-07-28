@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
+import { ITrabajadorDTO, ITrabCCompCContrDTO, IUserDTO } from 'sharedInterfaces/DTO';
 import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class TrabajadoresService {
 	 * @returns el trabajador encontrado
 	 * TODO: DTO return type
 	 */
-	getOneByDni(dniOrObj: Pick<ITrabajador, 'dni'> | ITrabajador['dni']): Promise<ITrabajador> {
+	getOneByDni(dniOrObj: ITrabajadorDTO['dni'] | Pick<ITrabajadorDTO, 'dni'>): Promise<ITrabajador> {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
 		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/${dni}`).toPromise();
 	}
@@ -28,9 +28,9 @@ export class TrabajadoresService {
 	 * TODO: DTO return type
 	 *
 	 */
-	getOneByUsername(usrnameOrObj: Pick<IUser, 'username'> | IUser['username']): Promise<ITrabajador> {
+	getOneByUsername(usrnameOrObj: IUserDTO['username'] | Pick<IUserDTO, 'username'>): Promise<IUserDTO> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
-		return this.httpClient.get<ITrabajador>(`${cnf.apiURL}/trabajadores/username${username}`).toPromise();
+		return this.httpClient.get<IUserDTO>(`${cnf.apiURL}/trabajadores/username${username}`).toPromise();
 	}
 
 	/**
@@ -38,32 +38,8 @@ export class TrabajadoresService {
 	 *
 	 * @returns Un `Array` de todos los trabajadores
 	 */
-	public getAllTrabajadores(): Promise<ITrabCCompCContrDTO[]> {
-		return this.httpClient.get<ITrabCCompCContrDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
-	}
-
-	/**
-	 * @deprecated
-	 * Metodo que borra un worker del backend
-	 *
-	 * @throws Excepción http si la petición sale mal
-	 * @returns Una promesa que es `True` si se ha borrado `False` en caso contrario
-	 */
-	async borrarTrabajador(id: string): Promise<boolean> {
-		let borrado = false;
-		borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${id}`).toPromise();
-		//Si la petición delete sale mal lanza excepción
-		return borrado;
-	}
-
-	/**
-	 * @deprecated
-	 * Elimina un trabajador de la DB indicando su dni
-	 * @param worker el trabajador a borrar
-	 * @returns devuelve una promesa para eliminar el trabajador
-	 */
-	delete(worker: Pick<ITrabajador, 'dni'>): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${worker.dni}`).toPromise();
+	public getAll(): Promise<ITrabajadorDTO[]> {
+		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
 	}
 
 	/**
@@ -73,17 +49,25 @@ export class TrabajadoresService {
 	 * @returns una promesa que si es 'true' se ha borrado y 'false' en caso contrario
 	 */
 
-	deleteWorker(id: ITrabajador | ITrabajador['dni']): Promise<boolean> {
+	async delete(id: ITrabajadorDTO['dni'] | Pick<ITrabajadorDTO, 'dni'>): Promise<boolean> {
 		const dniWorker = typeof id === 'string' ? id : id.dni;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${dniWorker}`).toPromise();
+		let borrado = false;
+		try {
+			return await this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${dniWorker}`).toPromise();
+		} catch (error) {
+			console.log(error);
+			alert('No se ha podido borrar ese trabajador, contacte con un administrador.');
+		}
+		return borrado;
 	}
 
 	/**
 	 * Manda una petición de tipo post al servidor intentando añadir el trabajador.
 	 *
 	 * @returns Una promise que se puede resolver como `true` si se ha añadido el trabajador y `false`/Excepción si no se ha podido añadir
+	 * TODO: comprobar DTO parametro correcto?
 	 */
-	addTrabajador(worker: ITrabCCompCContrDTO): Promise<boolean> {
+	add(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 
@@ -91,8 +75,9 @@ export class TrabajadoresService {
 	 *
 	 * @param comp El worker con los datos editados
 	 * @returns Una promesa que es `True` si se ha editado `False` en caso contrario
+	 * TODO: comprobar DTO parametro correcto?
 	 */
-	editTrabajador(worker: ITrabCCompCContrDTO): Promise<boolean> {
+	edit(worker: ITrabajadorDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 }

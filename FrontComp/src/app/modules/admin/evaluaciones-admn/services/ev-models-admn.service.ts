@@ -17,9 +17,10 @@ export class EvModelsAdmnService {
 	 *
 	 */
 	save(evModel: IModelDTO, reference: boolean): Promise<IEvModel> {
-		console.log(String(reference));
+		// console.log(String(reference));
+		// TODO: Cambiado a boolean, al serializar se queda true en vez de "true", comprobar en backend que es boolean con pipe
 		return this.httpClient
-			.post<IEvModel>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: String(reference) } })
+			.post<IEvModel>(`${cnf.apiURL}/modelos`, evModel, { params: { reference: reference } })
 			.toPromise();
 	}
 

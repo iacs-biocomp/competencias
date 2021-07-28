@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { IComportamiento } from 'sharedInterfaces/Entity';
+import { IComportAddDTO, IComportGetDTO } from 'sharedInterfaces/DTO';
+import { Comportamiento } from '../../../../../../../back-comp/src/entity';
 
 @Injectable({ providedIn: 'root' })
 export class ComportService {
@@ -25,8 +27,16 @@ export class ComportService {
 	 * TODO: DTO param type
 	 *
 	 */
-	delete(comport: IComportamiento): Promise<boolean> {
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${comport.id}`).toPromise();
+	async delete(comport: Comportamiento['id'] | Pick<Comportamiento, 'id'>): Promise<boolean> {
+		const id = typeof comport === 'string' ? comport : comport.id;
+		let borrado = false;
+		try {
+			borrado = await this.httpClient.delete<boolean>(`${cnf.apiURL}/comportamientos/${id}`).toPromise();
+		} catch (error) {
+			console.log(error);
+			alert('No se ha podido borrar ese comportamiento, contacte con un administrador.');
+		}
+		return borrado;
 	}
 
 	/**
@@ -38,7 +48,7 @@ export class ComportService {
 	 * TODO: DTO param type
 	 *
 	 */
-	addComport(comp: IComportamiento): Promise<boolean> {
+	add(comp: IComportAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/comportamientos`, comp).toPromise();
 	}
 
@@ -49,7 +59,7 @@ export class ComportService {
 	 * TODO: DTO param type
 	 *
 	 */
-	editCompt(comport: IComportamiento): Promise<boolean> {
+	edit(comport: IComportAddDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/comportamientos`, comport).toPromise();
 	}
 }
