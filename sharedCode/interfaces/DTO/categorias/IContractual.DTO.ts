@@ -5,7 +5,7 @@ import { RemovePropsInU, RequiredAndNotNull } from '../../Utility';
  *  Tipo usado para añadir una nueva Categoría contractual
  * TODO: Completar documentación añadiendo que endpoints del backend usan este tipo
  */
-export type ICContrAddDTO = RemovePropsInU<ICatContr, object>;
+export type ICContrAddDTO = RemovePropsInU<RequiredAndNotNull<ICatContr>, object>;
 
 /**
  * Tipo usado al pedir la información basica de una cContractual y su cComp asociada

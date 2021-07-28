@@ -1,4 +1,4 @@
-import { ITrabajadorDTO, ITrabOrgani } from './ITrabajador.DTO';
+import { ITrabajadorDTO, ITrabOrgani, ITrabOrganiDTO } from './ITrabajador.DTO';
 
 //TODO: TSdoc
 export interface IOrganigramaEvDTO extends IOrganigramaUsrDTO {
@@ -8,13 +8,13 @@ export interface IOrganigramaEvDTO extends IOrganigramaUsrDTO {
 //TODO: TSdoc
 export interface IOrganigramaUsrDTO {
 	/** Representa el trabajador del cual se listan sus inferiores superiores y pares */
-	trabajador: ITrabOrgani;
+	trabajador: ITrabOrganiDTO;
 	/** Son los inferiores del Trabajador de este mismo objeto*/
-	inferiores: ITrabOrgani[];
+	inferiores: ITrabOrganiDTO[];
 	/** Son los superiores del Trabajador de este mismo objeto*/
-	superiores: ITrabOrgani[];
+	superiores: ITrabOrganiDTO[];
 	/** Son los pares del Trabajador de este mismo objeto*/
-	pares: ITrabOrgani[];
+	pares: ITrabOrganiDTO[];
 }
 
 /**

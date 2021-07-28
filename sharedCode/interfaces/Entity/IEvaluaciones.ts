@@ -43,6 +43,7 @@ export interface IEvaluacion {
 export interface IEvModel {
 	id: number;
 	catComp: ICatComp;
+	reference: boolean;
 	evs?: IEvaluacion[];
 	/**
 	 * Representa los submodelos del modelo que utiliza la evaluación

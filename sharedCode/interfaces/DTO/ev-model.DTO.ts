@@ -5,8 +5,7 @@ import { ISubModelGetDTO } from './submodelos.DTO';
 
 // TODO: completar
 export type IEvModelDTO = IEvModel;
-// TODO: completar
-export type IEvModelAddDTO = IEvModel;
+export type IEvModelAddDTO = Omit<IEvModelGetDTO, 'id'>;
 // TODO: completar
 export type IEvModelRefUpdateDTO = Pick<IEvModel, 'id'> & {
 	catComp: ICCompDTO;

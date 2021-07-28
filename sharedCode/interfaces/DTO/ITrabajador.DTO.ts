@@ -1,6 +1,7 @@
 import { ICatComp, ICatContr } from '../Entity/ICategorias';
 import { ITrabajador } from '../Entity/IUser';
 import { PickPropsInU, TsPrimitiveTypes } from '../Utility';
+import { ICCompDTO } from './categorias';
 
 //TODO: Tsdoc
 /**
@@ -23,3 +24,12 @@ export interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {
 	/** La categoría competencial actual del trabajador, solo EL TRABAJADOR la tiene no sus sup/inf/pares */
 	catComp?: ICatComp;
 }
+
+//TODO: Tsdoc
+export type ITrabOrganiDTO = ITrabajadorDTO & {
+	catComp: ICCompDTO;
+};
+
+export type IRelationsPostDTO = {
+	dni: ITrabajador['dni'];
+};

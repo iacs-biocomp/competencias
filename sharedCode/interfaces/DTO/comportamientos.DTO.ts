@@ -18,4 +18,6 @@ export type IComportAddDTO = IComportBaseDTO & Pick<IComportamiento, 'id'>;
  * TODO: tsdoc in english
  * @author aml360 <aml360esp@gmail.com>
  */
-export type IComportGetDTO = IComportBaseDTO & Pick<IComportamiento, 'id'>;
+export type IComportGetDTO = IComportAddDTO;
+
+export type IComportPutDTO = IComportAddDTO;

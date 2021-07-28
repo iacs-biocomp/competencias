@@ -17,6 +17,10 @@ export type IEvAllRequiredDTO = PickPropsInU<RequiredAndNotNull<IEvaluacion>, Ts
 	catComp: ICCompDTO;
 };
 
+export type IEvWithModelGetDTO = PickPropsInU<RequiredAndNotNull<IEvaluacion>, TsPrimitiveTypes> & {
+	model: IEvModelGetDTO;
+};
+
 export type IEvUpdateDTO = IEvSendDTO;
 
 export type IUpdateEvShowingResultsDTO = RequiredAndNotNull<Pick<IEvaluacion, 'id' | 'isShowingResults'>>;
