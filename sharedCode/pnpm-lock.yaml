@@ -1,14 +1,14 @@
 lockfileVersion: 5.3
 
 specifiers:
-  date-fns: ^2.22.1
+  date-fns: ^2.23.0
 
 dependencies:
-  date-fns: 2.22.1
+  date-fns: 2.23.0
 
 packages:
 
-  /date-fns/2.22.1:
-    resolution: {integrity: sha512-yUFPQjrxEmIsMqlHhAhmxkuH769baF21Kk+nZwZGyrMoyLA+LugaQtC0+Tqf9CBUUULWwUJt6Q5ySI3LJDDCGg==}
+  /date-fns/2.23.0:
+    resolution: {integrity: sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==}
     engines: {node: '>=0.11'}
     dev: false
