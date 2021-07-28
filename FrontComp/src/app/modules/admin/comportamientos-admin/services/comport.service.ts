@@ -9,13 +9,7 @@ import { Comportamiento } from '../../../../../../../back-comp/src/entity';
 export class ComportService {
 	constructor(private httpClient: HttpClient) {}
 
-	/**
-	 * GET: get all the comportamientos to the server, used only for the ADMIN
-	 *
-	 * @returns `Array` with all the comportamientos
-	 * TODO: DTO return type, falta DTO
-	 *
-	 */
+	//  TODO: DTO return type
 	public getAll(): Promise<IComportamiento[]> {
 		return this.httpClient.get<IComportamiento[]>(`${cnf.apiURL}/comportamientos/all`).toPromise();
 	}

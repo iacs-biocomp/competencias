@@ -29,7 +29,8 @@ export class EvModelsAdmnService {
 	}
 
 	/**
-	 * @returns `Array` with all the EvModel availables, regardless of for catComp to be
+	 * @returns All Refence evModels
+	 * TODO: DTO return type
 	 */
 	getAllReference(): Promise<IRefModel[]> {
 		return this.httpClient.get<IRefModel[]>(`${cnf.apiURL}/modelos/references`).toPromise();
@@ -38,6 +39,8 @@ export class EvModelsAdmnService {
 	/**
 	 * @param catComp La catComp o su id con la que se busca su modelo de referencia
 	 * @returns El modelo de referencia que tiene esa catComp asociada
+	 * TODO: DTO return type
+	 * TODO: Tsdoc english
 	 */
 	getOneReference(catComp: ICatComp | ICatComp['id']): Promise<IRefModel> {
 		const id = typeof catComp === 'string' ? catComp : catComp.id;
@@ -47,7 +50,8 @@ export class EvModelsAdmnService {
 	/**
 	 *
 	 * @param refModel El modelo de referencia con toda la información actualizada
-	 * @returns `true` si se ha guardado correctamente `false` en caso contrario
+	 * @returns `true` si se ha guardado correctamente, exception if not
+	 * @throws TODO: complete
 	 * TODO: DTO param type
 	 *
 	 */
