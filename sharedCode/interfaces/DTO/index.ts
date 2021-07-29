@@ -6,6 +6,7 @@ export * from './competencias.DTO';
 export * from './comportamientos.DTO';
 export * from './ev-model.DTO';
 export * from './evaluaciones.DTO';
+export * from './logging';
 export * from './nivel.DTO';
 export * from './organigrama.DTO';
 export * from './resultados';
