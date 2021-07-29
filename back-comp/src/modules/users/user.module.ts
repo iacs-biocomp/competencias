@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
+import { UserService } from './services/user.service';
 import { AuthModule } from '../auth/auth.module';
 import { RoleRepository } from '../role/role.repository';
+import { UserController } from './controllers/user.controller';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([UserRepository, RoleRepository]), AuthModule],

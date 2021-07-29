@@ -1,10 +1,26 @@
-import { Body, Controller, Get, Param, Post, UnprocessableEntityException, Query, Put } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Get,
+	Param,
+	Post,
+	UnprocessableEntityException,
+	Query,
+	Put,
+	ParseBoolPipe,
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { INewEvModelDTO, IRefModel } from 'sharedInterfaces/DTO';
+import { deleteProps } from 'sharedCode/Utility';
+import { IEvModelAddDTO } from 'sharedInterfaces/DTO';
+import { Roles } from 'sharedInterfaces/Entity';
+import { EvModelRefUpdateDTO } from 'src/DTO';
 import { Competencia, Comportamiento, EvModel, Nivel, SubModel } from 'src/entity';
-import { CatCompRepo } from '../cat-comp/catComp.repository';
-import { EvModelRepo } from './modelos.repository';
-import { SubModelRepo } from './subModel.repository';
+import { CatCompRepo } from 'src/modules/cat-comp/catComp.repository';
+import { SetRoles } from 'src/modules/role/decorators/role.decorator';
+import { EvModelRepo } from '../modelos.repository';
+import { SubModelRepo } from '../subModel.repository';
 
 @Controller('nest/modelos')
 export class ModelosController {
@@ -18,6 +34,7 @@ export class ModelosController {
 	) {}
 
 	@Get('references')
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	getReferenceModels() {
 		return this.modelRepo.find({
 			where: { reference: true },
@@ -26,7 +43,8 @@ export class ModelosController {
 	}
 
 	@Get('/reference/:cComp')
-	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel> {
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
+	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel | undefined> {
 		return this.modelRepo.findOne({
 			where: { catComp: catCompId, reference: true },
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
@@ -34,6 +52,7 @@ export class ModelosController {
 	}
 
 	@Get(':cComp')
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	modelsCatComp(@Param('cComp') catCompId: string): Promise<EvModel[]> {
 		return this.modelRepo.find({
 			where: { catComp: catCompId },
@@ -42,6 +61,7 @@ export class ModelosController {
 	}
 
 	@Get('')
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	allModels(): Promise<EvModel[]> {
 		return this.modelRepo.find({
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
@@ -55,9 +75,15 @@ export class ModelosController {
 	 * @returns
 	 */
 	@Post('')
-	async newModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReferenceStr?: string): Promise<EvModel> {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
+	async newModel(
+		@Body() modeloDto: IEvModelAddDTO,
+		@Query('reference', ParseBoolPipe) isReference?: boolean,
+	): Promise<EvModel | undefined> {
+		const referenceParam = isReference ? true : false;
+
 		console.log(modeloDto);
-		const isReference = isReferenceStr === 'true' ? true : false;
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {
@@ -68,7 +94,7 @@ export class ModelosController {
 		/** El modelo que se va a guardar en la db*/
 		let evModel = new EvModel();
 		evModel.catComp = cComp;
-		const subModels = modeloDto.subModels.map(sub => {
+		const subModels = modeloDto.subModels!.map(sub => {
 			let mutSub = new SubModel();
 			mutSub.competencia = sub.competencia as Competencia;
 			mutSub.comportamientos = sub.comportamientos as Comportamiento[];
@@ -76,7 +102,7 @@ export class ModelosController {
 			return mutSub;
 		});
 		evModel.subModels = subModels;
-		evModel.reference = isReference;
+		evModel.reference = referenceParam;
 		//TODO: Circular structure en esta variable, error al convertir a json
 		const evModelSaved = await this.modelRepo.save(evModel);
 		// Se guardan los submodelos con la pk del modelo como fk
@@ -90,7 +116,12 @@ export class ModelosController {
 	}
 
 	@Put('reference')
-	async editModelfake(@Body() modeloDto: IRefModel, @Query('reference') isReference?: boolean): Promise<boolean> {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
+	async editRefModel(
+		@Body() modeloDto: EvModelRefUpdateDTO,
+		@Query('reference', ParseBoolPipe) isReference?: boolean,
+	): Promise<boolean> {
 		if (!isReference) isReference = false;
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
@@ -124,8 +155,7 @@ export class ModelosController {
 			await Promise.all(promises);
 			//Se borra el id de los nuevos subModelos para guardarlos
 			const subModelsNoId = modeloDto.subModels.map(subM => {
-				delete subM.id;
-				return subM;
+				return deleteProps(subM, ['id']);
 			});
 			const subModelsSaved = await this.subModelRepo.save(subModelsNoId);
 			dbModel.subModels = subModelsSaved;
@@ -134,26 +164,6 @@ export class ModelosController {
 			});
 			console.log('subModelsDB', subModelsDB);
 			await this.modelRepo.save(dbModel);
-			return true;
-		}
-		return false;
-	}
-
-	@Put('reference2')
-	async editModel(@Body() modeloDto: INewEvModelDTO, @Query('reference') isReference?: boolean): Promise<boolean> {
-		if (!isReference) isReference = false;
-		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
-		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
-		if (isReference) {
-			const dbModel = await this.modelRepo.findOne({ catComp: cComp, reference: true }, { relations: ['subModels'] });
-			if (!dbModel) {
-				throw new UnprocessableEntityException('No existe modelo de referencia de esa catComp');
-			}
-			const prevSubModels = dbModel.subModels;
-			dbModel.subModels = modeloDto.subModels as SubModel[];
-			this.subModelRepo.save(dbModel.subModels);
-			this.modelRepo.save(dbModel);
-
 			return true;
 		}
 		return false;

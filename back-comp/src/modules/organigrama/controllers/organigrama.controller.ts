@@ -1,21 +1,16 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { PeriodosRepo } from '../trabajadores/periodos.repository';
-import { TrabajadorRepo } from '../trabajadores/trabajador.repository';
-import { UserRepository } from '../users/user.repository';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { PeriodosRepo } from '../../trabajadores/periodos.repository';
+import { TrabajadorRepo } from '../../trabajadores/trabajador.repository';
+import { UserRepository } from '../../users/user.repository';
 import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
-import { CatComp, PeriodoTrab, Trabajador } from 'src/entity';
-import { ITrabajador } from 'sharedInterfaces/Entity';
+import { PeriodoTrab, Trabajador } from 'src/entity';
+import { IOrganigramaTrabajador, ITrabajador } from 'sharedInterfaces/Entity';
 import { IOrganigramaUsrDTO } from 'sharedInterfaces/DTO';
+import { addDays } from 'date-fns';
+import { SelectQueryBuilder } from 'typeorm';
+import { OrganigramaService } from '../services/organigrama.service';
+import { deleteProps } from 'sharedCode/Utility';
 
-// TODO: refactor
-interface Organigrama {
-	inferiores: Trabajador[];
-	superiores: Trabajador[];
-	pares: Trabajador[];
-}
-
-/** Trabajador con propiedad añadida catComp () */
-type TrabWithCComp = Trabajador & { catComp: CatComp };
 type RelType = 'inferiores' | 'superiores' | 'pares';
 
 @Controller('nest/organigrama')
@@ -27,25 +22,38 @@ export class OrganigramaController {
 		private readonly usrRepo: UserRepository,
 		@InjectRepository(PeriodosRepo)
 		private readonly periodRepo: PeriodosRepo,
+		private readonly orgSv: OrganigramaService,
 	) {}
 
 	@Get('all')
 	async getAll(): Promise<IOrganigramaUsrDTO[]> {
+		// const workers = await this.orgSv.getWorkersWithPeriodsAndRelations();
 		const workers = await this.trabRepo.find({
-			relations: ['periodos', 'periodos.catComp', 'periodos.superiores', 'periodos.inferiores', 'periodos.pares'],
+			join: {
+				alias: 'trabajador',
+				leftJoinAndSelect: {
+					periodos: 'trabajador.periodos',
+					catComp: 'periodos.catComp',
+					superiores: 'periodos.superiores',
+					inferiores: 'periodos.inferiores',
+					pares: 'periodos.pares',
+				},
+			},
+			where: (qb: SelectQueryBuilder<Trabajador>) => {
+				qb.where('periodos.actual = true');
+			},
 		});
-		return workers.map(wrk => {
-			//Filtro el periodo al actual
-			wrk.periodos = wrk.periodos.filter(per => per.actual);
+		return workers.map<IOrganigramaUsrDTO>(wrk => {
+			// LOG error, hay un trabajador sin periodo actual
 			return {
-				inferiores: wrk.periodos[0].inferiores,
-				superiores: wrk.periodos[0].superiores,
-				pares: wrk.periodos[0].pares,
+				inferiores: wrk.periodos![0].inferiores ?? [],
+				superiores: wrk.periodos![0].superiores ?? [],
+				pares: wrk.periodos![0].pares ?? [],
 				trabajador: (() => {
-					const cComp = wrk.periodos[0].catComp;
-					//Borro los periodos de cada trabajador (Info no necesaria)
-					delete wrk.periodos;
-					return { ...wrk, catComp: cComp };
+					const cComp = wrk.periodos![0].catComp;
+					const departamento = wrk.departamento === null ? undefined : wrk.departamento;
+					const worker = deleteProps(wrk, ['periodos']);
+					return { ...worker, catComp: cComp, departamento };
 				})(),
 			};
 		});
@@ -53,7 +61,7 @@ export class OrganigramaController {
 
 	//TODO: Completar para añadir los parametros como queryparams y no como el dni tal que :dni
 	@Get(':username')
-	async getOrganigramaUsr(@Param('username') username: string): Promise<Organigrama> {
+	async getOrganigramaUsr(@Param('username') username: string): Promise<IOrganigramaTrabajador> {
 		const usr = await this.usrRepo.findOne(
 			{ username: username },
 			{
@@ -66,15 +74,19 @@ export class OrganigramaController {
 				],
 			},
 		);
+		if (!usr || !usr.trabajador) {
+			throw new NotFoundException(`User ${username} does not exist or does not have a worker associated`);
+		}
 		const worker = usr.trabajador;
-		const actualPer: PeriodoTrab = worker.periodos.filter(per => per.actual)[0];
+		const actualPer: PeriodoTrab = worker.periodos!.filter(per => per.actual)[0];
 		return {
-			inferiores: actualPer.inferiores,
-			superiores: actualPer.superiores,
-			pares: actualPer.pares,
+			inferiores: actualPer.inferiores!,
+			superiores: actualPer.superiores!,
+			pares: actualPer.pares!,
 		};
 	}
 
+	// TODO: DTO class from interface IRelationsPostDTO
 	@Post('inferiores/:dni')
 	async setInferiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
 		const trab = await this.parseTrab(dni, 'inferiores');
@@ -82,6 +94,7 @@ export class OrganigramaController {
 		return this.changeRelations(trab, relsOfTrab, true, 'inferiores', 'add');
 	}
 
+	// TODO: DTO class from interface IRelationsPostDTO
 	@Post('superiores/:dni')
 	async setSuperiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
 		const trab = await this.parseTrab(dni, 'superiores');
@@ -89,6 +102,7 @@ export class OrganigramaController {
 		return this.changeRelations(trab, relsOfTrab, true, 'superiores', 'add');
 	}
 
+	// TODO: DTO class from interface IRelationsPostDTO
 	@Post('pares/:dni')
 	async setPares(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
 		const trab = await this.parseTrab(dni, 'pares');
@@ -96,6 +110,7 @@ export class OrganigramaController {
 		return this.changeRelations(trab, relsOfTrab, true, 'pares', 'add');
 	}
 
+	// TODO: DTO class from interface IRelationsPostDTO
 	@Delete('pares/:dni')
 	async deletePares(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
 		const trab = await this.parseTrab(dni, 'pares');
@@ -103,6 +118,7 @@ export class OrganigramaController {
 		return this.changeRelations(trab, relsOfTrab, true, 'pares', 'remove');
 	}
 
+	// TODO: DTO class from interface IRelationsPostDTO
 	@Delete('inferiores/:dni')
 	async deleteInferiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
 		const trab = await this.parseTrab(dni, 'inferiores');
@@ -110,6 +126,7 @@ export class OrganigramaController {
 		return this.changeRelations(trab, relsOfTrab, true, 'inferiores', 'remove');
 	}
 
+	// TODO: DTO class from interface IRelationsPostDTO
 	@Delete('superiores/:dni')
 	async deleteSuperiores(@Param('dni') dni: string, @Body() relations: ITrabajador[]): Promise<boolean> {
 		const trab = await this.parseTrab(dni, 'superiores');
@@ -153,14 +170,14 @@ export class OrganigramaController {
 	): Promise<boolean> {
 		/** Dates de utilidad en el metodo */
 		const d8s = {
-			/** Fecha limite, (now - dias permitidos para no crear nuevos periodos) */
-			deadline: new Date(new Date().setDate(-30)),
 			now: new Date(),
+			/** Fecha limite, (now - dias permitidos para no crear nuevos periodos) */
+			deadline: addDays(new Date(), -30),
 		};
 		/** La inversa del parametro relationsType */
 		const relTypeReversed = this.reverseRelType(relationsType);
 		/** Periodo actual de `trab` */
-		const actualPeri = trab.periodos.filter(p => p.actual)[0];
+		const actualPeri = trab.periodos!.find(p => p.actual);
 		if (!actualPeri) {
 			return false;
 		}
@@ -207,11 +224,11 @@ export class OrganigramaController {
 	): void {
 		if (!wrkPeriodo[relType]) throw new Error('No se han cargado las relaciones correctamente');
 		if (addOrRemove === 'add') {
-			wrkPeriodo[relType] = wrkPeriodo[relType].concat(relations);
+			wrkPeriodo[relType] = wrkPeriodo[relType]!.concat(relations);
 		} else {
 			relations.forEach(rel => {
-				const indx = wrkPeriodo[relType].findIndex(r => r.dni === rel.dni);
-				wrkPeriodo[relType].splice(indx, 1);
+				const indx = wrkPeriodo[relType]!.findIndex(r => r.dni === rel.dni);
+				wrkPeriodo[relType]!.splice(indx, 1);
 			});
 		}
 	}

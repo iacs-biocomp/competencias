@@ -1,21 +1,28 @@
 import {
 	Body,
-	ConflictException,
 	UnprocessableEntityException,
 	Controller,
 	Get,
 	Param,
 	Post,
 	NotFoundException,
+	UsePipes,
+	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IEvaluacion } from 'sharedInterfaces/Entity';
+import { Roles } from 'sharedInterfaces/Entity';
+import { EvAddDTO, UpdateEvShowingResultsDTO } from 'src/DTO/ev.DTO';
 import { Ev, Trabajador } from 'src/entity';
-import { EvRepository } from './evaluaciones.repository';
+import { SetRoles } from 'src/modules/role/decorators/role.decorator';
+import { EvRepository } from '../evaluaciones.repository';
+import { EvaluacionesService } from '../services/evaluaciones.service';
 
 @Controller('nest/evaluaciones')
 export class EvaluacionesController {
-	constructor(@InjectRepository(EvRepository) private readonly evRepo: EvRepository) {}
+	constructor(
+		@InjectRepository(EvRepository) private readonly evRepo: EvRepository,
+		private readonly evSv: EvaluacionesService,
+	) {}
 
 	@Get('')
 	getAll(): Promise<Ev[]> {
@@ -37,6 +44,10 @@ export class EvaluacionesController {
 		if (!worker) {
 			throw new NotFoundException(`No existe un trabajador con ${username} como nombre de usuario`);
 		}
+		if (!Trabajador.isTrabajadorWithPeriodos(worker)) {
+			throw new TypeError(`Periods relations not loaded correctly`);
+		}
+
 		let evs: Ev[] = [];
 		//Esto recoge las evaluaciones de cada periodo y las añade a un array vacío
 		worker.periodos.forEach(periodo => evs.push.apply(evs, periodo.catComp.evaluaciones));
@@ -44,7 +55,7 @@ export class EvaluacionesController {
 	}
 
 	@Get(':id')
-	async getOneById(@Param('id') evId: string): Promise<IEvaluacion> {
+	async getOneById(@Param('id') evId: string): Promise<Ev> {
 		const ev = await this.evRepo.findOne(evId, {
 			relations: [
 				'model',
@@ -62,15 +73,22 @@ export class EvaluacionesController {
 	}
 
 	@Post('')
-	async createEv(@Body() ev: Ev): Promise<boolean> {
-		if (await this.evRepo.findOne({ id: ev.id })) {
-			throw new ConflictException(`Existe una ev con el id:${ev.id}`);
-		}
+	@SetRoles(Roles.ADMIN)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async createEv(@Body() ev: EvAddDTO): Promise<true> {
+		// TODO: add checks to ensure that model exists in database etc
+		// const evDb = await this.evRepo.findOne({});
 		if (!ev.model) {
 			throw new UnprocessableEntityException('La evaluación no tiene un modelo que exista en la bbdd');
 		}
-		ev.description = 'Default description';
 		await this.evRepo.save(ev);
 		return true;
+	}
+
+	@Post('showing-results')
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async changeShowingResults(@Body() payloadDto: UpdateEvShowingResultsDTO) {
+		this.evRepo.update({ id: payloadDto.id }, { isShowingResults: payloadDto.isShowingResults });
 	}
 }

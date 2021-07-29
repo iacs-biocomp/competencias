@@ -1,6 +1,20 @@
-import { Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import {
+	Body,
+	ConflictException,
+	Controller,
+	Delete,
+	Get,
+	NotFoundException,
+	Param,
+	Post,
+	Put,
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { deleteProps } from 'sharedCode/Utility';
 import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
+import { TrabCCompCContrDTO } from 'src/DTO/trabajador.DTO';
 import { Trabajador, CatComp, CatContr } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
@@ -39,9 +53,10 @@ export class TrabajadoresController {
 				dni: trab.dni,
 				apellidos: trab.apellidos,
 				area: trab.area,
-				catComp: trab.periodos[0].catComp?.id,
-				catContr: trab.periodos[0].catContr?.id,
-				departamento: trab.departamento,
+				catComp: trab.periodos![0].catComp?.id,
+				catContr: trab.periodos![0].catContr?.id,
+				// TODO: Cambiar dto, preguntar a vega si puede haber caso con trabajador sin departamento
+				departamento: trab.departamento ?? 'no department',
 				nombre: trab.nombre,
 				unidad: trab.unidad,
 				// TODO: Comprobar si hay que mandar un ITrabajadorDTO
@@ -56,7 +71,7 @@ export class TrabajadoresController {
 		@Param('dni') dni: string,
 		@Param('subModels') submodel: boolean,
 		@Param('evaluaciones') evaluaciones: boolean,
-	): Promise<Trabajador> {
+	): Promise<Trabajador | undefined> {
 		let relaciones = submodel ? ['subModel'] : [];
 		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.trabRepo.findOne({ dni: dni }, { relations: relaciones });
@@ -68,7 +83,7 @@ export class TrabajadoresController {
 		@Param('usrname') usrname: string,
 		@Param('subModels') submodel: boolean,
 		@Param('evaluaciones') evaluaciones: boolean,
-	): Promise<Trabajador> {
+	): Promise<Trabajador | undefined> {
 		let relaciones = submodel ? ['subModel'] : [];
 		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
 		return this.trabRepo.findOne({ user: { username: usrname } }, { relations: relaciones });
@@ -85,13 +100,14 @@ export class TrabajadoresController {
 	}
 
 	@Post('')
-	async createTrabajador(@Body() worker: ITrabajadorDTO): Promise<boolean> {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async createTrabajador(@Body() worker: TrabCCompCContrDTO): Promise<boolean> {
 		const existingTrabajador = await this.trabRepo.findOne({ dni: worker.dni });
 		if (existingTrabajador) {
 			throw new ConflictException('Trabajador ya creado');
 		}
-		let catComp: CatComp;
-		let catContr: CatContr;
+		let catComp: CatComp | undefined;
+		let catContr: CatContr | undefined;
 		try {
 			[catComp, catContr] = await Promise.all([
 				this.catCompRepo.findOne({ id: worker.catComp }),
@@ -106,17 +122,17 @@ export class TrabajadoresController {
 			);
 		}
 		const trabajador = Trabajador.buildFromPost(worker);
-		trabajador.periodos[0].catComp = catComp;
-		trabajador.periodos[0].catContr = catContr;
-		trabajador.periodos[0].trabajador = trabajador;
+		trabajador.periodos![0].catComp = catComp;
+		trabajador.periodos![0].catContr = catContr;
+		trabajador.periodos![0].trabajador = trabajador;
 		await this.trabRepo.save(trabajador);
-		await trabajador.periodos[0].save();
+		await trabajador.periodos![0].save();
 		return true;
 	}
 
 	@Put('')
-	async updateWorker(@Body() worker: ITrabajadorDTO): Promise<boolean> {
-		const [trab, catContr, catComp] = await Promise.all([
+	async updateWorker(@Body() worker: TrabCCompCContrDTO): Promise<boolean> {
+		const [trabU, catContrU, catCompU] = await Promise.all([
 			this.trabRepo.findOne(
 				{ dni: worker.dni },
 				{ relations: ['periodos', 'periodos.catContr', 'periodos.catComp', 'user'] },
@@ -124,6 +140,10 @@ export class TrabajadoresController {
 			this.catContrRepo.findOne({ id: worker.catContr }),
 			this.catCompRepo.findOne({ id: worker.catComp }),
 		]);
+		if (!trabU || !catContrU || !catCompU) {
+			throw new NotFoundException('Not found catComp || catContr || trab');
+		}
+		const [trab, catContr, catComp] = [trabU, catContrU, catCompU];
 		if (!trab) {
 			throw new NotFoundException('No existe un worker con ese dni');
 		}
@@ -131,15 +151,15 @@ export class TrabajadoresController {
 		//TODO: Pasar a un servicio el resto de este metodo https://is.gd/KUSLRU
 		//Si estan actualizando la catComp o catContr y han pasado mas de 7 dias desde la creación del anterior periodo,
 		//creo un nuevo periodo y cierro el actual
-		let perActual = trab.periodos.find(p => p.actual);
+		let perActual = trab.periodos!.find(p => p.actual)!;
 		if (worker.catComp !== perActual.catComp.id || worker.catContr !== perActual.catContr.id) {
 			const todayMinus7 = new Date(new Date().setDate(-7));
 			if (perActual.createdAt < todayMinus7) {
 				const latestPeriod = perActual;
 				perActual.actual = false;
 				perActual.save();
-				delete latestPeriod.id;
-				[latestPeriod.catComp, latestPeriod.catContr] = [catComp, catContr];
+				const latestPeriodRm = deleteProps(latestPeriod, ['id']);
+				[latestPeriodRm.catComp, latestPeriodRm.catContr] = [catComp, catContr];
 				latestPeriod.save();
 			} else {
 				[perActual.catComp, perActual.catContr] = [catComp, catContr];

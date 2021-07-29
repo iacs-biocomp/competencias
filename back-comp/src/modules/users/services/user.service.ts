@@ -1,41 +1,38 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { UserRepository } from './user.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getConnection } from 'typeorm';
-import { RoleRepository } from '../role/role.repository';
 import { User, Role } from 'src/entity';
+import { IUserDTO } from 'sharedInterfaces/DTO';
+import { UserRepository } from '../user.repository';
+import { RoleRepository } from 'src/modules/role/role.repository';
 
 @Injectable()
 export class UserService {
 	constructor(
 		@InjectRepository(UserRepository)
-		private readonly _userRepository: UserRepository,
+		private readonly usrRepo: UserRepository,
 		@InjectRepository(RoleRepository)
-		private readonly _roleRepository: RoleRepository,
+		private readonly roleRepo: RoleRepository,
 	) {}
 
-	async getFromUsername(username: string): Promise<User> {
-		if (!username) {
-			throw new BadRequestException('Username must be sent');
-		}
-
-		const user: User = await this._userRepository.findOne(username, {
+	async getFromUsername(username: string): Promise<IUserDTO> {
+		const user = await this.usrRepo.findOne(username, {
 			where: { active: true },
 		});
 
 		if (!user) {
 			throw new NotFoundException();
 		}
-
-		return user;
+		// TODO: Corregir error as unknown
+		return user as unknown as IUserDTO;
 	}
 
-	async getAll(): Promise<User[]> {
-		const users: User[] = await this._userRepository.find({
+	async getAll(): Promise<IUserDTO[]> {
+		const users: User[] = await this.usrRepo.find({
 			where: { active: true },
 		});
-
-		return users;
+		// TODO: Corregir error as unknown
+		return users as unknown as IUserDTO[];
 	}
 
 	async create(user: User): Promise<User> {
@@ -44,18 +41,20 @@ export class UserService {
 
 		const repo = getConnection().getRepository(Role);
 		const defaultRole = await repo.findOne({ where: { name: 'GENERAL' } });
+		if (!defaultRole) {
+			throw new NotFoundException('Genral role not found, contact an administrator');
+		}
 		user.roles = [defaultRole];
 
-		const savedUser: User = await this._userRepository.save(user);
-		return savedUser;
+		return this.usrRepo.save(user);
 	}
 
 	async update(id: number, user: User): Promise<void> {
-		await this._userRepository.update(id, user);
+		await this.usrRepo.update(id, user);
 	}
 
 	async delete(id: number): Promise<void> {
-		const userExist = await this._userRepository.findOne(id, {
+		const userExist = await this.usrRepo.findOne(id, {
 			where: { active: true },
 		});
 
@@ -63,11 +62,11 @@ export class UserService {
 			throw new NotFoundException();
 		}
 
-		await this._userRepository.update(id, { active: true });
+		await this.usrRepo.update(id, { active: true });
 	}
 
 	async setRoleToUser(userId: number, roleId: number) {
-		const userExist = await this._userRepository.findOne(userId, {
+		const userExist = await this.usrRepo.findOne(userId, {
 			where: { active: true },
 		});
 
@@ -75,7 +74,7 @@ export class UserService {
 			throw new NotFoundException();
 		}
 
-		const roleExist = await this._roleRepository.findOne(roleId, {
+		const roleExist = await this.roleRepo.findOne(roleId, {
 			where: { active: true },
 		});
 
@@ -84,7 +83,7 @@ export class UserService {
 		}
 
 		userExist.roles.push(roleExist);
-		await this._userRepository.save(userExist);
+		await this.usrRepo.save(userExist);
 
 		return true;
 	}
