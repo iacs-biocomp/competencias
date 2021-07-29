@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICompetencia } from 'sharedInterfaces/Entity';
 import { CompetenciasService } from '../services/competencias.service';
 import { addDays } from 'date-fns';
-import { ICompAddDTO } from 'sharedInterfaces/DTO';
+import { ICompAddDTO, ICompGetDTO } from 'sharedInterfaces/DTO';
 
 interface IComptEdit extends ICompetencia {
 	editing?: boolean;
@@ -18,7 +18,7 @@ interface IComptEdit extends ICompetencia {
 })
 export class TableCompetenciasComponent implements OnInit {
 	compeToAdd: ICompAddDTO[] = [];
-	compets: IComptEdit[] = [];
+	compets: ICompGetDTO[] = [];
 	today = new Date();
 	OneWeekAgo = addDays(new Date(), -7);
 

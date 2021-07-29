@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
 import { ICatContr, ICatComp } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../services/CatCompetenciales.service';
 import { CatContractService } from '../services/CatContractuales.service';
@@ -12,7 +13,7 @@ interface IContracEdit extends ICatContr {
 	styleUrls: ['./table-contrac.component.scss'],
 })
 export class TableContracComponent implements OnInit {
-	catContracts: ICatContr[] = [];
+	catContracts: ICContrAndCCompDTO[] = [];
 	contracts: IContracEdit[] = [];
 	catComps: ICatComp[] = [];
 
@@ -36,7 +37,7 @@ export class TableContracComponent implements OnInit {
 		this.catContracts = await this.catContractService.getAll();
 	}
 
-	updateCContr(cContr: ICatContr) {
+	updateCContr(cContr: ICContrAndCCompDTO) {
 		this.catContractService.update(cContr);
 	}
 

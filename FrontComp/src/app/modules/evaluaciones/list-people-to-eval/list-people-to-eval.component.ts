@@ -27,6 +27,10 @@ export class ListPeopleToEvalComponent {
 			area: 'e',
 			unidad: 'e',
 			departamento: 'e',
+			catComp: {
+				description: 'e',
+				id: '1'
+			}
 		},
 		inferiores: [
 			{

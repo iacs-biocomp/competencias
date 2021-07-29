@@ -9,6 +9,7 @@ import {
 } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
+import { IEvModelDTO, IValoracionDTO } from 'sharedInterfaces/DTO';
 
 /** Utilizado para crear IValoracion, al usar Pick se crea con X propiedades en vez de con todas las de IValoracion  */
 export type NotCompletedVal = Pick<IValoracion, 'evaluado' | 'evaluador' | 'comp' | 'comport' | 'valoracion'>;
@@ -36,9 +37,9 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	@Input() evaluado!: ITrabajador;
 	@Input() evaluador!: ITrabajador;
 	/** El modelo con el que un trabajador es evaluado, puede no corresponder al de una evaluación (Para los propuestos) */
-	@Input() evModelObs!: BehaviorSubject<IEvModel>;
+	@Input() evModelObs!: BehaviorSubject<IEvModelDTO>;
 	/** Valoraciones que ya estaban guardadas en la DB, (Las que el usuario previamente ha guardado de este worker) */
-	@Input() savedVals!: BehaviorSubject<IValoracion[]>;
+	@Input() savedVals!: BehaviorSubject<IValoracionDTO[]>;
 	/** Emite todas las valoraciones sin distinguir si estaban ya guardadas o no (Cuando finaliza el componente) */
 	@Output() onValsSetted = new EventEmitter<NotCompletedVal[]>();
 	/** Control view for html view, all view's variables inside */

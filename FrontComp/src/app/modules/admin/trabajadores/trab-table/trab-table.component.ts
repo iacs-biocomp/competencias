@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
+import { ITrabajadorDTO, ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
 import { ICatComp, ICatContr } from 'sharedInterfaces/Entity';
 import { CatCompetencialesService } from '../../cat-admn/services/CatCompetenciales.service';
 import { CatContractService } from '../../cat-admn/services/CatContractuales.service';
@@ -7,6 +7,12 @@ import { TrabajadoresService } from '../services/trabajadores.service';
 
 interface ITrabajadorDTOEdit extends ITrabCCompCContrDTO {
 	editing?: boolean;
+}
+
+interface ITrabajadorDTOCanEdit extends ITrabajadorDTO {
+	editing?: boolean;
+	catContr: ICatContr;
+	catComp: ICatComp
 }
 
 @Component({
@@ -22,7 +28,7 @@ export class TrabTableComponent implements OnInit {
 	/** Lista de todas las categorías contractuales */
 	listaTrabaToAdd: ITrabajadorDTOEdit[] = [];
 	/** Lista de todas las categorías contractuales */
-	trabajadores: ITrabajadorDTOEdit[] = [];
+	trabajadores: ITrabajadorDTOCanEdit[] = [];
 
 	constructor(
 		/** Servicio para obtener los datos de los trabajadores */

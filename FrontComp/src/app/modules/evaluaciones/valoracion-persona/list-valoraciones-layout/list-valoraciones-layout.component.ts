@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { IEvAllRequired, IValoracionToAddDTO } from 'sharedInterfaces/DTO';
+import { IEvAllRequired, IEvModelDTO, IUserDTO, IValoracionDTO, IValoracionAddDTO } from 'sharedInterfaces/DTO';
 import { IEvModel, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
 import { TrabajadoresService } from 'src/app/modules/admin/trabajadores/services/trabajadores.service';
 import { JwtService } from 'src/app/services/auth/jwt.service';
@@ -22,10 +22,10 @@ export const dniId = 'dniId';
 })
 export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	/** Observable de modelo, cuando cambie el modelo debe actualizarse el valor */
-	evModelObs!: BehaviorSubject<IEvModel>;
-	evaluador!: ITrabajador;
+	evModelObs!: BehaviorSubject<IEvModelDTO>;
+	evaluador!: IUserDTO;
 	evaluado!: ITrabajador;
-	savedValsObs!: BehaviorSubject<IValoracion[]>;
+	savedValsObs!: BehaviorSubject<IValoracionDTO[]>;
 	ev!: IEvAllRequired;
 	#evId = Number.parseInt(this.route.snapshot.paramMap.get(evId)!);
 	#dniId = this.route.snapshot.paramMap.get(dniId)!;

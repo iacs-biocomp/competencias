@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IEvaluacion, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
+import { IEvaluacion, ITrabajador } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { IValoracionAddDTO, IValoracionDTO } from 'sharedInterfaces/DTO';
 
