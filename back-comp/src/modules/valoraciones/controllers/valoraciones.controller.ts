@@ -1,14 +1,33 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import {
+	BadRequestException,
+	Body,
+	Controller,
+	Get,
+	NotFoundException,
+	Param,
+	ParseIntPipe,
+	Post,
+	Put,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IValoracionToAddDTO } from 'sharedInterfaces/DTO';
-import { IValoracion } from 'sharedInterfaces/Entity';
+import { IValoracionAddDTO } from 'sharedInterfaces/DTO';
+import { IValoracion, Roles } from 'sharedInterfaces/Entity';
 import { Valoracion } from 'src/entity';
-import { ValoracionesRepo } from './valoraciones.repository';
+import { SetRoles } from 'src/modules/role/decorators/role.decorator';
+import { ValoracionesRepo } from '../valoraciones.repository';
 
 @Controller('nest/valoraciones')
 export class ValoracionesController {
-	constructor(@InjectRepository(ValoracionesRepo) private readonly valRepo: ValoracionesRepo) {}
+	constructor(
+		@InjectRepository(ValoracionesRepo) private readonly valRepo: ValoracionesRepo, // private readonly jwtSv: JwtService,
+	) {}
 
+	/**
+	 *
+	 * @param dni
+	 * @returns
+	 * @deprecated Rara vez se va a usar, el usuario no debería acceder a todas sus valoraciones
+	 */
 	@Get(':dni')
 	async getAllValsOfUsr(@Param('dni') dni: string): Promise<Valoracion[]> {
 		return this.valRepo.find({ where: { evaluado: { dni: dni } }, relations: ['evaluado', 'evaluador'] });
@@ -21,7 +40,23 @@ export class ValoracionesController {
 	 * @returns Las valoraciones de ese trabajador en esa evaluación
 	 */
 	@Get(':dni/:evId')
-	async getUsrEvVals(@Param('dni') dni: string, @Param('evId') evId: number): Promise<Valoracion[]> {
+	async getUsrEvVals(@Param('dni') dni: string, @Param('evId', ParseIntPipe) evId: number): Promise<Valoracion[]> {
+		//const token =  this.jwtSv.decode(cookies.token);
+		// const trab = this.trabSv.findOne(tkn.user);
+		// if (dni === trab.dni) {
+		// }
+		return this.valRepo.find({
+			where: { evaluado: { dni: dni }, ev: { id: evId, isShowingResults: true } },
+			relations: ['evaluado', 'evaluador', 'ev', 'comport', 'comp'],
+		});
+	}
+
+	@Get('admin/:dni/:evId')
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
+	async adminGetUserEvVals(
+		@Param('dni') dni: string,
+		@Param('evId', ParseIntPipe) evId: number,
+	): Promise<Valoracion[]> {
 		return this.valRepo.find({
 			where: { evaluado: { dni: dni }, ev: { id: evId } },
 			relations: ['evaluado', 'evaluador', 'ev', 'comport', 'comp'],
@@ -34,17 +69,19 @@ export class ValoracionesController {
 	 * @returns `true` en caso de que se haya guardado correctamente la valoración `false` o Excepción en caso contrario
 	 */
 	@Post('')
-	async createVal(@Body() val: IValoracionToAddDTO): Promise<boolean> {
+	async createVal(@Body() val: IValoracionAddDTO): Promise<boolean> {
+		// TODO: Add pipe, DTO class not Interface/type
 		console.log(val);
 		const existentVal = await this.valRepo.findOne({
-			where: { ev: { id: val.ev.id }, comp: { id: val.comp.id }, comport: { id: val.comport.id } },
+			where: { ev: { id: val.ev }, comp: { id: val.comp }, comport: { id: val.comport } },
 		});
 		if (!!existentVal) {
 			throw new BadRequestException(
 				'La valoración que se quiere crear ya existe, para actualizar realizar petición a endpoint PUT',
 			);
 		}
-		await this.valRepo.save(val);
+		// TODO: Test if it works properly
+		await this.valRepo.save(val as unknown as Valoracion);
 		return true;
 	}
 
