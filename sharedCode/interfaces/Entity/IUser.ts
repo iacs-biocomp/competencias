@@ -15,7 +15,7 @@ export interface ITrabajador {
 	// TODO: Tsdoc.
 	unidad: string;
 	// TODO: Tsdoc.
-	departamento: string;
+	departamento?: string;
 	// TODO: Tsdoc.
 	periodos?: IPeriodoTrab[];
 	// TODO: Tsdoc.

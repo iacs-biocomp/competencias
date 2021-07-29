@@ -3,7 +3,7 @@ import { IEvaluacion } from './interfaces/Entity';
 import { ICompetencia } from './interfaces/Entity/ICompetencia';
 import { IComportamiento } from './interfaces/Entity/IComportamientos';
 import { INivel } from './interfaces/Entity/INiveles';
-import { PickPropsInU, RequiredAndNotNull, WithOptional } from './interfaces/Utility';
+import { Expand, PickPropsInU, RequiredAndNotNull, WithOptional } from './interfaces/Utility';
 
 type Without<T, K extends keyof T> = {
 	[P in Exclude<keyof T, K>]: T[P];
@@ -30,7 +30,7 @@ type Without<T, K extends keyof T> = {
  * @author aml360 <aml360esp@gmail.com>
  *
  */
-export function deleteProps<T, K extends keyof T, U extends Without<T, K>>(obj: T, keys: K[]): U {
+export function deleteProps<T, K extends keyof T, U extends Expand<Without<T, K>>>(obj: T, keys: K[]): U {
 	keys.forEach(key => delete obj[key]);
 	return obj as unknown as U;
 }
