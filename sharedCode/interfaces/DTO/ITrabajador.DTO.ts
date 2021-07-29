@@ -1,13 +1,12 @@
 import { ICatComp, ICatContr } from '../Entity/ICategorias';
 import { ITrabajador } from '../Entity/IUser';
-import { PickPropsInU, TsPrimitiveTypes } from '../Utility';
 import { ICCompDTO } from './categorias';
 
 //TODO: Tsdoc
 /**
  * @author aml360 <aml360esp@gmail.com>
  */
-export type ITrabajadorDTO = PickPropsInU<ITrabajador, TsPrimitiveTypes>;
+export type ITrabajadorDTO = Omit<ITrabajador, 'periodos' | 'user'>;
 
 //TODO: Tsdoc
 /**
