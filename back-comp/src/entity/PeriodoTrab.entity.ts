@@ -19,29 +19,31 @@ export class PeriodoTrab extends BaseEntity implements IPeriodoTrab {
 	id: number;
 
 	@ApiProperty({ type: () => Trabajador })
-	@ManyToOne(type => Trabajador, trabajador => trabajador.periodos, { nullable: false })
+	@ManyToOne(() => Trabajador, trabajador => trabajador.periodos, { nullable: false })
 	trabajador: Trabajador;
 
 	@ApiProperty({ type: () => CatContr })
-	@ManyToOne(type => CatContr, catContr => catContr.periodos)
+	@ManyToOne(() => CatContr, catContr => catContr.periodos)
 	catContr: CatContr;
+	// ! Confirmar con vega si un periodo puede tener catContr null
 
 	@ApiProperty({ type: () => CatComp })
-	@ManyToOne(type => CatComp, cComp => cComp.periodosTrab)
+	@ManyToOne(() => CatComp, cComp => cComp.periodosTrab, { nullable: false })
 	catComp: CatComp;
+	// ! Confirmar con vega si un periodo puede tener catComp null
 
 	@ApiProperty({ type: () => Trabajador })
-	@ManyToMany(type => Trabajador, sup => sup)
+	@ManyToMany(() => Trabajador, sup => sup)
 	@JoinTable()
 	superiores?: Trabajador[];
 
 	@ApiProperty({ type: () => Trabajador })
-	@ManyToMany(type => Trabajador, par => par)
+	@ManyToMany(() => Trabajador, par => par)
 	@JoinTable()
 	pares?: Trabajador[];
 
 	@ApiProperty({ type: () => Trabajador })
-	@ManyToMany(type => Trabajador, inf => inf)
+	@ManyToMany(() => Trabajador, inf => inf)
 	@JoinTable()
 	inferiores?: Trabajador[];
 
@@ -52,6 +54,7 @@ export class PeriodoTrab extends BaseEntity implements IPeriodoTrab {
 	@ApiProperty()
 	@Column({ type: 'timestamp', nullable: true })
 	endAt?: Date;
+	//?? Better if it's null instead optional?
 
 	@ApiProperty()
 	@Column({ type: 'bool', default: false, nullable: false })

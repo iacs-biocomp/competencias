@@ -14,10 +14,10 @@ export class Competencia extends BaseEntity implements ICompetencia {
 	descripcion: string;
 
 	@ApiProperty()
-	@CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+	@CreateDateColumn({ type: 'timestamp', name: 'created_at', nullable: false })
 	createdAt: Date;
 
 	@ApiProperty({ type: () => SubModel })
-	@OneToMany(type => SubModel, subm => subm.nivel)
-	subModels: SubModel[];
+	@OneToMany(() => SubModel, subm => subm.nivel)
+	subModels?: SubModel[];
 }

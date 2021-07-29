@@ -18,14 +18,14 @@ export class Ev extends BaseEntity implements IEvaluacion {
 	 * El modelo representa el COMO se realiza la evaluación, es decir las competencias niveles y comportamientos que tiene la evaluacion y como se relacionan entre ellos
 	 */
 	@ApiProperty({ type: () => EvModel })
-	@ManyToOne(type => EvModel, model => model.evs)
+	@ManyToOne(() => EvModel, model => model.evs)
 	model: EvModel;
 
 	/**
 	 * Es la categoria competencial sobre la que se lanza la evaluacion, ha de coincidir con la del modelo que use la evaluación
 	 */
 	@ApiProperty({ type: () => CatComp })
-	@ManyToOne(type => CatComp, cat => cat.evaluaciones)
+	@ManyToOne(() => CatComp, cat => cat.evaluaciones)
 	catComp: CatComp;
 
 	/**
@@ -88,6 +88,13 @@ export class Ev extends BaseEntity implements IEvaluacion {
 	 * Son todas las valoraciones que se asocian a esa evaluacion
 	 */
 	@ApiProperty()
-	@OneToMany(type => Valoracion, v => v.ev)
+	@OneToMany(() => Valoracion, v => v.ev)
 	valoraciones?: Valoracion[];
+
+	/**
+	 * Represents if users can see results of evaluation entity
+	 */
+	@ApiProperty()
+	@Column({ type: 'boolean', nullable: false, default: false })
+	isShowingResults: boolean;
 }

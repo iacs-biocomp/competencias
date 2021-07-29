@@ -9,10 +9,10 @@ import {
 	PrimaryColumn,
 	OneToOne,
 } from 'typeorm';
-import { SignupDto } from '../modules/auth/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role, Trabajador } from './index';
 import { IUser } from 'sharedInterfaces/Entity';
+import { SignupDTO } from 'src/DTO/auth';
 
 @Entity('user')
 export class User extends BaseEntity implements IUser {
@@ -37,15 +37,15 @@ export class User extends BaseEntity implements IUser {
 	lastname: string;
 
 	@ApiProperty()
-	@CreateDateColumn({ type: 'timestamp', name: 'created_at', nullable: true })
-	createdAt?: Date;
+	@CreateDateColumn({ type: 'timestamp', name: 'created_at', nullable: false })
+	createdAt: Date;
 
 	@ApiProperty()
-	@UpdateDateColumn({ type: 'timestamp', name: 'updated_at', nullable: true })
-	updatedAt?: Date;
+	@UpdateDateColumn({ type: 'timestamp', name: 'updated_at', nullable: false })
+	updatedAt: Date;
 
 	@ApiProperty({ type: () => Role })
-	@ManyToMany(type => Role, role => role.users, { eager: true })
+	@ManyToMany(() => Role, role => role.users, { eager: true })
 	@JoinTable({ name: 'user_roles' })
 	roles: Role[];
 
@@ -54,14 +54,14 @@ export class User extends BaseEntity implements IUser {
 	active: boolean;
 
 	@ApiProperty({ type: () => Trabajador })
-	@OneToOne(type => Trabajador, t => t.user)
+	@OneToOne(() => Trabajador, t => t.user)
 	trabajador?: Trabajador;
 
 	/**
 	 * This function creates a new user instance for save the user to database, use only for register
 	 * @param usr User from signupDto, must ve valid
 	 */
-	public static buildFromRegister(usr: SignupDto): User {
+	public static buildFromRegister(usr: SignupDTO): User {
 		var user = new User();
 		user.username = usr.username;
 		user.password = usr.password;

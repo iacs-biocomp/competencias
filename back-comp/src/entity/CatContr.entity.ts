@@ -20,11 +20,11 @@ export class CatContr extends BaseEntity implements ICatContr {
 	 * la nueva competencial asignada por defecto
 	 */
 	@ApiProperty({ type: () => CatComp })
-	@ManyToOne(type => CatComp)
+	@ManyToOne(() => CatComp)
 	@JoinColumn()
 	catComp?: CatComp;
 
 	@ApiProperty({ type: () => PeriodoTrab })
-	@OneToMany(type => PeriodoTrab, periodo => periodo.catContr)
+	@OneToMany(() => PeriodoTrab, periodo => periodo.catContr)
 	periodos?: PeriodoTrab[];
 }

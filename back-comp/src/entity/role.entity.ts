@@ -1,3 +1,4 @@
+import { IRole } from 'sharedInterfaces/Entity';
 import {
 	BaseEntity,
 	Entity,
@@ -11,7 +12,7 @@ import {
 import { User } from './index';
 
 @Entity('roles')
-export class Role extends BaseEntity {
+export class Role extends BaseEntity implements IRole {
 	@PrimaryGeneratedColumn('increment')
 	id: number;
 
@@ -21,7 +22,7 @@ export class Role extends BaseEntity {
 	@Column({ type: 'text', nullable: false })
 	description: string;
 
-	@ManyToMany(type => User, user => user.roles)
+	@ManyToMany(() => User, user => user.roles)
 	@JoinColumn()
 	users: User[];
 

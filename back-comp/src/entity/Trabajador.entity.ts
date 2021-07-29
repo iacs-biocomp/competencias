@@ -28,15 +28,15 @@ export class Trabajador extends BaseEntity implements ITrabajador {
 
 	@ApiProperty()
 	@Column({ type: 'varchar', length: 50, nullable: true })
-	departamento: string;
+	departamento?: string;
 
 	@ApiProperty({ type: () => PeriodoTrab })
-	@OneToMany(type => PeriodoTrab, periodoTrab => periodoTrab.trabajador, { nullable: false })
+	@OneToMany(() => PeriodoTrab, periodoTrab => periodoTrab.trabajador, { nullable: false })
 	periodos?: PeriodoTrab[];
 
 	//TODO: Cambiar y poner null false?
 	@ApiProperty({ type: () => User })
-	@OneToOne(type => User, usr => usr.trabajador)
+	@OneToOne(() => User, usr => usr.trabajador)
 	@JoinColumn()
 	user?: User;
 
@@ -59,4 +59,12 @@ export class Trabajador extends BaseEntity implements ITrabajador {
 
 		return trabajador;
 	}
+
+	static isTrabajadorWithPeriodos(trab: Trabajador): trab is TrabajadorWithPeriodos {
+		return !!trab.periodos;
+	}
+}
+
+interface TrabajadorWithPeriodos extends Trabajador {
+	periodos: NonNullable<Trabajador['periodos']>;
 }

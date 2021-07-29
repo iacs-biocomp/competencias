@@ -19,21 +19,21 @@ export class EvModel extends BaseEntity implements IEvModel {
 	id: number;
 
 	@ApiProperty({ type: () => Ev })
-	@OneToMany(type => Ev, ev => ev.model)
+	@OneToMany(() => Ev, ev => ev.model, { nullable: true })
 	evs?: Ev[];
 
 	@ApiProperty({ type: () => CatComp })
-	@ManyToOne(type => CatComp, cat => cat.models)
+	@ManyToOne(() => CatComp, cat => cat.models, { nullable: false })
 	catComp: CatComp;
 
 	@ApiProperty({ type: () => SubModel })
-	@ManyToMany(type => SubModel, subModel => subModel.modelos)
+	@ManyToMany(() => SubModel, subModel => subModel.modelos)
 	@JoinTable()
 	subModels: SubModel[];
 
 	/**
 	 * Representa si el modelo es de referencia para esa categoría competencial, si es `true`, el modelo no se podrá asociar a ninguna evaluacion
 	 */
-	@Column({ default: false })
+	@Column({ default: false, nullable: false })
 	reference: boolean;
 }

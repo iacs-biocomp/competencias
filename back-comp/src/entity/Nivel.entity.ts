@@ -30,6 +30,14 @@ export class Nivel extends BaseEntity implements INivel {
 	reference: boolean;
 
 	@ApiProperty({ type: () => SubModel })
-	@OneToMany(type => SubModel, subm => subm.nivel)
-	subModels: SubModel[];
+	@OneToMany(() => SubModel, subm => subm.nivel)
+	subModels?: SubModel[];
+
+	// TODO: Tsdoc
+	static isNivelWithSubModels(nivel: Nivel): nivel is INivelWithSubModels {
+		return !!nivel.subModels;
+	}
+}
+interface INivelWithSubModels extends Nivel {
+	subModels: NonNullable<Nivel['subModels']>;
 }
