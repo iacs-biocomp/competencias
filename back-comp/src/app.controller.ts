@@ -1,24 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { LoggingService } from './modules/logging/services/logging.service';
 
 @Controller('nest')
 export class AppController {
-	constructor(private readonly appService: AppService) {}
+	constructor(private readonly logger: LoggingService) {}
+	// private readonly logger = new Logger(AppController.name);
 
 	@Get()
 	test(): string {
-		// const suite = new Suite();
-		// suite
-		// 	.add('new promise', function () {
-		// 		return new Promise((resolve, reject) => {});
-		// 	})
-		// 	.on('cycle', function (event) {
-		// 		console.log(String(event.target));
-		// 	})
-		// 	.on('complete', function () {
-		// 		console.log('Fastest is ' + this.filter('fastest').map('name'));
-		// 	})
-		// 	.run();
-		return this.appService.getHello();
+		this.logger.verbose('verbose msg');
+		this.logger.debug('debug msg');
+		this.logger.error('error stuff');
+		this.logger.warn('warning stuff');
+		this.logger.log('logging level');
+		return 'Hello!';
 	}
 }

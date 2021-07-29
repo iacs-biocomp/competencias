@@ -1,9 +1,8 @@
 import { CompressionMiddleware } from '@aml360/nestjs-compression';
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigService } from './config/config.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthGuard } from './guards/auth/auth.guard';
@@ -20,7 +19,9 @@ import {
 	TrabajadoresModule,
 	UserModule,
 	ValoracionesModule,
+	LoggingModule,
 } from './modules';
+import { LoggingService } from './modules/logging/services/logging.service';
 
 @Module({
 	imports: [
@@ -40,9 +41,10 @@ import {
 		OrganigramaModule,
 		ModelosModule,
 		ValoracionesModule,
+		LoggingModule,
 	],
 	controllers: [AppController],
-	providers: [AppService, AuthGuard, ConfigService],
+	providers: [AuthGuard, ConfigService, ...LoggingService.configure({ context: 'dsad' })],
 })
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
@@ -51,3 +53,9 @@ export class AppModule implements NestModule {
 		consumer.apply(FrontendMiddleware, CompressionMiddleware).forRoutes({ path: '**', method: RequestMethod.ALL });
 	}
 }
+// TODO: test, reutilizar para no crear new validation pipes con los mismos parametros, en servicio tal vez?
+// TODO: tsdoc
+export const ChangeNameValidationPipe = new ValidationPipe({
+	transform: true,
+	transformOptions: { excludeExtraneousValues: true },
+});

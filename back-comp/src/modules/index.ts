@@ -11,3 +11,4 @@ export { RoleModule } from './role/role.module';
 export { TrabajadoresModule } from './trabajadores/trabajadores.module';
 export { UserModule } from './users/user.module';
 export { ValoracionesModule } from './valoraciones/valoraciones.module';
+export { LoggingModule } from './logging/logging.module';
