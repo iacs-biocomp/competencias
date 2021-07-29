@@ -29,7 +29,7 @@ export class FrontendMiddleware implements NestMiddleware {
 		//Petición web
 		else if (MODULOS[URL]) {
 			const cookieStr = req.headers.cookie;
-			const cookies = cookieStr ? parse(cookieStr) : {};
+			const cookies = !!cookieStr ? parse(cookieStr) : {};
 			//Comprobar que esta el jwt en cookies
 			if (!cookies[TOKEN_NAME]) {
 				return res.redirect(LOGIN_URL);

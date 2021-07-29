@@ -4,7 +4,6 @@ import { verify } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthGuard {
-	constructor() {}
 	/**
 	 * Authentication using JWT
 	 * @param token The JWT

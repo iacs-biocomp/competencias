@@ -4,6 +4,7 @@
 		"target": "es2017",
 		"module": "commonjs",
 		"moduleResolution": "node",
+		"strictNullChecks": true,
 		"declaration": true,
 		"outDir": "./dist",
 		"allowSyntheticDefaultImports": true,
