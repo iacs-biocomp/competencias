@@ -1,4 +1,0 @@
-DELETE  http://localhost:3000/nest/comportamientos/Co1
-###
-GET http://localhost:3000/nest/comportamientos/all
-
