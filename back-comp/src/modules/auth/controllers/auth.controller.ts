@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UsePipes, ValidationPipe, BadRequestException } from '@nestjs/common';
-import { SignupDto, SigninDto } from './dto';
-import { AuthService } from './auth.service';
+import { SigninDTO, SignupDTO } from 'src/DTO/auth';
+import { AuthService } from '../services/auth.service';
 
 @Controller('nest')
 export class AuthController {
@@ -9,16 +9,17 @@ export class AuthController {
 	) {}
 
 	@Post('signup')
-	// @UsePipes(ValidationPipe)
-	async signup(@Body() signupDto: SignupDto) {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async signup(@Body() signupDto: SignupDTO) {
 		return this._authService.signup(signupDto);
 	}
 
 	@Post('signin')
-	@UsePipes(ValidationPipe)
-	async signin(@Body() signinDto: SigninDto) {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async signin(@Body() signinDto: SigninDTO) {
 		return this._authService.signin(signinDto);
 	}
+
 	@Post('jwtrefresh')
 	async jwtRefresh(@Body() tokenJson: { tokenStr: string }) {
 		const tokenStr = tokenJson.tokenStr;

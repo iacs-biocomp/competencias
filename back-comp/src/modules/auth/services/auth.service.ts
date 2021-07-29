@@ -1,12 +1,13 @@
 import { ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hashSync } from 'bcrypt';
-import { UserRepository } from '../users/user.repository';
-import { SigninDto, SignupDto } from './dto';
-import { IJwtPayload } from './jwt-payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SigninDTO, SignupDTO } from 'src/DTO/auth';
+import { IJwtPayload } from 'sharedInterfaces/DTO';
+import { UserRepository } from 'src/modules/users/user.repository';
+import { deleteProps } from 'sharedCode/Utility';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
 		@InjectRepository(UserRepository) private readonly userRepository: UserRepository,
 	) {}
 
-	async signup(signupDto: SignupDto) {
+	async signup(signupDto: SignupDTO) {
 		const usr = signupDto;
 		const userExists = await this.userRepository.findOne({
 			where: [{ username: usr.username }, { email: usr.email }],
@@ -41,10 +42,10 @@ export class AuthService {
 	 * @param signinDto JSON with credentials
 	 * @returns
 	 */
-	async signin(signinDto: SigninDto): Promise<{ token: string }> {
+	async signin(signinDto: SigninDTO): Promise<{ token: string }> {
 		const errMsg: string = 'Incorrect user or password';
 		const { username, password } = signinDto;
-		const user: User = await this.userRepository.findOne({
+		const user = await this.userRepository.findOne({
 			where: { username },
 		});
 
@@ -64,8 +65,8 @@ export class AuthService {
 			throw new UnauthorizedException(errMsg);
 		}
 
-		const payload: IJwtPayload = {
-			email: user.email,
+		const payload: Omit<IJwtPayload, 'iat' | 'exp'> = {
+			email: user.email ?? 'no-email',
 			username: user.username,
 			password: user.password,
 			roles: user.roles.map(r => r.name as Roles),
@@ -86,8 +87,7 @@ export class AuthService {
 			throw new ForbiddenException('El token no es valido o ya ha expirado');
 		}
 		let tokenObj: IJwtPayload = this._jwtService.decode(tokenStr) as IJwtPayload;
-		delete tokenObj.iat;
-		delete tokenObj.exp;
+		deleteProps(tokenObj, ['iat', 'exp']);
 		const token = this._jwtService.sign(tokenObj);
 		return { token };
 	}
