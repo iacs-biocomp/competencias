@@ -9,32 +9,32 @@ import {
 	Param,
 	Post,
 	Put,
+	UsePipes,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CatComp } from 'src/entity';
-import { CatCompRepo } from './catComp.repository';
-
-type CatCompWithNoModels = {
-	/**El numero de modelos en los que aparece esa categoría competencial */
-	nModels: number;
-} & Pick<CatComp, 'id' | 'description'>;
+import { ICatCompWithNoModelsDTO, ICCompCContrDTO } from 'sharedInterfaces/DTO';
+import { ChangeNameValidationPipe } from 'src/app.module';
+import { CatCompWithNoModelsDTO, CCompAddDTO } from 'src/DTO/cat-comp.DTO';
+import { CatCompRepo } from '../catComp.repository';
+import { CatCompService } from '../services/cat-comp.service';
 
 @Controller('nest/catcomp')
 export class CatCompController {
 	constructor(
 		@InjectRepository(CatCompRepo)
 		private readonly catCompRepo: CatCompRepo,
+		private readonly cCompSv: CatCompService,
 	) {}
 
 	/**
 	 * @returns El DTO que contiene el id, descripcion y N°Modelos que usan una catComp
 	 */
 	@Get('withmodels')
-	async getWithNumberOfModels(): Promise<CatCompWithNoModels[]> {
-		const catCompsDTO: CatCompWithNoModels[] = [];
+	async getWithNumberOfModels(): Promise<CatCompWithNoModelsDTO[]> {
+		const catCompsDTO: ICatCompWithNoModelsDTO[] = [];
 		const catComps = await this.catCompRepo.find({ relations: ['models'] });
 		catComps.forEach(cat => {
-			catCompsDTO.push({ id: cat.id, description: cat.description, nModels: cat.models.length });
+			catCompsDTO.push({ id: cat.id, description: cat.description, nModels: cat.models!.length });
 		});
 		return catCompsDTO;
 	}
@@ -44,41 +44,36 @@ export class CatCompController {
 	 * @returns Promesa con las catcomps
 	 */
 	@Get('all')
-	getAllCompt(): Promise<CatComp[]> {
-		return this.catCompRepo.find({ relations: ['catContr'] });
+	getAllCompt(): Promise<ICCompCContrDTO[]> {
+		return this.cCompSv.getAll();
 	}
 
 	@Delete(':id')
 	async delete(@Param('id') id: string): Promise<boolean> {
-		const catComp = await this.catCompRepo.findOne({ id: id }, { relations: ['catContr'] });
+		const catComp = await this.cCompSv.getOne(id);
 		if (!catComp) {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
 		if (catComp.catContr.length !== 0) {
 			throw new BadRequestException('No se puede borrar una catComp que tiene una catContr asociada');
 		}
-		const oneWeekAgo: Date = new Date();
-		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-		await catComp.remove();
+		await this.catCompRepo.delete(catComp.id);
 		return true;
 	}
 
 	/**
-	 *
 	 * @param catComp La nueva catComp, no ha de existir en la base de datos
 	 * @returns	`true` si se ha creado `Exception` si ya existe
-	 * @throws {ConflictException} Si la catComp ya ha sido creada
+	 * @throws {@link ConflictException} Si la catComp ya ha sido creada
 	 */
 	@Post('')
-	async create(@Body() catComp: CatComp): Promise<boolean> {
-		const existingCompt = await this.catCompRepo.findOne({ id: catComp.id });
+	@UsePipes(ChangeNameValidationPipe)
+	async create(@Body() catComp: CCompAddDTO): Promise<boolean> {
+		const existingCompt = await this.cCompSv.getOne(catComp.id);
 		if (existingCompt) {
 			throw new ConflictException('CatComp ya creada');
 		}
-		// if (catComp.createdAt != undefined && catComp.descripcion === undefined) {
-		// 	throw new UnprocessableEntityException('La descripción no ha de ser undefined y la fecha ha de ser undefined');
-		// }
-		await this.catCompRepo.save(catComp);
+		await this.cCompSv.save(catComp);
 		return true;
 	}
 
@@ -89,12 +84,13 @@ export class CatCompController {
 	 * @throws {NotFoundException} Si no existe una catComp con ese id en la bbdd
 	 */
 	@Put('')
-	async update(@Body() catComp: CatComp): Promise<boolean> {
-		const existingCompt = await this.catCompRepo.findOne({ id: catComp.id });
+	@UsePipes(ChangeNameValidationPipe)
+	async update(@Body() catComp: CCompAddDTO): Promise<boolean> {
+		const existingCompt = await this.cCompSv.getOne(catComp.id);
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');
 		}
-		await this.catCompRepo.save(catComp);
+		await this.cCompSv.save(catComp);
 		return true;
 	}
 }
