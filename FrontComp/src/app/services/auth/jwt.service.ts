@@ -39,7 +39,7 @@ export class JwtService {
 			return;
 		}
 		const response: IAuthTokenRes = await this.httpClient
-			.post<IAuthTokenRes>(cnf.apiURL + '/jwtrefresh', { tokenStr: this.token() })
+			.post<IAuthTokenRes>(`${cnf.apiURL}/jwtrefresh`, { tokenStr: this.token() })
 			.toPromise();
 		this.updateJwt(response.token);
 		this.refresh.eventOcurred = false;

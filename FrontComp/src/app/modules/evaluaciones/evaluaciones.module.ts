@@ -8,17 +8,17 @@ import { HttpClient } from '@angular/common/http';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { ValoracionesService } from './valoraciones.service';
 import { evId, ListPeopleToEvalComponent } from './list-people-to-eval/list-people-to-eval.component';
-import { ValoracionesEvPersonaComponent } from './valoracion-persona/valoraciones-ev-persona/valoraciones-ev-persona.component';
-import {
-	dniId,
-	ValoracionesEvPersonaLayoutComponent,
-} from './valoracion-persona/list-valoraciones-layout/list-valoraciones-layout.component';
+// import { ValoracionesEvPersonaComponent } from './valoracion-persona/valoraciones-ev-persona/valoraciones-ev-persona.component';
+// import {
+// 	dniId,
+// 	ValoracionesEvPersonaLayoutComponent,
+// } from './valoracion-persona/list-valoraciones-layout/list-valoraciones-layout.component';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
 const routes: CompRoutes = [
 	{ path: '', component: MisEvaluacionesComponent },
 	{ path: `evaluar/:${evId}`, component: ListPeopleToEvalComponent },
-	{ path: `evaluar/:${evId}/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
+	// { path: `evaluar/:${evId}/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
 ];
 
 /**
@@ -28,8 +28,8 @@ const routes: CompRoutes = [
 	declarations: [
 		MisEvaluacionesComponent,
 		ListPeopleToEvalComponent,
-		ValoracionesEvPersonaComponent,
-		ValoracionesEvPersonaLayoutComponent,
+		// ValoracionesEvPersonaComponent,
+		// ValoracionesEvPersonaLayoutComponent,
 	],
 	imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
 	providers: [EvaluacionesService, HttpClient, JwtService, ValoracionesService],

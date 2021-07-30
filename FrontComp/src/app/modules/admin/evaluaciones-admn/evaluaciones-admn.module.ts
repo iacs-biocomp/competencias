@@ -9,7 +9,7 @@ import { NewEvModalComponent } from './new-ev-modal/new-ev-modal.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
-import { NewEvModelComponent } from './modelos/new-ev-model.component';
+// import { NewEvModelComponent } from './modelos/new-ev-model.component';
 import { ViewAllModelsComponent } from './modelos/view-all-models/view-all-models.component';
 import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-model.component';
 import { SelectComportsModalComponent } from './modelos/select-comports-modal/select-comports-modal.component';
@@ -35,7 +35,7 @@ export const evRoutes: CompRoutes = [
 @NgModule({
 	declarations: [
 		ListEvComponent,
-		NewEvModelComponent,
+		// NewEvModelComponent,
 		NewEvModalComponent,
 		ViewAllModelsComponent,
 		ViewEditModelComponent,

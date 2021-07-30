@@ -33,6 +33,7 @@ export class ViewAllModelsComponent implements OnInit {
 		modelToAdd: {
 			catComp: undefined,
 			subModels: [],
+			reference: true,
 		},
 	};
 	/** Objeto con propiedades usadas principalmente en la vista */

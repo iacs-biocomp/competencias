@@ -4,7 +4,7 @@ import { CompetenciasService } from '../services/competencias.service';
 import { addDays } from 'date-fns';
 import { ICompAddDTO, ICompGetDTO } from 'sharedInterfaces/DTO';
 
-interface IComptEdit extends ICompetencia {
+interface IComptEdit extends ICompGetDTO {
 	editing?: boolean;
 }
 
@@ -18,7 +18,7 @@ interface IComptEdit extends ICompetencia {
 })
 export class TableCompetenciasComponent implements OnInit {
 	compeToAdd: ICompAddDTO[] = [];
-	compets: ICompGetDTO[] = [];
+	compets: IComptEdit[] = [];
 	today = new Date();
 	OneWeekAgo = addDays(new Date(), -7);
 
@@ -40,7 +40,7 @@ export class TableCompetenciasComponent implements OnInit {
 	 *
 	 * @param competencia la competencia que queremos intentar borrar
 	 */
-	canDelete(competencia: ICompetencia): boolean {
+	canDelete<T extends Pick<ICompetencia, 'createdAt'>>(competencia: T): boolean {
 		return competencia.createdAt <= this.OneWeekAgo ? false : true;
 	}
 

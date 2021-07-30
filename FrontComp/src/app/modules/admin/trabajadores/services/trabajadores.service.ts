@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ITrabajadorDTO, ITrabCCompCContrDTO, IUserDTO } from 'sharedInterfaces/DTO';
+import { ITrabAddDTO, ITrabajadorDTO, ITrabCCompCContrDTO, IUserDTO } from 'sharedInterfaces/DTO';
 import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
 
 @Injectable({
@@ -37,8 +37,8 @@ export class TrabajadoresService {
 	 * Used only by the ADMIN
 	 *
 	 */
-	public getAll(): Promise<ITrabajadorDTO[]> {
-		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
+	public getAll(): Promise<ITrabCCompCContrDTO[]> {
+		return this.httpClient.get<ITrabCCompCContrDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
 	}
 
 	/**
@@ -59,7 +59,7 @@ export class TrabajadoresService {
 	 * @throws TODO: exception
 	 * TODO: DONE
 	 */
-	add(worker: ITrabCCompCContrDTO): Promise<boolean> {
+	add(worker: ITrabAddDTO): Promise<boolean> {
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
 	}
 
@@ -70,7 +70,7 @@ export class TrabajadoresService {
 	 * @throws TODO: exception
 	 * TODO: DONE,
 	 */
-	edit(wrk: ITrabCCompCContrDTO): Promise<boolean> {
+	edit(wrk: ITrabAddDTO): Promise<boolean> {
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, wrk).toPromise();
 	}
 }

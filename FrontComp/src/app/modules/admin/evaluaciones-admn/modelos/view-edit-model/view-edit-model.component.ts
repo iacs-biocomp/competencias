@@ -115,7 +115,7 @@ export class ViewEditModelComponent implements OnInit {
 		/** Array de competencias del modelo */
 		const competencias: ICompetencia[] = this.getCompet(modelToMap);
 		competencias.forEach(c => {
-			const comportsOfC = this.getAllComportsOfComp(c, modelToMap.subModels);
+			const comportsOfC = this.getAllComportsOfComp<IComportamiento, ISubModel>(c, modelToMap.subModels);
 			model.comps![c.id] = { descripcion: c.descripcion, comports: {} };
 			comportsOfC.forEach(comport => {
 				model.comps![c.id].comports[comport.id] = { descripcion: comport.descripcion };

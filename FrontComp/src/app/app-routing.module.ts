@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Route } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Roles } from 'sharedInterfaces/Entity';
 import { LoginGuard } from './guards/login.guard';

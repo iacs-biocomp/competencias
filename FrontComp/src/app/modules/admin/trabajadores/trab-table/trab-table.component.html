@@ -20,7 +20,7 @@
 		</thead>
 
 		<tbody>
-			<tr *ngFor="let trab of listaTrabaToAdd">
+			<tr *ngFor="let trab of wrkToAdd">
 				<td>
 					<input type="text" class="form-control" [(ngModel)]="trab.dni" />
 				</td>
@@ -66,61 +66,61 @@
 				</td>
 			</tr>
 
-			<tr *ngFor="let trab of trabajadores">
-				<td *ngIf="!trab.editing">{{ trab.dni }}</td>
-				<td *ngIf="trab.editing">
-					<input type="text" class="form-control" [(ngModel)]="trab.dni" />
+			<tr *ngFor="let wrk of workers">
+				<td *ngIf="!wrk.editing">{{ wrk.dni }}</td>
+				<td *ngIf="wrk.editing">
+					<input type="text" class="form-control" [(ngModel)]="wrk.dni" />
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.nombre }}</td>
-				<td *ngIf="trab.editing">
-					<input type="text" class="form-control" [(ngModel)]="trab.nombre" />
+				<td *ngIf="!wrk.editing">{{ wrk.nombre }}</td>
+				<td *ngIf="wrk.editing">
+					<input type="text" class="form-control" [(ngModel)]="wrk.nombre" />
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.apellidos }}</td>
-				<td *ngIf="trab.editing">
-					<input type="text" class="form-control" [(ngModel)]="trab.apellidos" />
+				<td *ngIf="!wrk.editing">{{ wrk.apellidos }}</td>
+				<td *ngIf="wrk.editing">
+					<input type="text" class="form-control" [(ngModel)]="wrk.apellidos" />
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.area }}</td>
-				<td *ngIf="trab.editing">
-					<input type="text" class="form-control" [(ngModel)]="trab.area" />
+				<td *ngIf="!wrk.editing">{{ wrk.area }}</td>
+				<td *ngIf="wrk.editing">
+					<input type="text" class="form-control" [(ngModel)]="wrk.area" />
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.unidad }}</td>
-				<td *ngIf="trab.editing">
-					<input type="text" class="form-control" [(ngModel)]="trab.unidad" />
+				<td *ngIf="!wrk.editing">{{ wrk.unidad }}</td>
+				<td *ngIf="wrk.editing">
+					<input type="text" class="form-control" [(ngModel)]="wrk.unidad" />
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.departamento }}</td>
-				<td *ngIf="trab.editing">
-					<input type="text" class="form-control" [(ngModel)]="trab.departamento" />
+				<td *ngIf="!wrk.editing">{{ wrk.departamento }}</td>
+				<td *ngIf="wrk.editing">
+					<input type="text" class="form-control" [(ngModel)]="wrk.departamento" />
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.catComp }}</td>
-				<td *ngIf="trab.editing">
-					<select [(ngModel)]="trab.catComp">
+				<td *ngIf="!wrk.editing">{{ wrk.catComp }}</td>
+				<td *ngIf="wrk.editing">
+					<select [(ngModel)]="wrk.catComp">
 						<option *ngFor="let catComp of catComps" [value]="catComp.id">{{ catComp.id }}</option>
 					</select>
 				</td>
 
-				<td *ngIf="!trab.editing">{{ trab.catContr }}</td>
-				<td *ngIf="trab.editing">
-					<select [(ngModel)]="trab.catContr">
+				<td *ngIf="!wrk.editing">{{ wrk.catContr }}</td>
+				<td *ngIf="wrk.editing">
+					<select [(ngModel)]="wrk.catContr">
 						<option *ngFor="let catContrac of catContracts" [value]="catContrac.id">
 							{{ catContrac.id }}
 						</option>
 					</select>
 				</td>
 
-				<td>
-					<div class="btn btn-success" (click)="editingWorker(trab, true, false)">
+				<!-- <td>
+					<div class="btn btn-success" (click)="editingWorker(wrk, true, false)">
 						<span class="material-icons"> edit </span>
 					</div>
-					<div class="btn btn-primary" *ngIf="trab.editing" (click)="editingWorker(trab, false, true)">
+					<div class="btn btn-primary" *ngIf="wrk.editing" (click)="editingWorker(wrk, false, true)">
 						<span class="material-icons"> done </span>
 					</div>
-				</td>
+				</td> -->
 			</tr>
 		</tbody>
 	</table>

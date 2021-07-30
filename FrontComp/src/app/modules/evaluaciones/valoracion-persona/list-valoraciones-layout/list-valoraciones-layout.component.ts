@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { IEvAllRequired, IEvModelDTO, IUserDTO, IValoracionDTO, IValoracionAddDTO } from 'sharedInterfaces/DTO';
-import { IEvModel, ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
+import { IEvAllRequiredDTO, IEvModelGetDTO, IUserDTO, IValoracionAddDTO } from 'sharedInterfaces/DTO';
+import { ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
 import { TrabajadoresService } from 'src/app/modules/admin/trabajadores/services/trabajadores.service';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from '../../evaluaciones.service';
@@ -22,11 +22,11 @@ export const dniId = 'dniId';
 })
 export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	/** Observable de modelo, cuando cambie el modelo debe actualizarse el valor */
-	evModelObs!: BehaviorSubject<IEvModelDTO>;
+	evModelObs!: BehaviorSubject<IEvModelGetDTO>;
 	evaluador!: IUserDTO;
 	evaluado!: ITrabajador;
-	savedValsObs!: BehaviorSubject<IValoracionDTO[]>;
-	ev!: IEvAllRequired;
+	savedValsObs!: BehaviorSubject<IValoracionGetDTO[]>;
+	ev!: IEvAllRequiredDTO;
 	#evId = Number.parseInt(this.route.snapshot.paramMap.get(evId)!);
 	#dniId = this.route.snapshot.paramMap.get(dniId)!;
 
@@ -62,8 +62,8 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 		 *  si se niega 2 veces las ya creadas pero actualizadas */
 		const findFn = (v: NotCompletedVal) =>
 			alreadySavedVals.find(v2 => v2.comp.id === v.comp.id && v2.comport.id === v.comport.id);
-		const valsToAdd = allVals.map<IValoracionToAddDTO>(val => {
-			return { ev: this.ev, ...val };
+		const valsToAdd = allVals.map<IValoracionAddDTO>(val => {
+			return { ev: this.ev.id, ...val };
 		});
 		const [newVals, updatedVals] = await Promise.all([
 			/** Las valoraciones nuevas sin id */
