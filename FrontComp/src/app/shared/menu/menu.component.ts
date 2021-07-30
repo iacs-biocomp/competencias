@@ -14,9 +14,12 @@ export class MenuComponent implements OnInit {
 	constructor(private loginGuard: LoginGuard) {}
 
 	ngOnInit(): void {
+		// LOG:
 		this.isAdmin = this.loginGuard.hasRole(Roles.ADMIN);
 	}
+
 	collapse(): void {
+		// LOG:
 		this.collapsed = !this.collapsed;
 		console.log(this.collapsed);
 	}

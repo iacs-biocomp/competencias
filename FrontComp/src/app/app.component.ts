@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
 	constructor(public jwtSv: JwtService) {}
 
 	ngOnInit(): void {
+		// LOG: iniciando aos
 		Aos.init({
 			duration: 700,
 			once: true,
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
 			this.jwtSv.refreshEvent();
 		});
 		setInterval(() => {
+		// LOG: configurando interval de refresh jwt en ${cnf.jwtinterval} segundos
 			this.jwtSv.refreshToken();
 		}, cnf.jwtInterval);
 	}

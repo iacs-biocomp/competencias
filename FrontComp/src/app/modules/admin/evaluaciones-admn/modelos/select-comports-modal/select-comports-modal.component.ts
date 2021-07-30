@@ -91,6 +91,7 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	 * @param comport comportamiento seleccionado
 	 */
 	selectComportamiento(comport: IComportamiento): void {
+		//LOG: `se añade un comport ${comport}`
 		const arrToPush = this.comportCtl.comportsSelected;
 		const index = this.comportCtl.comportsSelected.indexOf(comport);
 		if (index === -1) {
@@ -101,12 +102,14 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	}
 	/**Flush the "buffer" and moves the data into the model of type {@link IEvModel}*/
 	addAllComports(): void {
+		//LOG: `se elimina el buffer y se manda la info al modelo`
 		this.comports.emit(this.comportCtl.comportsSelected);
 		this.comportCtl.comportsSelected = [];
 	}
 
 	/** Al clicar en el boton 'Mostrar mas' se muestran 10 comportamientos mas a la vista  */
 	showMoreComports(): number {
+		//LOG: `se muestran más comportamientos al darle a click`
 		this.cv.numComportsMostrando = this.cv.numComportsMostrando + this.cv.mostrarMas;
 		this.cv.end = this.cv.numComportsMostrando;
 		return this.cv.numComportsMostrando;

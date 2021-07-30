@@ -21,6 +21,7 @@ export class ValoracionesService {
 		evId: IEvaluacion['id'],
 	): Promise<IValoracionDTO[]> {
 		const dni = typeof worker === 'string' ? worker : worker.dni;
+		//LOG: httpGet obteniendo evaluaciones del usuario ${dni} con evId ${evId} apiUrlReq=${apiUrlReq}
 		return this.httpClient.get<IValoracionDTO[]>(`${cnf.apiURL}/valoraciones/${dni}/${evId}`).toPromise();
 	}
 
@@ -36,6 +37,7 @@ export class ValoracionesService {
 		if (!val) {
 			throw new Error('Valoracion no valida o incorrecta');
 		}
+		//LOG: httpPost a ${apiUrlReq} añadiendo valoracion ${val}
 		return this.httpClient.post<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}
 
@@ -51,6 +53,9 @@ export class ValoracionesService {
 		if (!val) {
 			throw new Error('Valoracion no valida o incorrecta');
 		}
+		//! Tal vez no haya que logar todo el objeto
+		// ? debug?
+		//LOG: httpPut a ${apiUrlReq} cambiando valoración ${val}
 		return this.httpClient.put<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
 	}
 }

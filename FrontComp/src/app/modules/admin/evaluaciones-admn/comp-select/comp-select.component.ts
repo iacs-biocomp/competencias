@@ -76,6 +76,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	 * @param comp Competencia a borrar o añadir en el array de seleccionadas
 	 */
 	toggleComp(comp: ICompetencia) {
+		//LOG: `se añade una comp a las comps seleccionadas o la quita si está ${comp}`
 		toggleInArray<ICompetencia>(comp, this.cv.compsSelected);
 	}
 

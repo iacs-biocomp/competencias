@@ -105,6 +105,7 @@ export class NewEvModalComponent implements OnInit {
 	 * @returns El array de modelos de evaluaciones filtrado
 	 */
 	filterEvModels(): IEvModel[] {
+		//LOG: `se filtran los modelos de las evaluaciones`
 		if (!this.cCompCtl.cCompSelectedObs.value || !this.modelCtl.evModels) {
 			return [];
 		}
@@ -116,6 +117,7 @@ export class NewEvModalComponent implements OnInit {
 	 * @returns `true` if the form is correct, `false` if it's not
 	 */
 	isFormValid(): boolean {
+		//LOG: `devuelve true si el formulario es correcto`
 		if (!this.modelCtl.rangesForm) {
 			return false;
 		} //Se quita undefined
@@ -130,11 +132,13 @@ export class NewEvModalComponent implements OnInit {
 
 	/** Set the catComp selected for the new evaluation */
 	setCatComp(idCatComp: string): void {
+		//LOG: `se selecciona la catComp ${idCatComp}`
 		this.cCompCtl.cCompSelectedObs.next(this.cCompCtl.catComps.find(catComp => catComp.id === idCatComp)); //Find if the catComp exists
 	}
 
 	/** Save in the backend the evaluation to create */
 	async save() {
+		//LOG: `se muestran más comportamientos al darle a click`
 		const cComp = this.cCompCtl.cCompSelectedObs.value;
 		const modelo = this.modelCtl.evModelSelected;
 		if (!this.modelCtl.rangesForm || !cComp || !modelo) {
@@ -180,6 +184,7 @@ export class NewEvModalComponent implements OnInit {
 	 * @param niveles
 	 */
 	onNivelesSetted(niveles: CompAndNiv[]) {
+		//LOG: `se muestran más comportamientos al darle a click`
 		this.save();
 	}
 
@@ -188,6 +193,7 @@ export class NewEvModalComponent implements OnInit {
 	 * @param niveles
 	 */
 	onCompetenciasSetted(competencias: ICompetencia[]) {
+		//LOG: `se muestran más comportamientos al darle a click`
 		this.compsSelectedObs.next(competencias);
 		const cCompSelected = this.cCompCtl.cCompSelectedObs.value;
 		if (!cCompSelected) {

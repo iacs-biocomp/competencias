@@ -13,6 +13,7 @@ export class UsrOrganigramaComponent implements OnInit {
 	constructor(private orgService: UsrOrganigramaService) {}
 
 	async ngOnInit(): Promise<void> {
+		// LOG: actualizando datos del organigrama del usuario
 		this.miOrganigramaData = await this.orgService.organigramaUsr();
 	}
 }

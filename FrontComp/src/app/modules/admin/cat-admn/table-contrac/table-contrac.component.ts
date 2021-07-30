@@ -34,14 +34,17 @@ export class TableContracComponent implements OnInit {
 	}
 
 	async updateContrView(): Promise<void> {
+		//LOG: `se actualiza la vista de las catContractuales`
 		this.catContracts = await this.catContractService.getAll();
 	}
 
 	updateCContr(cContr: ICContrAndCCompDTO) {
+		//LOG: `se actualiza una catContractual ${cContr}`
 		this.catContractService.update(cContr);
 	}
 
 	deleteCContr(catContract: ICatContr): boolean {
+		//LOG: `se elimina una catContractual ${cContr}`
 		this.catContractService.delete(catContract.id);
 		return true;
 	}

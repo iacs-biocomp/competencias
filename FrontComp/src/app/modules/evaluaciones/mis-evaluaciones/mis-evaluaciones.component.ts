@@ -52,7 +52,6 @@ export class MisEvaluacionesComponent implements OnInit {
 		const decodedToken = this.jwtSv.getDecodedToken();
 		const evs = await this.evService.evaluacionesUsr(decodedToken.username);
 		this.evs = evs.map<IEvWithStatus>(ev => {
-			//		console.log(ev);
 			return { ...ev, status: this.computeEvStatus(ev) };
 		});
 		this.buttonEvaluar = true;
@@ -62,10 +61,12 @@ export class MisEvaluacionesComponent implements OnInit {
 				return;
 			}
 		});
+		// LOG: Inicializado MisEvaluacionesComponent
 	}
 
 	/** Set the catComp selected for the new evaluation */
 	setCatComp(idCatComp: string): void {
+		// TODO: Refactor, usar programación funcional
 		for (let i = 0; i <= this.evs.length; i++) {
 			if (this.evs[i].catComp.id === idCatComp) {
 				this.cCompCtl.cCompSelectedObs.next(this.evs[i].catComp);
@@ -73,10 +74,12 @@ export class MisEvaluacionesComponent implements OnInit {
 		}
 	}
 
-	/** Funcion para igualar la catcompetencial y buscar a los trabajadores con la
+	/**
+	 * Funcion para igualar la catcompetencial y buscar a los trabajadores con la
 	 * misma catcomp que se va a evaluar
 	 */
 	takeCatComp() {
+		// TODO: Refactor, usar programación funcional
 		for (let i = 0; i <= this.evs.length; i++) {
 			if (this.trabajador.catComp == this.evs[i].catComp) {
 				//			console.log(this.trabajador.catComp);
@@ -89,12 +92,15 @@ export class MisEvaluacionesComponent implements OnInit {
 	 * y mostrará un botón u otro
 	 */
 	computeEvStatus(ev: IEvAllRequiredDTO): EvStatus {
+		// LOG: Computando estado de evaluación ${ev}
 		const intervals = getIntervalsOfEv(ev);
-		//	console.log(intervals);
 		const now = new Date();
 		const keys = Object.keys(intervals) as Array<keyof EvIntervals>;
 		let actualInterval: Interval | undefined;
 		keys.forEach(k => {
+			// TODO: Solventar errores al pasar a traves de json los Date,
+			// posible solución usar libreria para extender JSON,
+			//  aunque añadir un dto con los date a string y parsear con parseISO puede servir
 			intervals[k].start = parseISO(intervals[k].start as unknown as string);
 			intervals[k].end = parseISO(intervals[k].end as unknown as string);
 			if (isWithinInterval(now, intervals[k])) {
@@ -113,7 +119,4 @@ export class MisEvaluacionesComponent implements OnInit {
 				return EvStatus.COMPLETADA;
 		}
 	}
-}
-function Input() {
-	throw new Error('Function not implemented.');
 }
