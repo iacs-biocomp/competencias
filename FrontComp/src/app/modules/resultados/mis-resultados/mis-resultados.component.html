@@ -1,15 +1,22 @@
-<div *ngFor="let comp of competences" class="chart-wrapper">
-	<ngx-charts-bar-vertical
-		[scheme]="colorScheme"
-		[results]="e"
-		[gradient]="gradient"
-		[xAxis]="showXAxis"
-		[yAxis]="showYAxis"
-		[legend]="showLegend"
-		[showXAxisLabel]="showXAxisLabel"
-		[showYAxisLabel]="showYAxisLabel"
-		[xAxisLabel]="comp.descripcion"
-		[yAxisLabel]="yAxisLabel"
-	>
-	</ngx-charts-bar-vertical>
+<h1 class="title">Resultados de evaluaciones</h1>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-7 col-sm-12 col-lg-4" *ngFor="let comp of competences">
+			<h2>Evaluación: {{ comp.id }} - {{ comp.descripcion }}</h2>
+			<div class="chart-wrapper">
+				<ngx-charts-bar-vertical
+					[scheme]="colorScheme"
+					[results]="e"
+					[gradient]="gradient"
+					[xAxis]="showXAxis"
+					[yAxis]="showYAxis"
+					[showXAxisLabel]="showXAxisLabel"
+					[showYAxisLabel]="showYAxisLabel"
+					[xAxisLabel]="comp.descripcion"
+					[yAxisLabel]="yAxisLabel"
+				>
+				</ngx-charts-bar-vertical>
+			</div>
+		</div>
+	</div>
 </div>
