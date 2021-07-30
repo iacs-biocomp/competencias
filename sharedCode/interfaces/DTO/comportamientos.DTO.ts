@@ -1,21 +1,19 @@
 import { IComportamiento } from '../Entity';
+import { Expand } from '../Utility';
 
+/** @deprecated will be removed in the future from this file */
 export type IComportNoId = Omit<IComportamiento, 'id' | 'subModels'>;
 
-/**
- * TODO: tsdoc in english
- * @author aml360 <aml360esp@gmail.com>
- */
 type IComportBaseDTO = Pick<IComportamiento, 'descripcion'>;
 
 /**
- * TODO: tsdoc in english
+ * use for adding a behaviour to the db
  * @author aml360 <aml360esp@gmail.com>
  */
-export type IComportAddDTO = IComportBaseDTO & Pick<IComportamiento, 'id'>;
+export type IComportAddDTO = Expand<Pick<IComportamiento, 'id'> & IComportBaseDTO>;
 
 /**
- * TODO: tsdoc in english
+ * use for requesting comports from the backend
  * @author aml360 <aml360esp@gmail.com>
  */
 export type IComportGetDTO = IComportAddDTO;

@@ -4,5 +4,6 @@ export interface IResultadoDTO {
 	inferiores: number;
 	superiores: number;
 	pares: number;
+	competencia: string;
 	// clientes?:
 }

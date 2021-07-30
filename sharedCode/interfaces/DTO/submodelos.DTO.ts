@@ -10,3 +10,13 @@ export type ISubModelGetDTO = {
 	comportamientos: IComportGetDTO[];
 	nivelDescription?: ISubModel['nivelDescription'];
 };
+
+/**
+ * TODO: TSdoc
+ * ```ts
+ * type expanded here
+ * ```
+ *
+ *
+ */
+export type ISubModelAddDTO = Omit<ISubModelGetDTO, 'id'>;

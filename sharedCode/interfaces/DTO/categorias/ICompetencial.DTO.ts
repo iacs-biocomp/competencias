@@ -31,3 +31,9 @@ export type ICCompDTO = RemovePropsInU<RequiredAndNotNull<ICatComp>, object>;
 export type ICCompCContrDTO = ICCompDTO & {
 	catContr: RemovePropsInU<RequiredAndNotNull<ICatContr>, object>[];
 };
+
+
+export type ICatCompWithNoModelsDTO = RemovePropsInU<RequiredAndNotNull<ICatComp>, object> & {
+	/**El numero de modelos en los que aparece esa categoría competencial */
+	nModels: number;
+};

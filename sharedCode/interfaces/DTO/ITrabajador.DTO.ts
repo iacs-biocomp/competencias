@@ -1,6 +1,7 @@
-import { ICatComp, ICatContr } from '../Entity/ICategorias';
+import { ICatComp } from '../Entity/ICategorias';
 import { ITrabajador } from '../Entity/IUser';
-import { ICCompDTO } from './categorias';
+import { Expand } from '../Utility';
+import { ICCompDTO, ICContrGetDTO } from './categorias';
 
 //TODO: Tsdoc
 /**
@@ -12,22 +13,38 @@ export type ITrabajadorDTO = Omit<ITrabajador, 'periodos' | 'user'>;
 /**
  * @author aml360 <aml360esp@gmail.com>
  */
-export type ITrabCCompCContrDTO = ITrabajadorDTO & {
-	//TODO: Tsdoc
-	catComp: ICatComp['id'];
-	//TODO: Tsdoc
-	catContr: ICatContr['id'];
-	deleteable: boolean;
-};
-export interface ITrabOrgani extends Omit<ITrabajador, 'periodos' | 'user'> {
-	/** La categoría competencial actual del trabajador, solo EL TRABAJADOR la tiene no sus sup/inf/pares */
-	catComp?: ICatComp;
-}
+export type ITrabCCompCContrDTO = Expand<
+	ITrabajadorDTO & {
+		//TODO: Tsdoc
+		catComp: ICCompDTO;
+		//TODO: Tsdoc
+		catContr: ICContrGetDTO;
+		deleteable: boolean;
+	}
+>;
+
+export type ITrabAddDTO = Expand<ITrabCCompCContrStrDTO>;
+
+export type ITrabCCompCContrStrDTO = Expand<
+	Omit<ITrabCCompCContrDTO, 'catComp' | 'catContr'> & {
+		catComp: string;
+		catContr: string;
+	}
+>;
+/** @deprecated No usar ya que no es dto */
+export type ITrabOrgani = Expand<
+	Omit<ITrabajador, 'periodos' | 'user'> & {
+		/** La categoría competencial actual del trabajador, solo EL TRABAJADOR la tiene no sus sup/inf/pares */
+		catComp?: ICatComp;
+	}
+>;
 
 //TODO: Tsdoc
-export type ITrabOrganiDTO = ITrabajadorDTO & {
-	catComp: ICCompDTO;
-};
+export type ITrabOrganiDTO = Expand<
+	ITrabajadorDTO & {
+		catComp: ICCompDTO;
+	}
+>;
 
 export type IRelationsPostDTO = {
 	dni: ITrabajador['dni'];
