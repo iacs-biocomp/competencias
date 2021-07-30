@@ -1,0 +1,13 @@
+.chart-wrapper {
+	display: grid;
+	grid-column-gap: 2.5rem;
+	@media (min-width: 1000px) {
+		grid-template-columns: repeat(1, 1fr);
+	}
+	@media (min-width: 500px) {
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 1700) {
+		grid-template-columns: repeat(6, 1fr);
+	}
+}
