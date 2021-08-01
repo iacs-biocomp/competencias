@@ -16,15 +16,14 @@
 				<div class="card-body">
 					<p>Descripción: {{ ev.description }}</p>
 					<p>Id del modelo: {{ ev.model }}</p>
-					<!-- <p>Id del la Cat. competencial: {{ row.catComp.id }}</p> -->
-					<!-- <p>Inicio propuestas: {{row}} </p>
-						<p>Fin propuestas: {{row}} </p>
-						<p>Inicio validacion: {{row}} </p>
-						<p>Fin validacion: {{row}} </p>
-						<p>Inicio valoracion: {{row}} </p>
-						<p>Fin valoracion: {{row}} </p>
-						<p>Inicio período evaluado: {{row}} </p>
-						<p>Fin período evaluado: {{row}} </p> -->
+					<mat-slide-toggle
+						class="showing-results-btn"
+						[id]="showingResultsBtnControls.encodeBtnId(ev.id)"
+						(change)="showingResultsBtnUpdate($event)"
+						[checked]="ev.isShowingResults"
+					>
+						Mostrar resultados
+					</mat-slide-toggle>
 				</div>
 			</div>
 		</div>

@@ -18,6 +18,7 @@ import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model
 import { CompSelectComponent } from './comp-select/comp-select.component';
 import { ObjectiveNivsSelectComponent } from './new-ev-modal/obj-niveles-select/obj-niveles-select.component';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: CompRoutes = [
@@ -54,7 +55,9 @@ export const evRoutes: CompRoutes = [
 		MatDatepickerModule,
 		MatFormFieldModule,
 		MatNativeDateModule,
+		MatSlideToggleModule,
 	],
+	// exports: [MatSlideToggleModule],
 	providers: [EvaluacionesAdmService],
 })
 export class EvaluacionesAdmnModule {}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IEvSendDTO } from 'sharedInterfaces/DTO';
+import { IEvSendDTO, IUpdateEvShowingResultsDTO } from 'sharedInterfaces/DTO';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -47,4 +47,8 @@ export class EvaluacionesAdmService {
 	// edit(evalu: IEvSendDTO): Promise<boolean> {
 	// 	return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
 	// }
+
+	updateShowingResults(payload: IUpdateEvShowingResultsDTO) {
+		return this.httpClient.post<true>(`${cnf.apiURL}/evaluaciones/showing-results`, payload).toPromise();
+	}
 }
