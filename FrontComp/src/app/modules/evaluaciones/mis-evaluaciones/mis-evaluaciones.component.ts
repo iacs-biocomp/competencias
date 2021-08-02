@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from '../evaluaciones.service';
-import { Interval, isWithinInterval, parseISO } from 'date-fns';
+import { Interval, isWithinInterval } from 'date-fns';
 import { IEvAllRequiredDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { EvIntervals, getIntervalsOfEv } from 'sharedCode/Utility';
 import { ICatComp } from 'sharedInterfaces/Entity';
@@ -98,11 +98,6 @@ export class MisEvaluacionesComponent implements OnInit {
 		const keys = Object.keys(intervals) as Array<keyof EvIntervals>;
 		let actualInterval: Interval | undefined;
 		keys.forEach(k => {
-			// TODO: Solventar errores al pasar a traves de json los Date,
-			// posible solución usar libreria para extender JSON,
-			//  aunque añadir un dto con los date a string y parsear con parseISO puede servir
-			intervals[k].start = parseISO(intervals[k].start as unknown as string);
-			intervals[k].end = parseISO(intervals[k].end as unknown as string);
 			if (isWithinInterval(now, intervals[k])) {
 				actualInterval = intervals[k];
 			}

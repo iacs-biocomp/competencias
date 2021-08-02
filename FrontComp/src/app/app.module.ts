@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +27,10 @@ registerLocaleData(localeEs);
 		LoggerModule.forRoot({ level: LoggerLevel0_0_1.INFO, loggerType: 'CONSOLE', timeToSendToBackend: 5 }),
 	],
 	exports: [SharedModule],
-	providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, AngularDateHttpInterceptor],
+	providers: [
+		{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+		{ provide: HTTP_INTERCEPTORS, useClass: AngularDateHttpInterceptor, multi: true },
+	],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -15,8 +15,9 @@ export class AngularDateHttpInterceptor implements HttpInterceptor {
 	iso8601 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/;
 
 	public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		console.log('interceptando petición');
+		console.log('interceptando petición', req.url);
 		return next.handle(req).pipe(
+			// TODO: Tap deprecated, refactor para usar lo ultimo
 			tap(
 				(event: HttpEvent<any>) => {
 					if (event instanceof HttpResponse) {
