@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	Input,
+	OnDestroy,
+	Output,
+	EventEmitter,
+	ViewChild,
+	ElementRef,
+} from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getCompetOfModel, toggleInArray } from 'sharedCode/Utility';
 import { ICompetencia } from 'sharedInterfaces/Entity';
@@ -34,14 +43,17 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	@Input() preSelectedComps?: ICompetencia[];
 	/** Modal id for toggle it with bootstrap */
 	@Input() idModal!: string;
+	/** Component configuration object */
 	@Input() cConfig: CConfig = { title: 'Seleccione las competencias' };
 	/** Emits the selected competences when finish button is clicked */
 	@Output('onModalFinish') finishEmitter = new EventEmitter<ICompetencia[]>();
+	/** Button that closes bootstrap modal when clicked */
+	@ViewChild('closeModal') closeModalBtn!: ElementRef<HTMLButtonElement>;
 
 	/** Control view for html, all view's variables and helper functions inside */
 	cv: CompetenciaCtrlView = {
 		compsSelected: [],
-		isCompSelected(comp: ICompetencia) {
+		isCompSelected(comp: Pick<ICompetencia, 'id'> | ICompetencia['id']) {
 			const cId = typeof comp === 'string' ? comp : comp.id;
 			if (!!this.compsSelected.find(c => cId === c.id)) {
 				return true;
@@ -50,6 +62,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 			}
 		},
 	};
+
 	subs: Subscription[] = [];
 
 	async ngOnInit(): Promise<void> {
@@ -67,6 +80,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subs.forEach(sub => sub.unsubscribe());
+		this.closeModalBtn.nativeElement.click();
 	}
 
 	getCompetsOfModel = getCompetOfModel;

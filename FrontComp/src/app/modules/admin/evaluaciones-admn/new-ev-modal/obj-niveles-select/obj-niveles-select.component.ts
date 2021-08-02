@@ -1,5 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {
+	Component,
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnDestroy,
+	OnInit,
+	Output,
+	ViewChild,
+	ViewChildren,
+} from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ICompetencia, INivel } from 'sharedInterfaces/Entity';
 import { NivelService } from '../../../niveles-admin/services/nivel.service';
 
@@ -19,7 +29,7 @@ type cConfig = {
 	templateUrl: './obj-niveles-select.component.html',
 	styleUrls: ['./obj-niveles-select.component.scss'],
 })
-export class ObjectiveNivsSelectComponent implements OnInit {
+export class ObjectiveNivsSelectComponent implements OnInit, OnDestroy {
 	/** Receives an array with the competencies selected to the evaluation */
 	@Input() compsObs!: BehaviorSubject<ICompetencia[]>;
 	/** Receives an array with the levels to show next to each competence */
@@ -31,6 +41,10 @@ export class ObjectiveNivsSelectComponent implements OnInit {
 	@Input() cConfig: cConfig = {
 		title: 'Default title',
 	};
+	/** Ref to button that closes the modal */
+	@ViewChild('closeModal') closeModalBtn!: ElementRef<HTMLButtonElement>;
+	/** Array that should have all component's subscriptions */
+	#subs: Subscription[] = [];
 
 	/**
 	 * Array que almacena todos lo niveles actuales
@@ -51,10 +65,17 @@ export class ObjectiveNivsSelectComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.nivs = await this.nivelSv.getAllRefNivs(); // Se guardan en la var niveles los niveles de referencia
-		this.compsObs.subscribe(comps => {
-			const compToSave = comps.map(c => ({ comp: c })) as Partial<CompAndNiv>[]; //Map the coompetences and saves it in compToSave
-			this.bufferCompNiv = compToSave;
-		});
+		this.#subs.push(
+			this.compsObs.subscribe(comps => {
+				const compToSave = comps.map(c => ({ comp: c })) as Partial<CompAndNiv>[]; //Map the coompetences and saves it in compToSave
+				this.bufferCompNiv = compToSave;
+			}),
+		);
+	}
+
+	ngOnDestroy(): void {
+		this.#subs.forEach(s => s.unsubscribe());
+		this.closeModalBtn.nativeElement.click();
 	}
 
 	/**

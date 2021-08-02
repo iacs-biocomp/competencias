@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	Input,
+	Output,
+	EventEmitter,
+	OnDestroy,
+	ViewChild,
+	ElementRef,
+} from '@angular/core';
 import { ICompetencia, IComportamiento, INivel } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
@@ -28,6 +37,14 @@ type modalView = {
 	styleUrls: ['./select-comports-modal.component.scss'],
 })
 export class SelectComportsModalComponent implements OnInit, OnDestroy {
+	@Input() idModal!: string;
+	/** Son los comportamientos que mostrará para seleccionar o borrar este componente */
+	@Input() comportsToShowObs = new BehaviorSubject<IComportamiento[]>([]);
+	/** Emits selected comports when `confirm` button is clicked */
+	@Output() comports = new EventEmitter<IComportamiento[]>();
+	/** Ref to component's close button */
+	@ViewChild('closeModal') closeModal!: ElementRef<HTMLButtonElement>;
+
 	comportCtl: ComportCtrlView = {
 		compSelected: undefined,
 		nivSelected: undefined,
@@ -43,30 +60,24 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 		end: 10,
 	};
 
-	private cvDefault: modalView = {
+	#cvDefault: modalView = {
 		numComportsMostrando: 10,
 		mostrarMas: 10,
 		start: 0,
 		end: 10,
 	};
 
-	@Input() idModal!: string;
-	/** Son los comportamientos que mostrará para seleccionar o borrar este componente */
-	@Input() comportsToShowObs = new BehaviorSubject<IComportamiento[]>([]);
-	/** Emitidor de eventos de los comportamientos */
-	@Output() comports = new EventEmitter<IComportamiento[]>();
-
 	/** Array de todas las suscripciones realizadas en este componente */
-	subs: Subscription[] = [];
+	#subs: Subscription[] = [];
 
 	async ngOnInit(): Promise<void> {
 		setInterval(() => {
 			console.log(this);
 		}, 5000);
-		this.subs.push(
+		this.#subs.push(
 			this.comportsToShowObs.subscribe(() => {
 				this.comportCtl.comportsSelected = [];
-				this.cv = { ...this.cvDefault };
+				this.cv = { ...this.#cvDefault };
 				this.comportCtl.comportDescObs.next('');
 			}),
 			this.comportCtl.comportDescObs.subscribe(txt => {
@@ -83,7 +94,8 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.subs.forEach(sub => sub.unsubscribe());
+		this.#subs.forEach(sub => sub.unsubscribe());
+		this.closeModal.nativeElement.click();
 	}
 
 	/** Selecciona los comportamientos que va tener el submodelo

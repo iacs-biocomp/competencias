@@ -1,6 +1,6 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { getCompetOfModel } from 'sharedCode/Utility';
 import { ICompGetDTO, IEvModelAddDTO, IEvModelGetDTO, IEvSendDTO } from 'sharedInterfaces/DTO';
 import { ICatComp, ICompetencia, IEvModel } from 'sharedInterfaces/Entity';
@@ -33,18 +33,19 @@ export type modelCompNiv = {
 	evModel: RequiredAndNotNull<IEvModel>;
 	compNivObj: CompAndNiv[];
 };
+
 @Component({
 	selector: 'app-new-ev-modal [onEvSaved]',
 	templateUrl: './new-ev-modal.component.html',
 	styleUrls: ['./new-ev-modal.component.scss'],
 })
-export class NewEvModalComponent implements OnInit {
+export class NewEvModalComponent implements OnInit, OnDestroy {
 	/** Observable to send an array of competences of a model reference selected by the cComp  */
 	compsObs = new BehaviorSubject<ICompGetDTO[]>([]);
 	/** Observable with the array of competences selected */
 	compsSelectedObs = new BehaviorSubject<ICompetencia[]>([]);
-
-	@ViewChild('nivSelectBtn') nivModal!: ElementRef;
+	@ViewChild('closeEvModal') closeModalBtn!: ElementRef<HTMLButtonElement>;
+	@ViewChild('nivSelectBtn') nivModal!: ElementRef<HTMLButtonElement>;
 	/** Metodo que se ejecuta cuando se guarda una evaluación El componente padre debe pasarlo como parametro */
 	@Input() onEvSaved!: () => void | Promise<void>;
 
@@ -53,6 +54,8 @@ export class NewEvModalComponent implements OnInit {
 		catComps: [],
 		cCompSelectedObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 	};
+	/** Array that should have all component's subscriptions */
+	#subs: Subscription[] = [];
 
 	modelCtl: modelCtrlView = {
 		// TODO: [8]{N1} Comprobar si sirve
@@ -89,13 +92,22 @@ export class NewEvModalComponent implements OnInit {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 		});
-		this.cCompCtl.cCompSelectedObs.subscribe(cComp => {
-			if (!cComp) {
-				return;
-			}
-			const comps = getCompetOfModel(this.modelCtl.allReferenceModels.find(m => m.catComp.id === cComp.id)!);
-			this.compsObs.next(comps);
-		});
+		this.#subs.push(
+			this.cCompCtl.cCompSelectedObs.subscribe(cComp => {
+				if (!cComp) {
+					return;
+				}
+				const comps = getCompetOfModel(
+					this.modelCtl.allReferenceModels.find(m => m.catComp.id === cComp.id)!,
+				);
+				this.compsObs.next(comps);
+			}),
+		);
+	}
+
+	ngOnDestroy(): void {
+		this.closeModalBtn.nativeElement.click();
+		this.#subs.forEach(s => s.unsubscribe());
 	}
 
 	/**
@@ -118,13 +130,12 @@ export class NewEvModalComponent implements OnInit {
 	 */
 	isFormValid(): boolean {
 		//LOG: `devuelve true si el formulario es correcto`
-		if (!this.modelCtl.rangesForm) {
-			return false;
-		} //Se quita undefined
-		if (!this.modelCtl.evDescription || this.modelCtl.evDescription === '') {
-			return false;
-		}
-		if (!this.cCompCtl.cCompSelectedObs.value) {
+		if (
+			!this.modelCtl.rangesForm ||
+			!this.modelCtl.evDescription ||
+			this.modelCtl.evDescription === '' ||
+			!this.cCompCtl.cCompSelectedObs.value
+		) {
 			return false;
 		}
 		return this.modelCtl.rangesForm.valid;

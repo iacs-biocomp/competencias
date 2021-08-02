@@ -49,8 +49,10 @@ type CtlView = {
 	styleUrls: ['./organigrama-admin.component.scss'],
 })
 export class OrganiGeneralView implements OnInit, OnDestroy {
-	@ViewChild('closeModal') closeModalAddRel!: ElementRef;
-	@ViewChild('closeModalDeleteRel') closeModalDeleteRel!: ElementRef;
+	/** Reference to close modal btn */
+	@ViewChild('closeModal') closeModalAddRel!: ElementRef<HTMLButtonElement>;
+	/** Reference to close modal btn */
+	@ViewChild('closeModalDeleteRel') closeModalDeleteRel!: ElementRef<HTMLButtonElement>;
 
 	/** El organigrama completo, cada elemento tiene el trabajador y sus (pares/inf/sup) */
 	fullOrgani!: IOrganigramaUsrDTO[];
@@ -71,7 +73,6 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		showall: false,
 		cCompFilter: undefined,
 		cCompFilterObs: new BehaviorSubject<ICatComp | undefined>(undefined),
-
 		trabCount: 0,
 		modal: {
 			title: 'Par',
@@ -116,6 +117,8 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subs.forEach(s => s.unsubscribe());
+		this.closeModalAddRel.nativeElement.click();
+		this.closeModalDeleteRel.nativeElement.click();
 	}
 
 	/**
