@@ -1,13 +1,21 @@
 import { Component } from '@angular/core';
 import { findCompById } from 'sharedCode/Utility';
-import { ICompGetDTO, IResultadoDTO } from 'sharedInterfaces/DTO';
-import { ICompetencia } from 'sharedInterfaces/Entity';
-import { EV_RESULTS_SAMPLE, resultExample } from './data';
+import { ICompGetDTO, IResultadoDTOV2 } from 'sharedInterfaces/DTO';
 import { CompetenciasService } from '../../admin/competencias-admin/services/competencias.service';
-import { ResultadosService } from '../services/resultados.service';
+import { ResultsService } from '../services/resultados.service';
 
-/** Ancho alto */
-type ChartView = [number, number];
+// Cambiar nombre si se ocurre uno mejor
+type ResultAndComp = {
+	comp: ICompGetDTO;
+	maxResult: number;
+	minResult: number;
+	values: Resultado[];
+};
+
+export type Resultado = {
+	name: string;
+	value: number;
+};
 
 @Component({
 	selector: 'app-mis-resultados',
@@ -15,19 +23,18 @@ type ChartView = [number, number];
 	styleUrls: ['./mis-resultados.component.scss'],
 })
 export class MisResultadosComponent {
-	constructor(private compService: CompetenciasService, private resultService: ResultadosService) {
-		Object.assign(this, { single: this.single });
-	}
-
-	async ngOnInit(): Promise<void> {
-		console.log(this.mapChangeName(this.allResults));
-		this.allResults = EV_RESULTS_SAMPLE;
-		this.competences = await this.compService.getAll();
-		//	this.allResults = await this.resultService.getAll();
-	}
-
-	competences: ICompGetDTO[] = [];
-	allResults: IResultadoDTO[] = [];
+	constructor(private readonly compSv: CompetenciasService, private readonly resultsSv: ResultsService) {}
+	/** Used for not display data that has not been fetched from the server*/
+	isDataLoaded = false;
+	/** Where data fetched and **not changed**, from the server is stored */
+	#dbData = {
+		results: [] as IResultadoDTOV2[],
+		comps: [] as ICompGetDTO[],
+	};
+	/** Control view, have the data and variables that belong to the view (html) */
+	cv = {
+		results: [] as ResultAndComp[],
+	};
 
 	showXAxis = true;
 	showYAxis = true;
@@ -38,53 +45,31 @@ export class MisResultadosComponent {
 	showYAxisLabel = true;
 	yAxisLabel = 'Puntuación';
 	single: any[] = [{ inferiores: 10 }];
-
 	colorScheme = {
 		domain: ['#C7B42C ', '#A10A28', '#5AA454', '#AAAAAA'],
 	};
 	domainNames: string[] = [];
 
-	resultExample = resultExample;
-
-	/**
-	 * @returns el id y la descripcion de la competencia a la que pertencen los resultados
-	 */
-	getCompetencesOfResults(allResults: IResultadoDTO[]): ICompGetDTO[] {
-		return allResults.map(result => findCompById(this.competences, result.competencia)!);
+	async ngOnInit(): Promise<void> {
+		[this.#dbData.comps, this.#dbData.results] = await Promise.all([
+			this.compSv.getAll(),
+			this.resultsSv.getFromEvAndWorker(51, '32112D'),
+		]);
+		this.cv.results = this.mapResultsDtoToIterable(this.#dbData.results);
+		console.log(this.cv.results);
+		this.isDataLoaded = true;
 	}
 
-	/**
-	 * Devuelve todos los resultados que pertenecen a una evaluacion
-	 * con ese id de competencia
-	 * @param id el id de la competencia a buscar
-	 * @throws error si no existe ese id
-	 * @returns si existe el id, devuelve los resultados
-	 */
-	getResultsOfCompetence(id: ICompetencia['id']): IResultadoDTO {
-		const result = this.allResults.find(r => r.competencia === id);
-		if (!result) {
-			throw new Error('error message, function called with invalid id');
-		}
-		return result;
-	}
-
-	mapChangeName(allResults: IResultadoDTO[]): void {
-		const mapResults = allResults.map(r => {
-			return [
-				{
-					name: 'Inferiores',
-					value: r.inferiores,
-				},
-				{
-					name: 'Superiores',
-					value: r.superiores,
-				},
-				{
-					name: 'Pares',
-					value: r.pares,
-				},
-			];
+	mapResultsDtoToIterable(results: IResultadoDTOV2[]): ResultAndComp[] {
+		// no-null assertion because results will never reference a comp that isn't in comps array.
+		const getCompFn = (compId: string) => findCompById(this.#dbData.comps, compId)!;
+		return results.map<ResultAndComp>(result => {
+			return {
+				comp: getCompFn(result.competencia),
+				maxResult: result.maxResult,
+				minResult: result.minResult,
+				values: result.values,
+			};
 		});
-		console.log('Resultados', mapResults);
 	}
 }

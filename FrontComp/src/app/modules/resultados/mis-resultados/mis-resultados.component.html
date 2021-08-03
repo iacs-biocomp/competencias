@@ -1,19 +1,21 @@
 <h1 class="title">Resultados de evaluaciones</h1>
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-7 col-sm-12 col-lg-4" *ngFor="let comp of competences">
-			<h2>Evaluación: {{ comp.id }} - {{ comp.descripcion }}</h2>
+	<div class="row" *ngIf="isDataLoaded">
+		<div class="col-md-7 col-sm-12 col-lg-4" *ngFor="let result of cv.results">
+			<h2>Evaluación: {{ result.comp.id }} - {{ result.comp.descripcion }}</h2>
 			<div class="chart-wrapper">
 				<ngx-charts-bar-vertical
 					[scheme]="colorScheme"
-					[results]="e"
+					[results]="result.values"
 					[gradient]="gradient"
 					[xAxis]="showXAxis"
 					[yAxis]="showYAxis"
 					[showXAxisLabel]="showXAxisLabel"
 					[showYAxisLabel]="showYAxisLabel"
-					[xAxisLabel]="comp.descripcion"
+					[xAxisLabel]="result.comp.descripcion"
 					[yAxisLabel]="yAxisLabel"
+					[yScaleMax]="result.maxResult"
+					[yScaleMin]="result.minResult"
 				>
 				</ngx-charts-bar-vertical>
 			</div>
