@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsIn } from 'class-validator';
-import { IValoracionAddDTO } from 'sharedInterfaces/DTO';
+import { IsIn, IsInt } from 'class-validator';
+import { IValoracionAddDTO, IValoracionUpdateDTO } from 'sharedInterfaces/DTO';
 import { ValoracionesNums } from 'sharedInterfaces/Entity';
-import { Competencia, Comportamiento, Ev, Trabajador } from 'src/entity';
 
 // TODO: Compelte
 /* export class ValoracionBaseDTO implements IValoracionAddDTO {
@@ -40,27 +39,62 @@ import { Competencia, Comportamiento, Ev, Trabajador } from 'src/entity';
 export class ValoracionAddDTO implements IValoracionAddDTO {
 	@ApiProperty()
 	@Expose()
-	evaluador: Trabajador['dni'];
+	evaluador: string;
 
 	@ApiProperty()
 	@Expose()
-	evaluado: Trabajador['dni'];
+	evaluado: string;
 
 	@ApiProperty()
 	@Expose()
-	ev: Ev['id'];
+	ev: number;
 
 	@ApiProperty()
 	@Expose()
-	comp: Competencia['id'];
+	comp: string;
 
 	@ApiProperty()
 	@Expose()
-	comport: Comportamiento['id'];
+	comport: string;
 
 	// TODO: test cast to valoracionesNum
 	@ApiProperty()
 	@Expose()
+	@IsInt()
+	@IsIn([1, 2, 3, 4, 5], { message: 'The valoration must be a integer between 1 and 5' })
+	valoracion: ValoracionesNums;
+}
+
+export class ValoracionUpdateDTO implements IValoracionUpdateDTO {
+	@ApiProperty()
+	@Expose()
+	@IsInt({ message: 'Val.id must be a integer' })
+	id: number;
+
+	@ApiProperty()
+	@Expose()
+	evaluador: string;
+
+	@ApiProperty()
+	@Expose()
+	evaluado: string;
+
+	@ApiProperty()
+	@Expose()
+	ev: number;
+
+	@ApiProperty()
+	@Expose()
+	comp: string;
+
+	@ApiProperty()
+	@Expose()
+	comport: string;
+
+	// TODO: test cast to valoracionesNum
+	@ApiProperty()
+	@Expose()
+	@IsInt()
 	@IsIn([1, 2, 3, 4, 5], { message: 'The valoration must be a integer between 1 and 5' })
 	valoracion: ValoracionesNums;
 }
