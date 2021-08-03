@@ -53,9 +53,3 @@ export class AppModule implements NestModule {
 		consumer.apply(FrontendMiddleware, CompressionMiddleware).forRoutes({ path: '**', method: RequestMethod.ALL });
 	}
 }
-// TODO: test, reutilizar para no crear new validation pipes con los mismos parametros, en servicio tal vez?
-// TODO: tsdoc
-export const ChangeNameValidationPipe = new ValidationPipe({
-	transform: true,
-	transformOptions: { excludeExtraneousValues: true },
-});

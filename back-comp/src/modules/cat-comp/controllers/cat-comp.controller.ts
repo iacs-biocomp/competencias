@@ -10,10 +10,10 @@ import {
 	Post,
 	Put,
 	UsePipes,
+	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICatCompWithNoModelsDTO, ICCompCContrDTO } from 'sharedInterfaces/DTO';
-import { ChangeNameValidationPipe } from 'src/app.module';
 import { CatCompWithNoModelsDTO, CCompAddDTO } from 'src/DTO/cat-comp.DTO';
 import { CatCompRepo } from '../catComp.repository';
 import { CatCompService } from '../services/cat-comp.service';
@@ -67,7 +67,7 @@ export class CatCompController {
 	 * @throws {@link ConflictException} Si la catComp ya ha sido creada
 	 */
 	@Post('')
-	@UsePipes(ChangeNameValidationPipe)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async create(@Body() catComp: CCompAddDTO): Promise<boolean> {
 		const existingCompt = await this.cCompSv.getOne(catComp.id);
 		if (existingCompt) {
@@ -84,7 +84,7 @@ export class CatCompController {
 	 * @throws {NotFoundException} Si no existe una catComp con ese id en la bbdd
 	 */
 	@Put('')
-	@UsePipes(ChangeNameValidationPipe)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async update(@Body() catComp: CCompAddDTO): Promise<boolean> {
 		const existingCompt = await this.cCompSv.getOne(catComp.id);
 		if (!existingCompt) {

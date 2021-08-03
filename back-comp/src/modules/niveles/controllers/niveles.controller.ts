@@ -12,10 +12,10 @@ import {
 	Put,
 	UnauthorizedException,
 	UsePipes,
+	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from 'sharedInterfaces/Entity';
-import { ChangeNameValidationPipe } from 'src/app.module';
 import { NivelGetDTO } from 'src/DTO';
 import { Nivel } from 'src/entity';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
@@ -83,7 +83,7 @@ export class NivelesController {
 	 */
 	@Put('')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
-	@UsePipes(ChangeNameValidationPipe)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async updateNiv(@Body() nivel: NivelGetDTO): Promise<true> {
 		const existingNivel = await this.nivRepo.findOne({ id: nivel.id }, { relations: ['subModels'] });
 		if (!existingNivel) {

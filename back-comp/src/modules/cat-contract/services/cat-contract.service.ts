@@ -2,11 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
 import { ICatContr } from 'sharedInterfaces/Entity';
-import { RemovePropsInU } from 'sharedInterfaces/Utility';
 import { CatContr } from 'src/entity';
 import { CatContrRepo } from '../catContr.repository';
-
-export type CContr = RemovePropsInU<ICatContr, object>;
 
 @Injectable()
 export class CatContractService {

@@ -13,8 +13,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { deleteProps } from 'sharedCode/Utility';
-import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
-import { TrabCCompCContrDTO } from 'src/DTO/trabajador.DTO';
+import { TrabAddDTO, TrabCCompCContrDTO } from 'src/DTO/trabajador.DTO';
 import { Trabajador, CatComp, CatContr } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
@@ -33,7 +32,7 @@ export class TrabajadoresController {
 	) {}
 
 	@Get('all')
-	async getAllWorker(): Promise<ITrabajadorDTO[]> {
+	async getAllWorker(): Promise<TrabCCompCContrDTO[]> {
 		//Tutorial seguido: https://is.gd/nNxUyX
 		let trabajadores = await this.trabRepo.find({
 			join: {
@@ -48,7 +47,7 @@ export class TrabajadoresController {
 				qb.where('periodos.actual = true');
 			},
 		});
-		return trabajadores.map<ITrabajadorDTO>(trab => {
+		return trabajadores.map<TrabCCompCContrDTO>(trab => {
 			return {
 				dni: trab.dni,
 				apellidos: trab.apellidos,
@@ -101,7 +100,7 @@ export class TrabajadoresController {
 
 	@Post('')
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
-	async createTrabajador(@Body() worker: TrabCCompCContrDTO): Promise<boolean> {
+	async createTrabajador(@Body() worker: TrabAddDTO): Promise<boolean> {
 		const existingTrabajador = await this.trabRepo.findOne({ dni: worker.dni });
 		if (existingTrabajador) {
 			throw new ConflictException('Trabajador ya creado');
@@ -131,7 +130,8 @@ export class TrabajadoresController {
 	}
 
 	@Put('')
-	async updateWorker(@Body() worker: TrabCCompCContrDTO): Promise<boolean> {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async updateWorker(@Body() worker: TrabAddDTO): Promise<boolean> {
 		const [trabU, catContrU, catCompU] = await Promise.all([
 			this.trabRepo.findOne(
 				{ dni: worker.dni },

@@ -8,10 +8,15 @@ import {
 	ParseIntPipe,
 	Post,
 	Put,
+	Req,
+	UseGuards,
+	UsePipes,
+	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IValoracionAddDTO } from 'sharedInterfaces/DTO';
-import { IValoracion, Roles } from 'sharedInterfaces/Entity';
+import { Request } from 'express';
+import { Roles } from 'sharedInterfaces/Entity';
+import { ValoracionAddDTO, ValoracionUpdateDTO } from 'src/DTO';
 import { Valoracion } from 'src/entity';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { ValoracionesRepo } from '../valoraciones.repository';
@@ -19,7 +24,7 @@ import { ValoracionesRepo } from '../valoraciones.repository';
 @Controller('nest/valoraciones')
 export class ValoracionesController {
 	constructor(
-		@InjectRepository(ValoracionesRepo) private readonly valRepo: ValoracionesRepo, // private readonly jwtSv: JwtService,
+		@InjectRepository(ValoracionesRepo) private readonly valRepo: ValoracionesRepo, // private readonly jwtSv: JwtService, // @InjectRepository(ComptRepository) private readonly compRepo: ComptRepository, // @InjectRepository(ComportRepository) private readonly comportRepo: ComportRepository, // @InjectRepository(TrabajadorRepo) private readonly wrkRepo: TrabajadorRepo, // @InjectRepository(EvRepository) private readonly evRepo: EvRepository,
 	) {}
 
 	/**
@@ -69,9 +74,9 @@ export class ValoracionesController {
 	 * @returns `true` en caso de que se haya guardado correctamente la valoración `false` o Excepción en caso contrario
 	 */
 	@Post('')
-	async createVal(@Body() val: IValoracionAddDTO): Promise<boolean> {
-		// TODO: Add pipe, DTO class not Interface/type
-		console.log(val);
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	@UseGuards()
+	async createVal(@Req() req: Request, @Body() val: ValoracionAddDTO): Promise<boolean> {
 		const existentVal = await this.valRepo.findOne({
 			where: { ev: { id: val.ev }, comp: { id: val.comp }, comport: { id: val.comport } },
 		});
@@ -80,7 +85,13 @@ export class ValoracionesController {
 				'La valoración que se quiere crear ya existe, para actualizar realizar petición a endpoint PUT',
 			);
 		}
-		// TODO: Test if it works properly
+		// const [evaluador, evaluado, ev, comp, comport] = await Promise.all([
+		// 	this.wrkRepo.findOne(val.evaluador, { cache: 20000 }),
+		// 	this.wrkRepo.findOne(val.evaluado, { cache: 20000 }),
+		// 	this.evRepo.findOne(val.evaluado, { cache: 20000 }),
+		// 	this.compRepo.findOne(val.comp, { cache: 20000 }),
+		// 	this.comportRepo.findOne(val.comport, { cache: 20000 }),
+		// ]);
 		await this.valRepo.save(val as unknown as Valoracion);
 		return true;
 	}
@@ -91,7 +102,9 @@ export class ValoracionesController {
 	 * @returns `true` en caso de que se haya actualizado correctamente la valoración `false` o Excepción en caso contrario
 	 */
 	@Put('')
-	async editVal(@Body() val: IValoracion): Promise<boolean> {
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	@SetRoles(Roles.PUBLIC)
+	async editVal(@Body() val: ValoracionUpdateDTO): Promise<boolean> {
 		if (!val) {
 			throw new BadRequestException('Valoración undefined');
 		}
