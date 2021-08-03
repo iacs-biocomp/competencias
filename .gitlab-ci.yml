@@ -9,7 +9,7 @@ build:
   #   - docker:dind
   only:
     refs:
-      - develop
+      # - develop
       - master
   stage: build
   script:
