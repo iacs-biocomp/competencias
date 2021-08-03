@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
+import { ITrabAddDTO } from 'sharedInterfaces/DTO';
 
-export class TrabCCompCContrDTO implements ITrabCCompCContrDTO {
+export abstract class TrabBase {
 	@ApiProperty()
 	@Expose()
 	@IsNotEmpty({ message: 'Trab.Dni must be defined' })
@@ -36,24 +36,18 @@ export class TrabCCompCContrDTO implements ITrabCCompCContrDTO {
 
 	@ApiProperty()
 	@Expose()
-	@IsNotEmpty({ message: 'Trab.departamento must be defined' })
+	// @IsNotEmpty({ message: 'Trab.departamento must be defined' })
 	@IsString({ message: 'Trab.departamento should be a string' })
 	departamento: string;
 
 	@ApiProperty()
 	@Expose()
-	@IsNotEmpty({ message: 'Trab.catComp must be defined' })
-	@IsString({ message: 'Trab.catComp should be a string' })
-	catComp: string;
-
-	@ApiProperty()
-	@Expose()
-	@IsNotEmpty({ message: 'Trab.catContr must be defined' })
-	@IsString({ message: 'Trab.catContr should be a string' })
-	catContr: string;
-
-	@ApiProperty()
-	@Expose()
 	// @IsBoolean({ message: 'Trab.deleteable must be a boolean' })
 	deleteable: boolean;
+}
+
+export class TrabCCompCContrDTO extends TrabBase {}
+export class TrabAddDTO extends TrabBase implements ITrabAddDTO {
+	catComp: string;
+	catContr: string;
 }

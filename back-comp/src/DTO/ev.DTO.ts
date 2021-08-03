@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsInt, IsNotEmpty, IsString } from 'class-validator';
 import { IEvSendDTO, IUpdateEvShowingResultsDTO } from 'sharedInterfaces/DTO';
 import { EvModelDTO, CCompDTO } from './index';
@@ -14,10 +14,12 @@ abstract class EvAddBaseDTO implements IEvSendDTO {
 
 	@ApiProperty({ type: () => EvModelDTO })
 	@Expose()
+	@Type(() => EvModelDTO)
 	model: EvModelDTO;
 
 	@ApiProperty({ type: () => CCompDTO })
 	@Expose()
+	@Type(() => CCompDTO)
 	catComp: CCompDTO;
 
 	@ApiProperty()
@@ -66,6 +68,7 @@ export class EvAddDTO extends EvAddBaseDTO {}
 export class EvUpdateDTO extends EvAddBaseDTO implements IEvSendDTO {
 	@ApiProperty()
 	@Expose()
+	@IsNotEmpty({ message: 'EvUpdate.isShowingResults must be defined' })
 	@IsBoolean({ message: 'EvUpdateDTO.isShowingResults must be a boolean' })
 	isShowingResults: boolean;
 }
