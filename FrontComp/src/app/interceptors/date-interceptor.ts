@@ -1,11 +1,4 @@
-import {
-	HttpRequest,
-	HttpHandler,
-	HttpEvent,
-	HttpInterceptor,
-	HttpErrorResponse,
-	HttpResponse,
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -17,27 +10,19 @@ export class AngularDateHttpInterceptor implements HttpInterceptor {
 	public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		console.log('interceptando petición', req.url);
 		return next.handle(req).pipe(
-			// TODO: Tap deprecated, refactor para usar lo ultimo
-			tap(
-				(event: HttpEvent<any>) => {
+			tap({
+				next: (event: HttpEvent<any>) => {
 					if (event instanceof HttpResponse) {
 						const body = event.body;
 						this.convertToDate(body);
 					}
 				},
-				(err: any) => {
-					if (err instanceof HttpErrorResponse) {
-						if (err.status === 401) {
-							//none
-						}
-					}
-				},
-			),
+			}),
 		);
 	}
 
 	convertToDate(body: unknown) {
-		if (typeof body !== 'undefined' && typeof body === 'object' && body !== null) {
+		if (typeof body === 'object' && body !== null) {
 			const casted = body as { [key: string]: unknown };
 			for (const key of Object.keys(casted)) {
 				const value = casted[key];
