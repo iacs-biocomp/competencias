@@ -1,0 +1,18 @@
+{
+	"configurations": [
+		{
+			"name": "Launch Chrome and attach to front window",
+			"type": "pwa-chrome",
+			"request": "launch",
+			"url": "http://localhost:4200",
+			"webRoot": "${workspaceFolder}/FrontComp"
+		},
+		{
+			"name": "Backend Attach",
+			"port": 9229,
+			"request": "attach",
+			"skipFiles": ["<node_internals>/**"],
+			"type": "pwa-node"
+		}
+	]
+}

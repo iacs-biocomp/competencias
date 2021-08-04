@@ -1,0 +1,28 @@
+{
+	"recommendations": [
+		"angular.ng-template",
+		"johnpapa.angular2",
+		"aaron-bond.better-comments",
+		"mads-hartmann.bash-ide-vscode",
+		"coenraads.bracket-pair-colorizer-2",
+		"pranaygp.vscode-css-peek",
+		"mikestead.dotenv",
+		"editorconfig.editorconfig",
+		"mhutchie.git-graph",
+		"donjayamanne.githistory",
+		"eamodio.gitlens",
+		"zignd.html-css-class-completion",
+		"ms-vscode.vscode-typescript-next",
+		"ms-vscode.js-debug-nightly",
+		"ms-vsliveshare.vsliveshare",
+		"pkief.material-icon-theme",
+		"rubiin.nestjs",
+		"esbenp.prettier-vscode",
+		"jakearl.search-editor-apply-changes",
+		"sonarsource.sonarlint-vscode",
+		"rangav.vscode-thunder-client",
+		"tomoki1207.pdf",
+		"redhat.vscode-yaml",
+		"eliostruyf.vscode-typescript-exportallmodules"
+	]
+}
