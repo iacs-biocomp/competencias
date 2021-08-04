@@ -4,9 +4,10 @@ import { JwtService } from './services/auth/jwt.service';
 import { environment as cnf } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { LogService } from './shared/log/log.service';
+import { LogLevels } from 'sharedInterfaces/DTO';
 declare global {
 	interface Window {
-		logging: BehaviorSubject<boolean>;
+		logging: BehaviorSubject<LogLevels | null>;
 	}
 }
 
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
 	title = 'Competencias';
 
 	constructor(public jwtSv: JwtService, private readonly logger: LogService) {
-		window.logging = new BehaviorSubject<boolean>(false);
+		window.logging = new BehaviorSubject<LogLevels | null>(null);
 	}
 
 	ngOnInit(): void {
