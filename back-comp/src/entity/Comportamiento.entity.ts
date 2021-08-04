@@ -16,4 +16,11 @@ export class Comportamiento extends BaseEntity implements IComportamiento {
 	@ApiProperty({ type: () => SubModel })
 	@ManyToMany(() => SubModel, subm => subm.comportamientos)
 	subModels?: SubModel[];
+
+	static isComportWithSubModels(comport: Comportamiento): comport is ComportWithSubModels {
+		return !!comport.subModels;
+	}
+}
+export interface ComportWithSubModels extends Comportamiento {
+	subModels: NonNullable<Comportamiento['subModels']>;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Comportamiento } from 'src/entity';
+import { Comportamiento, ComportWithSubModels } from 'src/entity';
 import { ComportRepository } from '../comportamientos.repository';
 
 @Injectable()
@@ -12,8 +12,14 @@ export class ComportamientosService {
 		return this.comportRepo.find({ relations: ['subModels'] });
 	}
 
-	findOne(id: string): Promise<Comportamiento | undefined> {
-		// const idStr = typeof id === 'string' ? id : id.id;
-		return this.comportRepo.findOne({ id: id }, { relations: ['subModels'] });
+	async findOne(id: string): Promise<ComportWithSubModels | undefined> {
+		const comportDb = await this.comportRepo.findOne({ id: id }, { relations: ['subModels'] });
+		if (!comportDb) {
+			return undefined;
+		}
+		if (!Comportamiento.isComportWithSubModels(comportDb)) {
+			throw new Error('This should never happen, relations not loaded correctly');
+		}
+		return comportDb;
 	}
 }

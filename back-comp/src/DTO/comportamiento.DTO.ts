@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { IComportAddDTO, IComportGetDTO } from 'sharedInterfaces/DTO';
+import { IComportAddDTO, IComportGetDTO, IComportPutDTO } from 'sharedInterfaces/DTO';
 
 abstract class ComportBaseDTO implements IComportGetDTO {
 	@ApiProperty()
@@ -28,3 +28,5 @@ export class ComportGetDTO extends ComportBaseDTO implements IComportGetDTO {}
  * @author aml360 <aml360esp@gmail.com>
  */
 export class ComportAddDTO extends ComportBaseDTO implements IComportAddDTO {}
+
+export class ComportPutDTO extends ComportBaseDTO implements IComportPutDTO {}

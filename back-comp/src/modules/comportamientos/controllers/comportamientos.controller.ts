@@ -10,11 +10,14 @@ import {
 	Post,
 	Put,
 	UnauthorizedException,
-	UnprocessableEntityException,
+	UsePipes,
+	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ComportAddDTO } from 'src/DTO';
+import { Roles } from 'sharedInterfaces/Entity';
+import { ComportAddDTO, ComportPutDTO } from 'src/DTO';
 import { Comportamiento } from 'src/entity';
+import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { ComportRepository } from '../comportamientos.repository';
 import { ComportamientosService } from '../services/comportamientos.service';
 
@@ -43,12 +46,13 @@ export class ComportamientosController {
 	}
 
 	@Delete(':id')
+	@SetRoles(Roles.GESTOR, Roles.ADMIN)
 	async deleteComport(@Param('id') id: string): Promise<boolean> {
 		const comport = await this.comportSv.findOne(id);
 		if (!comport) {
 			throw new NotFoundException('No existe ningun comportamiento con ese id');
 		}
-		if (comport.subModels?.length !== 0) {
+		if (comport.subModels.length !== 0) {
 			// TODO: Change exception type, not sure if UnauthorizedException is correct type
 			throw new UnauthorizedException('Ese comportamiento esta asociado a un submodelo, no se puede borrar');
 		}
@@ -59,8 +63,9 @@ export class ComportamientosController {
 	}
 
 	@Post('')
+	@SetRoles(Roles.GESTOR, Roles.ADMIN)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async createComport(@Body() compt: ComportAddDTO): Promise<boolean> {
-		// TODO: Validation pipe and dto
 		const existingCompt = await this.comportRepo.findOne({ id: compt.id });
 		if (existingCompt) {
 			throw new ConflictException('Comportamiento ya creado');
@@ -70,16 +75,17 @@ export class ComportamientosController {
 	}
 
 	@Put('')
-	async updateComport(@Body() compt: Comportamiento): Promise<boolean> {
-		// TODO: Validation pipe and dto
-		const existingCompt = await this.comportRepo.findOne({ id: compt.id }, { relations: ['subModels'] });
-		if (!existingCompt) {
+	@SetRoles(Roles.GESTOR, Roles.ADMIN)
+	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
+	async updateComport(@Body() comport: ComportPutDTO): Promise<boolean> {
+		const comportDb = await this.comportSv.findOne(comport.id);
+		if (!comportDb) {
 			throw new NotFoundException('No existe un comportamiento con ese id');
 		}
-		if (compt.subModels?.length !== 0) {
+		if (comportDb.subModels.length !== 0) {
 			throw new UnauthorizedException('Ese comportamiento esta asociado a un submodelo, no se puede actualizar');
 		}
-		await this.comportRepo.save(compt);
+		await this.comportRepo.save(comport);
 		return true;
 	}
 }
