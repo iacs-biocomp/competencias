@@ -3,21 +3,20 @@ import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ISignInDto } from 'sharedInterfaces/DTO';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LogService } from 'src/app/shared/log/log.service';
+import { JwtService } from 'src/app/services/auth/jwt.service';
 
 enum ServerErrorsLogin {
 	NotConnected = 0,
 	Unauthorized = 401,
 }
-type ServerResponse = {
-	status: ServerErrorsLogin;
-};
 
 /** Formulario extendido para forzar los tipos de los value de los controles */
 type ExtFormGroup = FormGroup & {
 	controls: {
-		// TODO: [1]{N1} Comprobar si puede ser (| null) o solo string
-		username: Omit<AbstractControl, 'value'> & { value: string | null };
-		password: Omit<AbstractControl, 'value'> & { value: string | null };
+		username: Omit<AbstractControl, 'value'> & { value: string | '' };
+		password: Omit<AbstractControl, 'value'> & { value: string | '' };
 	};
 };
 @Component({
@@ -31,10 +30,12 @@ export class LoginComponent implements OnInit {
 	loginForm!: ExtFormGroup;
 
 	constructor(
-		private authService: AuthService,
-		private router: Router,
-		private route: ActivatedRoute,
-		private fb: FormBuilder,
+		private readonly authService: AuthService,
+		private readonly router: Router,
+		private readonly route: ActivatedRoute,
+		private readonly fb: FormBuilder,
+		private readonly logger: LogService,
+		private readonly jwtSv: JwtService,
 	) {}
 
 	ngOnInit(): void {
@@ -61,27 +62,37 @@ export class LoginComponent implements OnInit {
 	async sendForm() {
 		const username = this.loginForm.controls.username.value;
 		const password = this.loginForm.controls.password.value;
-		if (username && password) {
+		if (username !== '' && password !== '') {
 			const body: ISignInDto = {
 				username,
 				password,
 			};
 			try {
-				await this.authService.sendLoginInfo(body);
+				const tkn = await this.authService.sendLoginInfo(body);
+				this.jwtSv.updateJwt(tkn.token);
 				this.router.navigate([this.returnUrl]);
 			} catch (error: unknown) {
-				let err = error as ServerResponse;
-				if (err.status === ServerErrorsLogin.NotConnected) {
-					console.log('No se ha podido conectar con el servidor');
-				} else {
-					console.log('Contraseña y/o Usuario incorrectos');
+				if (error instanceof HttpErrorResponse) {
+					let msg: string = '';
+					switch (error.status as typeof error.status & ServerErrorsLogin) {
+						case ServerErrorsLogin.Unauthorized:
+							msg = 'Contraseña y/o Usuario incorrectos';
+							break;
+						case ServerErrorsLogin.NotConnected:
+							msg = 'No se ha podido conectar con el servidor';
+							break;
+						default:
+							msg = 'Ha habido un error inesperado';
+							break;
+					}
+					// TODO: Refactor, no es un error realmente user/password incorrecta
+					this.logger.error(msg);
+					alert(msg);
 				}
-				// TODO: [2]{N3} Usar en los errores https://is.gd/zecX4U
-				console.log(error);
 				this.loginForm.reset();
-				// (Timed out/ Connection refused/ JWT expired/ Invalid password)
-				alert('Contraseña y/o Usuario incorrectos');
 			}
+		} else {
+			alert('Introduce un username y password');
 		}
 	}
 }

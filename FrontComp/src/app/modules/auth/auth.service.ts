@@ -14,16 +14,8 @@ export class AuthService {
 	 * @param body Is the json object with username and password, email optional
 	 * @return Return `true` if successful authentication, otherwise return `false`.
 	 */
-	async sendLoginInfo(body: ISignInDto): Promise<boolean> {
-		const response: IAuthTokenRes = await this.httpClient
-			.post<IAuthTokenRes>(cnf.apiURL + '/signin', body)
-			.toPromise();
-		if (!response) {
-			return false;
-		}
-		this.setToken(response.token);
-		document.cookie = cnf.jwtName + '=' + encodeURIComponent(response.token);
-		return true;
+	async sendLoginInfo(body: ISignInDto): Promise<IAuthTokenRes> {
+		return this.httpClient.post<IAuthTokenRes>(cnf.apiURL + '/signin', body).toPromise();
 	}
 
 	/**
