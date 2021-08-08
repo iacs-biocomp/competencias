@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IResultadoDTO } from 'sharedInterfaces/DTO';
 import { ICompetencia } from 'sharedInterfaces/Entity';
+import { EV_RESULTS_SAMPLE } from './data';
 
 /** Ancho alto */
 type ChartView = [number, number];
@@ -32,62 +33,12 @@ export class MisResultadosComponent {
 
 	//TODO: Tsdoc
 	getResultsOfCompetence(id: ICompetencia['id']): IResultadoDTO {
-		const result = this.allResults.find(r => r.competencia === id);
+		const result = EV_RESULTS_SAMPLE.find(r => r.competencia === id);
 		if (!result) {
 			throw new Error('error message, function called with invalid id');
 		}
 		return result;
 	}
-
-	allResults: IResultadoDTO[] = [
-		{
-			inferiores: 10,
-			maxResult: 30,
-			minResult: 0,
-			pares: 20,
-			superiores: 30,
-			competencia: 'C1',
-		},
-		{
-			inferiores: 10,
-			maxResult: 30,
-			minResult: 0,
-			pares: 20,
-			superiores: 30,
-			competencia: 'C2',
-		},
-		{
-			inferiores: 10,
-			maxResult: 30,
-			minResult: 0,
-			pares: 20,
-			superiores: 30,
-			competencia: 'C3',
-		},
-	];
-
-	e = [
-		{
-			name: 'Inferiores',
-			value: 10,
-		},
-		{
-			name: 'Pares',
-			value: 20,
-		},
-		{
-			name: 'Superiores',
-			value: 30,
-		},
-	];
-	// {
-	// 	inferiores: 10,
-	// 	maxResult: 30,
-	// 	minResult: 0,
-	// 	pares: 20,
-	// 	superiores: 30,
-	// 	competencia: 'C1',
-	// },
 
 	competences: Pick<ICompetencia, 'id' | 'descripcion'>[] = [
 		{ id: 'C1', descripcion: 'Flexibilidad' },
