@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
 					alert(msg);
 				}
 				this.loginForm.reset();
+				// TODO: Tal vez crear un servicio o algo que active un componente (Modal) que este en el layout y ahi mostrar mensajes tipo alert
 			}
 		} else {
 			alert('Introduce un username y password');

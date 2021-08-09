@@ -58,13 +58,10 @@ export class ValoracionesController {
 	 * @param dni El dni del trabajador del cual se quieren obtener las valoraciones
 	 * @param evId El identificador de la evaluación
 	 * @returns Las valoraciones de ese trabajador en esa evaluación
+	 * @deprecated Un usuario no debería acceder a todas sus valoraciones de cierta evaluacion, solo resultados
 	 */
 	@Get(':dni/:evId')
 	async getUsrEvVals(@Param('dni') dni: string, @Param('evId', ParseIntPipe) evId: number): Promise<Valoracion[]> {
-		//const token =  this.jwtSv.decode(cookies.token);
-		// const trab = this.trabSv.findOne(tkn.user);
-		// if (dni === trab.dni) {
-		// }
 		return this.valRepo.find({
 			where: { evaluado: { dni: dni }, ev: { id: evId, isShowingResults: true } },
 			relations: ['evaluado', 'evaluador', 'ev', 'comport', 'comp'],
@@ -150,6 +147,64 @@ export class ValoracionesController {
 		return true;
 	}
 
+	@ApiParam({ name: 'evId', type: 'integer', description: 'Evaluation id' })
+	@ApiParam({ name: 'dni', type: 'string', description: "Evaluated worker's DNI" })
+	@Get('resultados/:evId/:dni')
+	async getEvUserResults(
+		@Param('evId', ParseIntPipe) evId: number,
+		@Param('evId') dni: string,
+	): Promise<IResultadoDTOV2[]> {
+		const [valoraciones, ev] = await Promise.all([
+			this.valRepo.find({ where: { evaluado: dni, ev: evId }, relations: ['comp'] }),
+			this.evRepo.findOne(evId),
+		]);
+		if (!ev) {
+			throw new Error();
+		}
+		let compsOfVals: ICompetencia[] = [];
+		valoraciones.forEach(val => {
+			const compOfVal = val.comp;
+			const compInAcc = compsOfVals.find(comp => comp.id === compOfVal.id);
+			if (!compInAcc) {
+				compsOfVals.push(compOfVal);
+			}
+		});
+		/** Periods in the evaluated range */
+		const periodosInRange = await this.organiSv.getUsrOrganisByRange(dni, {
+			start: ev.iniPerEvaluado,
+			end: ev.endPerEvaluado,
+		});
+		const latestPeriod = periodosInRange.reduce((acc, el) => {
+			return isAfter(acc.interval.end, el.interval.end) ? acc : el;
+		});
+		// const [inferiores, pares, superiores] = [latestPeriod.inferiores, latestPeriod.pares, latestPeriod.superiores];
+		const [infVals, parVals, supVals] = await Promise.all([
+			valoraciones.filter(
+				val => !!latestPeriod.inferiores.find(trab => trab.dni === (val.evaluador as unknown as string)),
+			),
+			valoraciones.filter(val => !!latestPeriod.pares.find(trab => trab.dni === (val.evaluador as unknown as string))),
+			valoraciones.filter(
+				val => !!latestPeriod.superiores.find(trab => trab.dni === (val.evaluador as unknown as string)),
+			),
+		]);
+		const filterValByComp = (vals: Valoracion[], comp: { id: string }) => {
+			return vals.filter(val => val.comp.id === comp.id);
+		};
+
+		return compsOfVals.map<IResultadoDTOV2>(comp => {
+			return {
+				maxResult: 50,
+				minResult: 20,
+				competencia: comp.id,
+				values: [
+					{ name: 'Inferiores', value: computeResults(filterValByComp(infVals, comp)) },
+					{ name: 'Pares', value: computeResults(filterValByComp(parVals, comp)) },
+					{ name: 'Superiores', value: computeResults(filterValByComp(supVals, comp)) },
+				],
+			};
+		});
+	}
+
 	/**
 	 * Actualiza una valoración en la DB
 	 * @param val La valoración con el identificador
@@ -169,4 +224,27 @@ export class ValoracionesController {
 		await this.valRepo.update({ id: valDb.id }, { valoracion: val.valoracion });
 		return true;
 	}
+}
+
+export function computeResults(vals: Valoracion[]): number {
+	const nivelesOfVals: Nivel[] = [];
+	const findNivelFn = (code: string) => nivelesOfVals.find(niv => niv.code === code);
+	const findAllValsOfLvl = (valorations: IValoracion[], level: INivel) => {
+		return valorations.filter(v => v.nivel.code === level.code);
+	};
+	vals.forEach(val => {
+		if (!findNivelFn(val.nivel.code)) {
+			nivelesOfVals.push(val.nivel);
+		}
+	});
+	return nivelesOfVals.reduce((accAllVals, lvl) => {
+		const valsOfLvl = findAllValsOfLvl(vals, lvl);
+		const valsSum = valsOfLvl.reduce<number>((acc, el) => {
+			acc += el.valoracion;
+			return acc;
+		}, 0);
+		const avgValOfLvl = valsSum / valsOfLvl.length;
+		accAllVals += avgValOfLvl;
+		return accAllVals;
+	}, 0);
 }
