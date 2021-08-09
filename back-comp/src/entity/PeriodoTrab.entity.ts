@@ -59,4 +59,30 @@ export class PeriodoTrab extends BaseEntity implements IPeriodoTrab {
 	@ApiProperty()
 	@Column({ type: 'bool', default: false, nullable: false })
 	actual: boolean;
+
+	static isPeriodWithPares(periodo: PeriodoTrab): periodo is PeriodWithPares {
+		return !!periodo.pares;
+	}
+	static isPeriodWithSuperiores(periodo: PeriodoTrab): periodo is PeriodWithSuperiores {
+		return !!periodo.superiores;
+	}
+	static isPeriodWithInferiores(periodo: PeriodoTrab): periodo is PeriodWithInferiores {
+		return !!periodo.inferiores;
+	}
+	static isPeriodWithTrabajador(periodo: PeriodoTrab): periodo is PeriodWithTrabajador {
+		return !!periodo.trabajador;
+	}
+}
+
+export interface PeriodWithPares extends PeriodoTrab {
+	pares: NonNullable<PeriodoTrab['pares']>;
+}
+export interface PeriodWithSuperiores extends PeriodoTrab {
+	superiores: NonNullable<PeriodoTrab['superiores']>;
+}
+export interface PeriodWithInferiores extends PeriodoTrab {
+	inferiores: NonNullable<PeriodoTrab['inferiores']>;
+}
+export interface PeriodWithTrabajador extends PeriodoTrab {
+	trabajador: NonNullable<PeriodoTrab['trabajador']>;
 }

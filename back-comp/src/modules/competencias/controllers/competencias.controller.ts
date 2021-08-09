@@ -13,7 +13,7 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { addDays, isBefore } from 'date-fns';
+import { isBefore, subDays } from 'date-fns';
 import { Competencia } from 'src/entity';
 import { CompAddDTO, CompGetDTO } from 'src/DTO/competencias.DTO';
 import { ComptRepository } from '../competencias.repository';
@@ -43,7 +43,7 @@ export class CompetenciasController {
 			throw new NotFoundException('No existe ninguna competencia con ese id');
 		}
 		const today = new Date();
-		const oneWeekAgo = addDays(today, -7);
+		const oneWeekAgo = subDays(today, 7);
 		if (isBefore(today, oneWeekAgo)) {
 			throw new UnauthorizedException('No puedes borrar esa competencia');
 		}
