@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { findCompById } from 'sharedCode/Utility';
 import { ICompGetDTO, IResultadoDTOV2 } from 'sharedInterfaces/DTO';
 import { CompetenciasService } from '../../admin/competencias-admin/services/competencias.service';
@@ -17,13 +18,22 @@ export type Resultado = {
 	value: number;
 };
 
+export enum RouteParamsNames {
+	EV_ID = 'evId',
+	DNI = 'dni',
+}
+
 @Component({
 	selector: 'app-mis-resultados',
 	templateUrl: './mis-resultados.component.html',
 	styleUrls: ['./mis-resultados.component.scss'],
 })
 export class MisResultadosComponent {
-	constructor(private readonly compSv: CompetenciasService, private readonly resultsSv: ResultsService) {}
+	constructor(
+		private readonly compSv: CompetenciasService,
+		private readonly resultsSv: ResultsService,
+		private readonly route: ActivatedRoute,
+	) {}
 	/** Used for not display data that has not been fetched from the server*/
 	isDataLoaded = false;
 	/** Where data fetched and **not changed**, from the server is stored */
@@ -44,16 +54,19 @@ export class MisResultadosComponent {
 	xAxisLabel = 'Evaluadores';
 	showYAxisLabel = true;
 	yAxisLabel = 'Puntuación';
-	single: any[] = [{ inferiores: 10 }];
 	colorScheme = {
 		domain: ['#C7B42C ', '#A10A28', '#5AA454', '#AAAAAA'],
 	};
 	domainNames: string[] = [];
 
 	async ngOnInit(): Promise<void> {
+		const [evId, dni] = [
+			Number.parseInt(this.route.snapshot.paramMap.get(RouteParamsNames.EV_ID)!),
+			this.route.snapshot.paramMap.get(RouteParamsNames.DNI)!,
+		];
 		[this.#dbData.comps, this.#dbData.results] = await Promise.all([
 			this.compSv.getAll(),
-			this.resultsSv.getFromEvAndWorker(51, '32112D'),
+			this.resultsSv.getFromEvAndWorker(evId, dni),
 		]);
 		this.cv.results = this.mapResultsDtoToIterable(this.#dbData.results);
 		console.log(this.cv.results);
