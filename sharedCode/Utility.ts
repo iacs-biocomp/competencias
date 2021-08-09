@@ -84,7 +84,7 @@ export function findCompById<T extends MinCompetencia>(competencias: T[], compId
 /**
  * Calcula la maxima puntuación que un trabajador puede tener si todos los apartados que son positivos son evaluados al maximo y los negativos al minimo
  */
-export function computeEvScoringLimits(data: EvScoringParamData) {
+export function computeEvScoringLimits(data: EvScoringParamData): { max: number; min: number } {
 	const multiplicadores = data.niveles.map(nivel => nivel.valor);
 	const multOrderded = [...multiplicadores].sort((a, b) => a - b);
 	return ((mults: number[]) => {

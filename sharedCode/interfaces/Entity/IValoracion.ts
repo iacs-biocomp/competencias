@@ -1,4 +1,4 @@
-import { ITrabajador, IEvaluacion, ICompetencia, IComportamiento } from '.';
+import { ITrabajador, IEvaluacion, ICompetencia, IComportamiento, INivel } from '.';
 
 //Se podría hacer una clase que tuviese el numero y comprobase
 export type ValoracionesNums = 1 | 2 | 3 | 4 | 5;
@@ -12,6 +12,8 @@ export interface IValoracion {
 	evaluado: ITrabajador;
 	/** La evaluación a la que corresponde esta valoración */
 	ev: IEvaluacion;
+	/** El nivel del comportamiento que se evalua */
+	nivel: INivel;
 	/** La competencia que junto con el comportamiento hacen la valoracion */
 	comp: ICompetencia;
 	/** El comportamiento valorado */
