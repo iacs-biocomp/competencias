@@ -1,10 +1,13 @@
+import { Injectable } from '@nestjs/common';
 import { parse } from 'dotenv';
 import { existsSync, readFileSync } from 'fs';
+import { Configuration } from './config.keys';
 
 /**
  * @description Service for getting the env variables
  * @function `get` Return the env variable value as a `String`
  */
+@Injectable()
 export class ConfigService {
 	private readonly envConfig: { [key: string]: string };
 
@@ -27,7 +30,7 @@ export class ConfigService {
 	 * @param key The env var name
 	 * @returns The env variable as string
 	 */
-	get(key: string): string {
+	get(key: Configuration): string {
 		return this.envConfig[key];
 	}
 }

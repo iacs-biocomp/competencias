@@ -30,6 +30,6 @@ import { AuthService } from './services/auth.service';
 	],
 	controllers: [AuthController],
 	providers: [AuthService, ConfigService],
-	exports: [PassportModule],
+	exports: [PassportModule, JwtModule],
 })
 export class AuthModule {}
