@@ -67,7 +67,7 @@ export type PickPropsInU<T, U> = {
  * Type that validates in compilation time that type T does not contain more properties than type Shape
  * @see {@link TODO: Link de donde lo saque}
  */
-type ValidateShape<T, Shape> = T extends Shape
+export type ValidateShape<T, Shape> = T extends Shape
 	? Exclude<keyof T, keyof Shape> extends never
 		? T
 		: never

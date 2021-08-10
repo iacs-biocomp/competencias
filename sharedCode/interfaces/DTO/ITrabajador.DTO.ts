@@ -19,7 +19,6 @@ export type ITrabCCompCContrDTO = Expand<
 		catComp: ICCompDTO;
 		//TODO: Tsdoc
 		catContr: ICContrGetDTO;
-		deleteable: boolean;
 	}
 >;
 

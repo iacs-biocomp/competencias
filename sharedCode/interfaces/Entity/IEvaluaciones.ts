@@ -16,17 +16,19 @@ export interface IEvaluacion {
 	/** CatComp associated to evaluation */
 	catComp?: ICatComp;
 	/** Starting evaluation date */
-	iniDate?: Date;
-	finPropuestas?: Date;
+	iniDate: Date;
+	finPropuestas: Date;
 
-	iniValidacion?: Date;
-	endValidacion?: Date;
+	iniValidacion: Date;
+	endValidacion: Date;
 
-	iniValoracion?: Date;
-	endValoracion?: Date;
+	iniValoracion: Date;
+	endValoracion: Date;
 
-	iniPerEvaluado?: Date;
-	endPerEvaluado?: Date;
+	iniPerEvaluado: Date;
+	endPerEvaluado: Date;
+	//TODO: Tsdoc
+	organiDate: Date;
 	/** If the property is `true`, users will be able to access the results of their evaluation */
 	isShowingResults?: boolean;
 }
