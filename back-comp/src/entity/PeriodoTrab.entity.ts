@@ -28,7 +28,7 @@ export class PeriodoTrab extends BaseEntity implements IPeriodoTrab {
 	// ! Confirmar con vega si un periodo puede tener catContr null
 
 	@ApiProperty({ type: () => CatComp })
-	@ManyToOne(() => CatComp, cComp => cComp.periodosTrab, { nullable: false })
+	@ManyToOne(() => CatComp, cComp => cComp.periodosTrab, { nullable: true })
 	catComp: CatComp;
 	// ! Confirmar con vega si un periodo puede tener catComp null
 
