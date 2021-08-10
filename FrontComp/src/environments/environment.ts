@@ -11,6 +11,7 @@ export const environment: Environment = {
 	apiURL: 'http://localhost:3000/nest',
 	jwtInterval: 15000,
 	jwtName: 'login-token',
+	msgLoggerNumber: 300,
 };
 
 /*

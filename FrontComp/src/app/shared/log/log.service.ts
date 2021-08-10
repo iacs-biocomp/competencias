@@ -11,9 +11,6 @@ export class LogService {
 	static latestMessages: LogMessage[] = [];
 	static levelToLog: LogLevels | null;
 	constructor(private readonly httpClient: HttpClient) {
-		LogService.latestMessages = [
-			{ msg: 'hola', date: new Date(), level: LogLevels.ERROR, obj: {}, error: new Error('') },
-		];
 		// Inicialización del servicio (singleton actualmente)
 		setTimeout(() => {
 			LogService.loggingSub = !LogService.loggingSub
@@ -23,8 +20,10 @@ export class LogService {
 				  })
 				: LogService.loggingSub;
 		}, 10);
+		setInterval(() => Promise.resolve(this.sortMessagesByDate), 2500);
 		this.timeOutPruebaMsg();
 	}
+
 	error(msg: string, ...args: unknown[]): void {
 		this.methodExtraction(msg, LogLevels.ERROR, args);
 	}
@@ -46,6 +45,7 @@ export class LogService {
 	}
 
 	private methodExtraction(msg: string, level: LogLevels, ...args: unknown[]): void {
+		this.purgeMessages();
 		// TODO: reducir complejidad
 		if (
 			typeof args[0] === 'object' &&
@@ -67,6 +67,11 @@ export class LogService {
 		}
 	}
 
+	/**
+	 * Transform log message of type {@link LogMessage} to a console message, readable by developers
+	 *
+	 * @param msg Message to log to the console
+	 */
 	private msgToConsole(msg: IFrontLoggingPayload): void {
 		if (this.shouldLog(msg.level)) {
 			const msgKeys = Object.keys(msg) as (keyof LogMessage)[];
@@ -96,11 +101,29 @@ export class LogService {
 		}
 	}
 
+	/**
+	 * @param level Should be level that a msg has
+	 * @returns `true` if msg should be logged to console `false` otherwise
+	 */
 	private shouldLog(level: LogLevels): boolean {
 		const condition = LogService.levelToLog !== null && LogService.levelToLog >= level;
 		return condition ? true : false;
 	}
-	// TODO: función para controlar el buffer de mensajes
+
+	/**
+	 * @version 0.0.1
+	 */
+	purgeMessages() {
+		const msgs = LogService.latestMessages;
+		const msgsToDelete = msgs.length - cnf.msgLoggerNumber;
+		if (msgsToDelete > 0) {
+			msgs.splice(msgsToDelete);
+		}
+	}
+
+	sortMessagesByDate(): void {
+		LogService.latestMessages.sort((a, b) => a.date.getTime() - b.date.getTime());
+	}
 
 	private async sendMsgsToBackend(): Promise<boolean> {
 		try {
@@ -111,6 +134,9 @@ export class LogService {
 		}
 	}
 
+	/**
+	 * @deprecated Remover una vez esten bien puestos los logs ya que sirve solo de prueba
+	 */
 	private timeOutPruebaMsg(): void {
 		setTimeout(() => {
 			this.error('Mensaje de error', new Error(''));

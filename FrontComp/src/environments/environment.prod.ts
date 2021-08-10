@@ -10,4 +10,5 @@ export const environment: Environment = {
 	isApiUrlDynamic: true,
 	apiURLtoAdd: '/nest',
 	jwtName: 'login-token',
+	msgLoggerNumber: 500
 };

@@ -8,7 +8,6 @@ export class AngularDateHttpInterceptor implements HttpInterceptor {
 	iso8601 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/;
 
 	public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		console.log('interceptando petición', req.url);
 		return next.handle(req).pipe(
 			tap({
 				next: (event: HttpEvent<any>) => {

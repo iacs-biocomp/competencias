@@ -12,4 +12,6 @@ export type Environment = {
 	jwtInterval: number;
 	/** Nombre que se le da a la cookie/objeto guardado en las cookies/localStorage (Usado para buscar luego por clave-valor)*/
 	jwtName: string;
+	/** Numero de mensajes que el logger guardará en su array interno */
+	msgLoggerNumber: number;
 };
