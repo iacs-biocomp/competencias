@@ -1,24 +1,21 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListEvComponent } from './list-ev/list-ev.component';
-import { RouterModule } from '@angular/router';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EvaluacionesAdmService } from './services/evaluaciones-adm.service';
-import { NewEvModalComponent } from './new-ev-modal/new-ev-modal.component';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
-// import { NewEvModelComponent } from './modelos/new-ev-model.component';
-import { ViewAllModelsComponent } from './modelos/view-all-models/view-all-models.component';
-import { ViewEditModelComponent } from './modelos/view-edit-model/view-edit-model.component';
-import { SelectComportsModalComponent } from './modelos/select-comports-modal/select-comports-modal.component';
-import { NivComportFilterPipe } from './modelos/pipes/niv-comport-filter.pipe';
-import { ModelCompSelectComponent } from './new-ev-modal/model-comp-select/model-comp-select.component';
-import { CompSelectComponent } from './comp-select/comp-select.component';
-import { ObjectiveNivsSelectComponent } from './new-ev-modal/obj-niveles-select/obj-niveles-select.component';
-import { CompRoutes } from 'src/app/types/angular-modified-types';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { RouterModule } from '@angular/router';
+import { EvaluacionesAdmService } from 'services/data';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { CompRoutes } from 'src/app/types/angular-modified-types';
+import { ListEvComponent, NewEvModalComponent, CompSelectComponent } from './components';
+import { NivComportFilterPipe } from './components/modelos/pipes/niv-comport-filter.pipe';
+import { SelectComportsModalComponent } from './components/modelos/select-comports-modal/select-comports-modal.component';
+import { ViewAllModelsComponent } from './components/modelos/view-all-models/view-all-models.component';
+import { ViewEditModelComponent } from './components/modelos/view-edit-model/view-edit-model.component';
+import { ModelCompSelectComponent } from './components/new-ev-modal/model-comp-select/model-comp-select.component';
+import { ObjectiveNivsSelectComponent } from './components/new-ev-modal/obj-niveles-select/obj-niveles-select.component';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: CompRoutes = [

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ISignInDto } from 'sharedInterfaces/DTO';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { JwtService } from 'services/auth';
+import { ISignInDto } from 'sharedInterfaces/DTO';
 import { LogService } from 'src/app/shared/log/log.service';
-import { JwtService } from 'src/app/services/auth/jwt.service';
+import { AuthService } from '../auth.service';
 
 enum ServerErrorsLogin {
 	NotConnected = 0,

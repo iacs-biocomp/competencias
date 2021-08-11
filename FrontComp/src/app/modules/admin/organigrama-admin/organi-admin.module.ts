@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { OrganiGeneralView } from './general-organi-view/organigrama-admin.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
+import { OrganiGeneralView } from './components';
 
 /** Rutas relacionadas con el modulo del organigrama */
 export const organiRoutes: CompRoutes = [

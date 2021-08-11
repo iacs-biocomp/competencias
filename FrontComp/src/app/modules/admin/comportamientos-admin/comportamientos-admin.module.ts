@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableComportComponent } from './table-comport/table-comport.component';
+import { TableComportComponent } from './components/table-comport/table-comport.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ComportService } from './services/comport.service';
+import { ComportService } from '../../../services/data/comport.service';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
 /** Rutas relacionadas con el modulo de comportamientos */

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CompetenciasService } from './services/competencias.service';
-import { TableCompetenciasComponent } from './table-competencias/table-competencias.component';
+import { CompetenciasService } from '../../../services/data/competencias.service';
+import { TableCompetenciasComponent } from './components/table-competencias/table-competencias.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule } from '@angular/forms';

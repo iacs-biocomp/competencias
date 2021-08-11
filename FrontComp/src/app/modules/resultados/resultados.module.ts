@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MisResultadosComponent, RouteParamsNames } from './mis-resultados/mis-resultados.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ResultsService } from 'services/data';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ResultsService } from './services/resultados.service';
+import { RouteParamsNames, MisResultadosComponent } from './mis-resultados/mis-resultados.component';
 
 const routes: CompRoutes = [
 	{ path: `:${RouteParamsNames.EV_ID}/:${RouteParamsNames.DNI}`, component: MisResultadosComponent },

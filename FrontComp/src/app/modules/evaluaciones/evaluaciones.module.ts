@@ -1,19 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MisEvaluacionesComponent } from './mis-evaluaciones/mis-evaluaciones.component';
-import { RouterModule } from '@angular/router';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { EvaluacionesService } from './evaluaciones.service';
 import { HttpClient } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { JwtService } from 'src/app/services/auth/jwt.service';
-import { ValoracionesService } from './valoraciones.service';
-import { evId, ListPeopleToEvalComponent } from './list-people-to-eval/list-people-to-eval.component';
-// import { ValoracionesEvPersonaComponent } from './valoracion-persona/valoraciones-ev-persona/valoraciones-ev-persona.component';
-// import {
-// 	dniId,
-// 	ValoracionesEvPersonaLayoutComponent,
-// } from './valoracion-persona/list-valoraciones-layout/list-valoraciones-layout.component';
+import { EvaluacionesService, ValoracionesService } from 'src/app/services/data';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
+import { MisEvaluacionesComponent, ListPeopleToEvalComponent } from './components';
+// TODO: Refactor
+import { evId } from './components/list-people-to-eval/list-people-to-eval.component';
 
 const routes: CompRoutes = [
 	{ path: '', component: MisEvaluacionesComponent },

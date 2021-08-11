@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import * as Aos from 'aos';
-import { JwtService } from './services/auth/jwt.service';
-import { environment as cnf } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { LogService } from './shared/log/log.service';
+import { JwtService } from 'services/auth';
 import { LogLevels } from 'sharedInterfaces/DTO';
+import { LogService } from './shared/log/log.service';
+import { environment as cnf } from 'src/environments/environment';
 declare global {
 	interface Window {
 		logging: BehaviorSubject<LogLevels | null>;

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { CompetenciasService, ResultsService } from 'services/data';
 import { findCompById } from 'sharedCode/Utility';
 import { ICompGetDTO, IResultadoDTOV2 } from 'sharedInterfaces/DTO';
-import { CompetenciasService } from '../../admin/competencias-admin/services/competencias.service';
-import { ResultsService } from '../services/resultados.service';
 
 // Cambiar nombre si se ocurre uno mejor
 type ResultAndComp = {

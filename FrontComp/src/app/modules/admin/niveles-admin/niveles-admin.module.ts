@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NivelService } from './services/nivel.service';
-import { NivTableComponent } from './niv-table/niv-table.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NivelService } from 'services/data';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
+import { NivTableComponent } from './components';
 
 /** Rutas relacionadas con el subModulo de comportamientos */
 export const nivRoutes: CompRoutes = [

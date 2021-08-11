@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { TrabTableComponent } from './trab-table/trab-table.component';
-import { TrabajadoresService } from './services/trabajadores.service';
+import { TrabTableComponent } from './components/trab-table/trab-table.component';
+import { TrabajadoresService } from '../../../services/data/trabajadores.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
 
