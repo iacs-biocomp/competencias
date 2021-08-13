@@ -4,6 +4,7 @@ import { IEvAllRequiredDTO, IEvWithModelGetDTO, ITrabajadorDTO } from 'sharedInt
 import { IEvaluacion, IUser } from 'sharedInterfaces/Entity';
 import { WORKERS_EVALUATED } from 'src/app/modules/evaluaciones/components/list-people-to-eval/data';
 import { environment as cnf } from 'src/environments/environment';
+import { LogService } from 'src/app/shared/log/log.service';
 
 /**
  * Destinado a la obtención de datos relacionados con las evaluaciones de los usuarios, para la administración de las evs usar
@@ -13,16 +14,16 @@ import { environment as cnf } from 'src/environments/environment';
 	providedIn: 'root',
 })
 export class EvaluacionesService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	/**
 	 * TODO: Probablemente así, completar en el backend ya que manda Ev[]
 	 */
 	public evaluacionesUsr(usr: IUser['username'] | Pick<IUser, 'username'>): Promise<IEvAllRequiredDTO[]> {
 		const username = typeof usr === 'string' ? usr : usr.username;
-		return this.httpClient
-			.get<IEvAllRequiredDTO[]>(`${cnf.apiURL}/evaluaciones/user/${username}`)
-			.toPromise();
+		const url = `${cnf.apiURL}/evaluaciones/user/${username}`;
+		this.logger.debug(`Obteniendo evaluaciones del usuario con username: ${username}, mandando req a ${url}`);
+		return this.httpClient.get<IEvAllRequiredDTO[]>(url).toPromise();
 	}
 
 	/**
@@ -31,7 +32,11 @@ export class EvaluacionesService {
 	 *
 	 */
 	public getEvWithModel(evId: IEvaluacion['id']): Promise<IEvWithModelGetDTO> {
-		return this.httpClient.get<IEvWithModelGetDTO>(`${cnf.apiURL}/evaluaciones/${evId}`).toPromise();
+		const url = `${cnf.apiURL}/evaluaciones/${evId}`;
+		this.logger.debug(
+			`Obteniendo la evaluacion con ID: ${evId} con todos los datos del modelo, mandando req a: ${url}`,
+		);
+		return this.httpClient.get<IEvWithModelGetDTO>(url).toPromise();
 	}
 
 	// TODO: TSdoc
@@ -41,6 +46,8 @@ export class EvaluacionesService {
 		// 		res(WORKERS_EVALUATED);
 		// 	}, 350),
 		// );
-		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/evaluaciones/organi/${usernameOrObj}/${evId}`).toPromise();
+		return this.httpClient
+			.get<ITrabajadorDTO[]>(`${cnf.apiURL}/evaluaciones/organi/${usernameOrObj}/${evId}`)
+			.toPromise();
 	}
 }

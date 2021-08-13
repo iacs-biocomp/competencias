@@ -3,22 +3,26 @@ import { Injectable } from '@angular/core';
 import { IOrganigramaTrabajadorDTO } from 'sharedInterfaces/DTO/organigrama.DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { environment as cnf } from 'src/environments/environment';
+import { LogService } from 'src/app/shared/log/log.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UsrOrganigramaService {
-	constructor(private httpClient: HttpClient, private jwtSv: JwtService) {}
+	constructor(
+		private httpClient: HttpClient,
+		private jwtSv: JwtService,
+		private readonly logger: LogService,
+	) {}
 
 	/**
 	 * Fetch the user organization chart from the API
 	 * @returns The user organization chart type {@link IOrganigramaTrabajadorDTO}
 	 */
 	organigramaUsr(): Promise<IOrganigramaTrabajadorDTO> {
-		// LOG: organigramaUsrLlamado
 		const token = this.jwtSv.getDecodedToken();
-		return this.httpClient
-			.get<IOrganigramaTrabajadorDTO>(`${cnf.apiURL}/organigrama/${token.username}`)
-			.toPromise();
+		const url = `${cnf.apiURL}/organigrama/${token.username}`;
+		this.logger.debug(`Get req a ${url}, obteniendo mi organigrama`);
+		return this.httpClient.get<IOrganigramaTrabajadorDTO>(url).toPromise();
 	}
 }

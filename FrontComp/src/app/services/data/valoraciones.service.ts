@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { IEvaluacion, ITrabajador } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { IValoracionAddDTO, IValoracionSettedDTO, IValoracionUpdateDTO } from 'sharedInterfaces/DTO';
+import { LogService } from 'src/app/shared/log/log.service';
 
 @Injectable({ providedIn: 'root' })
 export class ValoracionesService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	/**
 	 * @param worker the worker to search
@@ -18,7 +19,10 @@ export class ValoracionesService {
 		evId: IEvaluacion['id'],
 	): Promise<IValoracionSettedDTO[]> {
 		const dni = typeof worker === 'string' ? worker : worker.dni;
-		//LOG: httpGet obteniendo evaluaciones del usuario ${dni} con evId ${evId} apiUrlReq=${apiUrlReq}
+		const url = `${cnf.apiURL}/valoraciones/${dni}/${evId}`;
+		this.logger.debug(
+			`Obteniendo evaluación con ID: ${evId}, que pertenece al trabajador con DNI: ${dni}, mandando req a ${url}`,
+		);
 		return this.httpClient
 			.get<IValoracionSettedDTO[]>(`${cnf.apiURL}/valoraciones/${dni}/${evId}`)
 			.toPromise();
@@ -33,8 +37,9 @@ export class ValoracionesService {
 	 * @throws exception if the valoracion has not been found
 	 */
 	async add(val: IValoracionAddDTO): Promise<boolean> {
-		//LOG: httpPost a ${apiUrlReq} añadiendo valoracion ${val}
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
+		const url = `${cnf.apiURL}/valoraciones`;
+		this.logger.debug(`POST req a: ${url}, añadiendo una valoración con los siguientes datos:`, val);
+		return this.httpClient.post<boolean>(url, val).toPromise();
 	}
 
 	/**
@@ -45,7 +50,9 @@ export class ValoracionesService {
 	 *
 	 */
 	async update(val: IValoracionUpdateDTO): Promise<boolean> {
-		//LOG: httpPut a ${apiUrlReq} cambiando valoración ${val}
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/valoraciones`, val).toPromise();
+		//! Tal vez no haya que logar todo el objeto
+		const url = `${cnf.apiURL}/valoraciones`;
+		this.logger.debug(`PUT req a: ${url}, editando la siguiente valoración:`, val);
+		return this.httpClient.put<boolean>(url, val).toPromise();
 	}
 }

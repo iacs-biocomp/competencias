@@ -3,13 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { INivel } from 'sharedInterfaces/Entity';
 import { INivelAddDTO, INivelGetDTO, INivelPutDTO } from 'sharedInterfaces/DTO';
+import { LogService } from 'src/app/shared/log/log.service';
 
 @Injectable({ providedIn: 'root' })
 export class NivelService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	getAll(): Promise<INivelGetDTO[]> {
-		return this.httpClient.get<INivelGetDTO[]>(`${cnf.apiURL}/niveles/all`).toPromise();
+		const url = `${cnf.apiURL}/niveles/all`;
+		this.logger.debug(`Obteniendo todos los niveles de ${url}`);
+		return this.httpClient.get<INivelGetDTO[]>(url).toPromise();
 	}
 
 	/**
@@ -21,7 +24,9 @@ export class NivelService {
 	 */
 	getOne(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<INivelGetDTO> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
-		return this.httpClient.get<INivel>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
+		const url = `${cnf.apiURL}/niveles/${idNivel}`;
+		this.logger.debug(`Obteniendo el nivel con ID: ${idNivel}, mandado req a: ${url}`);
+		return this.httpClient.get<INivel>(url).toPromise();
 	}
 
 	/**
@@ -32,7 +37,9 @@ export class NivelService {
 	 *
 	 */
 	getAllRefNivs(): Promise<INivelGetDTO[]> {
-		return this.httpClient.get<INivelGetDTO[]>(`${cnf.apiURL}/niveles/reference`).toPromise();
+		const url = `${cnf.apiURL}/niveles/reference`;
+		this.logger.debug(`Obteniendo todos los niveles de referencia de: ${url}`);
+		return this.httpClient.get<INivelGetDTO[]>(url).toPromise();
 	}
 
 	/**
@@ -41,7 +48,9 @@ export class NivelService {
 	 */
 	delete(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<boolean> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/niveles/${idNivel}`).toPromise();
+		const url = `${cnf.apiURL}/niveles/${idNivel}`;
+		this.logger.debug(`Eliminando el nivel con ID: ${idNivel}, mandando req a: ${url}`);
+		return this.httpClient.delete<boolean>(url).toPromise();
 	}
 
 	/**
@@ -53,7 +62,9 @@ export class NivelService {
 	 */
 	add(nivel: INivelAddDTO): Promise<boolean> {
 		//*QUAL: Crear INivelPostDto o similar
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
+		const url = `${cnf.apiURL}/niveles`;
+		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${nivel.code}, POST req a: ${url}`, nivel);
+		return this.httpClient.post<boolean>(url, nivel).toPromise();
 	}
 
 	/**
@@ -65,6 +76,8 @@ export class NivelService {
 	 *
 	 */
 	edit(nivel: INivelPutDTO): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/niveles`, nivel).toPromise();
+		const url = `${cnf.apiURL}/niveles`;
+		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, nivel);
+		return this.httpClient.put<boolean>(url, nivel).toPromise();
 	}
 }

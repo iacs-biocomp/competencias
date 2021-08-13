@@ -3,13 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICCompAddDTO, ICCompDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
+
 @Injectable({ providedIn: 'root' })
 export class CatCompetencialesService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	public async getAll(): Promise<ICCompDTO[]> {
-		//LOG: httpGet a ${apiUrlReq} obteniendo todas las catComp
-		return this.httpClient.get<ICCompDTO[]>(`${cnf.apiURL}/catcomp/all`).toPromise();
+		const url = `${cnf.apiURL}/catcomp/all`;
+		this.logger.debug(`Obteniendo todas las cat competenciales de: ${url}`);
+		return this.httpClient.get<ICCompDTO[]>(url).toPromise();
 	}
 
 	/**
@@ -19,22 +22,23 @@ export class CatCompetencialesService {
 	 * @throws TODO: complete
 	 */
 	async delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<true> {
-		//LOG: `se elimina una catComp ${cComp}`
-		const catCompId = typeof cComp === 'string' ? cComp : cComp.id;
-		//LOG: httpDelete a ${apiUrlReq} borrando la catComp ${catCompId}
-		return this.httpClient.delete<true>(`${cnf.apiURL}/catcomp/${catCompId}`).toPromise();
+		const cCompId = typeof cComp === 'string' ? cComp : cComp.id;
+		const url = `${cnf.apiURL}/catcomp/${cCompId}`;
+		this.logger.debug(`Eliminando cComp con ID: ${cCompId}, mandando req a: ${url}`);
+		return this.httpClient.delete<true>(url).toPromise();
 	}
 
 	/**
 	 *
-	 * @param catComp The catComp to add
+	 * @param cComp The catComp to add
 	 * @returns A `Promise` that it's `true` if it has been added, exception if not
 	 * @throws TODO: complete ()
 	 *
 	 */
-	add(catComp: ICCompAddDTO): Promise<true> {
-		//LOG: httpPost a ${apiUrlReq} añadiendo la catComp ${catComp}
-		return this.httpClient.post<true>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+	add(cComp: ICCompAddDTO): Promise<true> {
+		const url = `${cnf.apiURL}/catcomp`;
+		this.logger.debug(`Añadiendo cComp con ID: ${cComp.id}, POST req a ${url}`, cComp);
+		return this.httpClient.post<true>(url, cComp).toPromise();
 	}
 
 	/**
@@ -44,8 +48,9 @@ export class CatCompetencialesService {
 	 * @throws TODO: complete ()
 	 *
 	 */
-	edit(catComp: ICCompDTO): Promise<true> {
-		//LOG: httpPut a ${apiUrlReq} editando la catComp ${catComp}
-		return this.httpClient.put<true>(`${cnf.apiURL}/catcomp`, catComp).toPromise();
+	edit(cComp: ICCompDTO): Promise<true> {
+		const url = `${cnf.apiURL}/catcomp`;
+		this.logger.debug(`Editando la cComp con ID: ${cComp.id}, PUT req a ${url}`, cComp);
+		return this.httpClient.put<true>(url, cComp).toPromise();
 	}
 }

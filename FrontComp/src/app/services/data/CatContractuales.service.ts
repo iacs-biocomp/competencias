@@ -3,14 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICContrAddDTO, ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
 import { ICatContr } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
 
 @Injectable({ providedIn: 'root' })
 export class CatContractService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	getAll(): Promise<ICContrAndCCompDTO[]> {
-		//LOG: httpGet a ${apiUrlReq} obteniendo todas las catContractuales
-		return this.httpClient.get<ICContrAndCCompDTO[]>(`${cnf.apiURL}/catcontr/all`).toPromise();
+		const url = `${cnf.apiURL}/catcontr/all`;
+		this.logger.debug(`Obteniendo todas las categorías contractuales de: ${url}`);
+		return this.httpClient.get<ICContrAndCCompDTO[]>(url).toPromise();
 	}
 
 	/**
@@ -20,31 +22,34 @@ export class CatContractService {
 	 * @throws TODO: complete
 	 */
 	delete(cContr: ICatContr['id'] | Pick<ICatContr, 'id'>): Promise<boolean> {
-		const catContrId = typeof cContr === 'string' ? cContr : cContr.id;
-		//LOG: httpDelete a ${apiUrlReq} borrando la catContractual con id ${id}
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/catcontr/${catContrId}`).toPromise();
+		const cContrId = typeof cContr === 'string' ? cContr : cContr.id;
+		const url = `${cnf.apiURL}/catcontr/${cContrId}`;
+		this.logger.debug(`Eliminando cContr con ID: ${cContrId}, mandando req a: ${url}`);
+		return this.httpClient.delete<boolean>(url).toPromise();
 	}
 
 	/**
 	 *
-	 * @param catContract The catContract to add
+	 * @param catContract The cContr to add
 	 * @returns A `Promise` that it's `true` if it has been add, exception if not
 	 * @throws TODO: complete
 	 */
-	add(catContract: ICContrAddDTO): Promise<boolean> {
-		//LOG: httpPost a ${apiUrlReq} añadiendo nueva catContractual ${catContract}
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
+	add(cContr: ICContrAddDTO): Promise<boolean> {
+		const url = `${cnf.apiURL}/catcontr`;
+		this.logger.debug(`Añadiendo cContr con ID: ${cContr.id}, POST req a ${url}`, cContr);
+		return this.httpClient.post<boolean>(url, cContr).toPromise();
 	}
 
 	/**
 	 *
-	 * @param catContract the catContract to edit in the ddbb
+	 * @param cContr the catContract to edit in the ddbb
 	 * @returns A `Promise` that it's `true` if it has been edited, exception if not
 	 * @throws TODO: complete
 	 * TODO: DONE, testear
 	 */
-	update(catContract: ICContrAndCCompDTO): Promise<true> {
-		//LOG: httpPut a ${apiUrlReq} actualizando la catContractual ${catContract}
-		return this.httpClient.put<true>(`${cnf.apiURL}/catcontr`, catContract).toPromise();
+	update(cContr: ICContrAndCCompDTO): Promise<true> {
+		const url = `${cnf.apiURL}/catcontr`;
+		this.logger.debug(`Actualizando datos de la cContr con ID: ${cContr.id}, PUT req a ${url}`, cContr);
+		return this.httpClient.put<true>(url, cContr).toPromise();
 	}
 }

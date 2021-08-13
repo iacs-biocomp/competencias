@@ -8,14 +8,16 @@ import { environment as cnf } from 'src/environments/environment';
 	providedIn: 'root',
 })
 export class OrganiService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	/**
 	 * @returns The full organization chart of all saved users in db
 	 * TODO: test if correct
 	 */
 	getFullOrgani(): Promise<IOrganigramaUsrDTO[]> {
-		return this.httpClient.get<IOrganigramaUsrDTO[]>(`${cnf.apiURL}/organigrama/all`).toPromise();
+		const url = `${cnf.apiURL}/organigrama/all`;
+		this.logger.debug(`Obteniendo el organigrama completo de: ${url}`);
+		return this.httpClient.get<IOrganigramaUsrDTO[]>(url).toPromise();
 	}
 
 	/**
@@ -27,9 +29,12 @@ export class OrganiService {
 	 */
 	setInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/organigrama/inferiores/${dni}`, relations)
-			.toPromise();
+		const url = `${cnf.apiURL}/organigrama/inferiores/${dni}`;
+		this.logger.debug(
+			`POST req a: ${url}, añadiendo a trabajador con DNI: ${dni} una relaciones de inferiores:`,
+			relations,
+		);
+		return this.httpClient.post<boolean>(url, relations).toPromise();
 	}
 
 	/**
@@ -42,9 +47,12 @@ export class OrganiService {
 	 */
 	setSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient
-			.post<boolean>(`${cnf.apiURL}/organigrama/superiores/${dni}`, relations)
-			.toPromise();
+		const url = `${cnf.apiURL}/organigrama/superiores/${dni}`;
+		this.logger.debug(
+			`POST req a: ${url}, añadiendo a trabajador con DNI: ${dni} unas relaciones de superiores:`,
+			relations,
+		);
+		return this.httpClient.post<boolean>(url, relations).toPromise();
 	}
 
 	/**
@@ -60,7 +68,13 @@ export class OrganiService {
 		relations: IRelationsPostDTO[],
 	): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/organigrama/pares/${dni}`, relations).toPromise();
+		const url = `${cnf.apiURL}/organigrama/pares/${dni}`;
+		this.logger.debug(
+			`POST req a: ${url}, añadiendo a trabajador con DNI: ${dni} unas relaciones de pares:`,
+			relations,
+		);
+
+		return this.httpClient.post<boolean>(url, relations).toPromise();
 	}
 
 	/**
@@ -72,9 +86,11 @@ export class OrganiService {
 	 */
 	deleteInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient
-			.delete<boolean>(`${cnf.apiURL}/organigrama/inferiores/${dni}`, this.getDeleteBody(relations))
-			.toPromise();
+		const url = `${cnf.apiURL}/organigrama/inferiores/${dni}`;
+		this.logger.debug(
+			`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de inferiores`,
+		);
+		return this.httpClient.delete<boolean>(url, this.getDeleteBody(relations)).toPromise();
 	}
 
 	/**
@@ -86,9 +102,9 @@ export class OrganiService {
 	 */
 	deletePares(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient
-			.delete<boolean>(`${cnf.apiURL}/organigrama/pares/${dni}`, this.getDeleteBody(relations))
-			.toPromise();
+		const url = `${cnf.apiURL}/organigrama/pares/${dni}`;
+		this.logger.debug(`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de pares`);
+		return this.httpClient.delete<boolean>(url, this.getDeleteBody(relations)).toPromise();
 	}
 
 	/**
@@ -99,9 +115,11 @@ export class OrganiService {
 	 */
 	deleteSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient
-			.delete<boolean>(`${cnf.apiURL}/organigrama/superiores/${dni}`, this.getDeleteBody(relations))
-			.toPromise();
+		const url = `${cnf.apiURL}/organigrama/superiores/${dni}`;
+		this.logger.debug(
+			`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de superiores`,
+		);
+		return this.httpClient.delete<boolean>(url, this.getDeleteBody(relations)).toPromise();
 	}
 
 	/**

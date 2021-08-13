@@ -3,12 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ITrabAddDTO, ITrabajadorDTO, ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
 import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TrabajadoresService {
-	constructor(private readonly httpClient: HttpClient) {}
+	constructor(private readonly httpClient: HttpClient, private readonly logger: LogService) {}
+
+	/**
+	 * Used only by the ADMIN
+	 *
+	 */
+	public getAll(): Promise<ITrabCCompCContrDTO[]> {
+		const url = `${cnf.apiURL}/trabajadores/all`;
+		this.logger.debug(`Obteniendo todos los trabajadores de: ${url}`);
+		return this.httpClient.get<ITrabCCompCContrDTO[]>(url).toPromise();
+	}
 
 	/**
 	 * @param dniOrObj The dni of dniOrObj or dniOrObj that will be searched
@@ -18,7 +29,9 @@ export class TrabajadoresService {
 	 */
 	getOneByDni(dniOrObj: ITrabajador['dni'] | Pick<ITrabajador, 'dni'>): Promise<ITrabajadorDTO> {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
-		return this.httpClient.get<ITrabajadorDTO>(`${cnf.apiURL}/trabajadores/${dni}`).toPromise();
+		const url = `${cnf.apiURL}/trabajadores/${dni}`;
+		this.logger.debug(`Req a: ${url}, obteniendo el trabajador con DNI: ${dni}`);
+		return this.httpClient.get<ITrabajadorDTO>(url).toPromise();
 	}
 
 	/**
@@ -30,14 +43,9 @@ export class TrabajadoresService {
 	 */
 	getOneByUsername(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<ITrabajadorDTO> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
-		return this.httpClient.get<ITrabajadorDTO>(`${cnf.apiURL}/trabajadores/username/${username}`).toPromise();
-	}
-
-	/**
-	 * Used only by the ADMIN
-	 */
-	public getAll(): Promise<ITrabCCompCContrDTO[]> {
-		return this.httpClient.get<ITrabCCompCContrDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();
+		const url = `${cnf.apiURL}/trabajadores/username${username}`;
+		this.logger.debug(`Req a: ${url}, obteniendo trabajador por username: ${username}`);
+		return this.httpClient.get<ITrabajadorDTO>(url).toPromise();
 	}
 
 	/**
@@ -49,7 +57,9 @@ export class TrabajadoresService {
 
 	delete(wrk: ITrabajador['dni'] | Pick<ITrabajador, 'dni'>): Promise<boolean> {
 		const dniWorker = typeof wrk === 'string' ? wrk : wrk.dni;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/trabajadores/${dniWorker}`).toPromise();
+		const url = `${cnf.apiURL}/trabajadores/${dniWorker}`;
+		this.logger.debug(`Eliminando trabajador con DNI: ${dniWorker}, mandando req a: ${url}`);
+		return this.httpClient.delete<boolean>(url).toPromise();
 	}
 
 	/**
@@ -59,7 +69,9 @@ export class TrabajadoresService {
 	 * TODO: DONE
 	 */
 	add(worker: ITrabAddDTO): Promise<boolean> {
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/trabajadores`, worker).toPromise();
+		const url = `${cnf.apiURL}/trabajadores`;
+		this.logger.debug(`Añadiendo trabajador con DNI: ${worker.dni}, POST req a ${url}`, worker);
+		return this.httpClient.post<boolean>(url, worker).toPromise();
 	}
 
 	/**
@@ -70,6 +82,8 @@ export class TrabajadoresService {
 	 * TODO: DONE,
 	 */
 	edit(wrk: ITrabAddDTO): Promise<boolean> {
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/trabajadores`, wrk).toPromise();
+		const url = `${cnf.apiURL}/trabajadores`;
+		this.logger.debug(`Editando datos del trabajador con DNI: ${wrk.dni}, PUT req a ${url}`, wrk);
+		return this.httpClient.put<boolean>(url, wrk).toPromise();
 	}
 }

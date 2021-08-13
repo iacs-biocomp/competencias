@@ -3,25 +3,28 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { ICompAddDTO, ICompGetDTO } from 'sharedInterfaces/DTO';
 import { ICompetencia } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
 
 @Injectable({ providedIn: 'root' })
 export class CompetenciasService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	public getAll(): Promise<ICompGetDTO[]> {
-		//LOG: `se obtienen todas las competencias`
-		return this.httpClient.get<ICompGetDTO[]>(`${cnf.apiURL}/competencias/all`).toPromise();
+		const url = `${cnf.apiURL}/competencias/all`;
+		this.logger.debug(`Obteniendo todas las competencias de: ${url}`);
+		return this.httpClient.get<ICompGetDTO[]>(url).toPromise();
 	}
 
 	/**
 	 *
-	 * @param cComp The id of the competencia that will be deleted
+	 * @param comp The id of the competencia that will be deleted
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 */
 	delete(comp: ICompetencia['id'] | Pick<ICompetencia, 'id'>): Promise<boolean> {
-		//LOG: `se elimina una competencia ${compet}`
 		const compId = typeof comp === 'string' ? comp : comp.id;
-		return this.httpClient.delete<boolean>(`${cnf.apiURL}/competencias/${compId}`).toPromise();
+		const url = `${cnf.apiURL}/competencias/${compId}`;
+		this.logger.debug(`Eliminando comp con ID: ${compId}, mandando req a: ${url}`);
+		return this.httpClient.delete<boolean>(url).toPromise();
 	}
 
 	/**
@@ -31,8 +34,9 @@ export class CompetenciasService {
 	 * @throws TODO: complete
 	 */
 	add(comp: ICompAddDTO): Promise<boolean> {
-		//LOG: `se añade una comp ${comp}`
-		return this.httpClient.post<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();
+		const url = `${cnf.apiURL}/competencias`;
+		this.logger.debug(`Añadiendo comp con ID: ${comp.id}, POST req a: ${url}`, comp);
+		return this.httpClient.post<boolean>(url, comp).toPromise();
 	}
 
 	/**
@@ -42,7 +46,8 @@ export class CompetenciasService {
 	 *
 	 */
 	edit(comp: ICompAddDTO): Promise<boolean> {
-		//LOG: `se edita una comp ${comp}`
-		return this.httpClient.put<boolean>(`${cnf.apiURL}/competencias`, comp).toPromise();
+		const url = `${cnf.apiURL}/competencias`;
+		this.logger.debug(`Editando la comp con ID: ${comp.id}, PUT req a: ${url}`, comp);
+		return this.httpClient.put<boolean>(url, comp).toPromise();
 	}
 }
