@@ -212,14 +212,66 @@ type MinEvModel<T extends MinCompetencia> = {
 	}[];
 };
 
+type MinEvModelFull<T extends MinCompetencia, U extends MinNivel, P extends MinComport> = {
+	subModels: {
+		competencia: T;
+		nivel: U;
+		comportamientos: P[];
+	}[];
+};
+
 /**
  * @param model El modelo del cual se sacan las competencias
  * @returns Un array que representa las competencias que tiene el modelo pasado como parametro
  */
 export function getCompetOfModel<U extends MinCompetencia>(model: MinEvModel<U>): U[] {
-	if (!model.subModels) return [];
+	if (model.subModels.length === 0) return [];
 	const competencias = model.subModels.map(x => x.competencia);
 	return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
+}
+
+/**
+ *
+ * @param model Model with subModels that have competences, levels and behaviours.
+ * @returns Object with all competences, levels and behaviours that `model` have (**no repeated**)
+ */
+export function getAllOfModel<T extends MinCompetencia, U extends MinNivel, P extends MinComport>(
+	model: MinEvModelFull<T, U, P>,
+): {
+	comps: T[];
+	nivs: U[];
+	comports: P[];
+} {
+	if (model.subModels.length === 0) {
+		return { comps: [], nivs: [], comports: [] };
+	} else {
+		const comps = model.subModels.reduce<T[]>((acc, subModel) => {
+			const compFinded = acc.find(comp => comp.id === subModel.competencia.id);
+			if (!compFinded) {
+				acc.push(subModel.competencia);
+			}
+			return acc;
+		}, []);
+		const nivs = model.subModels.reduce<U[]>((acc, subModel) => {
+			const nivFinded = acc.find(lvl => lvl.code === subModel.nivel.code);
+			if (!nivFinded) {
+				acc.push(subModel.nivel);
+			}
+			return acc;
+		}, []);
+		let allComports: P[] = [];
+		model.subModels.forEach(subModel => {
+			allComports = allComports.concat(subModel.comportamientos);
+		});
+		const comports = allComports.reduce<P[]>((acc, comport) => {
+			if (!acc.find(c => c.id === comport.id)) {
+				acc.push(comport);
+			}
+			return acc;
+		}, []);
+
+		return { comps, nivs, comports };
+	}
 }
 
 /**
