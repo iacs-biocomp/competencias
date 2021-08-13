@@ -1,14 +1,14 @@
 <h1 class="layout-title">Seleccione la persona a evaluar</h1>
 <div class="container-fluid">
-	<div class="row gy-4">
-		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let org of organigramaExample.inferiores">
+	<div class="row gy-4" *ngIf="isDataLoaded">
+		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let worker of workersEvaluated">
 			<div class="card">
 				<div class="card-body">
-					<h2 class="card-title">Dni: {{ org.dni }}</h2>
-					<p>Nombre: {{ org.nombre }} {{ org.apellidos }}</p>
-					<!-- <p>Categoría competencial: {{ org..catComp?.id }}</p> -->
+					<h2 class="card-title">Dni: {{ worker.dni }}</h2>
+					<p>Nombre: {{ worker.nombre }} {{ worker.apellidos }}</p>
+					<!-- <p>Categoría competencial: {{ worker..catComp?.id }}</p> -->
 				</div>
-				<button type="button" class="btn btn-primary" [routerLink]="org.dni">EVALUAR TRABAJADOR</button>
+				<button type="button" class="btn btn-primary" [routerLink]="worker.dni">EVALUAR TRABAJADOR</button>
 			</div>
 		</div>
 	</div>

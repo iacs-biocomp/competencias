@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IEvAllRequiredDTO, IEvWithModelGetDTO } from 'sharedInterfaces/DTO';
+import { IEvAllRequiredDTO, IEvWithModelGetDTO, ITrabajadorDTO } from 'sharedInterfaces/DTO';
 import { IEvaluacion, IUser } from 'sharedInterfaces/Entity';
+import { WORKERS_EVALUATED } from 'src/app/modules/evaluaciones/components/list-people-to-eval/data';
 import { environment as cnf } from 'src/environments/environment';
 
 /**
@@ -27,10 +28,19 @@ export class EvaluacionesService {
 	/**
 	 * @param evId El identificador de la evaluación
 	 * @returns La evaluación con todos los datos del modelo
-	 * TODO: DONE
 	 *
 	 */
 	public getEvWithModel(evId: IEvaluacion['id']): Promise<IEvWithModelGetDTO> {
-		return this.httpClient.get<IEvWithModelGetDTO>(cnf.apiURL + `/evaluaciones/${evId}`).toPromise();
+		return this.httpClient.get<IEvWithModelGetDTO>(`${cnf.apiURL}/evaluaciones/${evId}`).toPromise();
+	}
+
+	// TODO: TSdoc
+	getEvaluatedOfUser(usernameOrObj: IUser['username'], evId: IEvaluacion['id']): Promise<ITrabajadorDTO[]> {
+		// return new Promise(res =>
+		// 	setTimeout(() => {
+		// 		res(WORKERS_EVALUATED);
+		// 	}, 350),
+		// );
+		return this.httpClient.get<ITrabajadorDTO[]>(`${cnf.apiURL}/evaluaciones/organi/${usernameOrObj}/${evId}`).toPromise();
 	}
 }

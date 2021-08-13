@@ -2,34 +2,33 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import {
 	ICompetencia,
 	IComportamiento,
-	IEvModel,
+	IEvaluacion,
+	INivel,
 	ITrabajador,
 	IValoracion,
 	ValoracionesNums,
 } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
-import { IEvModelDTO, IEvModelGetDTO, IValoracionDTO } from 'sharedInterfaces/DTO';
+import { findSubModels, getAllComportsOfComp, getAllOfModel, getCompetOfModel } from 'sharedCode/Utility';
+import { IEvModelGetDTO, IValoracionSettedDTO } from 'sharedInterfaces/DTO';
 
-/** Utilizado para crear IValoracion, al usar Pick se crea con X propiedades en vez de con todas las de IValoracion  */
-export type NotCompletedVal = Pick<IValoracion, 'evaluado' | 'evaluador' | 'comp' | 'comport' | 'valoracion'>;
-
-type CompWithComports = ICompetencia & {
-	/** Array de comportamientos */
-	comports: IComportamiento[];
+type ModelIndexed = ICompetencia & {
+	nivs: (INivel & { comports: IComportamiento[] })[];
 };
 
 type ControlView = {
 	/** Array con competencias y sus comportamientos */
-	compsYComports: CompWithComports[];
+	modelIter: ModelIndexed[];
 };
+
+export type ValOpId = Omit<IValoracionSettedDTO, 'id'> & { id?: IValoracion['id'] };
 
 /**
  * Este componente busca en las valoraciones, si algun comportamiento tiene asociada una valoracion, se la asigna; si no, crea y emite
  * la valoracion al componente padre
  */
 @Component({
-	selector: 'app-valoraciones-ev-persona [evModelObs] [savedVals] [evaluado] [evaluador]',
+	selector: 'app-valoraciones-ev-persona [evModelObs] [savedVals] [evaluado] [evaluador] [evId]',
 	templateUrl: './valoraciones-ev-persona.component.html',
 	styleUrls: ['./valoraciones-ev-persona.component.scss'],
 })
@@ -39,13 +38,26 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	/** El modelo con el que un trabajador es evaluado, puede no corresponder al de una evaluación (Para los propuestos) */
 	@Input() evModelObs!: BehaviorSubject<IEvModelGetDTO>;
 	/** Valoraciones que ya estaban guardadas en la DB, (Las que el usuario previamente ha guardado de este worker) */
-	@Input() savedVals!: BehaviorSubject<IValoracion[]>;
-	/** Emite todas las valoraciones sin distinguir si estaban ya guardadas o no (Cuando finaliza el componente) */
-	@Output() onValsSetted = new EventEmitter<NotCompletedVal[]>();
+	@Input() savedVals!: BehaviorSubject<IValoracionSettedDTO[]>;
+	/** Identifier of ev that is evaluated in the component */
+	@Input() evId!: IEvaluacion['id'];
+	/** Valorattion emitter, emits all vals, created and updated */
+	@Output('onValsSetted') valsEmitter = new EventEmitter<ValOpId[]>();
 	/** Control view for html view, all view's variables inside */
 	cv!: ControlView;
-	/** Array de todas las suscripciones del componente*/
-	subs: Subscription[] = [];
+	/** Array with all subscriptions of the component, used to avoid memory leaks */
+	#subs: Subscription[] = [];
+
+	formCoder = {
+		encode(comp: ICompetencia, nivel: INivel, comport: IComportamiento): string {
+			// I use XX because '-' is reserved in comport, also . and _
+			return `formXX${comp}XX${nivel}XX${comport}`;
+		},
+		decode(formId: string): { comp: string; nivel: string; comport: string } {
+			const parts = formId.split('XX');
+			return { comp: parts[1], nivel: parts[2], comport: parts[3] };
+		},
+	};
 
 	getAllComportsOfComp = getAllComportsOfComp;
 	getCompetOfModel = getCompetOfModel;
@@ -54,31 +66,35 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 		// LOG: Inicializando ValoracionesEvPersonaComponent
 		console.log(this.evModelObs.value);
 		console.log(this.savedVals.value);
-		this.evModelObs.subscribe(evModel => {
-			const comps = getCompetOfModel(evModel);
-			this.cv = {
-				compsYComports: comps.map(c => {
-					return { comports: getAllComportsOfComp(c, evModel.subModels!), ...c };
-				}),
-			};
-		});
+
+		this.#subs.push(
+			this.evModelObs.subscribe(evModel => {
+				const comps = getCompetOfModel(evModel);
+				this.cv = {
+					modelIter: comps.map(comp => {
+						const subModelsOfComp = findSubModels(evModel.subModels, comp);
+						const comportsOfComp = getAllComportsOfComp(comp, subModelsOfComp) as IComportamiento[];
+						let nivsOfComp: (INivel & { comports: IComportamiento[] })[] = [];
+						subModelsOfComp.forEach(subModel => {
+							if (!nivsOfComp.find(niv => niv.id === subModel.nivel.id)) {
+								nivsOfComp.push({ ...subModel.nivel, comports: comportsOfComp });
+							}
+						});
+						return { nivs: subModelsOfComp, ...comp };
+					}) as unknown as ModelIndexed[],
+				};
+			}),
+		);
 		// LOG: ValoracionesEvPersonaComponent inicializado
 	}
 
 	ngOnDestroy(): void {
 		// LOG: destruyendo ValoracionesEvPersonaComponent
-		this.subs.forEach(sub => sub.unsubscribe());
+		this.#subs.forEach(sub => sub.unsubscribe());
 	}
 
-	/**
-	 * Si el comportamiento ya tenia una valoracion asignada, muestra la puntuacion (de 1 a 5), en el radioButton
-	 * @param comp la competencia que se valora
-	 * @param comport el comportamiento que se valora
-	 * @param puntuacion el numero (de 1 a 5) que se le asiga a ese comportamiento a esa competencia
-	 * @returns si hay valoracion, retorna la puntuacion (el numero checked)
-	 */
-	radioChecked(comp: ICompetencia, comport: IComportamiento, puntuacion: number): boolean {
-		const val = this.evalConCompComport(this.savedVals.value, comp, comport);
+	radioChecked(comp: ICompetencia, comport: IComportamiento, niv: INivel, puntuacion: number): boolean {
+		const val = this.evalConCompComport(this.savedVals.value, comp, comport, niv);
 		if (!val) {
 			return false;
 		} else {
@@ -94,13 +110,14 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	 * @returns la valoracion encontrada con esa competencia y ese comportamiento
 	 */
 	evalConCompComport(
-		vals: IValoracion[],
+		vals: IValoracionSettedDTO[],
 		comp: ICompetencia,
 		comport: IComportamiento,
-	): IValoracion | undefined {
-		const [compId, comportId] = [comp.id, comport.id];
+		niv: INivel,
+	): IValoracionSettedDTO | undefined {
+		const [compId, comportId, nivId] = [comp.id, comport.id, niv.id];
 		// LOG: Buscando valoracion con compId: ${compId} y comportId: ${comportId}
-		return vals.find(val => val.comp.id === compId && val.comport.id === comportId);
+		return vals.find(val => val.comp === compId && val.comport === comportId && val.nivel === nivId);
 	}
 
 	/**
@@ -109,10 +126,10 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	 * construye el objeto IValoracion para enviarlo, lo pushea al array y lo emite al padre
 	 */
 	async emitValoraciones(): Promise<void> {
-		const valoracionesAdd: NotCompletedVal[] = [];
-		await Promise.all([
-			this.cv.compsYComports.map<Promise<void>[]>(comp =>
-				comp.comports.map(async comport => {
+		const valsToEmit: ValOpId[] = [];
+		this.cv.modelIter.forEach(comp =>
+			comp.nivs.forEach(lvl =>
+				lvl.comports.forEach(comport => {
 					/** id del formulario se forma con 'form', el id de la competencia y el id del comportamiento */
 					const id = 'form' + comp.id + comport.id;
 					//TODO: [3]{N2} Refactor, usar reactiveForms o similar
@@ -121,13 +138,13 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 					const resultadoStr = form?.elements.values.value as string;
 					if (resultadoStr !== '') {
 						const resultado = Number.parseInt(resultadoStr) as ValoracionesNums;
-						const partialVal = this.returnValoracionesFromNumber(resultado, comp, comport);
-						valoracionesAdd.push(partialVal);
+						const partialVal = this.returnValoracionesFromNumber(resultado, comp, comport, lvl);
+						valsToEmit.push(partialVal);
 					}
 				}),
 			),
-		]);
-		console.log(valoracionesAdd);
+		);
+		this.valsEmitter.emit(valsToEmit);
 	}
 
 	/**
@@ -140,13 +157,16 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 		puntuacion: ValoracionesNums,
 		comp: ICompetencia,
 		comport: IComportamiento,
-	): NotCompletedVal {
+		nivel: INivel,
+	): ValOpId {
 		return {
-			comp: comp,
-			comport: comport,
-			evaluado: this.evaluado,
-			evaluador: this.evaluador,
+			comp: comp.id,
+			comport: comport.id,
+			evaluado: this.evaluado.dni,
+			evaluador: this.evaluador.dni,
 			valoracion: puntuacion,
+			nivel: nivel.id,
+			ev: this.evId,
 		};
 	}
 }

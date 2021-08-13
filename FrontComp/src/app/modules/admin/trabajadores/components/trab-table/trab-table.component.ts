@@ -67,7 +67,7 @@ export class TrabTableComponent implements OnInit {
 			departamento: '',
 			catComp: '',
 			catContr: '',
-			deleteable: true,
+			// deleteable: true,
 		});
 	}
 

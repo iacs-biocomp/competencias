@@ -1,17 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { IEvModelGetDTO, IUserDTO, IEvAllRequiredDTO, IValoracionAddDTO } from 'sharedInterfaces/DTO';
-import { ITrabajador, IValoracion } from 'sharedInterfaces/Entity';
-import { JwtService } from 'src/app/services/auth';
-import { EvaluacionesService, TrabajadoresService, ValoracionesService } from 'src/app/services/data';
+import { JwtService } from 'services/auth';
+import { EvaluacionesService, TrabajadoresService, ValoracionesService } from 'services/data';
+import {
+	IEvModelGetDTO,
+	ITrabajadorDTO,
+	IEvAllRequiredDTO,
+	IValoracionAddDTO,
+	IValoracionUpdateDTO,
+	IValoracionSettedDTO,
+} from 'sharedInterfaces/DTO';
 import { LogService } from 'src/app/shared/log/log.service';
+import { ValOpId } from '..';
 // TODO: Refactor estos dos imports
 import { evId } from '../../list-people-to-eval/list-people-to-eval.component';
-import { NotCompletedVal } from '../valoraciones-ev-persona/valoraciones-ev-persona.component';
 
 /** Como se llama el parametro que identifica la evaluación a evaluar */
 export const dniId = 'dniId';
+
 /**
  * Muestra en diferentes cards la lista de personas a valorar en una evaluacion
  */
@@ -23,12 +30,13 @@ export const dniId = 'dniId';
 export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	/** Observable de modelo, cuando cambie el modelo debe actualizarse el valor */
 	evModelObs!: BehaviorSubject<IEvModelGetDTO>;
-	evaluador!: IUserDTO;
-	evaluado!: ITrabajador;
-	savedValsObs!: BehaviorSubject<IValoracionGetDTO[]>;
+	evaluador!: ITrabajadorDTO;
+	evaluado!: ITrabajadorDTO;
+	savedValsObs!: BehaviorSubject<IValoracionSettedDTO[]>;
 	ev!: IEvAllRequiredDTO;
-	#evId = Number.parseInt(this.route.snapshot.paramMap.get(evId)!);
+	evId = Number.parseInt(this.route.snapshot.paramMap.get(evId)!);
 	#dniId = this.route.snapshot.paramMap.get(dniId)!;
+	isDataLoaded = false;
 
 	constructor(
 		private readonly evSv: EvaluacionesService,
@@ -40,15 +48,16 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		const [ev, evaluado, evaluador, savedVals] = await Promise.all([
-			this.evSv.getEvWithModel(this.#evId),
+			this.evSv.getEvWithModel(this.evId),
 			this.trabSv.getOneByDni(this.#dniId),
 			this.trabSv.getOneByUsername(this.jwtSv.getDecodedToken().username),
-			this.valSv.getUsrEvVals(this.#dniId, this.#evId),
+			this.valSv.getUsrEvVals(this.#dniId, this.evId),
 		]);
 		this.evModelObs = new BehaviorSubject(ev.model);
 		this.evaluado = evaluado;
 		this.evaluador = evaluador;
 		this.savedValsObs = new BehaviorSubject(savedVals);
+		this.isDataLoaded = true;
 	}
 
 	/**
@@ -56,26 +65,23 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	 * Las filtra para añadir o actualizar según si estaban o no guardadas.
 	 * @param allVals Array de todas las valoraciones, sin id (a actualizar y añadir)
 	 */
-	async saveValoraciones(allVals: NotCompletedVal[]): Promise<void> {
+	async saveValoraciones(allVals: ValOpId[]): Promise<void> {
 		// TODO: Refactor (reducir complejidad trozeando la función)
 		const alreadySavedVals = this.savedValsObs.value;
 		/** Fn de busqueda en el array de alreadySaved, si se niega y filtra se consiguen las nuevas Valoraciones,
 		 *  si se niega 2 veces las ya creadas pero actualizadas */
-		const findFn = (v: NotCompletedVal) =>
-			alreadySavedVals.find(v2 => v2.comp.id === v.comp.id && v2.comport.id === v.comport.id);
-		const valsToAdd = allVals.map<IValoracionAddDTO>(val => {
-			return { ev: this.ev.id, ...val };
-		});
+		const findFn = (v: Pick<IValoracionSettedDTO, 'comp' | 'comport'>) =>
+			alreadySavedVals.find(v2 => v2.comp === v.comp && v2.comport === v.comport);
+
 		const [newVals, updatedVals] = await Promise.all([
 			/** Las valoraciones nuevas sin id */
-			valsToAdd.filter(v => !findFn(v)),
+			allVals.filter<IValoracionAddDTO>((v): v is IValoracionAddDTO => !findFn(v)),
 			/** Las valoraciones que estaban en DB y se actualizan */
-			valsToAdd
-				.map<IValoracion | undefined>(vUpdated => {
-					const valToUpdate = findFn(vUpdated);
-					return !!valToUpdate ? { ...valToUpdate, valoracion: vUpdated.valoracion } : undefined;
-				})
-				.filter(val => !!val) as IValoracion[],
+			allVals
+				.filter<IValoracionSettedDTO>((val): val is IValoracionSettedDTO => !!findFn(val))
+				.map<IValoracionUpdateDTO>(vUpdated => {
+					return { id: vUpdated.id, valoracion: vUpdated.valoracion };
+				}),
 		]);
 		// LOG: Se van a guardar las valoraciones ${newVals} y a actualizar las valoraciones ${updatedVals}
 		newVals.forEach(v => this.valSv.add(v));

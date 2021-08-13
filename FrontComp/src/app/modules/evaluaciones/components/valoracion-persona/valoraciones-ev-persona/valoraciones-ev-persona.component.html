@@ -10,7 +10,7 @@
 	</button>
 	<div class="accordion" id="accorEvaluaciones">
 		<div class="accordion-body">
-			<div class="accordion-item" *ngFor="let compComport of cv.compsYComports; let i = index">
+			<div class="accordion-item" *ngFor="let compIter of cv.modelIter; let i = index">
 				<h2 class="accordion-header" [id]="'headingEval' + i">
 					<button
 						class="accordion-button collapsed"
@@ -20,7 +20,7 @@
 						aria-expanded="false"
 						[attr.aria-controls]="'collEval' + i"
 					>
-						{{ compComport.id }} - {{ compComport.descripcion }}
+						{{ compIter.id }} - {{ compIter.descripcion }}
 					</button>
 				</h2>
 				<div
@@ -29,63 +29,40 @@
 					[attr.aria-labelledby]="'headingEval' + i"
 					data-bs-parent="#accorEvaluaciones"
 				>
-					<div *ngFor="let comport of compComport.comports">
-						<span class="ips-title">
-							{{ comport.descripcion }}
-						</span>
-						<form class="form-value" [id]="'form' + compComport.id + comport.id">
-							<label class="val-container">
-								1
-								<input
-									type="radio"
-									name="values"
-									value="1"
-									class="radio"
-									[checked]="radioChecked(compComport, comport, 1)"
-								/>
-							</label>
-							<label class="val-container">
-								2
-								<input
-									type="radio"
-									name="values"
-									value="2"
-									class="radio"
-									[checked]="radioChecked(compComport, comport, 2)"
-								/>
-							</label>
-							<label for="3" class="val-container">
-								3
-								<input
-									type="radio"
-									name="values"
-									value="3"
-									class="radio"
-									[checked]="radioChecked(compComport, comport, 3)"
-								/>
-							</label>
-							<label for="4" class="val-container">
-								4
-								<input
-									type="radio"
-									name="values"
-									value="4"
-									class="radio"
-									[checked]="radioChecked(compComport, comport, 4)"
-								/>
-							</label>
-							<label for="5" class="val-container">
-								5
-								<input
-									type="radio"
-									name="values"
-									value="5"
-									class="radio"
-									[checked]="radioChecked(compComport, comport, 5)"
-								/>
-							</label>
-						</form>
-						<hr />
+					<div *ngFor="let nivelIter of compIter.nivs">
+						<div *ngFor="let comport of nivelIter.comports">
+							<span class="ips-title">
+								{{ comport.descripcion }}
+							</span>
+							<form class="form-value" [id]="formCoder.encode(compIter, nivelIter, comport)">
+								<label class="val-container">
+									1
+									<input type="radio" name="values" value="1" class="radio" />
+									<!-- [checked]="radioChecked(compComport, comport, 1)" -->
+								</label>
+								<label class="val-container">
+									2
+									<input type="radio" name="values" value="2" class="radio" />
+									<!-- [checked]="radioChecked(compComport, comport, 2)" -->
+								</label>
+								<label for="3" class="val-container">
+									3
+									<input type="radio" name="values" value="3" class="radio" />
+									<!-- [checked]="radioChecked(compComport, comport, 3)" -->
+								</label>
+								<label for="4" class="val-container">
+									4
+									<input type="radio" name="values" value="4" class="radio" />
+									<!-- [checked]="radioChecked(compComport, comport, 4)" -->
+								</label>
+								<label for="5" class="val-container">
+									5
+									<input type="radio" name="values" value="5" class="radio" />
+									<!-- [checked]="radioChecked(compComport, comport, 5)" -->
+								</label>
+							</form>
+							<hr />
+						</div>
 					</div>
 				</div>
 			</div>

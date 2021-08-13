@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ITrabAddDTO, ITrabajadorDTO, ITrabCCompCContrDTO, IUserDTO } from 'sharedInterfaces/DTO';
+import { ITrabAddDTO, ITrabajadorDTO, ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
 import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
 
 @Injectable({
@@ -28,14 +28,13 @@ export class TrabajadoresService {
 	 * TODO: DONE, testear return
 	 *
 	 */
-	getOneByUsername(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<IUserDTO> {
+	getOneByUsername(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<ITrabajadorDTO> {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
-		return this.httpClient.get<IUserDTO>(`${cnf.apiURL}/trabajadores/username${username}`).toPromise();
+		return this.httpClient.get<ITrabajadorDTO>(`${cnf.apiURL}/trabajadores/username/${username}`).toPromise();
 	}
 
 	/**
 	 * Used only by the ADMIN
-	 *
 	 */
 	public getAll(): Promise<ITrabCCompCContrDTO[]> {
 		return this.httpClient.get<ITrabCCompCContrDTO[]>(`${cnf.apiURL}/trabajadores/all`).toPromise();

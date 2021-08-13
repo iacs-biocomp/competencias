@@ -91,6 +91,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			valoracionEnd: ['', Validators.required],
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
+			organiDate: ['', Validators.required],
 		});
 		this.#subs.push(
 			this.cCompCtl.cCompSelectedObs.subscribe(cComp => {
@@ -180,6 +181,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			endValoracion: form.valoracionEnd as Date,
 			iniPerEvaluado: form.evaluacionStart as Date,
 			endPerEvaluado: form.evaluacionEnd as Date,
+			organiDate: form.organiDate as Date,
 		};
 		const saved = await this.evSv.add(this.evToAdd);
 		console.log(this.evToAdd);

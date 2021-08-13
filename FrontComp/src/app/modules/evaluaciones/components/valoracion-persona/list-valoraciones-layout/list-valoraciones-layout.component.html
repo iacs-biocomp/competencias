@@ -1,8 +1,9 @@
 <app-valoraciones-ev-persona
-	*ngIf="!!evModelObs && !!evaluado && !!evaluador && !!savedValsObs"
+	*ngIf="isDataLoaded"
 	[evModelObs]="evModelObs"
 	[evaluado]="evaluado"
 	[evaluador]="evaluador"
 	[savedVals]="savedValsObs"
 	(onValsSetted)="saveValoraciones($event)"
+	[evId]="evId"
 ></app-valoraciones-ev-persona>

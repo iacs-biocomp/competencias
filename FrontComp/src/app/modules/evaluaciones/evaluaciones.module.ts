@@ -6,14 +6,20 @@ import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService, ValoracionesService } from 'src/app/services/data';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
-import { MisEvaluacionesComponent, ListPeopleToEvalComponent } from './components';
+import {
+	MisEvaluacionesComponent,
+	ListPeopleToEvalComponent,
+	ValoracionesEvPersonaComponent,
+	dniId,
+	evId,
+	ValoracionesEvPersonaLayoutComponent,
+} from './components';
 // TODO: Refactor
-import { evId } from './components/list-people-to-eval/list-people-to-eval.component';
 
 const routes: CompRoutes = [
 	{ path: '', component: MisEvaluacionesComponent },
 	{ path: `evaluar/:${evId}`, component: ListPeopleToEvalComponent },
-	// { path: `evaluar/:${evId}/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
+	{ path: `evaluar/:${evId}/:${dniId}`, component: ValoracionesEvPersonaLayoutComponent },
 ];
 
 /**
@@ -23,8 +29,8 @@ const routes: CompRoutes = [
 	declarations: [
 		MisEvaluacionesComponent,
 		ListPeopleToEvalComponent,
-		// ValoracionesEvPersonaComponent,
-		// ValoracionesEvPersonaLayoutComponent,
+		ValoracionesEvPersonaComponent,
+		ValoracionesEvPersonaLayoutComponent,
 	],
 	imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
 	providers: [EvaluacionesService, HttpClient, JwtService, ValoracionesService],
