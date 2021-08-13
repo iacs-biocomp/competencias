@@ -1,1 +1,1 @@
-export {TableComportComponent} from './table-comport/table-comport.component'
+export { TableComportComponent } from './table-comport/table-comport.component';

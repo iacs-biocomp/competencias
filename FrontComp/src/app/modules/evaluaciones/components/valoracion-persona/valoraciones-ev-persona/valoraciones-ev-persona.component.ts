@@ -9,8 +9,9 @@ import {
 	ValoracionesNums,
 } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { findSubModels, getAllComportsOfComp, getAllOfModel, getCompetOfModel } from 'sharedCode/Utility';
+import { findSubModels, getAllComportsOfComp, getCompetOfModel } from 'sharedCode/Utility';
 import { IEvModelGetDTO, IValoracionSettedDTO } from 'sharedInterfaces/DTO';
+import { LogService } from 'src/app/shared/log/log.service';
 
 type ModelIndexed = ICompetencia & {
 	nivs: (INivel & { comports: IComportamiento[] })[];
@@ -33,6 +34,8 @@ export type ValOpId = Omit<IValoracionSettedDTO, 'id'> & { id?: IValoracion['id'
 	styleUrls: ['./valoraciones-ev-persona.component.scss'],
 })
 export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
+	constructor(private readonly logger: LogService) {}
+
 	@Input() evaluado!: ITrabajador;
 	@Input() evaluador!: ITrabajador;
 	/** El modelo con el que un trabajador es evaluado, puede no corresponder al de una evaluación (Para los propuestos) */
@@ -63,7 +66,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 	getCompetOfModel = getCompetOfModel;
 
 	ngOnInit(): void {
-		// LOG: Inicializando ValoracionesEvPersonaComponent
+		this.logger.log(`Inicializando ValoracionesEvPersonaComponent`);
 		console.log(this.evModelObs.value);
 		console.log(this.savedVals.value);
 
@@ -85,11 +88,11 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 				};
 			}),
 		);
-		// LOG: ValoracionesEvPersonaComponent inicializado
+		this.logger.log(`ValoracionesEvPersonaComponent inicializado`);
 	}
 
 	ngOnDestroy(): void {
-		// LOG: destruyendo ValoracionesEvPersonaComponent
+		this.logger.log(`destruyendo ValoracionesEvPersonaComponent`);
 		this.#subs.forEach(sub => sub.unsubscribe());
 	}
 
@@ -116,7 +119,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 		niv: INivel,
 	): IValoracionSettedDTO | undefined {
 		const [compId, comportId, nivId] = [comp.id, comport.id, niv.id];
-		// LOG: Buscando valoracion con compId: ${compId} y comportId: ${comportId}
+		this.logger.log(`Buscando valoracion con compId: ${compId} y comportId: ${comportId}`);
 		return vals.find(val => val.comp === compId && val.comport === comportId && val.nivel === nivId);
 	}
 

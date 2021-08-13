@@ -4,6 +4,7 @@ import { EvModelsAdmnService } from 'services/data';
 import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { DbData } from 'src/app/types/data';
+import { LogService } from 'src/app/shared/log/log.service';
 
 type ViewProps = {
 	/** Representa si hay modelos de referencia o no */
@@ -40,9 +41,10 @@ export class ViewAllModelsComponent implements OnInit {
 	viewProps?: ViewProps;
 	evModelToShow = new BehaviorSubject<IRefModel | undefined>(undefined);
 
-	constructor(private evModelSv: EvModelsAdmnService) {}
+	constructor(private evModelSv: EvModelsAdmnService, private readonly logger: LogService) {}
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componte view-all-models');
 		this.refModels = await this.evModelSv.getAllReference();
 		this.viewProps = {
 			haveModels: this.refModels.length !== 0,

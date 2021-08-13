@@ -4,6 +4,8 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { OrganiService, CatCompetencialesService } from 'services/data';
 import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
+
 type OrgScrollOpts = {
 	removeHighlight?: boolean;
 };
@@ -84,9 +86,14 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	};
 	subs: Subscription[] = [];
 
-	constructor(private orgSv: OrganiService, private cCompSv: CatCompetencialesService) {}
+	constructor(
+		private orgSv: OrganiService,
+		private cCompSv: CatCompetencialesService,
+		private readonly logger: LogService,
+	) {}
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Inicializando componente organigrama-admin');
 		const promises = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
 		this.cComps = promises[1];
 		this.filteredOrgani = this.filterOrgani('');
@@ -114,6 +121,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
+		this.logger.verbose('Destruyendo componente');
 		this.subs.forEach(s => s.unsubscribe());
 		this.closeModalAddRel.nativeElement.click();
 		this.closeModalDeleteRel.nativeElement.click();
@@ -182,14 +190,17 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 			switch (this.cv.modal.title) {
 				case 'Inferior':
 					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.inferiores!));
+					this.logger.verbose('Guardando relaciones con inferiores');
 					saved = await this.orgSv.setInferiores(this.cv.modal.worker!.trabajador, relations);
 					break;
 				case 'Par':
 					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.pares!));
+					this.logger.verbose('Guardando relaciones con pares');
 					saved = await this.orgSv.setPares(this.cv.modal.worker!.trabajador, relations);
 					break;
 				case 'Superior':
 					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.superiores!));
+					this.logger.verbose('Guardando relaciones con superiores');
 					saved = await this.orgSv.setSuperiores(this.cv.modal.worker!.trabajador, relations);
 					break;
 			}
@@ -197,7 +208,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 			alert('Contacte con un programador');
 		}
 		if (saved) {
-			console.log('Guardado correctamente');
+			this.logger.verbose('Relaciones guardadas con éxito');
 		}
 		this.closeModalAddRel.nativeElement.click();
 		await this.syncView();
@@ -282,6 +293,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	}
 
 	findCatComp(id: string): ICatComp | undefined {
+		this.logger.debug(`Buscando catComp con id: ${id}`);
 		return this.cComps.find(c => c.id === id);
 	}
 
@@ -292,7 +304,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	 * @returns Un organigrama filtrado de tipo IOrganigramaUsrDTO
 	 */
 	filterOrgani(value: string): IOrganigramaUsrDTO[] {
-		console.log('filterOrganiCalled');
+		this.logger.verbose('Filtrando orgranigrama');
 		const filterValue = value.toLowerCase().replace(/\s/g, '');
 		const nameFilteredOrg = this.fullOrgani?.filter(org => {
 			const trabNames = org.trabajador.nombre.toLowerCase() + org.trabajador.apellidos.toLowerCase();

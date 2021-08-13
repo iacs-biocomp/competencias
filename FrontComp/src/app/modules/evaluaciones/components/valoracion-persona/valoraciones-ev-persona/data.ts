@@ -4,6 +4,5 @@ export const responseValSetted: IValoracionSettedDTO[] = [
 	// {
 	// 	comp: 'C1',
 	// 	comport: 'C',
-
 	// },
 ];

@@ -14,18 +14,20 @@ export type INivelToAdd = Omit<INivel, 'id'>;
 	styleUrls: ['./niv-table.component.scss'],
 })
 export class NivTableComponent implements OnInit {
-	constructor(private nivelService: NivelService) {}
+	constructor(private nivelService: NivelService, private readonly logger: LogService) {}
 	/** Array con los niveles que se añadiran y mandaran al backend  */
 	nivelesToAdd: INivelToAdd[] = [];
 	/** Array con las referencias de los niveles */
 	niveles: INivelEdit[] = [];
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Inicializando componente niv-table');
 		this.updateNivelView();
 	}
 
 	/** Metodo que sincroniza los niveles de la vista con los del backend */
 	async updateNivelView(): Promise<void> {
+		this.logger.verbose('Actualizando la vista del componente');
 		this.niveles = await this.nivelService.getAllRefNivs();
 	}
 
@@ -36,10 +38,12 @@ export class NivTableComponent implements OnInit {
 	 */
 	deleteNivToAdd(nivel: INivelToAdd): void {
 		const indx = this.nivelesToAdd.indexOf(nivel);
+		this.logger.verbose('Eliminando fila de la lista de niveles a añadir');
 		this.nivelesToAdd.splice(indx, 1);
 	}
 
 	newEmptyNivel(): void {
+		this.logger.verbose('Añadiendo una fila vacía');
 		this.nivelesToAdd.push({
 			code: '',
 			valor: 0,
@@ -55,9 +59,11 @@ export class NivTableComponent implements OnInit {
 	 * @param send	`true` si se quiere mandar ese nivel al backend `false` si no
 	 */
 	editingNivel(nivel: INivelEdit, editing: boolean, send: boolean): void {
+		this.logger.debug(`Editando un nivel:`, nivel);
 		nivel.editing = editing;
 		if (send) {
 			delete nivel.editing;
+			this.logger.verbose('Nivel enviado con éxito');
 			this.nivelService.edit(nivel);
 		}
 	}
@@ -67,9 +73,11 @@ export class NivTableComponent implements OnInit {
 	 * @param nivel el objeto que queremos guardar en el backend
 	 */
 	async persistNiv(nivel: INivelToAdd): Promise<void> {
+		this.logger.debug(`Guardando un nivel:`, nivel);
 		const guardado = await this.nivelService.add(nivel);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			this.logger.verbose('Nivel guardado con éxito');
 			await this.updateNivelView();
 			this.deleteNivToAdd(nivel);
 		}
@@ -80,9 +88,11 @@ export class NivTableComponent implements OnInit {
 	 * @param nivel el nivel que se borrara de la base de datos
 	 */
 	async deleteNivel(nivel: INivel) {
+		this.logger.debug(`Borrando un nivel`, nivel);
 		const borrado = await this.nivelService.delete(nivel);
 		if (borrado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			this.logger.verbose('Nivel borrado con éxito');
 			await this.updateNivelView();
 		}
 	}

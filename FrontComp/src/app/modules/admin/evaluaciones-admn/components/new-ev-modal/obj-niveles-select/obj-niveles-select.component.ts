@@ -11,6 +11,8 @@ import {
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NivelService } from 'services/data';
 import { ICompetencia, INivel } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
+
 /** Tipo formado por una competencia y su nivel asociado */
 export type CompAndNiv = { comp: ICompetencia; niv: INivel };
 /** Config type for the component itself */
@@ -59,9 +61,10 @@ export class ObjectiveNivsSelectComponent implements OnInit, OnDestroy {
 	 */
 	bufferCompNiv: Partial<CompAndNiv>[] = [];
 
-	constructor(private nivelSv: NivelService) {}
+	constructor(private nivelSv: NivelService, private readonly logger: LogService) {}
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componente obj-niveles-select');
 		this.nivs = await this.nivelSv.getAllRefNivs(); // Se guardan en la var niveles los niveles de referencia
 		this.#subs.push(
 			this.compsObs.subscribe(comps => {
@@ -72,6 +75,7 @@ export class ObjectiveNivsSelectComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
+		this.logger.verbose('Destruyendo componente');
 		this.#subs.forEach(s => s.unsubscribe());
 		this.closeModalBtn.nativeElement.click();
 	}
@@ -84,6 +88,7 @@ export class ObjectiveNivsSelectComponent implements OnInit, OnDestroy {
 	 * @throws Error if objective level is not valid
 	 */
 	setNivel(comp: ICompetencia, niv: INivel | string): void {
+		this.logger.debug(`Guardando competencias con su nivel objetivo`, comp, niv);
 		const nivId = typeof niv === 'string' ? niv : niv.code;
 		const nivObj = this.nivs.find(n => n.code === nivId);
 		if (!nivObj) {
@@ -98,6 +103,7 @@ export class ObjectiveNivsSelectComponent implements OnInit, OnDestroy {
 		const objCompNivel = this.bufferCompNiv.filter(objToCreate =>
 			!objToCreate.comp && !objToCreate.niv ? false : true,
 		) as CompAndNiv[]; // creates the object if is true
+		this.logger.verbose('Emitiendo nivel objetivo por competencia');
 		this.compAndNivEmitter.emit(objCompNivel); //emit the object to the parent
 	}
 }

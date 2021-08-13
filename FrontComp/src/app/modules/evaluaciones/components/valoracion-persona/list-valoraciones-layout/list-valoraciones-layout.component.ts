@@ -44,6 +44,7 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 		private readonly trabSv: TrabajadoresService,
 		private readonly valSv: ValoracionesService,
 		private readonly jwtSv: JwtService,
+		private readonly logger: LogService,
 	) {}
 
 	async ngOnInit(): Promise<void> {
@@ -83,7 +84,9 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 					return { id: vUpdated.id, valoracion: vUpdated.valoracion };
 				}),
 		]);
-		// LOG: Se van a guardar las valoraciones ${newVals} y a actualizar las valoraciones ${updatedVals}
+		this.logger.log(
+			`Se van a guardar las valoraciones ${newVals} y a actualizar las valoraciones ${updatedVals}`,
+		);
 		newVals.forEach(v => this.valSv.add(v));
 		updatedVals.forEach(v => this.valSv.update(v));
 	}

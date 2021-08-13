@@ -14,7 +14,6 @@ export class MisDatosComponent implements OnInit {
 	constructor(private usrDataService: UserDataService, private jwtServ: JwtService) {}
 
 	async ngOnInit(): Promise<void> {
-
 		this.userData = await this.usrDataService.getUserData(this.jwtServ.getDecodedToken().username);
 		// LOG: datos del usuario obtenidos ${this.userData}
 	}

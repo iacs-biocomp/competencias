@@ -17,6 +17,7 @@ import {
 import { IRefModel, IModelBasicIndxDTO } from 'sharedInterfaces/DTO';
 import { ICompetencia, INivel, IComportamiento, ISubModel } from 'sharedInterfaces/Entity';
 import { DbData } from 'src/app/types/data';
+import { LogService } from 'src/app/shared/log/log.service';
 
 type ComportCtrlView = {
 	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
@@ -65,11 +66,13 @@ export class ViewEditModelComponent implements OnInit {
 		private nivSv: NivelService,
 		private comportSv: ComportService,
 		private evModelSv: EvModelsAdmnService,
+		private readonly logger: LogService,
 	) {}
 
 	/** Función que se ejecuta cuando se va a construir el componente,
 	 * al ser asincrona la vista no debe mostrarse si este metodo no ha acabado*/
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componte view-edit-model');
 		const promises = await Promise.all([
 			this.catCompService.getAll(),
 			this.competSv.getAll(),
@@ -148,6 +151,9 @@ export class ViewEditModelComponent implements OnInit {
 	 */
 	addComportToCompet(comp: ICompetencia, niv: INivel, comports: IComportamiento[], model: IRefModel): void {
 		let matchSubModel = model.subModels.find(x => x.competencia?.id === comp.id && x.nivel?.id === niv.id);
+		this.logger.debug(`Añadiendo comportamientos a comp con ID: ${comp.id} al nivel con ID: ${niv.id}`, {
+			listaComportsAAñadir: comports,
+		});
 		if (!matchSubModel) {
 			matchSubModel = {
 				nivel: niv,
@@ -161,6 +167,7 @@ export class ViewEditModelComponent implements OnInit {
 			const cFinded = matchSubModel?.comportamientos.find(cToFind => cToFind.id === c.id);
 			return !cFinded ? true : false;
 		});
+		this.logger.verbose('Pusheando comportamientos');
 		matchSubModel.comportamientos.push(...comportsToAdd);
 	}
 
@@ -172,6 +179,10 @@ export class ViewEditModelComponent implements OnInit {
 	 * @param niv El nivel que junto con la competencia hacen de filtro
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel): void {
+		this.logger.debug(
+			`Eliminando un comportamiento con ID: ${comport.id}, de la comp con ID: ${comp.id} y el nivel con ID: ${niv.id}`,
+			comport,
+		);
 		const _model = this.evModel.value;
 		const subModel = this.findSubModel(_model.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
@@ -197,6 +208,7 @@ export class ViewEditModelComponent implements OnInit {
 	}
 
 	async updateModel(model: IRefModel): Promise<void> {
+		this.logger.verbose('Actualizando modelo');
 		//Se eliminan los subModelos que no tengan comportamientos
 		model.subModels = model.subModels.filter(subM => subM.comportamientos.length !== 0);
 		const response = await this.evModelSv.updateRefModel(model);
@@ -216,6 +228,7 @@ export class ViewEditModelComponent implements OnInit {
 		const model = { ...this.evModel.value };
 		const compsIds = comps.map(c => c.id);
 		model.subModels = model.subModels.filter(s => compsIds.includes(s.competencia.id));
+		this.logger.debug(`Editando competencias de un submodelo`, comps);
 		// TODO: [5]{N2} Añadir submodelo vacio con las nuevas competencias, para ello modificar la interfaz ISubModel, arreglar tipos
 		this.cv.modelCompetences = comps;
 	}
@@ -224,6 +237,7 @@ export class ViewEditModelComponent implements OnInit {
 	 * Manda todas las competencias que tiene este componente al componente hijo CompSelect
 	 */
 	updateCompSelectView(): void {
+		this.logger.verbose('Mandando las competencias del componente');
 		this.compsObs.next(this.dbData.comps);
 	}
 }

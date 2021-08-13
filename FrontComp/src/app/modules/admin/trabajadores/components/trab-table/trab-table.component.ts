@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TrabajadoresService, CatCompetencialesService, CatContractService } from 'services/data';
 import { ITrabCCompCContrDTO, ITrabajadorDTO, ITrabAddDTO } from 'sharedInterfaces/DTO';
 import { ICatContr, ICatComp } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
 
 interface ITrabajadorDTOEdit extends ITrabCCompCContrDTO {
 	editing?: boolean;
@@ -32,9 +33,11 @@ export class TrabTableComponent implements OnInit {
 		private trabService: TrabajadoresService,
 		private cCompSv: CatCompetencialesService,
 		private cContrSv: CatContractService,
+		private readonly logger: LogService,
 	) {}
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Inicializando componente trab-table');
 		const [, catComps, catContracts] = await Promise.all([
 			this.updateWorkerView(),
 			this.cCompSv.getAll(),
@@ -45,6 +48,7 @@ export class TrabTableComponent implements OnInit {
 	}
 
 	async updateWorkerView(): Promise<void> {
+		this.logger.verbose('Actualizando vista del componente');
 		this.workers = await this.trabService.getAll();
 	}
 
@@ -52,6 +56,7 @@ export class TrabTableComponent implements OnInit {
 	 * @param worker worker which will be removed from wrkToAdd list
 	 */
 	deleteWorkerToAdd(worker: Pick<ITrabCCompCContrDTO, 'dni'>): void {
+		this.logger.verbose('Actualizando vista del componente');
 		const indx = this.wrkToAdd.findIndex(wrk => wrk.dni === worker.dni);
 		this.wrkToAdd.splice(indx, 1);
 	}

@@ -47,7 +47,11 @@ export class MisEvaluacionesComponent implements OnInit {
 		cCompSelectedObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 	};
 
-	constructor(private evService: EvaluacionesService, private jwtSv: JwtService) {}
+	constructor(
+		private evService: EvaluacionesService,
+		private jwtSv: JwtService,
+		private readonly logger: LogService,
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		const decodedToken = this.jwtSv.getDecodedToken();
@@ -62,7 +66,7 @@ export class MisEvaluacionesComponent implements OnInit {
 				return;
 			}
 		});
-		// LOG: Inicializado MisEvaluacionesComponent
+		this.logger.log(` Inicializado MisEvaluacionesComponent`);
 	}
 
 	/** Set the catComp selected for the new evaluation */
@@ -93,7 +97,8 @@ export class MisEvaluacionesComponent implements OnInit {
 	 * y mostrará un botón u otro
 	 */
 	computeEvStatus(ev: IEvAllRequiredDTO): EvStatus {
-		// LOG: Computando estado de evaluación ${ev}
+		this.logger.log(`Computando estado de evaluación ${ev}`);
+
 		const intervals = getIntervalsOfEv(ev);
 		const now = new Date();
 		const keys = Object.keys(intervals) as Array<keyof EvIntervals>;
@@ -103,7 +108,7 @@ export class MisEvaluacionesComponent implements OnInit {
 				actualInterval = intervals[k];
 			}
 		});
-		//	console.log(actualInterval);
+		this.logger.log(`actualInterval`);
 		switch (actualInterval) {
 			case intervals.periodoPropuesta:
 				return EvStatus.PROPEVALUADORES;

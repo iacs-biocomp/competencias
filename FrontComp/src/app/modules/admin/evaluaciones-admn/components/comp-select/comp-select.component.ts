@@ -11,6 +11,7 @@ import {
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getCompetOfModel, toggleInArray } from 'sharedCode/Utility';
 import { ICompetencia } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
 
 /** Control view for html, all view variables and helper functions inside */
 type CompetenciaCtrlView = {
@@ -37,6 +38,7 @@ type CConfig = {
 	styleUrls: ['./comp-select.component.scss'],
 })
 export class CompSelectComponent implements OnInit, OnDestroy {
+	constructor(private readonly logger: LogService) {}
 	/** Observable con todas las comps a mostrar, cuando emite nuevo valor se actualiza el componente */
 	@Input() compsObs = new BehaviorSubject<ICompetencia[]>([]);
 	/** Array de competencias pre-selecionadas */
@@ -66,8 +68,11 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	subs: Subscription[] = [];
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componente comp-select');
 		if (!this.compsObs.value) {
-			throw new Error('Has renderizado el componente antes de elegir las competencias, o esta es undefined');
+			this.logger.error(
+				'Has renderizado el componente antes de elegir las competencias, o esta es undefined',
+			);
 		}
 		this.subs.push(
 			this.compsObs.subscribe(() => {
@@ -79,6 +84,7 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
+		this.logger.verbose('Desuscribiendo observables para su destrucción, evitando memory leaks');
 		this.subs.forEach(sub => sub.unsubscribe());
 		this.closeModalBtn.nativeElement.click();
 	}
@@ -90,11 +96,12 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	 * @param comp Competencia a borrar o añadir en el array de seleccionadas
 	 */
 	toggleComp(comp: ICompetencia) {
-		//LOG: `se añade una comp a las comps seleccionadas o la quita si está ${comp}`
+		this.logger.debug(`Añadiendo competencia a lista de preseleccionada o quitando si ya estaba`, comp);
 		toggleInArray<ICompetencia>(comp, this.cv.compsSelected);
 	}
 
 	submit(): void {
+		this.logger.verbose('Emitiendo competencias selecionadas');
 		this.finishEmitter.emit(this.cv.compsSelected);
 		this.cv.compsSelected = [];
 	}

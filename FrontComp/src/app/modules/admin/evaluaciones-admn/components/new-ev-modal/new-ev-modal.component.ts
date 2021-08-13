@@ -8,6 +8,7 @@ import { IEvModel, ICatComp, ICompetencia } from 'sharedInterfaces/Entity';
 import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 // TODO: Refactor
 import { CompAndNiv } from './obj-niveles-select/obj-niveles-select.component';
+import { LogService } from 'src/app/shared/log/log.service';
 
 type modelCtrlView = {
 	// ?? Comprobar si sirve
@@ -73,9 +74,11 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 		private evModelSv: EvModelsAdmnService,
 		private fb: FormBuilder,
 		private evSv: EvaluacionesAdmService,
+		private readonly logger: LogService,
 	) {}
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componente new-ev-modal');
 		this.modelCtl.allReferenceModels = await this.evModelSv.getAllReference();
 		this.cCompCtl.catComps = this.modelCtl.allReferenceModels.map(refModel => refModel.catComp);
 
@@ -107,6 +110,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
+		this.logger.verbose('Destruyendo componente');
 		this.closeModalBtn.nativeElement.click();
 		this.#subs.forEach(s => s.unsubscribe());
 	}
@@ -118,7 +122,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	 * @returns El array de modelos de evaluaciones filtrado
 	 */
 	filterEvModels(): IEvModel[] {
-		//LOG: `se filtran los modelos de las evaluaciones`
+		this.logger.verbose('Filtrando los modelos de las evaluaciones');
 		if (!this.cCompCtl.cCompSelectedObs.value || !this.modelCtl.evModels) {
 			return [];
 		}
@@ -130,27 +134,28 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	 * @returns `true` if the form is correct, `false` if it's not
 	 */
 	isFormValid(): boolean {
-		//LOG: `devuelve true si el formulario es correcto`
 		if (
 			!this.modelCtl.rangesForm ||
 			!this.modelCtl.evDescription ||
 			this.modelCtl.evDescription === '' ||
 			!this.cCompCtl.cCompSelectedObs.value
 		) {
+			this.logger.verbose('Formulario incorrecto');
 			return false;
 		}
+		this.logger.verbose('Formulario correcto');
 		return this.modelCtl.rangesForm.valid;
 	}
 
 	/** Set the catComp selected for the new evaluation */
 	setCatComp(idCatComp: string): void {
-		//LOG: `se selecciona la catComp ${idCatComp}`
+		this.logger.debug(`Seleccionando id de la catComp de la evaluacion: ${idCatComp}`);
 		this.cCompCtl.cCompSelectedObs.next(this.cCompCtl.catComps.find(catComp => catComp.id === idCatComp)); //Find if the catComp exists
 	}
 
 	/** Save in the backend the evaluation to create */
 	async save() {
-		//LOG: `se muestran más comportamientos al darle a click`
+		this.logger.verbose('Enviando la evaluacion al backend');
 		const cComp = this.cCompCtl.cCompSelectedObs.value;
 		const modelo = this.modelCtl.evModelSelected;
 		if (!this.modelCtl.rangesForm || !cComp || !modelo) {
@@ -183,12 +188,12 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			endPerEvaluado: form.evaluacionEnd as Date,
 			organiDate: form.organiDate as Date,
 		};
+		this.logger.debug(`Evaluacion a guardar:`, this.evToAdd);
 		const saved = await this.evSv.add(this.evToAdd);
-		console.log(this.evToAdd);
 		//	const saved = true;
 		if (saved) {
+			this.logger.verbose('Evaluacion guardada con éxito');
 			this.onEvSaved();
-			console.log('Vista actualizada');
 		} //Actualiza la vista del componente padre, se pasa función por parametro
 	}
 
@@ -197,7 +202,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	 * @param niveles
 	 */
 	onNivelesSetted(niveles: CompAndNiv[]) {
-		//LOG: `se muestran más comportamientos al darle a click`
+		this.logger.verbose('Guardando niveles de la evaluación');
 		this.save();
 	}
 
@@ -206,15 +211,14 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	 * @param niveles
 	 */
 	onCompetenciasSetted(competencias: ICompetencia[]) {
-		//LOG: `se muestran más comportamientos al darle a click`
 		this.compsSelectedObs.next(competencias);
 		const cCompSelected = this.cCompCtl.cCompSelectedObs.value;
 		if (!cCompSelected) {
 			throw new Error('No se ha seleccionado una cComp, contacte con un programador');
 		}
+		this.logger.debug(`Guardando las competencias de la evaluación`, competencias);
 		const refModel = this.modelCtl.allReferenceModels.find(model => model.catComp.id === cCompSelected.id)!;
 		this.modelCtl.evModelSelected = refModel;
-
 		this.nivModal.nativeElement.click();
 	}
 }

@@ -4,6 +4,7 @@ import { EvModelsAdmnService } from 'services/data';
 import { getCompetOfModel } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, ICatComp } from 'sharedInterfaces/Entity';
+import { LogService } from 'src/app/shared/log/log.service';
 
 type CompetenciaCtrlView = {
 	/** Array with all the competences */
@@ -39,9 +40,10 @@ export class ModelCompSelectComponent implements OnInit {
 	/** Gets the competences of a specify model, this function is in Utility.ts */
 	getCompetsOfModel = getCompetOfModel;
 
-	constructor(private evModelSv: EvModelsAdmnService) {}
+	constructor(private evModelSv: EvModelsAdmnService, private readonly logger: LogService) {}
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componente model-comp-select');
 		if (!this.catCompObs.value) {
 			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
 		}
@@ -56,6 +58,7 @@ export class ModelCompSelectComponent implements OnInit {
 
 	/** Deletes both cached data, the compsSelected and the compsObs, so, if one of these changed, its flushed */
 	flushCachedData(): void {
+		this.logger.verbose('Borrando cache compsSelected y compsObs');
 		this.competCtl.compsSelected = [];
 		this.compsObs.next([]);
 	}
@@ -67,6 +70,7 @@ export class ModelCompSelectComponent implements OnInit {
 	 */
 	toggleCompet(comp: ICompetencia): void {
 		// TODO: [10]{N1} Refactor, usar toggle inArray
+		this.logger.debug(`Seleccionando las competencias de la evaluacion`, comp);
 		const arrToPush = this.competCtl.compsSelected;
 		const index = arrToPush.indexOf(comp);
 		if (index == -1) {
@@ -77,6 +81,7 @@ export class ModelCompSelectComponent implements OnInit {
 	}
 	/** Sets the competencies selected to the observer */
 	setCompe(): void {
+		this.logger.verbose('Mandando competencias al observable');
 		this.compsObs.next(this.competCtl.compsSelected);
 	}
 }

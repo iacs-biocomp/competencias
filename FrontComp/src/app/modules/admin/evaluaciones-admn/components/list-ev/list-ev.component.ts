@@ -39,20 +39,13 @@ export class ListEvComponent implements OnInit {
 	constructor(private readonly evSv: EvaluacionesAdmService, private readonly logger: LogService) {}
 
 	ngOnInit() {
+		this.logger.verbose('Cargando componte list-ev');
 		this.updateEvalView();
 	}
 
 	async updateEvalView(): Promise<void> {
-		//LOG: `se actualiza una evaluacion`
+		this.logger.verbose('Actualizando vista del componente');
 		this.evaluaciones = await this.evSv.getAll();
-	}
-
-	/**
-	 * Gets all the created evaluations
-	 */
-	async newEvSaved(updateEvalView: ListEvComponent['updateEvalView']) {
-		//LOG: `se guarda una evaluacion ${updateEvalView}`
-		await updateEvalView();
 	}
 
 	/**
@@ -62,9 +55,10 @@ export class ListEvComponent implements OnInit {
 	async showingResultsBtnUpdate(event: MatSlideToggleChange): Promise<void> {
 		const evIdDecoded = this.showingResultsBtnControls.decodeBtnId(event.source.id);
 		let evToModify = this.evaluaciones.find(ev => ev.id === evIdDecoded);
-		this.logger.log('Se modifica la evaluacion ${evToModify}');
 		if (!evToModify) {
-			throw new Error('This should never happen, contact a programmer, probably decodeBtnId fn failed');
+			const err = new Error('This should never happen, contact a programmer, probably decodeBtnId fn failed');
+			this.logger.error('Error:', err);
+			throw err;
 		}
 		this.evSv.updateShowingResults({ id: evToModify.id, isShowingResults: event.checked });
 	}

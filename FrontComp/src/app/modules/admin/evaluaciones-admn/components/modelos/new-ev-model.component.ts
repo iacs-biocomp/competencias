@@ -123,6 +123,7 @@ export class NewEvModelComponent implements OnInit {
 		private nivSv: NivelService,
 		private comportSv: ComportService,
 		private evModelSv: EvModelsAdmnService,
+		private readonly logger: LogService,
 	) {}
 
 	findSubModelByCompNiv = findSubModelByCompNiv;
@@ -130,6 +131,7 @@ export class NewEvModelComponent implements OnInit {
 	getAllComportsOfComp = getAllComportsOfComp;
 
 	async ngOnInit(): Promise<void> {
+		this.logger.verbose('Cargando componente new-ev-model');
 		const [cComps, comps, niveles, comports] = await Promise.all([
 			this.catCompService.getAll(),
 			this.competSv.getAll(),
@@ -156,9 +158,9 @@ export class NewEvModelComponent implements OnInit {
 	 *
 	 * @param catCompet la categoría competencial elegida
 	 */
-	selectCatComp(catCompet: ICatComp) {
-		//LOG: `se selecciona la catCompetencial ${catCompet}`
-		this.dbData.modelToAdd.catComp = catCompet;
+	selectCatComp(catComp: ICatComp) {
+		this.logger.debug(`Seleccionando la catComp del modelo:`, catComp);
+		this.dbData.modelToAdd.catComp = catComp;
 	}
 
 	/**
@@ -167,7 +169,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comp La competencia que se usa para buscar los subModelos que la poseen
 	 */
 	toggleComp(comp: ICompetencia) {
-		//LOG: `se buscan los submodelos con esa comp ${comp}`
+		this.logger.debug(`se buscan los submodelos con esa comp ${comp}`);
 		const _modelToAdd = this.dbData.modelToAdd;
 		console.log(this.findSubModels(_modelToAdd.subModels, comp));
 		if (this.findSubModels(_modelToAdd.subModels, comp).length === 0) {
@@ -191,7 +193,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comport comportamiento seleccionado
 	 */
 	selectComportamiento(comport: IComportamiento) {
-		//LOG: `se seleccionan los comports del submodelo ${comport}`
+		this.logger.debug(`Seleccionando los comportamientos del submodelo:`, comport);
 		const arrToPush = this.cv.comportsSelected;
 		const index = this.cv.comportsSelected.indexOf(comport);
 		if (index === -1) {
@@ -208,7 +210,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param compet competencia seleccionada
 	 */
 	selectNivelObjetivo(nivel: INivel, compet: ICompetencia) {
-		//LOG: `se selecciona el nivel objetivo del modelo ${nivel}, ${compet}`
+		this.logger.debug(`Seleccionando el nivel objetivo de la competencia con ID: ${compet.id}`, nivel);
 		const index = this.cv.competenciasSelect.indexOf(compet);
 		this.cv.competenciasSelect[index].nivObjetivo = nivel;
 	}
@@ -242,7 +244,7 @@ export class NewEvModelComponent implements OnInit {
 	 * Va añadiendo los comportamientos que se seleccionan a cv
 	 */
 	addAllComports(): void {
-		//LOG: `se añaden los comports seleccionados`
+		this.logger.verbose('Añadiendo comportamientos seleccionados');
 		const cSelected = this.cv.compSelected;
 		const nivSelected = this.cv.nivSelected;
 		if (!cSelected || !nivSelected) {
@@ -259,7 +261,10 @@ export class NewEvModelComponent implements OnInit {
 	 * @param comport El comportamiento que se añade a esa comp con ese nivel
 	 */
 	addComportToCompet(comp: ICompetencia, niv: INivel, comport: IComportamiento): void {
-		//LOG: `se muestran más comportamientos al darle a click`
+		this.logger.debug(
+			`Añadiendo comportamiento con ID: ${comport.id}, al competencia con ID: ${comp.id} y nivel con ID: ${niv.id}`,
+			comport,
+		);
 		let matchSubModel = this.dbData.modelToAdd.subModels.find(
 			x => x.competencia?.id === comp.id && x.nivel?.id === niv.id,
 		);
@@ -286,7 +291,9 @@ export class NewEvModelComponent implements OnInit {
         },
 	 */
 	removeComport(comport: IComportamiento, comp: ICompetencia, niv: INivel) {
-		//LOG: `se muestran más comportamientos al darle a click`
+		this.logger.log(
+			`se elimina el comportamiento ${comport} con un nivel ${niv} asociado a la competencia ${comp}`,
+		);
 		const _model = this.dbData.modelToAdd;
 		const subModel = this.findSubModelByCompNiv(_model.subModels, comp, niv);
 		const indx = subModel?.comportamientos?.findIndex(c => comport.id === c.id)!;
@@ -300,8 +307,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @returns Un array de comportamientos que esa competencia aun no tiene asociados
 	 */
 	getRemainingComports(comp: ICompetencia, subModels: ISubModel[]): IComportamiento[] {
-		//LOG: `se muestran más comportamientos al darle a click`
-
+		this.logger.log(`se obtiene los comportamientos no asociados de la competencia ${comp}`);
 		const comportsOfComp = this.getAllComportsOfComp(comp, subModels);
 		console.log(comportsOfComp);
 		const comports = this.dbData.comports.filter(
@@ -317,7 +323,7 @@ export class NewEvModelComponent implements OnInit {
 	 * @param evModel
 	 */
 	async saveEvModel(evModel: IModelPreDTO) {
-		//LOG: `se muestran más comportamientos al darle a click`
+		this.logger.debug(`Guardando modelo: `, evModel);
 		if (!evModel.catComp) {
 			return alert('Contacte con un programador');
 		}
@@ -325,8 +331,9 @@ export class NewEvModelComponent implements OnInit {
 		let saved: IEvModel | undefined;
 		try {
 			saved = await this.evModelSv.save(evModel as IModelDTO, true);
+			this.logger.verbose('Guardado con éxito');
 		} catch (err) {
-			this.logger.error('No se ha podido guardar, contacte con un programador');
+			this.logger.error(`No se ha podido guardar, contacte con un programador`, err);
 		}
 		if (!saved) {
 			alert(
