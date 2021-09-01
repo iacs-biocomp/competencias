@@ -6,12 +6,13 @@ import { LoginGuard } from '../guards/login.guard';
 import { SessionComponent } from './session/session.component';
 import { JwtService } from '../services/auth/jwt.service';
 import { BaseLayoutComponent } from './layout/base/base-layout.component';
+import { EmptyStateComponent } from './empty-state/empty-state.component';
 
 @NgModule({
-	declarations: [MenuComponent, SessionComponent, BaseLayoutComponent],
 	//Importar RouterModule sino el menu no funciona
 	imports: [CommonModule, RouterModule],
-	exports: [MenuComponent, SessionComponent, BaseLayoutComponent],
+	declarations: [MenuComponent, SessionComponent, BaseLayoutComponent, EmptyStateComponent],
+	exports: [MenuComponent, SessionComponent, BaseLayoutComponent, EmptyStateComponent],
 	providers: [LoginGuard, JwtService],
 })
 export class SharedModule {}
