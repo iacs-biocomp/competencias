@@ -26,6 +26,7 @@ specifiers:
   '@types/aos': ^3.0.4
   '@types/jasmine': ~3.8.2
   '@types/js-cookie': ^2.2.7
+  '@types/lodash': ^4.14.172
   '@types/node': ^16.4.6
   '@types/rellax': ^1.7.4
   '@typescript-eslint/eslint-plugin': 4.28.5
@@ -51,6 +52,7 @@ specifiers:
   karma-jasmine-html-reporter: ^1.7.0
   keycloak-angular: ^8.3.0
   keycloak-js: ^13
+  lodash: ^4.17.21
   ng-sidebar: ^9.4.2
   ngx-logger: ^4.3.3
   postcss: ^8.3.6
@@ -87,6 +89,7 @@ dependencies:
   js-cookie: 2.2.1
   keycloak-angular: 8.3.0_2327ed225c8eca1c60b0e29be8f4a898
   keycloak-js: 13.0.1
+  lodash: 4.17.21
   ng-sidebar: 9.4.2_d0240291595b285c1b6fdb0b59ccdeda
   ngx-logger: 4.3.3_8ae6ade22ab1a9961673393f5fbb3449
   rellax: 1.12.1
@@ -109,6 +112,7 @@ devDependencies:
   '@types/aos': 3.0.4
   '@types/jasmine': 3.8.2
   '@types/js-cookie': 2.2.7
+  '@types/lodash': 4.14.172
   '@types/node': 16.4.6
   '@types/rellax': 1.7.4
   '@typescript-eslint/eslint-plugin': 4.28.5_514553717ff968e20f6d1c6e521f8616
@@ -2223,6 +2227,10 @@ packages:
 
   /@types/json-schema/7.0.8:
     resolution: {integrity: sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==}
+    dev: true
+
+  /@types/lodash/4.14.172:
+    resolution: {integrity: sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==}
     dev: true
 
   /@types/minimatch/3.0.5:
@@ -7400,7 +7408,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
