@@ -58,7 +58,7 @@ export class ViewEditModelComponent implements OnInit {
 	};
 	compsObs!: BehaviorSubject<ICompetencia[]>;
 
-	subs: Subscription[] = [];
+	#subs: Subscription[] = [];
 
 	constructor(
 		private catCompService: CatCompetencialesService,
@@ -86,7 +86,7 @@ export class ViewEditModelComponent implements OnInit {
 			niveles: promises[3],
 		};
 		this.compsObs = new BehaviorSubject(this.dbData.comps);
-		this.subs.push(
+		this.#subs.push(
 			this.evModel.subscribe(model => {
 				this.evModelIndx = this.mapIRefModelToIndexed(model);
 				this.cv = {
@@ -97,6 +97,10 @@ export class ViewEditModelComponent implements OnInit {
 			}),
 		);
 		this.initialized = true;
+	}
+
+	ngOnDestroy(): void {
+		this.#subs.forEach(s => s.unsubscribe());
 	}
 
 	//Se redeclaran para que la vista pueda acceder a ellas
