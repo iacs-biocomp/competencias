@@ -8,12 +8,21 @@ import {
 	NotFoundException,
 	UsePipes,
 	ValidationPipe,
+	ParseIntPipe,
+	BadRequestException,
+	InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { isWithinInterval } from 'date-fns';
+import { deleteProps } from 'sharedCode/Utility';
 import { Roles } from 'sharedInterfaces/Entity';
+import { TrabajadorDTO } from 'src/DTO';
 import { EvAddDTO, UpdateEvShowingResultsDTO } from 'src/DTO/ev.DTO';
 import { Ev, Trabajador } from 'src/entity';
+import { OrganigramaService } from 'src/modules/organigrama/services/organigrama.service';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
+import { TrabajadorRepo } from 'src/modules/trabajadores/trabajador.repository';
+import { SelectQueryBuilder } from 'typeorm';
 import { EvRepository } from '../evaluaciones.repository';
 import { EvaluacionesService } from '../services/evaluaciones.service';
 
@@ -21,6 +30,8 @@ import { EvaluacionesService } from '../services/evaluaciones.service';
 export class EvaluacionesController {
 	constructor(
 		@InjectRepository(EvRepository) private readonly evRepo: EvRepository,
+		@InjectRepository(TrabajadorRepo) private readonly wrkRepo: TrabajadorRepo,
+		private readonly organiSv: OrganigramaService,
 		private readonly evSv: EvaluacionesService,
 	) {}
 
@@ -70,6 +81,42 @@ export class EvaluacionesController {
 			throw new NotFoundException(`No existe una evaluacion con ${evId} como id`);
 		}
 		return ev;
+	}
+
+	@Get('organi/:user/:evId')
+	async getWorkersToEval(
+		@Param('user') username: string,
+		@Param('evId', ParseIntPipe) evId: number,
+	): Promise<TrabajadorDTO[]> {
+		const [ev, worker] = await Promise.all([
+			this.evRepo.findOne(evId),
+			this.wrkRepo.findOne({ where: { user: username } }),
+		]);
+		if (!worker) {
+			throw new BadRequestException(`No existe un trabajador registrado con username: ${username}`);
+		}
+		if (!ev) {
+			throw new BadRequestException(`No existe una evaluacion con ${evId} como id`);
+		}
+		const periodsInRange = await this.organiSv.getUsrOrganisByRange(worker.dni, {
+			start: ev.iniPerEvaluado,
+			end: ev.endPerEvaluado,
+		});
+		const periodos = periodsInRange.filter(period => isWithinInterval(ev.organiDate, period.interval));
+		if (periodos.length !== 1) {
+			// TODO: Cambiar por logger.
+			console.log(
+				new Error(
+					`Existen periodos de una persona en la base de datos que tienen un intervalo de fechas con overlapping, persona: ${periodos[0].trabajador.dni}`,
+				),
+			);
+			throw new InternalServerErrorException(`Error con los periodos de la evaluacion ${evId}`);
+		}
+		const periodo = periodos[0];
+		const toEvalWorkers = [...periodo.inferiores, ...periodo.superiores, ...periodo.pares];
+		return toEvalWorkers.map<TrabajadorDTO>(trab => {
+			return { ...trab, departamento: trab.departamento ?? 'no-department' };
+		});
 	}
 
 	@Post('')
