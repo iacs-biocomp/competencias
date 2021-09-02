@@ -10,6 +10,7 @@ import { EvaluacionesAdmnModule, evRoutes } from './evaluaciones-admn/evaluacion
 import { TrabajadoresModule, trabRoutes } from './trabajadores/trabajadores.module';
 import { OrganiAdmnModule, organiRoutes } from './organigrama-admin/organi-admin.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
+import { ManagmentLO } from './managment/components/managmentLO/managmentLO.component';
 
 const routes: CompRoutes = [
 	{ path: 'comportamientos', children: comportRoutes },
@@ -19,6 +20,7 @@ const routes: CompRoutes = [
 	{ path: 'evaluaciones', children: evRoutes },
 	{ path: 'trabajadores', children: trabRoutes },
 	{ path: 'organigrama', children: organiRoutes },
+	{ path: 'managment', component: ManagmentLO },
 	{ path: '', redirectTo: '/' },
 
 	// { path: '', component: CompetenciasAdminComponent },
