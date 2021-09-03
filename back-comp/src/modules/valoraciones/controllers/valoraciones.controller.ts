@@ -31,7 +31,7 @@ import { OrganigramaService } from 'src/modules/organigrama/services/organigrama
 import { EvRepository } from 'src/modules/evaluaciones/evaluaciones.repository';
 import { isAfter } from 'date-fns';
 
-@Controller('nest/valoraciones')
+@Controller('api/valoraciones')
 export class ValoracionesController {
 	constructor(
 		@InjectRepository(ValoracionesRepo) private readonly valRepo: ValoracionesRepo,

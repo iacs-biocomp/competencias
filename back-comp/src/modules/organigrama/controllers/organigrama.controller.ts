@@ -13,7 +13,7 @@ import { deleteProps } from 'sharedCode/Utility';
 
 type RelType = 'inferiores' | 'superiores' | 'pares';
 
-@Controller('nest/organigrama')
+@Controller('api/organigrama')
 export class OrganigramaController {
 	constructor(
 		@InjectRepository(TrabajadorRepo)

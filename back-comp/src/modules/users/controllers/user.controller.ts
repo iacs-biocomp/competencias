@@ -5,7 +5,7 @@ import { Trabajador, User } from 'src/entity';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { UserService } from '../services/user.service';
 
-@Controller('nest/users')
+@Controller('api/users')
 export class UserController {
 	constructor(private readonly _usrSv: UserService) {}
 

@@ -1,1 +1,1 @@
-DELETE  http://localhost:3000/nest/competencias/C1
+DELETE  http://localhost:3000/api/competencias/C1

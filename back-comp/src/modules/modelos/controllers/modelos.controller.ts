@@ -22,7 +22,7 @@ import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { EvModelRepo } from '../modelos.repository';
 import { SubModelRepo } from '../subModel.repository';
 
-@Controller('nest/modelos')
+@Controller('api/modelos')
 export class ModelosController {
 	constructor(
 		@InjectRepository(EvModelRepo)

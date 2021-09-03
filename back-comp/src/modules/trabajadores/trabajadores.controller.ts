@@ -20,7 +20,7 @@ import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';
 import { TrabajadorRepo } from './trabajador.repository';
 
-@Controller('nest/trabajadores')
+@Controller('api/trabajadores')
 export class TrabajadoresController {
 	constructor(
 		@InjectRepository(TrabajadorRepo)

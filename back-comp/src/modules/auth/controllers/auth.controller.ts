@@ -2,7 +2,7 @@ import { Controller, Post, Body, UsePipes, ValidationPipe, BadRequestException }
 import { SigninDTO, SignupDTO } from 'src/DTO/auth';
 import { AuthService } from '../services/auth.service';
 
-@Controller('nest')
+@Controller('api')
 export class AuthController {
 	constructor(
 		private readonly _authService: AuthService, // private kCloak: KeycloakService,

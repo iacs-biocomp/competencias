@@ -18,7 +18,7 @@ export type IValoracionSettedDTO = RemovePropsInU<RequiredAndNotNull<IValoracion
 	comport: ICompetencia['id'];
 };
 
-/** Tipo usado para crear una nueva evaluación, SOLO en el endpoint POST /nest/valoraciones */
+/** Tipo usado para crear una nueva evaluación, SOLO en el endpoint POST /api/valoraciones */
 export type IValoracionAddDTO = Expand<
 	Pick<IValoracion, 'valoracion'> & {
 		evaluador: ITrabajador['dni'];

@@ -13,12 +13,12 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ICatCompWithNoModelsDTO, ICCompCContrDTO } from 'sharedInterfaces/DTO';
-import { CatCompWithNoModelsDTO, CCompAddDTO } from 'src/DTO/cat-comp.DTO';
+import { ICatCompWithNoModelsDTO } from 'sharedInterfaces/DTO';
+import { CatCompWithNoModelsDTO, CCompAddDTO, CCompCContrDTO } from 'src/DTO/cat-comp.DTO';
 import { CatCompRepo } from '../catComp.repository';
 import { CatCompService } from '../services/cat-comp.service';
 
-@Controller('nest/catcomp')
+@Controller('api/catcomp')
 export class CatCompController {
 	constructor(
 		@InjectRepository(CatCompRepo)
@@ -34,7 +34,7 @@ export class CatCompController {
 		const catCompsDTO: ICatCompWithNoModelsDTO[] = [];
 		const catComps = await this.catCompRepo.find({ relations: ['models'] });
 		catComps.forEach(cat => {
-			catCompsDTO.push({ id: cat.id, description: cat.description, nModels: cat.models!.length });
+			catCompsDTO.push({ id: cat.id, description: cat.description, nModels: cat.models?.length ?? 0 });
 		});
 		return catCompsDTO;
 	}
@@ -44,7 +44,7 @@ export class CatCompController {
 	 * @returns Promesa con las catcomps
 	 */
 	@Get('all')
-	getAllCompt(): Promise<ICCompCContrDTO[]> {
+	getAllCompt(): Promise<CCompCContrDTO[]> {
 		return this.cCompSv.getAll();
 	}
 

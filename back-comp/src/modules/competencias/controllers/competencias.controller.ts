@@ -20,7 +20,7 @@ import { ComptRepository } from '../competencias.repository';
 import { CompetenciasService } from '../services/competencias.service';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { Roles } from 'sharedInterfaces/Entity';
-@Controller('nest/competencias')
+@Controller('api/competencias')
 export class CompetenciasController {
 	constructor(
 		@InjectRepository(ComptRepository)

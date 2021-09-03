@@ -21,7 +21,7 @@ import { PeriodosRepo } from 'src/modules/trabajadores/periodos.repository';
 import { CatContrRepo } from '../catContr.repository';
 import { CatContractService } from '../services/cat-contract.service';
 
-@Controller('nest/catcontr')
+@Controller('api/catcontr')
 export class CatContractController {
 	constructor(
 		@InjectRepository(CatContrRepo)

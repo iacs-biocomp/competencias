@@ -26,7 +26,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import { EvRepository } from '../evaluaciones.repository';
 import { EvaluacionesService } from '../services/evaluaciones.service';
 
-@Controller('nest/evaluaciones')
+@Controller('api/evaluaciones')
 export class EvaluacionesController {
 	constructor(
 		@InjectRepository(EvRepository) private readonly evRepo: EvRepository,

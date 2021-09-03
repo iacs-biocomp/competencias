@@ -2,7 +2,7 @@ import { Controller, Get, Param, Post, Body, Patch, Delete, ParseIntPipe } from 
 import { Role } from 'src/entity';
 import { RoleService } from '../services/role.service';
 
-@Controller('nest/roles')
+@Controller('api/roles')
 export class RoleController {
 	constructor(private readonly _roleService: RoleService) {}
 	@Get(':id')

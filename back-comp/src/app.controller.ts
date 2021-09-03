@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { LoggingService } from './modules/logging/services/logging.service';
 
-@Controller('nest')
+@Controller('api')
 export class AppController {
 	constructor(private readonly logger: LoggingService) {}
 	// private readonly logger = new Logger(AppController.name);

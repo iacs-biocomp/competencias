@@ -8,7 +8,7 @@ export const environment: Environment = {
 	production: false,
 	isApiUrlDynamic: false,
 	apiURLtoAdd: undefined,
-	apiURL: 'http://localhost:3000/nest',
+	apiURL: 'http://localhost:3000/api',
 	jwtInterval: 15000,
 	jwtName: 'login-token',
 	msgLoggerNumber: 300,

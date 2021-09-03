@@ -2,7 +2,7 @@ import { ICatComp, ICatContr } from './ICategorias';
 
 /**
  * Esquema del Json recibido al pedir los datos de un usuario al backend
- * @param Url /nest/users/{USERNAME}
+ * @param Url /api/users/{USERNAME}
  */
 export interface ITrabajador {
 	dni: string;

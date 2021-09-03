@@ -21,7 +21,7 @@ import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { ComportRepository } from '../comportamientos.repository';
 import { ComportamientosService } from '../services/comportamientos.service';
 
-@Controller('nest/comportamientos')
+@Controller('api/comportamientos')
 export class ComportamientosController {
 	constructor(
 		@InjectRepository(ComportRepository)

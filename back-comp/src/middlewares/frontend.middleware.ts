@@ -23,7 +23,7 @@ export class FrontendMiddleware implements NestMiddleware {
 			'/modules-activity-activity-module.js': 'ADMIN',
 		};
 		//Petición api
-		if (URL.indexOf('/nest') === 0) {
+		if (URL.indexOf('/api') === 0) {
 			next();
 		}
 		//Petición web

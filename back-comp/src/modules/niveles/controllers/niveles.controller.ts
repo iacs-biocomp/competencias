@@ -20,7 +20,7 @@ import { NivelGetDTO } from 'src/DTO';
 import { Nivel } from 'src/entity';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { NivelRepository } from '../nivel.repository';
-@Controller('nest/niveles')
+@Controller('api/niveles')
 export class NivelesController {
 	constructor(
 		@InjectRepository(NivelRepository)

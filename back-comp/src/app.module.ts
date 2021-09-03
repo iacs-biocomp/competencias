@@ -29,7 +29,7 @@ import { LoggingService } from './modules/logging/services/logging.service';
 		DatabaseModule,
 		ServeStaticModule.forRoot({
 			rootPath: join('/app', '/ngDist'),
-			exclude: ['/nest*'],
+			exclude: ['/api*'],
 		}),
 		EvaluacionesModule,
 		CompetenciasModule,
