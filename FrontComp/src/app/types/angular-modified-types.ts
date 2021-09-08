@@ -8,6 +8,6 @@ import { Roles } from 'sharedInterfaces/Entity';
 export type CompRoutes = CompRoute[];
 export type CompRoute = {
 	data?: {
-		roles: Roles[];
+		roles?: Roles[];
 	};
 } & Route;

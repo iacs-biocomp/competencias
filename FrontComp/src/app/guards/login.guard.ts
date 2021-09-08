@@ -6,6 +6,7 @@ import { Roles } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { JwtService } from '../services/auth/jwt.service';
 import { CompRoute } from '../types/angular-modified-types';
+import { intersection } from 'lodash';
 
 @Injectable()
 export class LoginGuard implements CanLoad {
@@ -19,29 +20,32 @@ export class LoginGuard implements CanLoad {
 	) {}
 
 	canLoad(route: CompRoute): boolean {
-		const [decodedTkn, token] = [this.jwtSv.getDecodedToken(), this.jwtSv.getToken()];
-
-		/**Redirige al usuario al login, añadiendo como parametro la url solicitada para poder volver al logarse
-		 * @see [Tutorial seguido](https://bit.ly/3qfwR4V) */
+		const token = this.jwtSv.getToken();
+		/**
+		 * Redirige al usuario al login, añadiendo como parametro la url solicitada para poder volver al logarse
+		 * @see [Tutorial seguido](https://bit.ly/3qfwR4V)
+		 */
 		const toLogin = () =>
 			this.router.navigate([LoginGuard.loginRoute], {
 				queryParams: { returnUrl: route.path },
 			});
-		if (!route.data?.roles) {
+
+		const conditionsToLogin =
+			// Route does not contain data
+			!route.data ||
+			// Or not requires any role
+			!route.data.roles ||
+			// Or (token exist and isn't expired and has one or more roles that route requires).
+			(!!token &&
+				!this.jwtHelperSv.isTokenExpired(token) &&
+				intersection(this.jwtHelperSv.decodeToken<IJwtToken>(token).roles, route.data.roles).length > 0);
+
+		if (conditionsToLogin) {
 			return true;
-		}
-		if (!token || this.jwtHelperSv.isTokenExpired(token)) {
+		} else {
 			toLogin();
 			return false;
 		}
-		if (
-			this.jwtHelperSv.decodeToken<IJwtToken>(token).roles.filter(role => route.data!.roles.includes(role))
-				.length > 0
-		) {
-			return true;
-		}
-		toLogin();
-		return false;
 	}
 
 	/**
@@ -54,13 +58,15 @@ export class LoginGuard implements CanLoad {
 	 * @returns `True` si el rol esta en el token y `false` en caso contrario
 	 */
 	hasRole(role: Roles): boolean {
-		const token: string = localStorage.getItem(cnf.jwtName)!;
-		if (!token || this.jwtHelperSv.isTokenExpired(token)) {
+		const token = this.jwtSv.getToken();
+		if (
+			!!token &&
+			!this.jwtHelperSv.isTokenExpired(token) &&
+			this.jwtHelperSv.decodeToken<IJwtToken>(token).roles.includes(role)
+		) {
+			return true;
+		} else {
 			return false;
 		}
-		if (this.jwtHelperSv.decodeToken<IJwtToken>(token).roles.includes(role)) {
-			return true;
-		}
-		return false;
 	}
 }
