@@ -4,6 +4,7 @@ import { ICompetencia } from './interfaces/Entity/ICompetencia';
 import { IComportamiento } from './interfaces/Entity/IComportamientos';
 import { INivel } from './interfaces/Entity/INiveles';
 import { Expand, PickPropsInU, RequiredAndNotNull, WithOptional } from './interfaces/Utility';
+import { find } from 'lodash';
 
 type Without<T, K extends keyof T> = {
 	[P in Exclude<keyof T, K>]: T[P];
@@ -226,8 +227,12 @@ type MinEvModelFull<T extends MinCompetencia, U extends MinNivel, P extends MinC
  */
 export function getCompetOfModel<U extends MinCompetencia>(model: MinEvModel<U>): U[] {
 	if (model.subModels.length === 0) return [];
-	const competencias = model.subModels.map(x => x.competencia);
-	return competencias.filter((compet, index) => competencias.findIndex(f => compet.id === f.id) === index);
+	return model.subModels.reduce<U[]>((acc, subModel) => {
+		if (!find(acc, { id: subModel.competencia.id })) {
+			acc.push(subModel.competencia);
+		}
+		return acc;
+	}, []);
 }
 
 /**
