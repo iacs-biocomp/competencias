@@ -5,7 +5,7 @@
 			<h2>Evaluación: {{ result.comp.id }} - {{ result.comp.descripcion }}</h2>
 			<div class="chart-wrapper">
 				<ngx-charts-bar-vertical
-					[scheme]="colorScheme"
+					[scheme]="colors"
 					[results]="result.values"
 					[gradient]="gradient"
 					[xAxis]="showXAxis"

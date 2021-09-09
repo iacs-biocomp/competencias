@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { CompetenciasService, ResultsService } from 'services/data';
 import { findCompById } from 'sharedCode/Utility';
 import { ICompGetDTO, IResultadoDTOV2 } from 'sharedInterfaces/DTO';
@@ -53,7 +54,10 @@ export class MisResultadosComponent {
 	xAxisLabel = 'Evaluadores';
 	showYAxisLabel = true;
 	yAxisLabel = 'Puntuación';
-	colorScheme = {
+	colors: Color = {
+		name: 'colorName',
+		selectable: true,
+		group: ScaleType.Linear,
 		domain: ['#C7B42C ', '#A10A28', '#5AA454', '#AAAAAA'],
 	};
 	domainNames: string[] = [];
