@@ -21,7 +21,7 @@ export class EvaluacionesService {
 	 */
 	public evaluacionesUsr(usr: IUser['username'] | Pick<IUser, 'username'>): Promise<IEvAllRequiredDTO[]> {
 		const username = typeof usr === 'string' ? usr : usr.username;
-		const url = `${cnf.apiURL}/evaluaciones/user/${username}`;
+		const url = `${cnf.API_URL}/evaluaciones/user/${username}`;
 		this.logger.debug(`Obteniendo evaluaciones del usuario con username: ${username}, mandando req a ${url}`);
 		return this.httpClient.get<IEvAllRequiredDTO[]>(url).toPromise();
 	}
@@ -32,7 +32,7 @@ export class EvaluacionesService {
 	 *
 	 */
 	public getEvWithModel(evId: IEvaluacion['id']): Promise<IEvWithModelGetDTO> {
-		const url = `${cnf.apiURL}/evaluaciones/${evId}`;
+		const url = `${cnf.API_URL}/evaluaciones/${evId}`;
 		this.logger.debug(
 			`Obteniendo la evaluacion con ID: ${evId} con todos los datos del modelo, mandando req a: ${url}`,
 		);
@@ -47,7 +47,7 @@ export class EvaluacionesService {
 		// 	}, 350),
 		// );
 		return this.httpClient
-			.get<ITrabajadorDTO[]>(`${cnf.apiURL}/evaluaciones/organi/${usernameOrObj}/${evId}`)
+			.get<ITrabajadorDTO[]>(`${cnf.API_URL}/evaluaciones/organi/${usernameOrObj}/${evId}`)
 			.toPromise();
 	}
 }

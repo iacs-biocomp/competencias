@@ -15,7 +15,7 @@ export class OrganiService {
 	 * TODO: test if correct
 	 */
 	getFullOrgani(): Promise<IOrganigramaUsrDTO[]> {
-		const url = `${cnf.apiURL}/organigrama/all`;
+		const url = `${cnf.API_URL}/organigrama/all`;
 		this.logger.debug(`Obteniendo el organigrama completo de: ${url}`);
 		return this.httpClient.get<IOrganigramaUsrDTO[]>(url).toPromise();
 	}
@@ -29,7 +29,7 @@ export class OrganiService {
 	 */
 	setInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		const url = `${cnf.apiURL}/organigrama/inferiores/${dni}`;
+		const url = `${cnf.API_URL}/organigrama/inferiores/${dni}`;
 		this.logger.debug(
 			`POST req a: ${url}, añadiendo a trabajador con DNI: ${dni} una relaciones de inferiores:`,
 			relations,
@@ -47,7 +47,7 @@ export class OrganiService {
 	 */
 	setSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		const url = `${cnf.apiURL}/organigrama/superiores/${dni}`;
+		const url = `${cnf.API_URL}/organigrama/superiores/${dni}`;
 		this.logger.debug(
 			`POST req a: ${url}, añadiendo a trabajador con DNI: ${dni} unas relaciones de superiores:`,
 			relations,
@@ -68,7 +68,7 @@ export class OrganiService {
 		relations: IRelationsPostDTO[],
 	): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		const url = `${cnf.apiURL}/organigrama/pares/${dni}`;
+		const url = `${cnf.API_URL}/organigrama/pares/${dni}`;
 		this.logger.debug(
 			`POST req a: ${url}, añadiendo a trabajador con DNI: ${dni} unas relaciones de pares:`,
 			relations,
@@ -86,7 +86,7 @@ export class OrganiService {
 	 */
 	deleteInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		const url = `${cnf.apiURL}/organigrama/inferiores/${dni}`;
+		const url = `${cnf.API_URL}/organigrama/inferiores/${dni}`;
 		this.logger.debug(
 			`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de inferiores`,
 		);
@@ -102,7 +102,7 @@ export class OrganiService {
 	 */
 	deletePares(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		const url = `${cnf.apiURL}/organigrama/pares/${dni}`;
+		const url = `${cnf.API_URL}/organigrama/pares/${dni}`;
 		this.logger.debug(`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de pares`);
 		return this.httpClient.delete<boolean>(url, this.getDeleteBody(relations)).toPromise();
 	}
@@ -115,7 +115,7 @@ export class OrganiService {
 	 */
 	deleteSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
-		const url = `${cnf.apiURL}/organigrama/superiores/${dni}`;
+		const url = `${cnf.API_URL}/organigrama/superiores/${dni}`;
 		this.logger.debug(
 			`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de superiores`,
 		);
@@ -138,4 +138,3 @@ export class OrganiService {
 		};
 	}
 }
-type ChangeName = {};

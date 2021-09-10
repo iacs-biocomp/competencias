@@ -15,7 +15,7 @@ export class AuthService {
 	 * @return Return `true` if successful authentication, otherwise return `false`.
 	 */
 	async sendLoginInfo(body: ISignInDto): Promise<IAuthTokenRes> {
-		return this.httpClient.post<IAuthTokenRes>(cnf.apiURL + '/signin', body).toPromise();
+		return this.httpClient.post<IAuthTokenRes>(cnf.API_URL + '/signin', body).toPromise();
 	}
 
 	/**
@@ -25,7 +25,7 @@ export class AuthService {
 	 */
 	async sendRegisterReq(body: IRegisterRequestDTO): Promise<boolean> {
 		const response: IAuthTokenRes = await this.httpClient
-			.post<IAuthTokenRes>(cnf.apiURL + '/signup', body)
+			.post<IAuthTokenRes>(cnf.API_URL + '/signup', body)
 			.toPromise();
 		console.log(response);
 		if (!response) {

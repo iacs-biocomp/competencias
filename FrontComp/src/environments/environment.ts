@@ -5,12 +5,12 @@ import { Environment } from './environment-type';
 // The list of file replacements can be found in `angular.json`.
 
 export const environment: Environment = {
-	production: false,
-	isApiUrlDynamic: false,
-	apiURLtoAdd: undefined,
-	apiURL: 'http://localhost:3000/api',
-	jwtInterval: 15000,
-	jwtName: 'login-token',
+	IN_PRODUCTION: false,
+	IS_API_URL_DYNAMIC: false,
+	API_URL_TO_ADD: undefined,
+	API_URL: 'http://localhost:3000/api',
+	JWT_INTERVAL: 15000,
+	JWT_NAME: 'login-token',
 	msgLoggerNumber: 300,
 };
 

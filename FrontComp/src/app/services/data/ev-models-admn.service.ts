@@ -11,7 +11,7 @@ export class EvModelsAdmnService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	getAll(): Promise<IEvModelGetDTO[]> {
-		const url = `${cnf.apiURL}/modelos`;
+		const url = `${cnf.API_URL}/modelos`;
 		this.logger.debug(`Obteniendo todos los modelos de evaluaciones de: ${url}`);
 		return this.httpClient.get<IEvModelGetDTO[]>(url).toPromise();
 	}
@@ -21,7 +21,7 @@ export class EvModelsAdmnService {
 	 * TODO: DONE comprobar
 	 */
 	getAllReference(): Promise<IEvModelGetDTO[]> {
-		const url = `${cnf.apiURL}/modelos/references`;
+		const url = `${cnf.API_URL}/modelos/references`;
 		this.logger.debug(`Obteniendo todos los modelos de referencia de: ${url}`);
 		return this.httpClient.get<IEvModelGetDTO[]>(url).toPromise();
 	}
@@ -33,7 +33,7 @@ export class EvModelsAdmnService {
 	 */
 	getOneReference(cComp: Pick<ICatComp, 'id'> | ICatComp['id']): Promise<IEvModelGetDTO> {
 		const cCompId = typeof cComp === 'string' ? cComp : cComp.id;
-		const url = `${cnf.apiURL}/modelos/reference/${cCompId}`;
+		const url = `${cnf.API_URL}/modelos/reference/${cCompId}`;
 		this.logger.debug(
 			`Obteniendo el modelo de referencia asociado a la cComp con ID: ${cCompId}, req a: ${url}`,
 		);
@@ -48,7 +48,7 @@ export class EvModelsAdmnService {
 	 */
 	save(evModel: IEvModelAddDTO, reference: boolean): Promise<IEvModelGetDTO> {
 		// TODO: Cambiado a boolean, al serializar se queda true en vez de "true", comprobar en backend que es boolean con pipe
-		const url = `${cnf.apiURL}/modelos`;
+		const url = `${cnf.API_URL}/modelos`;
 		this.logger.debug(`POST req a: ${url}, guardando el modelo, ¿es de referencia?: ${reference}`, evModel);
 		return this.httpClient
 			.post<IEvModelGetDTO>(url, evModel, { params: { reference: reference } })
@@ -64,7 +64,7 @@ export class EvModelsAdmnService {
 	 *
 	 */
 	updateRefModel(refModel: IEvModelAddDTO): Promise<true> {
-		const url = `${cnf.apiURL}/modelos/reference`;
+		const url = `${cnf.API_URL}/modelos/reference`;
 		this.logger.debug(`PUT req a: ${url}, actualizando datos del modelo:`, refModel);
 		return this.httpClient.put<true>(url, refModel, { params: { reference: 'true' } }).toPromise();
 	}

@@ -13,10 +13,9 @@ import { map, catchError } from 'rxjs/operators';
 import { environment as cnf } from 'src/environments/environment';
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
-	constructor() {}
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		console.log('Interceptor');
-		const token: string = localStorage.getItem(cnf.jwtName)!;
+		const token: string = localStorage.getItem(cnf.JWT_NAME)!;
 
 		if (token) {
 			request = request.clone({

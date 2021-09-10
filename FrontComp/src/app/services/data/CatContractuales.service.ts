@@ -10,7 +10,7 @@ export class CatContractService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	getAll(): Promise<ICContrAndCCompDTO[]> {
-		const url = `${cnf.apiURL}/catcontr/all`;
+		const url = `${cnf.API_URL}/catcontr/all`;
 		this.logger.debug(`Obteniendo todas las categorías contractuales de: ${url}`);
 		return this.httpClient.get<ICContrAndCCompDTO[]>(url).toPromise();
 	}
@@ -23,7 +23,7 @@ export class CatContractService {
 	 */
 	delete(cContr: ICatContr['id'] | Pick<ICatContr, 'id'>): Promise<boolean> {
 		const cContrId = typeof cContr === 'string' ? cContr : cContr.id;
-		const url = `${cnf.apiURL}/catcontr/${cContrId}`;
+		const url = `${cnf.API_URL}/catcontr/${cContrId}`;
 		this.logger.debug(`Eliminando cContr con ID: ${cContrId}, mandando req a: ${url}`);
 		return this.httpClient.delete<boolean>(url).toPromise();
 	}
@@ -35,7 +35,7 @@ export class CatContractService {
 	 * @throws TODO: complete
 	 */
 	add(cContr: ICContrAddDTO): Promise<boolean> {
-		const url = `${cnf.apiURL}/catcontr`;
+		const url = `${cnf.API_URL}/catcontr`;
 		this.logger.debug(`Añadiendo cContr con ID: ${cContr.id}, POST req a ${url}`, cContr);
 		return this.httpClient.post<boolean>(url, cContr).toPromise();
 	}
@@ -48,7 +48,7 @@ export class CatContractService {
 	 * TODO: DONE, testear
 	 */
 	update(cContr: ICContrAndCCompDTO): Promise<true> {
-		const url = `${cnf.apiURL}/catcontr`;
+		const url = `${cnf.API_URL}/catcontr`;
 		this.logger.debug(`Actualizando datos de la cContr con ID: ${cContr.id}, PUT req a ${url}`, cContr);
 		return this.httpClient.put<true>(url, cContr).toPromise();
 	}

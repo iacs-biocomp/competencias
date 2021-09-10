@@ -1,17 +1,17 @@
-/** Tipo usado por los environments para fallar al compilar si se añade alguna propiedad y no es implementada por el resto de environments */
+/** Type used by all environments, created for type safety */
 export type Environment = {
 	/** Si está en true el comportamiento de la aplicación cambia (logging, performance etc) */
-	production: boolean;
+	IN_PRODUCTION: boolean;
 	/** `true` si {@link apiUrl} debe cambiar a location.origin `false` se utiliza apiUrl tal cual*/
-	isApiUrlDynamic: boolean;
+	IS_API_URL_DYNAMIC: boolean;
 	/** La url en la que se encuentra el backend */
-	apiURL: string;
+	API_URL: string;
 	/** La parte de la url que se suma a location.origin si apiUrl es dinamica */
-	apiURLtoAdd: string | undefined;
+	API_URL_TO_ADD: string | undefined;
 	/** El intervalo de tiempo en `ms` en el cual se renovará el jwt si ha habido interacción del usuario */
-	jwtInterval: number;
+	JWT_INTERVAL: number;
 	/** Nombre que se le da a la cookie/objeto guardado en las cookies/localStorage (Usado para buscar luego por clave-valor)*/
-	jwtName: string;
+	JWT_NAME: string;
 	/** Numero de mensajes que el logger guardará en su array interno */
 	msgLoggerNumber: number;
 };

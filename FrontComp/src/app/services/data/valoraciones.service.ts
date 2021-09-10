@@ -19,12 +19,12 @@ export class ValoracionesService {
 		evId: IEvaluacion['id'],
 	): Promise<IValoracionSettedDTO[]> {
 		const dni = typeof worker === 'string' ? worker : worker.dni;
-		const url = `${cnf.apiURL}/valoraciones/${dni}/${evId}`;
+		const url = `${cnf.API_URL}/valoraciones/${dni}/${evId}`;
 		this.logger.debug(
 			`Obteniendo evaluación con ID: ${evId}, que pertenece al trabajador con DNI: ${dni}, mandando req a ${url}`,
 		);
 		return this.httpClient
-			.get<IValoracionSettedDTO[]>(`${cnf.apiURL}/valoraciones/${dni}/${evId}`)
+			.get<IValoracionSettedDTO[]>(`${cnf.API_URL}/valoraciones/${dni}/${evId}`)
 			.toPromise();
 	}
 
@@ -37,7 +37,7 @@ export class ValoracionesService {
 	 * @throws exception if the valoracion has not been found
 	 */
 	async add(val: IValoracionAddDTO): Promise<boolean> {
-		const url = `${cnf.apiURL}/valoraciones`;
+		const url = `${cnf.API_URL}/valoraciones`;
 		this.logger.debug(`POST req a: ${url}, añadiendo una valoración con los siguientes datos:`, val);
 		return this.httpClient.post<boolean>(url, val).toPromise();
 	}
@@ -51,7 +51,7 @@ export class ValoracionesService {
 	 */
 	async update(val: IValoracionUpdateDTO): Promise<boolean> {
 		//! Tal vez no haya que logar todo el objeto
-		const url = `${cnf.apiURL}/valoraciones`;
+		const url = `${cnf.API_URL}/valoraciones`;
 		this.logger.debug(`PUT req a: ${url}, editando la siguiente valoración:`, val);
 		return this.httpClient.put<boolean>(url, val).toPromise();
 	}

@@ -15,7 +15,7 @@ export class EvaluacionesAdmService {
 	 * TODO: DTO return type
 	 */
 	public async getAll(): Promise<IEvaluacion[]> {
-		const url = `${cnf.apiURL}/evaluaciones`;
+		const url = `${cnf.API_URL}/evaluaciones`;
 		this.logger.debug(`Obteniendo todas las evaluaciones de: ${url}`);
 		return this.httpClient.get<IEvaluacion[]>(url).toPromise();
 	}
@@ -27,7 +27,7 @@ export class EvaluacionesAdmService {
 	 */
 	delete(ev: IEvaluacion['id'] | Pick<IEvaluacion, 'id'>): Promise<true> {
 		const evalId = typeof ev === 'number' ? ev : ev.id;
-		const url = `${cnf.apiURL}/evaluaciones/${evalId}`;
+		const url = `${cnf.API_URL}/evaluaciones/${evalId}`;
 		this.logger.debug(`Eliminando ev con ID: ${evalId}, mandando req a: ${url}`);
 		return this.httpClient.delete<true>(url).toPromise();
 	}
@@ -39,7 +39,7 @@ export class EvaluacionesAdmService {
 	 * @throws completar a futuro
 	 */
 	add(ev: IEvSendDTO): Promise<true> {
-		const url = `${cnf.apiURL}/evaluaciones`;
+		const url = `${cnf.API_URL}/evaluaciones`;
 		this.logger.debug(`POST req a: ${url}, añadiendo evaluación:`, ev);
 		return this.httpClient.post<true>(url, ev).toPromise();
 	}
@@ -56,7 +56,7 @@ export class EvaluacionesAdmService {
 	// }
 
 	updateShowingResults(payload: IUpdateEvShowingResultsDTO) {
-		const url = `${cnf.apiURL}/evaluaciones/showing-results`;
+		const url = `${cnf.API_URL}/evaluaciones/showing-results`;
 		this.logger.debug(
 			`Actualizando valor del slideToggleBtn para mostrar/ocultar resultados, valor: ${payload.isShowingResults}, POST req a ${url}`,
 			payload,

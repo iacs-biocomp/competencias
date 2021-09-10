@@ -40,7 +40,7 @@ export class JwtService {
 			return;
 		}
 		const response: IAuthTokenRes = await this.httpClient
-			.post<IAuthTokenRes>(`${cnf.apiURL}/jwtrefresh`, { tokenStr: this.token() })
+			.post<IAuthTokenRes>(`${cnf.API_URL}/jwtrefresh`, { tokenStr: this.token() })
 			.toPromise();
 		this.updateJwt(response.token);
 		this.refresh.eventOcurred = false;
@@ -48,6 +48,7 @@ export class JwtService {
 
 	/**
 	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
+	 *
 	 * @returns El token de tipo `IJwtToken` descodificado
 	 */
 	getDecodedToken(): IJwtToken {
@@ -65,8 +66,8 @@ export class JwtService {
 
 	/**Metodo que borra el token de las cookies y del localStorage */
 	rmToken(): void {
-		cookieRm(cnf.jwtName);
-		localStorage.removeItem(cnf.jwtName);
+		cookieRm(cnf.JWT_NAME);
+		localStorage.removeItem(cnf.JWT_NAME);
 	}
 
 	/** Debe ser llamado cuando ha ocurrido un evento que representa interación del usuario  */
@@ -77,16 +78,17 @@ export class JwtService {
 
 	/**
 	 * Actualiza el jwt del localStorage y de las cookies
+	 *
 	 * @param token El token firmado y codificado a settear en cookies y localStorage
 	 */
 	updateJwt(token: string): void {
-		localStorage.setItem(cnf.jwtName, token);
-		document.cookie = cnf.jwtName + '=' + encodeURIComponent(token);
+		localStorage.setItem(cnf.JWT_NAME, token);
+		document.cookie = cnf.JWT_NAME + '=' + encodeURIComponent(token);
 	}
 
 	/** Token codificado en base64 */
 	private token = () => {
-		const tkn = localStorage.getItem(cnf.jwtName);
+		const tkn = localStorage.getItem(cnf.JWT_NAME);
 		return tkn === null ? undefined : tkn;
 	};
 }

@@ -10,7 +10,7 @@ export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	public async getAll(): Promise<ICCompDTO[]> {
-		const url = `${cnf.apiURL}/catcomp/all`;
+		const url = `${cnf.API_URL}/catcomp/all`;
 		this.logger.debug(`Obteniendo todas las cat competenciales de: ${url}`);
 		return this.httpClient.get<ICCompDTO[]>(url).toPromise();
 	}
@@ -23,7 +23,7 @@ export class CatCompetencialesService {
 	 */
 	async delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<true> {
 		const cCompId = typeof cComp === 'string' ? cComp : cComp.id;
-		const url = `${cnf.apiURL}/catcomp/${cCompId}`;
+		const url = `${cnf.API_URL}/catcomp/${cCompId}`;
 		this.logger.debug(`Eliminando cComp con ID: ${cCompId}, mandando req a: ${url}`);
 		return this.httpClient.delete<true>(url).toPromise();
 	}
@@ -36,7 +36,7 @@ export class CatCompetencialesService {
 	 *
 	 */
 	add(cComp: ICCompAddDTO): Promise<true> {
-		const url = `${cnf.apiURL}/catcomp`;
+		const url = `${cnf.API_URL}/catcomp`;
 		this.logger.debug(`Añadiendo cComp con ID: ${cComp.id}, POST req a ${url}`, cComp);
 		return this.httpClient.post<true>(url, cComp).toPromise();
 	}
@@ -49,7 +49,7 @@ export class CatCompetencialesService {
 	 *
 	 */
 	edit(cComp: ICCompDTO): Promise<true> {
-		const url = `${cnf.apiURL}/catcomp`;
+		const url = `${cnf.API_URL}/catcomp`;
 		this.logger.debug(`Editando la cComp con ID: ${cComp.id}, PUT req a ${url}`, cComp);
 		return this.httpClient.put<true>(url, cComp).toPromise();
 	}

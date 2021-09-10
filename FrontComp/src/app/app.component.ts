@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 		setInterval(() => {
 			// LOG: configurando interval de refresh jwt en ${cnf.jwtinterval} segundos
 			this.jwtSv.refreshToken();
-		}, cnf.jwtInterval);
+		}, cnf.JWT_INTERVAL);
 	}
 
 	/**

@@ -10,7 +10,7 @@ export class CompetenciasService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	public getAll(): Promise<ICompGetDTO[]> {
-		const url = `${cnf.apiURL}/competencias/all`;
+		const url = `${cnf.API_URL}/competencias/all`;
 		this.logger.debug(`Obteniendo todas las competencias de: ${url}`);
 		return this.httpClient.get<ICompGetDTO[]>(url).toPromise();
 	}
@@ -22,7 +22,7 @@ export class CompetenciasService {
 	 */
 	delete(comp: ICompetencia['id'] | Pick<ICompetencia, 'id'>): Promise<boolean> {
 		const compId = typeof comp === 'string' ? comp : comp.id;
-		const url = `${cnf.apiURL}/competencias/${compId}`;
+		const url = `${cnf.API_URL}/competencias/${compId}`;
 		this.logger.debug(`Eliminando comp con ID: ${compId}, mandando req a: ${url}`);
 		return this.httpClient.delete<boolean>(url).toPromise();
 	}
@@ -34,7 +34,7 @@ export class CompetenciasService {
 	 * @throws TODO: complete
 	 */
 	add(comp: ICompAddDTO): Promise<boolean> {
-		const url = `${cnf.apiURL}/competencias`;
+		const url = `${cnf.API_URL}/competencias`;
 		this.logger.debug(`Añadiendo comp con ID: ${comp.id}, POST req a: ${url}`, comp);
 		return this.httpClient.post<boolean>(url, comp).toPromise();
 	}
@@ -46,7 +46,7 @@ export class CompetenciasService {
 	 *
 	 */
 	edit(comp: ICompAddDTO): Promise<boolean> {
-		const url = `${cnf.apiURL}/competencias`;
+		const url = `${cnf.API_URL}/competencias`;
 		this.logger.debug(`Editando la comp con ID: ${comp.id}, PUT req a: ${url}`, comp);
 		return this.httpClient.put<boolean>(url, comp).toPromise();
 	}

@@ -76,11 +76,7 @@ export class LogService {
 		if (this.shouldLog(msg.level)) {
 			const msgKeys = Object.keys(msg) as (keyof LogMessage)[];
 			const condition = (key: keyof LogMessage) => key !== 'msg' && key !== 'date' && key !== 'level';
-			const params = msgKeys
-				.map(key => {
-					return condition(key) ? msg[key] : undefined;
-				})
-				.filter(p => p !== undefined);
+			const params = msgKeys.map(key => (condition(key) ? msg[key] : undefined)).filter(p => p !== undefined);
 			switch (msg.level) {
 				case LogLevels.ERROR:
 					console.error(msg.msg, ...params);
@@ -127,7 +123,7 @@ export class LogService {
 
 	private async sendMsgsToBackend(): Promise<boolean> {
 		try {
-			await this.httpClient.post<true>(`${cnf.apiURL}/logging`, LogService.latestMessages).toPromise();
+			await this.httpClient.post<true>(`${cnf.API_URL}/logging`, LogService.latestMessages).toPromise();
 			return true;
 		} catch (error) {
 			return false;

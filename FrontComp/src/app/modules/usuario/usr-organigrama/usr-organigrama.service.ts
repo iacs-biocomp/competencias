@@ -17,11 +17,12 @@ export class UsrOrganigramaService {
 
 	/**
 	 * Fetch the user organization chart from the API
+	 *
 	 * @returns The user organization chart type {@link IOrganigramaTrabajadorDTO}
 	 */
 	organigramaUsr(): Promise<IOrganigramaTrabajadorDTO> {
 		const token = this.jwtSv.getDecodedToken();
-		const url = `${cnf.apiURL}/organigrama/${token.username}`;
+		const url = `${cnf.API_URL}/organigrama/${token.username}`;
 		this.logger.debug(`Get req a ${url}, obteniendo mi organigrama`);
 		return this.httpClient.get<IOrganigramaTrabajadorDTO>(url).toPromise();
 	}

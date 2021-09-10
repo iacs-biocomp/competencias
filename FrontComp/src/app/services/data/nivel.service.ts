@@ -10,7 +10,7 @@ export class NivelService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
 	getAll(): Promise<INivelGetDTO[]> {
-		const url = `${cnf.apiURL}/niveles/all`;
+		const url = `${cnf.API_URL}/niveles/all`;
 		this.logger.debug(`Obteniendo todos los niveles de ${url}`);
 		return this.httpClient.get<INivelGetDTO[]>(url).toPromise();
 	}
@@ -24,7 +24,7 @@ export class NivelService {
 	 */
 	getOne(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<INivelGetDTO> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
-		const url = `${cnf.apiURL}/niveles/${idNivel}`;
+		const url = `${cnf.API_URL}/niveles/${idNivel}`;
 		this.logger.debug(`Obteniendo el nivel con ID: ${idNivel}, mandado req a: ${url}`);
 		return this.httpClient.get<INivel>(url).toPromise();
 	}
@@ -37,7 +37,7 @@ export class NivelService {
 	 *
 	 */
 	getAllRefNivs(): Promise<INivelGetDTO[]> {
-		const url = `${cnf.apiURL}/niveles/reference`;
+		const url = `${cnf.API_URL}/niveles/reference`;
 		this.logger.debug(`Obteniendo todos los niveles de referencia de: ${url}`);
 		return this.httpClient.get<INivelGetDTO[]>(url).toPromise();
 	}
@@ -48,7 +48,7 @@ export class NivelService {
 	 */
 	delete(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<boolean> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
-		const url = `${cnf.apiURL}/niveles/${idNivel}`;
+		const url = `${cnf.API_URL}/niveles/${idNivel}`;
 		this.logger.debug(`Eliminando el nivel con ID: ${idNivel}, mandando req a: ${url}`);
 		return this.httpClient.delete<boolean>(url).toPromise();
 	}
@@ -62,7 +62,7 @@ export class NivelService {
 	 */
 	add(nivel: INivelAddDTO): Promise<boolean> {
 		//*QUAL: Crear INivelPostDto o similar
-		const url = `${cnf.apiURL}/niveles`;
+		const url = `${cnf.API_URL}/niveles`;
 		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${nivel.code}, POST req a: ${url}`, nivel);
 		return this.httpClient.post<boolean>(url, nivel).toPromise();
 	}
@@ -76,7 +76,7 @@ export class NivelService {
 	 *
 	 */
 	edit(nivel: INivelPutDTO): Promise<boolean> {
-		const url = `${cnf.apiURL}/niveles`;
+		const url = `${cnf.API_URL}/niveles`;
 		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, nivel);
 		return this.httpClient.put<boolean>(url, nivel).toPromise();
 	}

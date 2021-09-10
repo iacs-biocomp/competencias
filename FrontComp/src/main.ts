@@ -4,11 +4,11 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-if (environment.production) {
+if (environment.IN_PRODUCTION) {
 	enableProdMode();
 }
-if(environment.isApiUrlDynamic){
-	environment.apiURL = `${location.origin}${environment.apiURLtoAdd}`;
+if(environment.IS_API_URL_DYNAMIC){
+	environment.API_URL = `${location.origin}${environment.API_URL_TO_ADD}`;
 }
 platformBrowserDynamic()
 	.bootstrapModule(AppModule)
