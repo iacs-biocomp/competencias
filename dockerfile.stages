@@ -8,7 +8,7 @@ WORKDIR /
 COPY ./ ./
 # BackEnd compilation
 WORKDIR /back-comp
-RUN pnpm i && pnpm run build &&\
+RUN pnpm i && (cd ../sharedCode; pnpm i) && pnpm run build &&\
 	pnpm i -P
 RUN rm -f .env && mv .envProd .env
 # FrontEnd compilation
