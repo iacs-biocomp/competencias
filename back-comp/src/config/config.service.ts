@@ -24,13 +24,19 @@ export class ConfigService {
 			process.exitCode = 1;
 		}
 		this.envConfig = parse(readFileSync(envFilePath));
+		for (const item in Configuration) {
+			if (this.envConfig[Configuration[item]] === undefined) {
+				console.warn(`La variable de entorno ${item} no existe en el archivo .env`);
+			}
+		}
 	}
+
 	/**
 	 * Gets the requested env variable
 	 * @param key The env var name
 	 * @returns The env variable as string
 	 */
 	get(key: Configuration): string {
-		return this.envConfig[key];
+		return this.envConfig[key]!;
 	}
 }

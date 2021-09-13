@@ -9,5 +9,4 @@ export enum Configuration {
 	APP_PORT = 'APP_PORT',
 	JWT_EXPIRETIME = 'JWT_EXPIRETIME',
 	PG_SYNC = 'PG_SYNC',
-	PG_EXT_PORT = 'POSTGRES_PORT_EXTERNAL',
 }
