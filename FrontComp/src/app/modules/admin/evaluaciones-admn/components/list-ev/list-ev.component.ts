@@ -4,6 +4,7 @@ import { EvaluacionesAdmService } from 'services/data';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
 
+// TODO: Restructure into a layout and components
 @Component({
 	selector: 'app-list-ev',
 	templateUrl: './list-ev.component.html',
@@ -16,7 +17,7 @@ export class ListEvComponent implements OnInit {
 	/** Evs in database */
 	evaluaciones: IEvaluacion[] = [];
 
-	// TODO: tsdoc
+	/** Object with functions and data related to showing-results buttons */
 	showingResultsBtnControls = {
 		textToAdd: 'slideResults-',
 		/**
@@ -38,13 +39,14 @@ export class ListEvComponent implements OnInit {
 
 	constructor(private readonly evSv: EvaluacionesAdmService, private readonly logger: LogService) {}
 
-	ngOnInit() {
-		this.logger.verbose('Cargando componte list-ev');
-		this.updateEvalView();
+	async ngOnInit() {
+		this.logger.verbose('Inicializando ListEvComponent');
+		await this.updateEvalView();
+		this.isDataLoaded = true;
 	}
 
 	async updateEvalView(): Promise<void> {
-		this.logger.verbose('Actualizando vista del componente');
+		this.logger.verbose('Actualizando vista de ListEvComponent');
 		this.evaluaciones = await this.evSv.getAll();
 	}
 

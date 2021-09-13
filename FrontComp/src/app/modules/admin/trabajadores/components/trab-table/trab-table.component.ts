@@ -24,9 +24,9 @@ export class TrabTableComponent implements OnInit {
 	catComps!: ICatComp[];
 	/** Lista de todas las categorías contractuales */
 	catContracts!: ICatContr[];
-	//TODO: Tsdoc
+	/** The worker that will be added to db */
 	wrkToAdd: ITrabAddDTO[] = [];
-	//TODO: Tsdoc
+	/** List of all workers from database */
 	workers: ITrabajadorDTOCanEdit[] = [];
 
 	constructor(
@@ -61,7 +61,6 @@ export class TrabTableComponent implements OnInit {
 		this.wrkToAdd.splice(indx, 1);
 	}
 
-	/**   */
 	newEmptyWorker(): void {
 		this.wrkToAdd.push({
 			dni: '',

@@ -1,9 +1,5 @@
 import { ICatComp, ICatContr } from './ICategorias';
 
-/**
- * Esquema del Json recibido al pedir los datos de un usuario al backend
- * @param Url /api/users/{USERNAME}
- */
 export interface ITrabajador {
 	dni: string;
 
@@ -12,11 +8,14 @@ export interface ITrabajador {
 	apellidos: string;
 	// TODO: Tsdoc.
 	area: string;
-	// TODO: Tsdoc.
+	/** La unidad a la que pertenece el trabajador */
 	unidad: string;
-	// TODO: Tsdoc.
+	/** El departamento al que pertenece el trabajador */
 	departamento?: string;
-	// TODO: Tsdoc.
+	/**
+	 * Los periodos que tiene el trabajador, para mas información:
+	 * @see {@link IPeriodoTrab}
+	 */
 	periodos?: IPeriodoTrab[];
 	// TODO: Tsdoc.
 	user?: IUser;

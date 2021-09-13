@@ -24,8 +24,6 @@ export class TrabajadoresService {
 	/**
 	 * @param dniOrObj The dni of dniOrObj or dniOrObj that will be searched
 	 * @returns A `Promise` that it's `true` if it has been getted, exception if not
-	 * @throws TODO: exception
-	 * TODO: DONE, testear
 	 */
 	getOneByDni(dniOrObj: ITrabajador['dni'] | Pick<ITrabajador, 'dni'>): Promise<ITrabajadorDTO> {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
@@ -35,10 +33,8 @@ export class TrabajadoresService {
 	}
 
 	/**
-	 * @param usrnameOrObj The username of usrnameOrObj or dniOrObj that will be searched
-	 * @returns A `Promise` that it's `true` if it has been getted, exception if not
-	 * @throws TODO: exception
-	 * TODO: DONE, testear return
+	 * @param usrnameOrObj The username of the worker that will be fetched.
+	 * @returns `Promise` resolved as ITrabajadorDTO, (the worker with that username), rejected if not found.
 	 *
 	 */
 	getOneByUsername(usrnameOrObj: IUser['username'] | Pick<IUser, 'username'>): Promise<ITrabajadorDTO> {
@@ -51,10 +47,9 @@ export class TrabajadoresService {
 	/**
 	 *
 	 * @param wrk The wrk of dniWorker or dniWorker that will be deleted
-	 * @returns A `Promise` that it's `true` if it has been getted, exception if not
-	 * @throws TODO: exception
+	 * @returns `Promise` resolved as `true` if the worker has been deleted, `false` otherwise.
+	 *
 	 */
-
 	delete(wrk: ITrabajador['dni'] | Pick<ITrabajador, 'dni'>): Promise<boolean> {
 		const dniWorker = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/trabajadores/${dniWorker}`;
@@ -65,8 +60,6 @@ export class TrabajadoresService {
 	/**
 	 *
 	 * @returns A `Promise` that it's `true` if it has been getted, exception if not
-	 * @throws TODO: exception
-	 * TODO: DONE
 	 */
 	add(worker: ITrabAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/trabajadores`;
@@ -78,8 +71,6 @@ export class TrabajadoresService {
 	 *
 	 * @param wrk The worker to update
 	 * @returns A `Promise` that it's `true` if it has been edited, exception if not
-	 * @throws TODO: exception
-	 * TODO: DONE,
 	 */
 	edit(wrk: ITrabAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/trabajadores`;

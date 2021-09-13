@@ -16,10 +16,8 @@ export class CatCompetencialesService {
 	}
 
 	/**
-	 *
-	 * @param cComp The id of the cComp to delete
-	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
-	 * @throws TODO: complete
+	 * @param cComp The id of the catComp or the catComp as object to delete
+	 * @returns A `Promise` that it's `true` if it has been deleted, rejected otherwise
 	 */
 	async delete(cComp: ICatComp['id'] | Pick<ICatComp, 'id'>): Promise<true> {
 		const cCompId = typeof cComp === 'string' ? cComp : cComp.id;
@@ -29,11 +27,8 @@ export class CatCompetencialesService {
 	}
 
 	/**
-	 *
 	 * @param cComp The catComp to add
-	 * @returns A `Promise` that it's `true` if it has been added, exception if not
-	 * @throws TODO: complete ()
-	 *
+	 * @returns A `Promise` that it's `true` if it has been added, rejected otherwise
 	 */
 	add(cComp: ICCompAddDTO): Promise<true> {
 		const url = `${cnf.API_URL}/catcomp`;
@@ -42,11 +37,8 @@ export class CatCompetencialesService {
 	}
 
 	/**
-	 *
-	 * @param catComp the catComp to edit in the ddbb
-	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
-	 * @throws TODO: complete ()
-	 *
+	 * @param catComp The catComp edited
+	 * @returns A `Promise` that it's `true` if it has been edited, rejected otherwise
 	 */
 	edit(cComp: ICCompDTO): Promise<true> {
 		const url = `${cnf.API_URL}/catcomp`;

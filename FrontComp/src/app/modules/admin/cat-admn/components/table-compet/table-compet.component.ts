@@ -27,9 +27,6 @@ export class TableCatCompComponent implements OnInit {
 		await this.updateCatCompView();
 	}
 
-	/**
-	 * Actualiza las categorías competenciales de manera asincrona
-	 */
 	async updateCatCompView(): Promise<void> {
 		this.logger.verbose('Actualizando vista de TableCatCompComponent');
 		this.catComps = await this.catCompService.getAll();
@@ -93,7 +90,7 @@ export class TableCatCompComponent implements OnInit {
 	 * Borra una categoria competencial de la bbdd
 	 *
 	 * @param catComp La categoria competencial a borrar
-	 * @returns Una promesa de tipo void
+	 * @returns Void promise
 	 */
 	async deleteCatComp(cComp: ICCompEditable): Promise<void> {
 		this.logger.debug(`Eliminando cComp con ID: ${cComp.id}`);

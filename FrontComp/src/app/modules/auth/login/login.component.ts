@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
 			password: '',
 		}) as ExtFormGroup;
 
-		//Pasar usuario a mayusculas
 		const username = this.loginForm.controls.username;
 		username.valueChanges.subscribe((value: string) => {
 			//Añadido if para evitar error al form.reset()

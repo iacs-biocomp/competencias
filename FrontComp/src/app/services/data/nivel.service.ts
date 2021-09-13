@@ -19,7 +19,6 @@ export class NivelService {
 	 *
 	 * @returns Un `Array` de todos los niveles, sean o no de referencia
 	 * @returns `Promise` with all the niveles, whether or not they are for reference
-	 * TODO: DONE, testear
 	 *
 	 */
 	getOne(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<INivelGetDTO> {
@@ -33,7 +32,6 @@ export class NivelService {
 	 * GET: get all the niveles for reference to the server
 	 *
 	 * @returns `Promise` with all the reference niveles
-	 * TODO: DONE, testear
 	 *
 	 */
 	getAllRefNivs(): Promise<INivelGetDTO[]> {

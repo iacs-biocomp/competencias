@@ -226,8 +226,7 @@ export class ViewEditModelComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Edita el array de competencias de un submodelo
-	 *
+	 * Setts the competences to a model, filtering the subModels that have a competence in comps param
 	 * @param comps las competencias a pasar
 	 */
 	editCompets(comps: ICompetencia[]): void {
