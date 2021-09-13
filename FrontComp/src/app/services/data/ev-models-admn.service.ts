@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IEvModelAddDTO, IEvModelGetDTO, IModelDTO, IRefModel } from 'sharedInterfaces/DTO';
+import { IEvModelAddDTO, IEvModelGetDTO, IEvModelRefUpdateDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { LogService } from 'src/app/shared/log/log.service';
@@ -63,7 +63,7 @@ export class EvModelsAdmnService {
 	 * TODO: DONE, testear
 	 *
 	 */
-	updateRefModel(refModel: IEvModelAddDTO): Promise<true> {
+	updateRefModel(refModel: IEvModelRefUpdateDTO): Promise<true> {
 		const url = `${cnf.API_URL}/modelos/reference`;
 		this.logger.debug(`PUT req a: ${url}, actualizando datos del modelo:`, refModel);
 		return this.httpClient.put<true>(url, refModel, { params: { reference: 'true' } }).toPromise();

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
-import { ICCompAddDTO, ICCompDTO } from 'sharedInterfaces/DTO';
+import { ICCompAddDTO, ICCompCContrDTO, ICCompDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
 
@@ -9,10 +9,10 @@ import { LogService } from 'src/app/shared/log/log.service';
 export class CatCompetencialesService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
-	public async getAll(): Promise<ICCompDTO[]> {
+	public async getAll(): Promise<ICCompCContrDTO[]> {
 		const url = `${cnf.API_URL}/catcomp/all`;
 		this.logger.debug(`Obteniendo todas las cat competenciales de: ${url}`);
-		return this.httpClient.get<ICCompDTO[]>(url).toPromise();
+		return this.httpClient.get<ICCompCContrDTO[]>(url).toPromise();
 	}
 
 	/**
