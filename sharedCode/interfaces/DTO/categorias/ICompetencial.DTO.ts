@@ -26,12 +26,10 @@ export type ICCompDTO = RemovePropsInU<RequiredAndNotNull<ICatComp>, object>;
  * ```ts
  * Objeto de ejemplo aqui
  * ```
- * TODO: Posiblemente deprecated y llamar catContrs
  */
 export type ICCompCContrDTO = ICCompDTO & {
 	catContr: RemovePropsInU<RequiredAndNotNull<ICatContr>, object>[];
 };
-
 
 export type ICatCompWithNoModelsDTO = RemovePropsInU<RequiredAndNotNull<ICatComp>, object> & {
 	/**El numero de modelos en los que aparece esa categoría competencial */

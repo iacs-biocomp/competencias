@@ -11,20 +11,25 @@ export type IEvModelAddDTO = Expand<
 		subModels: ISubModelAddDTO[];
 	}
 >;
+
 // TODO: completar
-export type IEvModelRefUpdateDTO = Pick<IEvModel, 'id'> & {
-	catComp: ICCompDTO;
-	subModels: ISubModelGetDTO[];
-};
+export type IEvModelRefUpdateDTO = Expand<
+	Pick<IEvModel, 'id'> & {
+		catComp: ICCompDTO;
+		subModels: ISubModelGetDTO[];
+	}
+>;
 
 /**
  * @version 0.0.1
  */
-export type IEvModelGetDTO = PickPropsInU<RequiredAndNotNull<IEvModel>, TsPrimitiveTypes> & {
-	catComp: ICCompDTO;
-	// evs: IEvaluacion[];
-	subModels: ISubModelGetDTO[];
-};
+export type IEvModelGetDTO = Expand<
+	PickPropsInU<RequiredAndNotNull<IEvModel>, TsPrimitiveTypes> & {
+		catComp: ICCompDTO;
+		// evs: IEvaluacion[];
+		subModels: ISubModelGetDTO[];
+	}
+>;
 
 /** @deprecated change to DTO */
 export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id' | 'evs'>;
