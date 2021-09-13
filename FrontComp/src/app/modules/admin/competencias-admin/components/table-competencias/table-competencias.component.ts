@@ -1,71 +1,58 @@
 import { Component, OnInit } from '@angular/core';
 import { ICompetencia } from 'sharedInterfaces/Entity';
-import { CompetenciasService } from '../../../../../services/data/competencias.service';
-import { addDays } from 'date-fns';
+import { isBefore, subDays } from 'date-fns';
 import { ICompAddDTO, ICompGetDTO } from 'sharedInterfaces/DTO';
 import { LogService } from 'src/app/shared/log/log.service';
+import { CompetenciasService } from 'services/data';
+import { pull } from 'lodash';
 
 interface IComptEdit extends ICompGetDTO {
 	editing?: boolean;
 }
 
-// type ICompetenciaDTO = Omit<ICompetencia, 'createdAt'> & {
-// 	createdAt: Date | undefined;
-// };
 @Component({
 	selector: 'table-competencias',
 	templateUrl: './table-competencias.component.html',
 	styleUrls: ['./table-competencias.component.scss'],
 })
 export class TableCompetenciasComponent implements OnInit {
-	compeToAdd: ICompAddDTO[] = [];
-	compets: IComptEdit[] = [];
-	today = new Date();
-	OneWeekAgo = addDays(new Date(), -7);
+	compsToAdd: ICompAddDTO[] = [];
+	comps: IComptEdit[] = [];
 
 	constructor(private comptService: CompetenciasService, private readonly logger: LogService) {}
 
 	async ngOnInit(): Promise<void> {
-		this.logger.verbose('Cargando componente table-competencias');
+		this.logger.verbose('Cargando componente TableCompetenciasComponent');
 		this.updateCompeView();
 	}
 
 	/** Actualiza la vista de competencias */
 	async updateCompeView(): Promise<void> {
-		this.logger.verbose('Actualizando la vista del componente');
-		this.compets = await this.comptService.getAll();
+		this.logger.verbose('Actualizando la vista del componente TableCompetenciasComponent');
+		this.comps = await this.comptService.getAll();
 	}
 
-	/** Devuelve un booleano con true si se puede borrar y false si no;
-	 * esto depende de si la competencia tiene más de una semana desde que se
-	 * creó (return true), o no (return false)
-	 *
+	/**
 	 * @param competencia la competencia que queremos intentar borrar
+	 * @returns 'true' if the competence can be deleted, 'false' otherwise
 	 */
 	canDelete<T extends Pick<ICompetencia, 'createdAt'>>(competencia: T): boolean {
-		//!!No deja de logar
-		this.logger.verbose(
-			`Comprobando si la competencia tiene más de una semana de creación y se puede borrar. Fecha de creación: ${competencia.createdAt}`,
-		);
-		return competencia.createdAt <= this.OneWeekAgo ? false : true;
+		const oneWeekAgo = subDays(new Date(), 7);
+		return isBefore(oneWeekAgo, competencia.createdAt);
 	}
 
 	/**
 	 * Busca la competencia a borrar y la elimina
 	 * @param comp competencia que se quiere borrar
 	 */
-	deleteCompeToAdd(comp: ICompAddDTO): void {
+	deleteCompToAdd(comp: ICompAddDTO): void {
 		this.logger.verbose('Eliminando competencia');
-		const indx = this.compeToAdd.indexOf(comp);
-		this.compeToAdd.splice(indx, 1);
+		pull(this.compsToAdd, comp);
 	}
 
-	/** Crea una competencia vacia con id, descripcion y
-	 * fecha de creacion (puede ser undefined)
-	 */
-	newEmptyCompe(): void {
+	addEmptyComp(): void {
 		this.logger.verbose('Creando fila vacía para añadir competencia ');
-		this.compeToAdd.push({
+		this.compsToAdd.push({
 			id: '',
 			descripcion: '',
 		});
@@ -73,16 +60,16 @@ export class TableCompetenciasComponent implements OnInit {
 
 	/**
 	 *
-	 * @param compet La competencia a editar/mandar
+	 * @param comp La competencia a editar/mandar
 	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
 	 * @param send	`true` si se quiere mandar esa competencia al backend `false` si no
 	 */
-	editingCompt(compet: IComptEdit, editing: boolean, send: boolean): void {
-		this.logger.debug(`Editando competencia con ID: ${compet.id}`, compet);
-		compet.editing = editing;
+	editingComp(comp: IComptEdit, editing: boolean, send: boolean): void {
+		this.logger.debug(`Editando competencia con ID: ${comp.id}`, comp);
+		comp.editing = editing;
 		if (send) {
-			delete compet.editing;
-			this.comptService.edit(compet);
+			delete comp.editing;
+			this.comptService.edit(comp);
 			this.logger.verbose('Enviando competencia al backend');
 		}
 	}
@@ -90,31 +77,29 @@ export class TableCompetenciasComponent implements OnInit {
 	/**
 	 * Guarda la competencia que acabamos de crear y actualiza la vista
 	 *
-	 * @param competencia la competencia para guardar
+	 * @param comp la competencia para guardar
 	 */
-	async persistCompe(competencia: ICompAddDTO): Promise<void> {
-		const guardado = await this.comptService.add(competencia);
-		this.logger.debug(`Guardando competencia creada con ID: ${competencia.id}`, competencia);
+	async persistComp(comp: ICompAddDTO): Promise<void> {
+		const guardado = await this.comptService.add(comp);
+		this.logger.debug(`Guardando competencia creada con ID: ${comp.id}`, comp);
 		if (guardado) {
 			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
-			this.deleteCompeToAdd(competencia);
-			await this.updateCompeView();
-			this.logger.verbose('Competencia guardada correctamente en la lista all competencias');
+			this.deleteCompToAdd(comp);
+			this.comps.push({ ...comp, createdAt: new Date() });
 		}
 	}
 
 	/**
 	 * Borra la competencia seleccionada y actualiza la vista
 	 *
-	 * @param competencia la competencia a borrar
+	 * @param comp la competencia a borrar
 	 */
-	async deleteCompe(competencia: ICompetencia) {
-		this.logger.debug(`Eliminando competencia con ID: ${competencia.id}`);
-		const borrado = await this.comptService.delete(competencia);
+	async deleteComp(comp: IComptEdit) {
+		this.logger.debug(`Eliminando competencia con ID: ${comp.id}`);
+		const borrado = await this.comptService.delete(comp);
 		if (borrado) {
-			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			pull(this.comps, comp);
 			this.logger.verbose('Competencia eliminada con éxito');
-			await this.updateCompeView();
 		}
 	}
 }

@@ -29,11 +29,6 @@ export enum RouteParamsNames {
 	styleUrls: ['./mis-resultados.component.scss'],
 })
 export class MisResultadosComponent {
-	constructor(
-		private readonly compSv: CompetenciasService,
-		private readonly resultsSv: ResultsService,
-		private readonly route: ActivatedRoute,
-	) {}
 	/** Used for not display data that has not been fetched from the server*/
 	isDataLoaded = false;
 	/** Where data fetched and **not changed**, from the server is stored */
@@ -45,7 +40,6 @@ export class MisResultadosComponent {
 	cv = {
 		results: [] as ResultAndComp[],
 	};
-
 	showXAxis = true;
 	showYAxis = true;
 	gradient = false;
@@ -61,6 +55,12 @@ export class MisResultadosComponent {
 		domain: ['#C7B42C ', '#A10A28', '#5AA454', '#AAAAAA'],
 	};
 	domainNames: string[] = [];
+
+	constructor(
+		private readonly compSv: CompetenciasService,
+		private readonly resultsSv: ResultsService,
+		private readonly route: ActivatedRoute,
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		const [evId, dni] = [

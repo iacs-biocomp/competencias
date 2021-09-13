@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CatCompetencialesService } from 'services/data';
-import { ICCompAddDTO } from 'sharedInterfaces/DTO';
-import { ICatComp } from 'sharedInterfaces/Entity';
+import { ICCompAddDTO, ICCompCContrDTO } from 'sharedInterfaces/DTO';
 import { LogService } from 'src/app/shared/log/log.service';
+import { pull } from 'lodash';
 
-interface ICatCompetEdit extends ICatComp {
-	editing?: boolean;
+interface ICCompEditable extends ICCompCContrDTO {
+	isInEditMode?: boolean;
 }
 
 /**
@@ -19,8 +19,8 @@ interface ICatCompetEdit extends ICatComp {
 export class TableCatCompComponent implements OnInit {
 	constructor(private catCompService: CatCompetencialesService, private readonly logger: LogService) {}
 
-	catCompToAdd: ICCompAddDTO[] = [];
-	catComps: ICatCompetEdit[] = [];
+	cCompToAdd: ICCompAddDTO[] = [];
+	catComps: ICCompEditable[] = [];
 
 	async ngOnInit(): Promise<void> {
 		this.logger.verbose('Cargando componente table-compet');
@@ -31,7 +31,7 @@ export class TableCatCompComponent implements OnInit {
 	 * Actualiza las categorías competenciales de manera asincrona
 	 */
 	async updateCatCompView(): Promise<void> {
-		this.logger.verbose('Actualizando vista de catComp');
+		this.logger.verbose('Actualizando vista de TableCatCompComponent');
 		this.catComps = await this.catCompService.getAll();
 	}
 
@@ -40,19 +40,17 @@ export class TableCatCompComponent implements OnInit {
 	 *
 	 * @param cComp La catComp a borrar
 	 */
-	deleteCatCompToAdd(cComp: ICatComp): void {
+	deleteCatCompToAdd(cComp: ICCompAddDTO): void {
 		this.logger.debug('Eliminando catComp de la vista de edición', cComp);
-		this.catCompToAdd.splice(this.catCompToAdd.indexOf(cComp), 1);
+		pull(this.cCompToAdd, cComp);
 	}
 
 	/**
 	 * Anade una categoría competencial a la lista catCompToAdd (cComps no grabadas en la bbdd)
 	 */
 	newEmptyCatComp(): void {
-		this.logger.debug('Añadiendo campo vacío a la lista para añadir catComps', {
-			datosAIntroducir: this.catCompToAdd,
-		});
-		this.catCompToAdd.push({
+		this.logger.debug('Creando añadiendo a cCompToAdd catComp vacia');
+		this.cCompToAdd.push({
 			id: '',
 			description: '',
 		});
@@ -64,14 +62,14 @@ export class TableCatCompComponent implements OnInit {
 	 * @param editing `true` si se quiere mostrar un input en descripción, `false` caso contrario
 	 * @param send	`true` si se quiere mandar esa categoria competencia al backend `false` si no
 	 */
-	async editingCatComp(cComp: ICatCompetEdit, editing: boolean, send: boolean): Promise<void> {
+	async editingCatComp(cComp: ICCompEditable, editing: boolean, send: boolean): Promise<void> {
 		this.logger.debug(
 			`Editando cComp con ID: ${cComp.id}, ¿mostrar input en descripcion?: ${editing}, ¿mandar al backend?: ${send}`,
 			cComp,
 		);
-		cComp.editing = editing;
+		cComp.isInEditMode = editing;
 		if (send) {
-			delete cComp.editing;
+			delete cComp.isInEditMode;
 			await this.catCompService.edit(cComp);
 		}
 	}
@@ -86,10 +84,8 @@ export class TableCatCompComponent implements OnInit {
 		this.logger.debug(`Persistiendo cComp con ID: ${cComp.id}`, cComp);
 		const guardado = await this.catCompService.add(cComp);
 		if (guardado) {
-			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
 			this.deleteCatCompToAdd(cComp);
-			this.logger.verbose('Persistido con éxito, mostrando en la lista de cComps');
-			return this.updateCatCompView();
+			this.catComps.push({ ...cComp, catContr: [] });
 		}
 	}
 
@@ -99,12 +95,12 @@ export class TableCatCompComponent implements OnInit {
 	 * @param catComp La categoria competencial a borrar
 	 * @returns Una promesa de tipo void
 	 */
-	async deleteCatComp(cComp: ICatComp) {
+	async deleteCatComp(cComp: ICCompEditable): Promise<void> {
 		this.logger.debug(`Eliminando cComp con ID: ${cComp.id}`);
 		const borrado = await this.catCompService.delete(cComp);
 		if (borrado) {
-			this.logger.verbose('Borrado con éxito');
-			//?Posible cambio a borrarla sin volver a preguntar al backend, modificando compets
+			this.logger.verbose('Borrada cComp con exito');
+			pull(this.catComps, cComp);
 			return this.updateCatCompView();
 		}
 	}

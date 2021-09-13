@@ -14,30 +14,24 @@ import {
 	filterNonSelectedComports,
 	getAllComportsOfComp,
 } from 'sharedCode/Utility';
-import { IRefModel, IModelBasicIndxDTO } from 'sharedInterfaces/DTO';
+import { IModelBasicIndxDTO, IEvModelGetDTO, ISubModelGetDTO } from 'sharedInterfaces/DTO';
 import { ICompetencia, INivel, IComportamiento, ISubModel } from 'sharedInterfaces/Entity';
 import { DbData } from 'src/app/types/data';
+import { find } from 'lodash';
 import { LogService } from 'src/app/shared/log/log.service';
 
-type ComportCtrlView = {
-	/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
-	compSelected: ICompetencia | undefined;
-	nivSelected: INivel | undefined;
-	comportsToShow: IComportamiento[];
-};
-
 type ControlView = {
-	modelToShow: IRefModel;
+	modelToShow: IEvModelGetDTO;
 	modelCompetences: ICompetencia[] | undefined;
 };
 
 /** Este componente esta destinado a la visualización y edición de un modelo, según que parametro se le pase mostrará o no el Añadir/Eliminar comportamiento */
 @Component({
-	selector: 'app-view-edit-model [modoEdicion] [evModel]',
+	selector: 'app-view-edit-model [modoEdicion] [evModel] ',
 	templateUrl: './view-edit-model.component.html',
 	styleUrls: ['./view-edit-model.component.scss'],
 })
-export class ViewEditModelComponent implements OnInit {
+export class ViewEditModelComponent implements OnInit, OnDestroy {
 	comportsToShowObs = new BehaviorSubject<IComportamiento[]>([]);
 
 	/** Indica si el componente ha sido inicializado y se puede renderizar la vista */
@@ -61,34 +55,34 @@ export class ViewEditModelComponent implements OnInit {
 	#subs: Subscription[] = [];
 
 	constructor(
-		private catCompService: CatCompetencialesService,
-		private competSv: CompetenciasService,
-		private nivSv: NivelService,
-		private comportSv: ComportService,
-		private evModelSv: EvModelsAdmnService,
+		private readonly cCompSv: CatCompetencialesService,
+		private readonly compSv: CompetenciasService,
+		private readonly nivSv: NivelService,
+		private readonly comportSv: ComportService,
+		private readonly evModelSv: EvModelsAdmnService,
 		private readonly logger: LogService,
 	) {}
 
 	/** Función que se ejecuta cuando se va a construir el componente,
 	 * al ser asincrona la vista no debe mostrarse si este metodo no ha acabado*/
 	async ngOnInit(): Promise<void> {
-		this.logger.verbose('Cargando componte view-edit-model');
-		const promises = await Promise.all([
-			this.catCompService.getAll(),
-			this.competSv.getAll(),
+		this.logger.verbose('Cargando componte ViewEditModelComponent');
+		const [cComps, comps, comports, niveles] = await Promise.all([
+			this.cCompSv.getAll(),
+			this.compSv.getAll(),
 			this.comportSv.getAll(),
 			this.nivSv.getAllRefNivs(),
 		]);
 		this.dbData = {
-			cComps: promises[0],
-			comps: promises[1],
-			comports: promises[2],
-			niveles: promises[3],
+			cComps: cComps,
+			comps: comps,
+			comports: comports,
+			niveles: niveles,
 		};
 		this.compsObs = new BehaviorSubject(this.dbData.comps);
 		this.#subs.push(
 			this.evModel.subscribe(model => {
-				this.evModelIndx = this.mapIRefModelToIndexed(model);
+				// this.evModelIndx = this.mapIRefModelToIndexed(model);
 				this.cv = {
 					modelToShow: model,
 					modelCompetences: this.getCompet(model),
@@ -116,7 +110,7 @@ export class ViewEditModelComponent implements OnInit {
 	 * @param modelToMap Modelo de tipo IRefModel (Con subModelos) que se quiere mapear
 	 * @returns El modelo mapeado
 	 */
-	mapIRefModelToIndexed(modelToMap: IRefModel): IModelBasicIndxDTO {
+	mapIRefModelToIndexed(modelToMap: IEvModelGetDTO): IModelBasicIndxDTO {
 		const model: Partial<IModelBasicIndxDTO> = {};
 		model.id = modelToMap.id;
 		model.catComp = modelToMap.catComp;
@@ -153,13 +147,21 @@ export class ViewEditModelComponent implements OnInit {
 	 * @param comports El array de comportamientos que añadirán a esa comp con ese nivel
 	 * @param model El modelo a modificar
 	 */
-	addComportToCompet(comp: ICompetencia, niv: INivel, comports: IComportamiento[], model: IRefModel): void {
-		let matchSubModel = model.subModels.find(x => x.competencia?.id === comp.id && x.nivel?.id === niv.id);
+	addComportToCompet(
+		comp: ICompetencia,
+		niv: INivel,
+		comports: IComportamiento[],
+		model: IEvModelGetDTO,
+	): void {
+		let matchSubModel = model.subModels.find(
+			subModel => subModel.competencia.id === comp.id && subModel.nivel.id === niv.id,
+		);
 		this.logger.debug(`Añadiendo comportamientos a comp con ID: ${comp.id} al nivel con ID: ${niv.id}`, {
 			listaComportsAAñadir: comports,
 		});
 		if (!matchSubModel) {
 			matchSubModel = {
+				id: 0,
 				nivel: niv,
 				competencia: comp,
 				comportamientos: [],

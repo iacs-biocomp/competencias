@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EvaluacionesService } from 'services/data';
-import { IOrganigramaEvDTO, ITrabajadorDTO } from 'sharedInterfaces/DTO';
+import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 
 // TODO: Refactor mover a otro sitio

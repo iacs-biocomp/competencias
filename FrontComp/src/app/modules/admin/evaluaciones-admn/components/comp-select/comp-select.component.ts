@@ -8,6 +8,7 @@ import {
 	ViewChild,
 	ElementRef,
 } from '@angular/core';
+import { find, remove } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getCompetOfModel, toggleInArray } from 'sharedCode/Utility';
 import { ICompetencia } from 'sharedInterfaces/Entity';
@@ -65,27 +66,22 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 		},
 	};
 
-	subs: Subscription[] = [];
+	#subs: Subscription[] = [];
 
 	async ngOnInit(): Promise<void> {
-		this.logger.verbose('Cargando componente comp-select');
-		if (!this.compsObs.value) {
-			this.logger.error(
-				'Has renderizado el componente antes de elegir las competencias, o esta es undefined',
-			);
-		}
-		this.subs.push(
-			this.compsObs.subscribe(() => {
-				this.preSelectedComps = !this.preSelectedComps ? [] : this.preSelectedComps; //Se quita undefined
-				console.log(this.preSelectedComps);
+		this.logger.verbose('Iniciando CompSelectComponent');
+		this.#subs.push(
+			this.compsObs.subscribe(next => {
+				this.preSelectedComps = this.preSelectedComps ?? []; //Se quita undefined
+				console.log(next, this.preSelectedComps);
 				this.cv.compsSelected = this.preSelectedComps;
 			}),
 		);
 	}
 
 	ngOnDestroy(): void {
-		this.logger.verbose('Desuscribiendo observables para su destrucción, evitando memory leaks');
-		this.subs.forEach(sub => sub.unsubscribe());
+		this.logger.verbose('Destruyendo CompSelectComponent');
+		this.#subs.forEach(sub => sub.unsubscribe());
 		this.closeModalBtn.nativeElement.click();
 	}
 
@@ -96,8 +92,14 @@ export class CompSelectComponent implements OnInit, OnDestroy {
 	 * @param comp Competencia a borrar o añadir en el array de seleccionadas
 	 */
 	toggleComp(comp: ICompetencia) {
-		this.logger.debug(`Añadiendo competencia a lista de preseleccionada o quitando si ya estaba`, comp);
-		toggleInArray<ICompetencia>(comp, this.cv.compsSelected);
+		const compAlreadySelected = find(this.cv.compsSelected, { id: comp.id });
+		if (!compAlreadySelected) {
+			this.logger.debug(`Añadiendo comp a la lista compsSelected`, comp);
+			this.cv.compsSelected.push(comp);
+		} else {
+			this.logger.debug(`Borrando comp a la lista compsSelected`, comp);
+			remove(this.cv.compsSelected, { id: comp.id });
+		}
 	}
 
 	submit(): void {

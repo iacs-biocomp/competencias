@@ -34,8 +34,6 @@ export type ValOpId = Omit<IValoracionSettedDTO, 'id'> & { id?: IValoracion['id'
 	styleUrls: ['./valoraciones-ev-persona.component.scss'],
 })
 export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
-	constructor(private readonly logger: LogService) {}
-
 	@Input() evaluado!: ITrabajador;
 	@Input() evaluador!: ITrabajador;
 	/** El modelo con el que un trabajador es evaluado, puede no corresponder al de una evaluación (Para los propuestos) */
@@ -62,6 +60,8 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 		},
 	};
 
+	constructor(private readonly logger: LogService) {}
+
 	getAllComportsOfComp = getAllComportsOfComp;
 	getCompetOfModel = getCompetOfModel;
 
@@ -76,7 +76,7 @@ export class ValoracionesEvPersonaComponent implements OnInit, OnDestroy {
 				this.cv = {
 					modelIter: comps.map(comp => {
 						const subModelsOfComp = findSubModels(evModel.subModels, comp);
-						const comportsOfComp = getAllComportsOfComp(comp, subModelsOfComp) as IComportamiento[];
+						const comportsOfComp: IComportamiento[] = getAllComportsOfComp(comp, subModelsOfComp);
 						let nivsOfComp: (INivel & { comports: IComportamiento[] })[] = [];
 						subModelsOfComp.forEach(subModel => {
 							if (!nivsOfComp.find(niv => niv.id === subModel.nivel.id)) {

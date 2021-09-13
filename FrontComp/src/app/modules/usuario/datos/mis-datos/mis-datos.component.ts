@@ -4,7 +4,7 @@ import { JwtService } from 'src/app/services/auth/jwt.service';
 import { UserDataService } from '../user-data.service';
 
 @Component({
-	selector: 'mis-datos',
+	selector: 'app-mis-datos',
 	templateUrl: './mis-datos.component.html',
 	styleUrls: ['./mis-datos.component.scss'],
 })

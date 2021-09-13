@@ -14,7 +14,6 @@ import {
 	evId,
 	ValoracionesEvPersonaLayoutComponent,
 } from './components';
-// TODO: Refactor
 
 const routes: CompRoutes = [
 	{ path: '', component: MisEvaluacionesComponent },

@@ -66,30 +66,7 @@ export class MisEvaluacionesComponent implements OnInit {
 				return;
 			}
 		});
-		this.logger.log(` Inicializado MisEvaluacionesComponent`);
-	}
-
-	/** Set the catComp selected for the new evaluation */
-	setCatComp(idCatComp: string): void {
-		// TODO: Refactor, usar programación funcional
-		for (let i = 0; i <= this.evs.length; i++) {
-			if (this.evs[i].catComp.id === idCatComp) {
-				this.cCompCtl.cCompSelectedObs.next(this.evs[i].catComp);
-			}
-		}
-	}
-
-	/**
-	 * Funcion para igualar la catcompetencial y buscar a los trabajadores con la
-	 * misma catcomp que se va a evaluar
-	 */
-	takeCatComp() {
-		// TODO: Refactor, usar programación funcional
-		for (let i = 0; i <= this.evs.length; i++) {
-			if (this.trabajador.catComp == this.evs[i].catComp) {
-				//			console.log(this.trabajador.catComp);
-			}
-		}
+		this.logger.log('Inicializado MisEvaluacionesComponent');
 	}
 
 	/**

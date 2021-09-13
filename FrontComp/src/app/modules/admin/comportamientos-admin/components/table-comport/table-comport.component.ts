@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ICompetencia, IComportamiento, INivel } from 'sharedInterfaces/Entity';
-import { CompetenciasService } from '../../../../../services/data/competencias.service';
-import { NivelService } from '../../../../../services/data/nivel.service';
-import { ComportService } from '../../../../../services/data/comport.service';
 import { findNivelById, findCompById } from 'sharedCode/Utility';
 import { DbData } from 'src/app/types/data';
 import { LogService } from 'src/app/shared/log/log.service';
+import { ComportService, CompetenciasService, NivelService } from 'services/data';
+import { ICompGetDTO, IComportGetDTO, INivelGetDTO } from 'sharedInterfaces/DTO';
 
 type ComportCtrlView = {
 	filters: {
@@ -30,11 +29,11 @@ interface IComportEdit extends IComportamiento {
 	styleUrls: ['./table-comport.component.scss'],
 })
 export class TableComportComponent implements OnInit, OnDestroy {
-	comportToAdd: IComportamiento[] = [];
-	dbData: Omit<DbData, 'cComps'> = {
-		comps: [],
-		comports: [],
-		niveles: [],
+	comportsToAdd: IComportamiento[] = [];
+	dbData = {
+		comps: [] as ICompGetDTO[],
+		comports: [] as IComportGetDTO[],
+		niveles: [] as INivelGetDTO[],
 	};
 
 	comportsFiltered: IComportEdit[] = [];
@@ -49,27 +48,28 @@ export class TableComportComponent implements OnInit, OnDestroy {
 			comportPlainDesc: {},
 		},
 	};
-	/** Array de todas las suscripciones realizadas en este componente */
-	subs: Subscription[] = [];
+	/** All component subscriptions */
+	#subs: Subscription[] = [];
+
 	constructor(
-		private comportService: ComportService,
-		private compSv: CompetenciasService,
-		private nivSv: NivelService,
+		private readonly comportService: ComportService,
+		private readonly compSv: CompetenciasService,
+		private readonly nivSv: NivelService,
 		private readonly logger: LogService,
 	) {}
 
 	async ngOnInit(): Promise<void> {
-		this.logger.verbose('Cargando componente table-comport');
+		this.logger.verbose('Cargando componente TableComportComponent');
 		this.logger.verbose('Obteniendo todos los datos de la bbdd para funcionar');
-		const promises = await Promise.all([
+		const [comports, comps, niveles] = await Promise.all([
 			this.comportService.getAll(),
 			this.compSv.getAll(),
 			this.nivSv.getAll(),
 		]);
-		this.dbData.comports = promises[0];
-		this.comportsFiltered = promises[0];
-		this.dbData.comps = promises[1];
-		this.dbData.niveles = promises[2];
+		this.dbData.comports = comports;
+		this.comportsFiltered = comports;
+		this.dbData.comps = comps;
+		this.dbData.niveles = niveles;
 		//Añado la descripción modificada por cada comportamiento al objeto key/value comportPlainDesc
 		this.dbData.comports.forEach(
 			comport =>
@@ -78,7 +78,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 					.replace(/\s/g, '')),
 		);
 		//Se añaden las suscripciones a un array para eliminarlas mas facil despues
-		this.subs.push(
+		this.#subs.push(
 			this.cv.filters.nivObs.subscribe(() => (this.comportsFiltered = this.filterByAll())),
 			this.cv.filters.compObs.subscribe(() => (this.comportsFiltered = this.filterByAll())),
 			this.cv.filters.descObs.subscribe(() => {
@@ -88,26 +88,26 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.logger.verbose('Desuscribiendo observables para su destrucción, evitando memory leaks');
-		this.subs.forEach(s => s.unsubscribe());
+		this.logger.verbose('Destruyendo TableComportComponent');
+		this.#subs.forEach(s => s.unsubscribe());
 	}
 
 	/** Metodo que sincroniza la vista con el backend (La lista de comportamiento) */
 	async updateComportView(): Promise<void> {
-		this.logger.verbose('Actualizando vista del componente');
+		this.logger.verbose('Actualizando vista del componente TableComportComponent');
 		this.dbData.comports = await this.comportService.getAll();
 	}
 
-	deleteComptToAdd(compt: IComportamiento): void {
-		this.logger.verbose(`Eliminando comportamiento con ID: ${compt.id}`);
-		const indx = this.comportToAdd.indexOf(compt);
-		this.comportToAdd.splice(indx, 1);
+	deleteComptToAdd(comport: IComportamiento): void {
+		this.logger.verbose('Eliminando comportamiento no añadido', comport);
+		const indx = this.comportsToAdd.indexOf(comport);
+		this.comportsToAdd.splice(indx, 1);
 	}
 
 	/** Añade un nuevo comportamiento al array de comportToAdd */
-	newEmptyCompt(): void {
+	addEmptyComport(): void {
 		this.logger.verbose('Creando fila vacía para añadir comportamiento');
-		this.comportToAdd.push({
+		this.comportsToAdd.push({
 			id: '',
 			descripcion: '',
 			subModels: undefined,
@@ -172,15 +172,11 @@ export class TableComportComponent implements OnInit, OnDestroy {
 		let comports = this.dbData.comports;
 		if (!!filters.compObs.value) {
 			comports = this.filterByComp(filters.compObs.value, comports);
-			this.logger.verbose('Filtrando por competencia');
 		}
 		comports = this.filterByDesc(filters.descObs.value, comports);
-		this.logger.verbose('Filtrando por descripción');
 		if (!!filters.nivObs.value) {
 			comports = this.filterByNivel(filters.nivObs.value, comports);
-			this.logger.verbose('Filtrando por nivel');
 		}
-		console.timeEnd('filterByAll');
 
 		return comports;
 	}
@@ -202,7 +198,6 @@ export class TableComportComponent implements OnInit, OnDestroy {
 		}
 		return comports.filter(comport => {
 			const filterValue = desc.toLowerCase().replace(/\s/g, '');
-			this.logger.verbose('Devolviendo comportamiento que coinciden con la descripción');
 			return this.cv.util4Filters.comportPlainDesc[comport.id].includes(filterValue) ? true : false;
 		});
 	}
@@ -217,7 +212,6 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	filterByNivel(nivel: INivel, comports: IComportamiento[]): IComportamiento[] {
 		this.logger.debug(`Filtrando comportamientos con ID de nivel: ${nivel.id}`, nivel);
 		return comports.filter(comport => {
-			this.logger.verbose('Devolviendo comportamiento que coinciden con el nivel');
 			const idSplited = comport.id.split('.');
 			return idSplited[1] === String(nivel.valor);
 		});
@@ -232,7 +226,6 @@ export class TableComportComponent implements OnInit, OnDestroy {
 	filterByComp(comp: ICompetencia, comports: IComportamiento[]): IComportamiento[] {
 		this.logger.debug(`Filtrando comportamientos por id de competencia: ${comp.id}`, comp);
 		return comports.filter(comport => {
-			this.logger.verbose('Devolviendo comportamiento que coinciden con la competencia');
 			const idSplited = comport.id.split('.');
 			return idSplited[0] === String(comp.id);
 		});

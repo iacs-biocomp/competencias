@@ -5,7 +5,7 @@
 			<div class="card">
 				<!-- TODO: [11]{N1} Refactor, añadir css y mejorar la visualización  -->
 				<h2>Mis Superiores:</h2>
-				<p *ngIf="miOrganigramaData.superiores.length == 0">No tienes superiores</p>
+				<p *ngIf="miOrganigramaData.superiores.length === 0">No tienes superiores</p>
 				<p *ngFor="let superior of miOrganigramaData.superiores">{{ superior.nombre }}</p>
 			</div>
 			<div class="card">
