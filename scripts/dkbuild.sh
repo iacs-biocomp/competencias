@@ -1,4 +1,7 @@
 #!/bin/bash
+GO_TO=$(dirname "$0")
+cd $GO_TO
+
 cd ../back-comp
 sudo docker stop nodecompetencias
 sudo docker rm nodecompetencias

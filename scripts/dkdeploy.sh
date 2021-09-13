@@ -1,4 +1,7 @@
 #!/bin/bash
+GO_TO=$(dirname "$0")
+cd $GO_TO
+
 echo $(tput setaf 2)"Desplegando en local"$(tput sgr0)
 cd ../back-comp
 docker stop nodecompetencias; docker rm nodecompetencias

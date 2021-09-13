@@ -1,3 +1,7 @@
+#!/bin/bash
+GO_TO=$(dirname "$0")
+cd $GO_TO
+
 echo $(tput setaf 2)"Desplegando en "$(tput sgr0)$(tput setaf 5)"Pre-producción"$(tput sgr0)
 echo $(tput setaf 3)"Generando tar de nodecompetencias"$(tput sgr0)
 docker save -o nodecompetencias.tar nodecompetencias
