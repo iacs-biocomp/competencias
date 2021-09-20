@@ -94,7 +94,7 @@ export class ModelosController {
 		/** El modelo que se va a guardar en la db*/
 		let evModel = new EvModel();
 		evModel.catComp = cComp;
-		const subModels = modeloDto.subModels!.map(sub => {
+		const subModels = modeloDto.subModels.map(sub => {
 			let mutSub = new SubModel();
 			mutSub.competencia = sub.competencia as Competencia;
 			mutSub.comportamientos = sub.comportamientos as Comportamiento[];

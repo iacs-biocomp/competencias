@@ -46,11 +46,11 @@ export class OrganigramaController {
 		return workers.map<IOrganigramaUsrDTO>(wrk => {
 			// LOG error, hay un trabajador sin periodo actual
 			return {
-				inferiores: wrk.periodos![0].inferiores ?? [],
-				superiores: wrk.periodos![0].superiores ?? [],
-				pares: wrk.periodos![0].pares ?? [],
+				inferiores: wrk.periodos![0]!.inferiores ?? [],
+				superiores: wrk.periodos![0]!.superiores ?? [],
+				pares: wrk.periodos![0]!.pares ?? [],
 				trabajador: (() => {
-					const cComp = wrk.periodos![0].catComp;
+					const cComp = wrk.periodos![0]!.catComp;
 					const departamento = wrk.departamento === null ? undefined : wrk.departamento;
 					const worker = deleteProps(wrk, ['periodos']);
 					return { ...worker, catComp: cComp, departamento };
@@ -78,7 +78,9 @@ export class OrganigramaController {
 			throw new NotFoundException(`User ${username} does not exist or does not have a worker associated`);
 		}
 		const worker = usr.trabajador;
-		const actualPer: PeriodoTrab = worker.periodos!.filter(per => per.actual)[0];
+		const actualPer: PeriodoTrab = worker.periodos!.reduce((acc, periodo) => {
+			return periodo.actual ? periodo : acc;
+		});
 		return {
 			inferiores: actualPer.inferiores!,
 			superiores: actualPer.superiores!,

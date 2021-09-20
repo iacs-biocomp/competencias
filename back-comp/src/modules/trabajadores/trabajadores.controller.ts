@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	Body,
 	ConflictException,
 	Controller,
@@ -14,7 +15,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { deleteProps } from 'sharedCode/Utility';
 import { TrabAddDTO, TrabCCompCContrDTO } from 'src/DTO/trabajador.DTO';
-import { Trabajador, CatComp, CatContr } from 'src/entity';
+import { Trabajador } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';
@@ -52,8 +53,8 @@ export class TrabajadoresController {
 				dni: trab.dni,
 				apellidos: trab.apellidos,
 				area: trab.area,
-				catComp: trab.periodos![0].catComp?.id,
-				catContr: trab.periodos![0].catContr?.id,
+				catComp: trab.periodos![0]!.catComp?.id,
+				catContr: trab.periodos![0]!.catContr?.id,
 				// TODO: Cambiar dto, preguntar a vega si puede haber caso con trabajador sin departamento
 				departamento: trab.departamento ?? 'no department',
 				nombre: trab.nombre,
@@ -120,11 +121,11 @@ export class TrabajadoresController {
 			);
 		}
 		const trabajador = Trabajador.buildFromPost(worker);
-		trabajador.periodos![0].catComp = catComp;
-		trabajador.periodos![0].catContr = catContr;
-		trabajador.periodos![0].trabajador = trabajador;
+		trabajador.periodos![0]!.catComp = catComp;
+		trabajador.periodos![0]!.catContr = catContr;
+		trabajador.periodos![0]!.trabajador = trabajador;
 		await this.trabRepo.save(trabajador);
-		await trabajador.periodos![0].save();
+		await trabajador.periodos![0]!.save();
 		return true;
 	}
 
@@ -150,7 +151,7 @@ export class TrabajadoresController {
 		//TODO: Pasar a un servicio el resto de este metodo https://is.gd/KUSLRU
 		//Si estan actualizando la catComp o catContr y han pasado mas de 7 dias desde la creación del anterior periodo,
 		//creo un nuevo periodo y cierro el actual
-		let perActual = trab.periodos!.find(p => p.actual)!;
+		const perActual = trab.periodos!.find(p => p.actual)!;
 		if (worker.catComp !== perActual.catComp.id || worker.catContr !== perActual.catContr.id) {
 			const todayMinus7 = new Date(new Date().setDate(-7));
 			if (perActual.createdAt < todayMinus7) {
