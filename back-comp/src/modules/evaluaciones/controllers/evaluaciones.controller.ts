@@ -42,16 +42,64 @@ export class EvaluacionesController {
 
 	@Get('user/:username')
 	async getEvsOfUser(@Param('username') username: string): Promise<Ev[]> {
-		const worker = await Trabajador.findOne({
-			where: { user: username },
+		// TODO: Fix method, this not get all evs of user
+		const evsDb = await this.evRepo.find({
 			relations: [
-				'periodos',
-				'periodos.catComp',
-				'periodos.catComp.evaluaciones',
-				'periodos.catComp.evaluaciones.catComp',
-				'periodos.catComp.evaluaciones.model',
+				'catComp',
+				'catComp.periodosTrab',
+				'catComp.periodosTrab.trabajador',
+				'catComp.periodosTrab.superiores',
+				'catComp.periodosTrab.pares',
+				'catComp.periodosTrab.inferiores',
 			],
 		});
+		console.log(evsDb);
+		let evsUser: Ev[];
+		const evsMapped = evsDb.map(ev => {
+			const evMapped = {
+				...ev,
+				propuestasPeriod: { start: ev.iniDate, end: ev.finPropuestas } as Interval,
+				validationPeriod: { start: ev.iniValidacion, end: ev.endValidacion } as Interval,
+				valoracionPeriod: { start: ev.iniValoracion, end: ev.endValoracion } as Interval,
+				evaluatedPeriod: { start: ev.iniPerEvaluado, end: ev.endPerEvaluado } as Interval,
+			};
+			return deleteProps(evMapped, [
+				'iniDate',
+				'finPropuestas',
+				'iniValidacion',
+				'endValidacion',
+				'iniValoracion',
+				'endValoracion',
+				'iniPerEvaluado',
+				'endPerEvaluado',
+			]);
+		});
+		const now = new Date();
+		const evsFiltered = evsMapped.filter(
+			ev =>
+				isWithinInterval(now, ev.propuestasPeriod) ||
+				isWithinInterval(now, ev.validationPeriod) ||
+				isWithinInterval(now, ev.valoracionPeriod),
+		);
+		// evsFiltered.filter(ev => )
+
+		// evsFiltered;
+		// QueryBuilder is used by this reason => https://is.gd/HmgH80
+		const worker = await this.wrkRepo.findOne({
+			join: {
+				alias: 'trabajador',
+				leftJoinAndSelect: {
+					periodos: 'trabajador.periodos',
+					catComp: 'periodos.catComp',
+					evaluaciones: 'catComp.evaluaciones',
+					model: 'evaluaciones.model',
+				},
+			},
+			where: (qb: SelectQueryBuilder<Trabajador>) => {
+				qb.where(`trabajador.user = '${username}' `);
+			},
+		});
+
 		if (!worker) {
 			throw new NotFoundException(`No existe un trabajador con ${username} como nombre de usuario`);
 		}
@@ -60,9 +108,17 @@ export class EvaluacionesController {
 		}
 
 		let evs: Ev[] = [];
+		worker.periodos.forEach(period =>
+			period.catComp.evaluaciones?.forEach(ev => {
+				if (!evs.find(evSaved => evSaved.id === ev.id)) {
+					evs.push(ev);
+				}
+			}),
+		);
+		return evs;
 		//Esto recoge las evaluaciones de cada periodo y las añade a un array vacío
-		worker.periodos.forEach(periodo => evs.push.apply(evs, periodo.catComp.evaluaciones));
-		return evs.filter((ev, index) => evs.findIndex(evIndx => evIndx.id === ev.id) === index);
+		// worker.periodos.forEach(periodo => evs.push.apply(evs, periodo.catComp.evaluaciones));
+		// return evs.filter((ev, index) => evs.findIndex(evIndx => evIndx.id === ev.id) === index);
 	}
 
 	@Get(':id')
@@ -103,16 +159,19 @@ export class EvaluacionesController {
 			end: ev.endPerEvaluado,
 		});
 		const periodos = periodsInRange.filter(period => isWithinInterval(ev.organiDate, period.interval));
-		if (periodos.length !== 1) {
+		if (periodos.length > 1) {
 			// TODO: Cambiar por logger.
 			console.log(
 				new Error(
-					`Existen periodos de una persona en la base de datos que tienen un intervalo de fechas con overlapping, persona: ${periodos[0].trabajador.dni}`,
+					`Existen periodos de una persona en la base de datos que tienen un intervalo de fechas con overlapping, persona: ${periodos[0]?.trabajador.dni}`,
 				),
 			);
 			throw new InternalServerErrorException(`Error con los periodos de la evaluacion ${evId}`);
 		}
 		const periodo = periodos[0];
+		if (!periodo) {
+			return [];
+		}
 		const toEvalWorkers = [...periodo.inferiores, ...periodo.superiores, ...periodo.pares];
 		return toEvalWorkers.map<TrabajadorDTO>(trab => {
 			return { ...trab, departamento: trab.departamento ?? 'no-department' };
