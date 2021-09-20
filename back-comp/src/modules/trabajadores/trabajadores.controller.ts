@@ -76,16 +76,15 @@ export class TrabajadoresController {
 		return this.trabRepo.findOne({ dni: dni }, { relations: relaciones });
 	}
 
-	//Proablemente @deprecated y cambiar a usuario??
 	@Get('username/:usrname')
-	getWrkByUsername(
-		@Param('usrname') usrname: string,
-		@Param('subModels') submodel: boolean,
-		@Param('evaluaciones') evaluaciones: boolean,
-	): Promise<Trabajador | undefined> {
-		let relaciones = submodel ? ['subModel'] : [];
-		relaciones = evaluaciones ? ['subModel', 'subModel.evaluaciones'] : relaciones;
-		return this.trabRepo.findOne({ user: { username: usrname } }, { relations: relaciones });
+	async getWrkByUsername(@Param('usrname') usrname: string): Promise<Trabajador> {
+		// TODO: Return Promise<**DTO>
+		const wrk = await this.trabRepo.findOne({ user: { username: usrname } });
+		if (!wrk) {
+			const msg = `No worker exist associated with this username: ${usrname}`;
+			throw new BadRequestException(msg);
+		}
+		return wrk;
 	}
 
 	@Delete(':dni')
@@ -105,17 +104,11 @@ export class TrabajadoresController {
 		if (existingTrabajador) {
 			throw new ConflictException('Trabajador ya creado');
 		}
-		let catComp: CatComp | undefined;
-		let catContr: CatContr | undefined;
-		try {
-			[catComp, catContr] = await Promise.all([
-				this.catCompRepo.findOne({ id: worker.catComp }),
-				this.catContrRepo.findOne({ id: worker.catContr }),
-			]);
-			if (!catComp || !catContr) {
-				throw new Error('');
-			}
-		} catch (error) {
+		const [catComp, catContr] = await Promise.all([
+			this.catCompRepo.findOne({ id: worker.catComp }),
+			this.catContrRepo.findOne({ id: worker.catContr }),
+		]);
+		if (!catComp || !catContr) {
 			throw new NotFoundException(
 				`No existe una catComp con este id: ${worker.catComp} o una catContr con este: ${worker.catContr}`,
 			);
