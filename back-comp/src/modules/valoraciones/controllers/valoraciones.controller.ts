@@ -14,7 +14,7 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IJwtPayload, IResultadoDTOV2 } from 'sharedInterfaces/DTO';
+import { IJwtPayload, IResultadoDTOV2, IValoracionSettedDTO } from 'sharedInterfaces/DTO';
 import { ICompetencia, INivel, IValoracion, Roles } from 'sharedInterfaces/Entity';
 import { Nivel, Valoracion } from 'src/entity';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
@@ -42,16 +42,16 @@ export class ValoracionesController {
 		private readonly organiSv: OrganigramaService,
 	) {}
 
+	// ? Is a correct method name?
 	@ApiParam({ name: 'dni', description: 'Evaluated DNI, not evaluator' })
 	@Get('setted/:evId/:dni')
-	async changeName(
+	async getSettedValsOfWorkerFromEv(
 		@Req() req: Request,
 		@Param('dni') dni: string,
 		@Param('evId', ParseIntPipe) evId: number,
-	): Promise<Valoracion[]> {
-		// console.log(req);
+	): Promise<IValoracionSettedDTO[]> {
 		// Probablemente innecesario usando authNGuard ya que usa esta misma cookie, 100% estara si pasa el guard
-		const jwtName = this.cnfSv.get(Configuration.JWT_NAME);
+		const jwtName = this.cnfSv.get(Configuration.JWT_NAME)!;
 		const cookiesStr = req.headers.cookie;
 		const cookiesParsed = !!cookiesStr ? parse(cookiesStr) : {};
 		const loginTknStr = cookiesParsed[jwtName];
@@ -61,7 +61,7 @@ export class ValoracionesController {
 		const jwt = this.jwtSv.decode(loginTknStr) as IJwtPayload;
 		console.log(jwt);
 		console.log(evId, dni);
-		const response = await this.valRepo.find({
+		const vals = await this.valRepo.find({
 			join: {
 				alias: 'valoracion',
 				leftJoinAndSelect: {
@@ -69,6 +69,9 @@ export class ValoracionesController {
 					evaluado: 'valoracion.evaluado',
 					ev: 'valoracion.ev',
 					user: 'evaluador.user',
+					nivel: 'valoracion.nivel',
+					comp: 'valoracion.comp',
+					comport: 'valoracion.comport',
 				},
 			},
 			where: (qb: SelectQueryBuilder<Valoracion>) => {
@@ -77,8 +80,19 @@ export class ValoracionesController {
 				qb.andWhere(`evaluado.dni = '${dni}'`);
 			},
 		});
-		console.log(response);
-		return response;
+		//Mapping from Entity to DTO
+		return vals.map<IValoracionSettedDTO>(val => {
+			return {
+				comp: val.comp.id,
+				comport: val.comport.id,
+				ev: val.ev.id,
+				evaluado: val.evaluado.dni,
+				evaluador: val.evaluador.dni,
+				id: val.id,
+				nivel: val.nivel.id,
+				valoracion: val.valoracion,
+			};
+		});
 	}
 
 	@Get('admin/:dni/:evId')
