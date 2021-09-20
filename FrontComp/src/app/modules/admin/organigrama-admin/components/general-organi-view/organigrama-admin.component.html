@@ -112,7 +112,7 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="cv.cCompFilterObs.value && cv.orgFilterObs.value == '' && cv.trabCount == 0">
+			<div *ngIf="cv.cCompFilterObs.value && cv.orgFilterObs.value === '' && cv.trabCount === 0">
 				No hay ningun trabajador con {{ cv.cCompFilterObs.value.id }}
 			</div>
 		</div>

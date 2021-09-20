@@ -35,6 +35,7 @@ export class MisEvaluacionesComponent implements OnInit {
 	//	catCompEv = this.route.snapshot.paramMap.get(catCompEv)!;
 	//	@Input() catCompObs = new BehaviorSubject<ICatComp>();
 	public EvStatus = EvStatus;
+	isDataLoaded = false;
 	evs!: IEvWithStatus[];
 
 	//Pruebas para mostrar un texto u otro en los botones (evaluar o calcular)
@@ -66,6 +67,7 @@ export class MisEvaluacionesComponent implements OnInit {
 				return;
 			}
 		});
+		this.isDataLoaded = true;
 		this.logger.log('Inicializado MisEvaluacionesComponent');
 	}
 
