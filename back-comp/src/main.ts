@@ -44,8 +44,8 @@ async function bootstrap() {
 			longStackTraces: true,
 		});
 	}
-	//TODO: revisar lo del cors, posibles ataques csrf si está en true (Para producción en false?)
-	const app = await NestFactory.create(AppModule, { cors: true });
+	const isCorsEnabled = process.env.NODE_ENV !== 'production' ? true : false;
+	const app = await NestFactory.create(AppModule, { cors: isCorsEnabled });
 
 	const options = new DocumentBuilder()
 		.setTitle('Nest Competencias')
