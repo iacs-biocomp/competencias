@@ -10,7 +10,7 @@ export class AuthGuard {
 	 * @param secret Secret key
 	 * @returns `true` if JWT not expired and valid, `false` otherwise
 	 */
-	public canActivate(token: string, secret: string): boolean {
+	public canActivate(token: string | undefined, secret: string): boolean {
 		if (!token) {
 			return false;
 		}

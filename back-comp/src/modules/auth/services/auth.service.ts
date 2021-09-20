@@ -16,7 +16,7 @@ export class AuthService {
 		@InjectRepository(UserRepository) private readonly userRepository: UserRepository,
 	) {}
 
-	async signup(signupDto: SignupDTO) {
+	async signup(signupDto: SignupDTO): Promise<boolean> {
 		const usr = signupDto;
 		const userExists = await this.userRepository.findOne({
 			where: [{ username: usr.username }, { email: usr.email }],
@@ -54,13 +54,9 @@ export class AuthService {
 		if (!user.active) {
 			throw new UnauthorizedException('User not verified');
 		}
-		let isMatch: boolean;
 		try {
-			isMatch = await compare(password, user.password);
+			await compare(password, user.password);
 		} catch (error) {
-			isMatch = false;
-		}
-		if (!isMatch) {
 			throw new UnauthorizedException(errMsg);
 		}
 
