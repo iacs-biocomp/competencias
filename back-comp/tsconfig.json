@@ -5,6 +5,7 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"strictNullChecks": true,
+		"noUncheckedIndexedAccess": true,
 		"declaration": true,
 		"outDir": "./dist",
 		"allowSyntheticDefaultImports": true,
