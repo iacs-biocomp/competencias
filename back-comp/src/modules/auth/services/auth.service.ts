@@ -48,7 +48,6 @@ export class AuthService {
 		const user = await this.userRepository.findOne({
 			where: { username },
 		});
-
 		if (!user) {
 			throw new UnauthorizedException(errMsg);
 		}

@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { areIntervalsOverlapping } from 'date-fns';
 import { deleteProps } from 'sharedCode/Utility';
 import { ICCompDTO } from 'sharedInterfaces/DTO';
-import { RemovePropsInU } from 'sharedInterfaces/Utility';
 import { PeriodoTrab, PeriodWithInferiores, PeriodWithPares, PeriodWithSuperiores, Trabajador } from 'src/entity';
 import { PeriodosRepo } from 'src/modules/trabajadores/periodos.repository';
 import { TrabajadorRepo } from 'src/modules/trabajadores/trabajador.repository';
@@ -76,6 +75,7 @@ export class OrganigramaService {
 				throw new Error('Relations not loaded properly');
 			}
 		});
+		// TODO: Comprobar, posiblemente true en options
 		return mapedPeriods.filter(period => areIntervalsOverlapping(period.interval, range));
 
 		// allPeriods.map();

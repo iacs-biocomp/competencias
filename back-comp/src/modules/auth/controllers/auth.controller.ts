@@ -4,9 +4,7 @@ import { AuthService } from '../services/auth.service';
 
 @Controller('api')
 export class AuthController {
-	constructor(
-		private readonly _authService: AuthService, // private kCloak: KeycloakService,
-	) {}
+	constructor(private readonly _authService: AuthService) {}
 
 	@Post('signup')
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))

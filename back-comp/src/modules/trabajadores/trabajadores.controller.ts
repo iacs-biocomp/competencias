@@ -58,8 +58,7 @@ export class TrabajadoresController {
 				departamento: trab.departamento ?? 'no department',
 				nombre: trab.nombre,
 				unidad: trab.unidad,
-				// TODO: Comprobar si hay que mandar un ITrabajadorDTO
-				deleteable: false,
+				// deleteable: false,
 			};
 		});
 	}

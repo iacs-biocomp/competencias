@@ -82,8 +82,8 @@ export class ModelosController {
 		@Query('reference', ParseBoolPipe) isReference?: boolean,
 	): Promise<EvModel | undefined> {
 		const referenceParam = isReference ? true : false;
-
 		console.log(modeloDto);
+		// TODO: Refactor
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {
@@ -142,6 +142,7 @@ export class ModelosController {
 			if (!dbModel) {
 				throw new UnprocessableEntityException('No existe modelo de referencia de esa catComp');
 			}
+			// TODO: Refactor
 			const prevSubModels = dbModel.subModels;
 			//Se eliminan todos los subModelos que no tienen otro modelo distinto al que se modifica
 			const promises = prevSubModels
@@ -159,10 +160,6 @@ export class ModelosController {
 			});
 			const subModelsSaved = await this.subModelRepo.save(subModelsNoId);
 			dbModel.subModels = subModelsSaved;
-			const subModelsDB = await this.subModelRepo.find({
-				relations: ['competencia', 'nivel', 'comportamientos', 'modelos', 'modelos.catComp'],
-			});
-			console.log('subModelsDB', subModelsDB);
 			await this.modelRepo.save(dbModel);
 			return true;
 		}

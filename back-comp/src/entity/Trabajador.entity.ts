@@ -34,9 +34,9 @@ export class Trabajador extends BaseEntity implements ITrabajador {
 	@OneToMany(() => PeriodoTrab, periodoTrab => periodoTrab.trabajador, { nullable: false })
 	periodos?: PeriodoTrab[];
 
-	//TODO: Cambiar y poner null false?
+	//* Descomentar el objeto options (nullable: false), si un trabajador no puede existir sin tener un usuario asociado (username y contraseña)
 	@ApiProperty({ type: () => User })
-	@OneToOne(() => User, usr => usr.trabajador)
+	@OneToOne(() => User, usr => usr.trabajador /*, { nullable: false } */)
 	@JoinColumn()
 	user?: User;
 
