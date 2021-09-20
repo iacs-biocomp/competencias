@@ -42,32 +42,6 @@ export class ValoracionesController {
 		private readonly organiSv: OrganigramaService,
 	) {}
 
-	/**
-	 *
-	 * @param dni
-	 * @returns
-	 * @deprecated Rara vez se va a usar, el usuario no debería acceder a todas sus valoraciones
-	 */
-	@Get(':dni')
-	async getAllValsOfUsr(@Param('dni') dni: string): Promise<Valoracion[]> {
-		return this.valRepo.find({ where: { evaluado: { dni: dni } }, relations: ['evaluado', 'evaluador'] });
-	}
-
-	/**
-	 *
-	 * @param dni El dni del trabajador del cual se quieren obtener las valoraciones
-	 * @param evId El identificador de la evaluación
-	 * @returns Las valoraciones de ese trabajador en esa evaluación
-	 * @deprecated Un usuario no debería acceder a todas sus valoraciones de cierta evaluacion, solo resultados
-	 */
-	@Get(':dni/:evId')
-	async getUsrEvVals(@Param('dni') dni: string, @Param('evId', ParseIntPipe) evId: number): Promise<Valoracion[]> {
-		return this.valRepo.find({
-			where: { evaluado: { dni: dni }, ev: { id: evId, isShowingResults: true } },
-			relations: ['evaluado', 'evaluador', 'ev', 'comport', 'comp'],
-		});
-	}
-
 	@ApiParam({ name: 'dni', description: 'Evaluated DNI, not evaluator' })
 	@Get('setted/:evId/:dni')
 	async changeName(
