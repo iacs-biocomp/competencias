@@ -1,4 +1,4 @@
-import { CatComp, EvModel, Valoracion } from './index';
+import { CatComp, EvModel, ObjectiveLevel, Valoracion } from './index';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from 'typeorm';
@@ -85,11 +85,22 @@ export class Ev extends BaseEntity implements IEvaluacion {
 	endPerEvaluado: Date;
 
 	/**
+	 * Fecha que se utiliza para seleccionar un organigrama de unos periodos con fechas entre esta
+	 */
+	@ApiProperty()
+	@Column({ type: 'timestamp', nullable: false })
+	organiDate: Date;
+
+	/**
 	 * Son todas las valoraciones que se asocian a esa evaluacion
 	 */
 	@ApiProperty()
 	@OneToMany(() => Valoracion, v => v.ev)
 	valoraciones?: Valoracion[];
+
+	@ApiProperty()
+	@OneToMany(() => ObjectiveLevel, nivObj => nivObj.ev, { eager: true, onDelete: 'CASCADE' })
+	nivelesObjetivo: ObjectiveLevel[];
 
 	/**
 	 * Represents if users can see results of evaluation entity

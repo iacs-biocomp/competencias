@@ -17,6 +17,7 @@ import {
 	Trabajador,
 	User,
 	Valoracion,
+	ObjectiveLevel,
 } from '../entity/index';
 
 export const databaseProviders = [
@@ -45,6 +46,7 @@ export const databaseProviders = [
 					Trabajador,
 					User,
 					Valoracion,
+					ObjectiveLevel,
 				],
 				migrations: [__dirname + '/migrations/*{.ts,.js}'],
 				logging: false,

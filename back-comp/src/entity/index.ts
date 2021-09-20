@@ -5,6 +5,7 @@ export * from './Comportamiento.entity';
 export * from './Ev.entity';
 export * from './EvModel.entity';
 export * from './Nivel.entity';
+export * from './ObjectiveLevel.entity';
 export * from './PeriodoTrab.entity';
 export * from './SubModel.entity';
 export * from './Trabajador.entity';
