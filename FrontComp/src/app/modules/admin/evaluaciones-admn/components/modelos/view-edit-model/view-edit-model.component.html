@@ -60,6 +60,16 @@
 												[attr.aria-controls]="'#coll' + comp.id.replace('\u0027', '') + nivel.code"
 											>
 												{{ ' Nivel: ' + nivel.code }}
+												<p class="ms-5 mb-0">Descripción:</p>
+												<input
+													class="ms-2"
+													*ngIf="modoEdicion"
+													type="text"
+													[placeholder]="findSubModel(evModel.value.subModels, comp, nivel)?.nivelDescription"
+												/>
+												<p class="ms-2 mb-0" *ngIf="!modoEdicion">
+													{{ findSubModel(evModel.value.subModels, comp, nivel)?.nivelDescription }}
+												</p>
 											</button>
 											<button
 												*ngIf="modoEdicion"

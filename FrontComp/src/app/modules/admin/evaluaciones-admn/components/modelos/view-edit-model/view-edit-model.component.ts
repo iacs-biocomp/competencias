@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import {
 	CatCompetencialesService,
@@ -38,17 +38,17 @@ export class ViewEditModelComponent implements OnInit, OnDestroy {
 	initialized = false;
 	dbData!: Omit<DbData, 'modelToAdd'>;
 	@Input() modoEdicion!: boolean;
-	@Input() evModel!: BehaviorSubject<IRefModel>;
+	@Input() evModel!: BehaviorSubject<IEvModelGetDTO>;
+	@Output() onSaveChanges = new EventEmitter<IEvModelGetDTO>();
 	preSelectedComps: ICompetencia[] = [];
 
 	cv!: ControlView;
-	/** Modelo que se obtiene cuando el componente se inicia del evModel pasado como input */
-	evModelIndx!: IModelBasicIndxDTO;
 	/** Objeto que tiene los datos usados para los select */
-	comportCtl: ComportCtrlView = {
-		compSelected: undefined,
-		nivSelected: undefined,
-		comportsToShow: [],
+	comportCtl = {
+		/** Tipo que agrupa una competencia, un nivel y un array de comportamientos */
+		compSelected: undefined as ICompetencia | undefined,
+		nivSelected: undefined as INivel | undefined,
+		comportsToShow: [] as IComportamiento[],
 	};
 	compsObs!: BehaviorSubject<ICompetencia[]>;
 
@@ -213,16 +213,8 @@ export class ViewEditModelComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	async updateModel(model: IRefModel): Promise<void> {
-		this.logger.verbose('Actualizando modelo');
-		//Se eliminan los subModelos que no tengan comportamientos
-		model.subModels = model.subModels.filter(subM => subM.comportamientos.length !== 0);
-		const response = await this.evModelSv.updateRefModel(model);
-		if (response) {
-			alert('Se ha guardado correctamente');
-		} else {
-			alert('Ha habido un error contacte con un programador');
-		}
+	updateModel(model: IEvModelGetDTO): void {
+		this.onSaveChanges.emit(model);
 	}
 
 	/**
@@ -230,12 +222,20 @@ export class ViewEditModelComponent implements OnInit, OnDestroy {
 	 * @param comps las competencias a pasar
 	 */
 	editCompets(comps: ICompetencia[]): void {
+		console.log(comps);
 		const model = { ...this.evModel.value };
-		const compsIds = comps.map(c => c.id);
-		model.subModels = model.subModels.filter(s => compsIds.includes(s.competencia.id));
-		this.logger.debug(`Editando competencias de un submodelo`, comps);
-		// TODO: [5]{N2} Añadir submodelo vacio con las nuevas competencias, para ello modificar la interfaz ISubModel, arreglar tipos
 		this.cv.modelCompetences = comps;
+		model.subModels = model.subModels.filter(subModel => find(comps, { id: subModel.competencia.id }));
+		/** Empty subModels, added to model because new comps have been added */
+		const newCompsAsSubmodels = comps.reduce<ISubModelGetDTO[]>((acc, comp) => {
+			if (!find(model.subModels, { competencia: { id: comp.id } })) {
+				acc.push({ id: 0, competencia: comp, comportamientos: [], nivel: this.dbData.niveles[0] });
+			}
+			return acc;
+		}, []);
+		model.subModels.push(...newCompsAsSubmodels);
+		this.evModel.next(model);
+		this.logger.debug(`Editando competencias de un submodelo`, comps);
 	}
 
 	/**
