@@ -4,7 +4,6 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { ICContrAddDTO, ICContrAndCCompDTO, ICContrBase, ICContrGetDTO } from 'sharedInterfaces/DTO';
 import { CCompDTO } from './index';
 
-//TODO: Tsdoc, similar as CompAddDTO
 export class CContrBase implements ICContrBase {
 	@Expose()
 	@ApiProperty()
@@ -23,7 +22,6 @@ export class CContrAddDTO extends CContrBase implements ICContrAddDTO {}
 
 export class CContrGetDTO extends CContrBase implements ICContrGetDTO {}
 
-// TODO: implement DTO interface and export in sharedCode
 export class CContrAndCCompDTO extends CContrAddDTO implements ICContrAndCCompDTO {
 	@Expose()
 	@ApiProperty({ type: () => CCompDTO })

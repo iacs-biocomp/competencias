@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IsBoolean, IsInt } from 'class-validator';
+import { IsInt } from 'class-validator';
 import { IEvModelGetDTO, IEvModelRefUpdateDTO } from 'sharedInterfaces/DTO';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { CCompDTO, SubModelDTO } from './index';
@@ -23,7 +23,6 @@ export class EvModelDTO implements IEvModelGetDTO {
 	// @Type(() => )
 	evs: IEvaluacion[];
 
-	// TODO: Complete with dto
 	@ApiProperty({ type: [SubModelDTO] })
 	@Expose()
 	@Type(() => SubModelDTO)
@@ -38,13 +37,16 @@ export class EvModelDTO implements IEvModelGetDTO {
 
 export class EvModelRefUpdateDTO implements IEvModelRefUpdateDTO {
 	@ApiProperty()
+	@Expose()
 	id: number;
 
 	@ApiProperty({ type: () => [CCompDTO] })
+	@Expose()
 	@Type(() => CCompDTO)
 	catComp: CCompDTO;
 
 	@ApiProperty({ type: () => [SubModelDTO] })
+	@Expose()
 	@Type(() => SubModelDTO)
 	subModels: SubModelDTO[];
 }

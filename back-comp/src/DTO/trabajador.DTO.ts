@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ITrabAddDTO } from 'sharedInterfaces/DTO';
+import { ITrabAddDTO, ITrabajadorDTO } from 'sharedInterfaces/DTO';
 
 export abstract class TrabBase {
 	@ApiProperty()
@@ -40,11 +40,9 @@ export abstract class TrabBase {
 	@IsString({ message: 'Trab.departamento should be a string' })
 	departamento: string;
 
-	@ApiProperty()
-	@Expose()
-	// @IsBoolean({ message: 'Trab.deleteable must be a boolean' })
-	deleteable: boolean;
 }
+
+export class TrabajadorDTO extends TrabBase implements ITrabajadorDTO {}
 
 export class TrabCCompCContrDTO extends TrabBase {}
 export class TrabAddDTO extends TrabBase implements ITrabAddDTO {

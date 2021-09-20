@@ -1,10 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
-import { ICatCompWithNoModelsDTO, ICCompAddDTO, ICCompDTO } from 'sharedInterfaces/DTO';
-import { CContrAddDTO } from './index';
+import { ICatCompWithNoModelsDTO, ICCompAddDTO, ICCompCContrDTO, ICCompDTO } from 'sharedInterfaces/DTO';
+import { CContrAddDTO, CContrGetDTO } from './index';
 
-// TODO: Tsdoc
+// TODO: Translate TSDoc to English
+
+/**
+ * DTO base del cual el resto heredan
+ */
 abstract class CCompBaseDTO implements ICCompDTO {
 	@Expose()
 	@IsNotEmpty({ message: 'CCompBaseDTO.Id must not be empty' })
@@ -19,10 +23,11 @@ abstract class CCompBaseDTO implements ICCompDTO {
 	description!: string;
 }
 
-// TODO: Tsdoc
-export class CCompCContrDTO extends CCompBaseDTO implements ICCompDTO {}
-
-// TODO: Tsdoc
+// TODO: catContr required?
+/**
+ *
+ * DTO usado para añadir una nueva categoría competencial
+ */
 export class CCompAddDTO extends CCompBaseDTO implements ICCompAddDTO {
 	@Expose()
 	@ApiProperty({ type: () => CContrAddDTO })
@@ -30,22 +35,21 @@ export class CCompAddDTO extends CCompBaseDTO implements ICCompAddDTO {
 	catContr!: CContrAddDTO;
 }
 
-// TODO: Tsdoc
-export class CCompDTO implements ICCompDTO {
+export class CCompCContrDTO extends CCompBaseDTO implements ICCompCContrDTO {
 	@Expose()
-	@IsNotEmpty({ message: 'Id must not be empty' })
-	@IsString({ message: 'Id must be a string' })
-	@ApiProperty()
-	id!: string;
-
-	@Expose()
-	@IsNotEmpty({ message: 'Description must not be empty' })
-	@IsString({ message: 'Description must be a string' })
-	@ApiProperty()
-	description!: string;
+	@ApiProperty({ type: () => CContrGetDTO })
+	@Type(() => CContrGetDTO)
+	catContr!: CContrGetDTO[];
 }
 
-// TODO: Tsdoc
+/**
+ *  Categoría competencial base
+ */
+export class CCompDTO extends CCompBaseDTO implements ICCompDTO {}
+
+/**
+ *  Categoría competencial con numero de modelos asociados, contando el de referencia
+ */
 export class CatCompWithNoModelsDTO extends CCompBaseDTO implements ICatCompWithNoModelsDTO {
 	@ApiProperty()
 	@IsInt({ message: 'CatCOmpWithNoModelsDTO.nModels must be an integer' })

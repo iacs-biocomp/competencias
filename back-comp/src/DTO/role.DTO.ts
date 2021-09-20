@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { IsDate, IsInt, IsNotEmpty, IsString } from 'class-validator';
 import { IRoleDTO } from 'sharedInterfaces/DTO';
 
@@ -31,12 +31,14 @@ export class RoleDTO implements IRoleDTO {
 	@ApiProperty()
 	@Expose()
 	@IsNotEmpty({ message: 'Role.createdAt must not be empty' })
+	@Type(() => Date)
 	@IsDate({ message: 'Role.createdAt must be a Date' })
 	createdAt: Date;
 
 	@ApiProperty()
 	@Expose()
 	@IsNotEmpty({ message: 'Role.updatedAt must not be empty' })
+	@Type(() => Date)
 	@IsDate({ message: 'Role.updatedAt must be a Date' })
 	updatedAt: Date;
 }

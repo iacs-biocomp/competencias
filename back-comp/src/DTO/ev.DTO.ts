@@ -23,55 +23,61 @@ abstract class EvAddBaseDTO implements IEvSendDTO {
 	catComp: CCompDTO;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd.iniDate must be a date' })
 	iniDate: Date;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd.finPropuestas must be a date' })
 	finPropuestas: Date;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd. must be a date' })
 	iniValidacion: Date;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd. must be a date' })
 	endValidacion: Date;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd.iniValoracion must be a date' })
 	iniValoracion: Date;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd.endValoracion must be a date' })
 	endValoracion: Date;
 
 	@ApiProperty()
+	@Type(() => Date)
 	@Expose()
 	@IsDate({ message: 'EvAdd.iniPerEvaluado must be a date' })
 	iniPerEvaluado: Date;
 
 	@ApiProperty()
 	@Expose()
+	@Type(() => Date)
 	@IsDate({ message: 'EvAdd.endPerEvaluado must be a date' })
 	endPerEvaluado: Date;
+
+	@ApiProperty()
+	@Expose()
+	@Type(() => Date)
+	@IsDate({ message: 'EvAdd.endPerEvaluado must be a date' })
+	organiDate: Date;
 }
 
 export class EvAddDTO extends EvAddBaseDTO {}
-
-export class EvUpdateDTO extends EvAddBaseDTO implements IEvSendDTO {
-	@ApiProperty()
-	@Expose()
-	@IsNotEmpty({ message: 'EvUpdate.isShowingResults must be defined' })
-	@IsBoolean({ message: 'EvUpdateDTO.isShowingResults must be a boolean' })
-	isShowingResults: boolean;
-}
 
 export class UpdateEvShowingResultsDTO implements IUpdateEvShowingResultsDTO {
 	@ApiProperty()

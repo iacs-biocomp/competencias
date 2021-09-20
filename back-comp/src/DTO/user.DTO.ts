@@ -38,12 +38,14 @@ export class UserDTO implements IUserDTO {
 
 	@Expose()
 	@ApiProperty()
+	@Type(() => Date)
 	@IsDate({ message: 'User.createdAt must be a Date' })
 	@IsNotEmpty({ message: 'User.createdAt must be defined' })
 	createdAt: Date;
 
 	@Expose()
 	@ApiProperty()
+	@Type(() => Date)
 	@IsDate({ message: 'User.updatedAt must be a Date' })
 	@IsNotEmpty({ message: 'User.updatedAt must be defined' })
 	updatedAt: Date;

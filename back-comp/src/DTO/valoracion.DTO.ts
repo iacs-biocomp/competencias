@@ -4,37 +4,7 @@ import { IsIn, IsInt } from 'class-validator';
 import { IValoracionAddDTO, IValoracionUpdateDTO } from 'sharedInterfaces/DTO';
 import { ValoracionesNums } from 'sharedInterfaces/Entity';
 
-// TODO: Compelte
-/* export class ValoracionBaseDTO implements IValoracionAddDTO {
-	@ApiProperty()
-	@Expose()
-	evaluador: ITrabajador;
-
-	@ApiProperty()
-	@Expose()
-	@Type(() => ComportGetDTO)
-	evaluado: ITrabajador;
-
-	@ApiProperty()
-	@Expose()
-	@Type(() => ComportGetDTO)
-	ev: IEvaluacion;
-
-	@ApiProperty()
-	@Expose()
-	@Type(() => CompGetDTO)
-	comp: CompGetDTO;
-
-	@ApiProperty()
-	@Expose()
-	@Type(() => ComportGetDTO)
-	comport: ComportGetDTO;
-
-	@ApiProperty()
-	@Expose()
-	@IsIn([1, 2, 3, 4, 5], { message: 'The valoration must be a integer between 1 and 5' })
-	valoracion: ValoracionesNums;
-} */
+// TODO: Add tsdoc in english
 
 export class ValoracionAddDTO implements IValoracionAddDTO {
 	@ApiProperty()
@@ -57,7 +27,10 @@ export class ValoracionAddDTO implements IValoracionAddDTO {
 	@Expose()
 	comport: string;
 
-	// TODO: test cast to valoracionesNum
+	@ApiProperty()
+	@Expose()
+	nivel: number;
+
 	@ApiProperty()
 	@Expose()
 	@IsInt()
@@ -73,30 +46,7 @@ export class ValoracionUpdateDTO implements IValoracionUpdateDTO {
 
 	@ApiProperty()
 	@Expose()
-	evaluador: string;
-
-	@ApiProperty()
-	@Expose()
-	evaluado: string;
-
-	@ApiProperty()
-	@Expose()
-	ev: number;
-
-	@ApiProperty()
-	@Expose()
-	comp: string;
-
-	@ApiProperty()
-	@Expose()
-	comport: string;
-
-	// TODO: test cast to valoracionesNum
-	@ApiProperty()
-	@Expose()
 	@IsInt()
 	@IsIn([1, 2, 3, 4, 5], { message: 'The valoration must be a integer between 1 and 5' })
 	valoracion: ValoracionesNums;
 }
-
-// export class ValoracionDTO implements IValoracionToAddDTO {}

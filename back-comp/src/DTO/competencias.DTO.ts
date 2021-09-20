@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ICompAddDTO, ICompBaseDTO, ICompGetDTO } from 'sharedInterfaces/DTO';
 
-//TODO: Tsdoc, similar as CompAddDTO
 abstract class CompBaseDTO implements ICompBaseDTO {
 	@ApiProperty()
 	@Expose()
@@ -21,5 +20,8 @@ abstract class CompBaseDTO implements ICompBaseDTO {
 export class CompAddDTO extends CompBaseDTO implements ICompAddDTO {}
 
 export class CompGetDTO extends CompBaseDTO implements ICompGetDTO {
+	@ApiProperty()
+	@Type(() => Date)
+	@Expose()
 	createdAt: Date;
 }
