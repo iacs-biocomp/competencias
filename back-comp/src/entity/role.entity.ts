@@ -1,4 +1,4 @@
-import { IRole } from 'sharedInterfaces/Entity';
+import { IRole, Roles } from 'sharedInterfaces/Entity';
 import {
 	BaseEntity,
 	Entity,
@@ -17,7 +17,7 @@ export class Role extends BaseEntity implements IRole {
 	id: number;
 
 	@Column({ type: 'varchar', length: 20, nullable: false })
-	name: string;
+	name: Roles;
 
 	@Column({ type: 'text', nullable: false })
 	description: string;
