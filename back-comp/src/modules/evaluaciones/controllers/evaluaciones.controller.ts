@@ -22,7 +22,7 @@ import { Ev, Trabajador } from 'src/entity';
 import { OrganigramaService } from 'src/modules/organigrama/services/organigrama.service';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { TrabajadorRepo } from 'src/modules/trabajadores/trabajador.repository';
-import { SelectQueryBuilder } from 'typeorm';
+import { DeepPartial, SelectQueryBuilder } from 'typeorm';
 import { EvRepository } from '../evaluaciones.repository';
 import { EvaluacionesService } from '../services/evaluaciones.service';
 
@@ -187,7 +187,8 @@ export class EvaluacionesController {
 		if (!ev.model) {
 			throw new UnprocessableEntityException('La evaluación no tiene un modelo que exista en la bbdd');
 		}
-		await this.evRepo.save(ev);
+		// TODO: Use services.
+		await this.evRepo.save(ev as unknown as DeepPartial<Ev>);
 		return true;
 	}
 

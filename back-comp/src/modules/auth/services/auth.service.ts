@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hashSync } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity';
-import { Roles } from 'sharedInterfaces/Entity';
 import { SigninDTO, SignupDTO } from 'src/DTO/auth';
 import { IJwtPayload } from 'sharedInterfaces/DTO';
 import { UserRepository } from 'src/modules/users/user.repository';
@@ -64,7 +63,7 @@ export class AuthService {
 			email: user.email ?? 'no-email',
 			username: user.username,
 			password: user.password,
-			roles: user.roles.map(r => r.name as Roles),
+			roles: user.roles.map(r => r.name),
 		};
 
 		const token = this._jwtService.sign(payload);

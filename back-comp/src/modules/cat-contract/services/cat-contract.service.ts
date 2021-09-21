@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
 import { ICatContr } from 'sharedInterfaces/Entity';
 import { CatContr } from 'src/entity';
+import { DeepPartial } from 'typeorm';
 import { CatContrRepo } from '../catContr.repository';
 
 @Injectable()
@@ -48,10 +49,11 @@ export class CatContractService {
 	delete(cContr: CatContr): Promise<CatContr> {
 		return this.cContrRepo.remove(cContr);
 	}
+
 	/**
 	 * Deletes many CatContr into the db, same as:
 	 * ```ts
-	 * this.catContrRepo.save(cContr);
+	 * this.catContrRepo.remove(cContr);
 	 * ```
 	 * The catContr should exist in db.
 	 * @param cContr The contractual category to save in database
@@ -70,6 +72,7 @@ export class CatContractService {
 	 * @returns Promise of the CatContr saved
 	 */
 	save(cContr: ICatContr): Promise<CatContr> {
-		return this.cContrRepo.save(cContr);
+		// TODO: Test with DTO's that have all properties undefined instead id
+		return this.cContrRepo.save(cContr as DeepPartial<CatContr>);
 	}
 }
