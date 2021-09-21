@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { IJwtToken } from '../../modules/auth/JWTlocal.interface';
 import { remove as cookieRm } from 'js-cookie';
 import { environment as cnf } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { IAuthTokenRes } from 'sharedInterfaces/DTO';
+import { IAuthTokenRes, IJwtPayload } from 'sharedInterfaces/DTO';
 import { LoginGuard } from '../../guards/login.guard';
 
 @Injectable({
@@ -49,11 +48,11 @@ export class JwtService {
 	/**
 	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
 	 *
-	 * @returns El token de tipo `IJwtToken` descodificado
+	 * @returns El token de tipo `IJwtPayload` descodificado
 	 */
-	getDecodedToken(): IJwtToken {
+	getDecodedToken(): IJwtPayload | undefined {
 		// LOG: obteniendo token decodificado
-		return this.jwtHelper.decodeToken<IJwtToken>(this.token());
+		return this.jwtHelper.decodeToken<IJwtPayload>(this.token());
 	}
 
 	/**
@@ -83,7 +82,7 @@ export class JwtService {
 	 */
 	updateJwt(token: string): void {
 		localStorage.setItem(cnf.JWT_NAME, token);
-		document.cookie = cnf.JWT_NAME + '=' + encodeURIComponent(token);
+		document.cookie = `${cnf.JWT_NAME}=${encodeURIComponent(token)}`;
 	}
 
 	/** Token codificado en base64 */
