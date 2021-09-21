@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from 'sharedInterfaces/Entity';
 import { JwtService } from 'src/app/services/auth/jwt.service';
+import { LogService } from 'src/app/shared/log/log.service';
 import { UserDataService } from '../user-data.service';
 
 @Component({
@@ -11,10 +12,21 @@ import { UserDataService } from '../user-data.service';
 export class MisDatosComponent implements OnInit {
 	userData?: IUser;
 
-	constructor(private usrDataService: UserDataService, private jwtServ: JwtService) {}
+	constructor(
+		private readonly usrDataService: UserDataService,
+		private readonly jwtServ: JwtService,
+		private readonly logger: LogService,
+	) {}
 
 	async ngOnInit(): Promise<void> {
-		this.userData = await this.usrDataService.getUserData(this.jwtServ.getDecodedToken().username);
+		const decodedTkn = this.jwtServ.getDecodedToken();
+		if (!decodedTkn) {
+			const msg = 'Token not find when loading MisDatosComponent';
+			const err = new Error(msg);
+			this.logger.error(msg, err);
+			throw err;
+		}
+		this.userData = await this.usrDataService.getUserData(decodedTkn.username);
 		// LOG: datos del usuario obtenidos ${this.userData}
 	}
 }

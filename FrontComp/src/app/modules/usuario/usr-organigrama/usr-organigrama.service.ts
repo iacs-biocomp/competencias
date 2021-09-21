@@ -22,6 +22,12 @@ export class UsrOrganigramaService {
 	 */
 	organigramaUsr(): Promise<IOrganigramaTrabajadorDTO> {
 		const token = this.jwtSv.getDecodedToken();
+		if (!token) {
+			const msg = 'Not token provided from jwtSv';
+			const err = new Error(msg);
+			this.logger.error(msg, err);
+			throw err;
+		}
 		const url = `${cnf.API_URL}/organigrama/${token.username}`;
 		this.logger.debug(`Get req a ${url}, obteniendo mi organigrama`);
 		return this.httpClient.get<IOrganigramaTrabajadorDTO>(url).toPromise();

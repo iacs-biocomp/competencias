@@ -56,6 +56,9 @@ export class MisEvaluacionesComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		const decodedToken = this.jwtSv.getDecodedToken();
+		if (!decodedToken) {
+			throw new Error('JWT is undefined in MisEvaluacionesComponent');
+		}
 		const evs = await this.evService.evaluacionesUsr(decodedToken.username);
 		this.evs = evs.map<IEvWithStatus>(ev => {
 			return { ...ev, status: this.computeEvStatus(ev) };

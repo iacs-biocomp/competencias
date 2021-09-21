@@ -9,13 +9,18 @@ import { JwtService } from 'src/app/services/auth/jwt.service';
 	styleUrls: ['./session.component.scss'],
 })
 export class SessionComponent implements OnInit {
-	username: string = this.jwtService.getDecodedToken().username;
+	username!: string;
+	isDataLoaded = false;
 
 	constructor(private jwtService: JwtService, private router: Router) {}
 
 	ngOnInit(): void {
 		// LOG:
-		this.username = this.jwtService.getDecodedToken().username;
+		const decodedTkn = this.jwtService.getDecodedToken();
+		if (!!decodedTkn) {
+			this.username = decodedTkn.username;
+			this.isDataLoaded = true;
+		}
 	}
 	/** Función que cierra sesión (Borra el token de las cookies y localStorage), redirige al login y recarga la pagina */
 	closeSession(): void {

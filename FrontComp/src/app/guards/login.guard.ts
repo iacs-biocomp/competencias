@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { IJwtToken } from '../modules/auth/JWTlocal.interface';
 import { Roles } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { JwtService } from '../services/auth/jwt.service';
 import { CompRoute } from '../types/angular-modified-types';
 import { intersection } from 'lodash';
+import { IJwtPayload } from 'sharedInterfaces/DTO';
 
 @Injectable()
 export class LoginGuard implements CanLoad {
@@ -38,7 +38,7 @@ export class LoginGuard implements CanLoad {
 			// Or (token exist and isn't expired and has one or more roles that route requires).
 			(!!token &&
 				!this.jwtHelperSv.isTokenExpired(token) &&
-				intersection(this.jwtHelperSv.decodeToken<IJwtToken>(token).roles, route.data.roles).length > 0);
+				intersection(this.jwtHelperSv.decodeToken<IJwtPayload>(token).roles, route.data.roles).length > 0);
 
 		if (conditionsToLogin) {
 			return true;
@@ -62,7 +62,7 @@ export class LoginGuard implements CanLoad {
 		if (
 			!!token &&
 			!this.jwtHelperSv.isTokenExpired(token) &&
-			this.jwtHelperSv.decodeToken<IJwtToken>(token).roles.includes(role)
+			this.jwtHelperSv.decodeToken<IJwtPayload>(token).roles.includes(role)
 		) {
 			return true;
 		} else {

@@ -4,7 +4,7 @@ import { EvaluacionesService } from 'services/data';
 import { ITrabajadorDTO } from 'sharedInterfaces/DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 
-// TODO: Refactor mover a otro sitio
+// TODO: Refactor, move this constant to another file
 /** Como se llama el parametro que identifica la evaluación a evaluar */
 export const evId = 'evId';
 
@@ -28,8 +28,12 @@ export class ListPeopleToEvalComponent implements OnInit {
 	) {}
 
 	async ngOnInit(): Promise<void> {
+		const decodedTkn = this.jwtSv.getDecodedToken();
+		if (!decodedTkn) {
+			throw new Error('JWT not found in ListPeopleToEvalComponent');
+		}
 		this.workersEvaluated = await this.evSv.getEvaluatedOfUser(
-			this.jwtSv.getDecodedToken().username,
+			decodedTkn.username,
 			Number.parseInt(this.evId),
 		);
 		this.isDataLoaded = true;

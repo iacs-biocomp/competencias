@@ -48,10 +48,14 @@ export class ValoracionesEvPersonaLayoutComponent implements OnInit {
 	) {}
 
 	async ngOnInit(): Promise<void> {
+		const decodedTkn = this.jwtSv.getDecodedToken();
+		if (!decodedTkn) {
+			throw new Error('JWT not found but required in ValoracionesEvPersonaLayoutComponent');
+		}
 		const [ev, evaluado, evaluador, savedVals] = await Promise.all([
 			this.evSv.getEvWithModel(this.evId),
 			this.trabSv.getOneByDni(this.#dniId),
-			this.trabSv.getOneByUsername(this.jwtSv.getDecodedToken().username),
+			this.trabSv.getOneByUsername(decodedTkn.username),
 			this.valSv.getUsrEvVals(this.#dniId, this.evId),
 		]);
 		this.evModelObs = new BehaviorSubject(ev.model);
