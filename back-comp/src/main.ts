@@ -33,7 +33,6 @@ async function isSvDateCorrect(httpSv: HttpService): Promise<boolean> {
 }
 
 async function bootstrap() {
-	//Comprobación fecha servidor
 	await isSvDateCorrect(http);
 	install();
 	if (process.env.NODE_ENV !== 'production') {
@@ -43,7 +42,11 @@ async function bootstrap() {
 		Promise.config({
 			longStackTraces: true,
 		});
+	} else {
+		// Check production server date
+		await isSvDateCorrect(http);
 	}
+
 	const isCorsEnabled = process.env.NODE_ENV !== 'production' ? true : false;
 	const app = await NestFactory.create(AppModule, { cors: isCorsEnabled });
 
