@@ -1,46 +1,19 @@
 stages:
-  - build
+  # TODO: Add tests and configure test stage.
   # - test
+  - build
   # - deploy
 
 build:
-  # image: docker:latest
-  # services:
-  #   - docker:dind
   only:
     refs:
       # - develop
       - master
   stage: build
+  # image: node:14.16.0-buster
+  # before_script:
+  #   - curl -f https://get.pnpm.io/v6.7.js | node - add --global pnpm@6
+  #   - pnpm config set store-dir .pnpm-store
   script:
     - cd ./scripts
     - ./build_multi-stage.sh
-# test_paralel:
-#   stage: test
-#   only:
-#     refs:
-#       - develop
-#   script:
-#     - echo "Prueba de pnpm"
-#     - pnpm -v
-#     - pwd
-#     - exit 0
-# test:
-#   stage: test
-#   only:
-#     refs:
-#       - develop
-#   script:
-#     - echo "solo en develop"
-#     - pwd
-#     - exit 0
-
-# deploy_dev:
-#   stage: deploy
-#   image: alpine
-#   script:
-#     - echo hola
-#     - whoami
-#     - ifconfig
-#   dependencies:
-#     - test
