@@ -1,5 +1,6 @@
 <div class="tablewrapper">
 	<h1 class="title">Lista de todas las categorias contractuales</h1>
+	<!-- TODO: Fix aria-label https://www.w3.org/TR/wai-aria-1.1/#aria-label -->
 	<table aria-label="Lista categorias contractuales" class="table table-hover">
 		<thead>
 			<tr>
@@ -9,6 +10,7 @@
 			</tr>
 		</thead>
 		<tbody>
+			<!-- TODO: Add button that add new catContr -->
 			<tr *ngFor="let catContr of catContracts">
 				<td>{{ catContr.id }}</td>
 				<td>{{ catContr.description }}</td>

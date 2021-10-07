@@ -33,7 +33,6 @@ async function isSvDateCorrect(httpSv: HttpService): Promise<boolean> {
 }
 
 async function bootstrap() {
-	await isSvDateCorrect(http);
 	install();
 	if (process.env.NODE_ENV !== 'production') {
 		//Las promesas de node no muestran un stacktrace descriptivo, se usan estas,

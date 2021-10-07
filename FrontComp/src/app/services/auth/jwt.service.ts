@@ -46,9 +46,7 @@ export class JwtService {
 	}
 
 	/**
-	 * Metodo que obtiene el token del localStorage y lo devuelve descodificado
-	 *
-	 * @returns El token de tipo `IJwtPayload` descodificado
+	 * @returns JWT of type {@link IJwtPayload} or undefined if token doesn't exist
 	 */
 	getDecodedToken(): IJwtPayload | undefined {
 		// LOG: obteniendo token decodificado

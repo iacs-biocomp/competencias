@@ -19,9 +19,9 @@ export class TableContracComponent implements OnInit {
 
 	constructor(
 		/** Servicio de categorias contractuales */
-		private catContractService: CatContractService,
+		private readonly catContractService: CatContractService,
 		/** Servicio de categorias competenciales */
-		private cCompSv: CatCompetencialesService,
+		private readonly cCompSv: CatCompetencialesService,
 		private readonly logger: LogService,
 	) {}
 

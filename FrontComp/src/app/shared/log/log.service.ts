@@ -21,7 +21,6 @@ export class LogService {
 				: LogService.loggingSub;
 		}, 10);
 		setInterval(() => Promise.resolve(this.sortMessagesByDate), 2500);
-		this.timeOutPruebaMsg();
 	}
 
 	error(msg: string, ...args: unknown[]): void {
@@ -128,27 +127,5 @@ export class LogService {
 		} catch (error) {
 			return false;
 		}
-	}
-
-	/**
-	 * @deprecated Remover una vez esten bien puestos los logs ya que sirve solo de prueba
-	 */
-	private timeOutPruebaMsg(): void {
-		setTimeout(() => {
-			this.error('Mensaje de error', new Error(''));
-			this.warn('Mensaje de alerta');
-			this.log('Mensaje de log');
-			this.debug(
-				'Mensaje de debug con objeto',
-				{ id: 1, name: 'USER' },
-				{ id: 1, name: 'USER' },
-				{ id: 1, name: 'USER' },
-				[{ e: 'hola' }],
-			);
-			this.verbose('Mensaje verbose', { url: 'https://is.gd/anicci' });
-		}, 3000);
-		setTimeout(() => {
-			this.log('nuevo 6s mensaje');
-		}, 6000);
 	}
 }

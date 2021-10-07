@@ -38,15 +38,19 @@ export class CatComp extends BaseEntity implements ICatComp {
 		return !!cComp.catContr;
 	}
 }
+
 interface CatCompWithCatContr extends CatComp {
 	catContr: NonNullable<CatComp['catContr']>;
 }
+
 interface CatCompWithPeriodosTrab extends CatComp {
 	periodosTrab: NonNullable<CatComp['periodosTrab']>;
 }
+
 interface CatCompWithModels extends CatComp {
 	models: NonNullable<CatComp['models']>;
 }
+
 interface CatCompWithEvaluaciones extends CatComp {
 	evaluaciones: NonNullable<CatComp['evaluaciones']>;
 }

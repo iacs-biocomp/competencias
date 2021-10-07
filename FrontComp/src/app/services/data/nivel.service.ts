@@ -59,9 +59,10 @@ export class NivelService {
 	 * TODO: DONE, reference falta, bien?
 	 */
 	add(nivel: INivelAddDTO): Promise<boolean> {
-		//*QUAL: Crear INivelPostDto o similar
 		const url = `${cnf.API_URL}/niveles`;
-		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${nivel.code}, POST req a: ${url}`, nivel);
+		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${nivel.code}, POST req a: ${url}`, {
+			requestBody: nivel,
+		});
 		return this.httpClient.post<boolean>(url, nivel).toPromise();
 	}
 
@@ -75,7 +76,7 @@ export class NivelService {
 	 */
 	edit(nivel: INivelPutDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/niveles`;
-		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, nivel);
+		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, { requestBody: nivel });
 		return this.httpClient.put<boolean>(url, nivel).toPromise();
 	}
 }
