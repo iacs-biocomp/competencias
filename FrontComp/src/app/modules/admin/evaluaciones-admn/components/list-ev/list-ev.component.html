@@ -1,15 +1,30 @@
 <h1 class="layout-title">Evaluaciones</h1>
-<div class="container-fluid">
-	<button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" id="newEvButton">
+
+<div class="container-fluid" *ngIf="isDataLoaded">
+	<button
+		class="btn btn-primary mb-2"
+		data-bs-toggle="modal"
+		[attr.data-bs-target]="'#' + childrenIds.newEvModalId"
+		id="newEvButton"
+	>
 		Nueva evaluación
 	</button>
-	<button (click)="loadMForm = true" class="btn btn-success ms-2 mb-2">Nuevo modelo</button>
+	<button
+		class="btn btn-success ms-2 mb-2"
+		data-bs-toggle="modal"
+		[attr.data-bs-target]="'#' + childrenIds.createModalId"
+	>
+		Nuevo modelo
+	</button>
 	<button routerLink="/admin/evaluaciones/modelos-reference" class="btn btn-primary ms-2 mb-2">
 		Ver modelos
 	</button>
-	<!-- <app-new-ev-model *ngIf="loadMForm"></app-new-ev-model> -->
-
+	<app-create-model [modalId]="childrenIds.createModalId"></app-create-model>
 	<div class="row gy-4">
+		<app-empty-state
+			*ngIf="evaluaciones.length === 0"
+			[textToShow]="'Vaya no hay ninguna evaluación, crea una'"
+		></app-empty-state>
 		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let ev of evaluaciones">
 			<div class="card">
 				<h2 class="card-title">Id evaluación: {{ ev.id }}</h2>
@@ -29,4 +44,4 @@
 		</div>
 	</div>
 </div>
-<app-new-ev-modal [onEvSaved]="this.updateEvalView"></app-new-ev-modal>
+<app-new-ev-modal [onEvSaved]="this.updateEvalView" [modalId]="childrenIds.newEvModalId"></app-new-ev-modal>

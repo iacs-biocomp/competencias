@@ -11,11 +11,14 @@ import { LogService } from 'src/app/shared/log/log.service';
 	styleUrls: ['./list-ev.component.scss'],
 })
 export class ListEvComponent implements OnInit {
-	/** Controls if ModalForm can be rendered */
-	public loadMForm = false;
-
+	isDataLoaded = false;
 	/** Evs in database */
 	evaluaciones: IEvaluacion[] = [];
+	/** Children components' ids */
+	childrenIds = {
+		createModalId: 'createModal',
+		newEvModalId: 'newEvModal',
+	};
 
 	/** Object with functions and data related to showing-results buttons */
 	showingResultsBtnControls = {
