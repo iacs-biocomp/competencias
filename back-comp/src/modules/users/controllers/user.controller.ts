@@ -12,7 +12,7 @@ export class UserController {
 	@Get(':username')
 	async getUserUsername(@Param('username') username: string): Promise<UserDTO> {
 		// TODO: Repair types
-		return this._usrSv.getFromUsername(username) as unknown as Promise<UserDTO>;
+		return this._usrSv.getFromUsername(username) as Promise<UserDTO>;
 	}
 
 	@Get('allinfo/:username')
