@@ -24,7 +24,7 @@ export class UserService {
 			throw new NotFoundException();
 		}
 		// TODO: Corregir error as unknown
-		return user as unknown as IUserDTO;
+		return user as IUserDTO;
 	}
 
 	async getAll(): Promise<IUserDTO[]> {
@@ -32,7 +32,7 @@ export class UserService {
 			where: { active: true },
 		});
 		// TODO: Corregir error as unknown
-		return users as unknown as IUserDTO[];
+		return users as IUserDTO[];
 	}
 
 	async create(user: User): Promise<User> {
