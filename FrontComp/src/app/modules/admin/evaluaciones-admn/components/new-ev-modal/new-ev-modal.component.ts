@@ -9,6 +9,7 @@ import { RequiredAndNotNull } from 'sharedInterfaces/Utility';
 // TODO: Refactor
 import { CompAndNiv } from './obj-niveles-select/obj-niveles-select.component';
 import { LogService } from 'src/app/shared/log/log.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 type modelCtrlView = {
 	// ?? Comprobar si sirve
@@ -36,7 +37,7 @@ export type modelCompNiv = {
 };
 
 @Component({
-	selector: 'app-new-ev-modal [onEvSaved]',
+	selector: 'app-new-ev-modal [onEvSaved] [modalId]',
 	templateUrl: './new-ev-modal.component.html',
 	styleUrls: ['./new-ev-modal.component.scss'],
 })
@@ -49,6 +50,8 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	@ViewChild('nivSelectBtn') nivModal!: ElementRef<HTMLButtonElement>;
 	/** Metodo que se ejecuta cuando se guarda una evaluación El componente padre debe pasarlo como parametro */
 	@Input() onEvSaved!: () => void | Promise<void>;
+	/** The component primary id, used by bootstrap */
+	@Input() modalId!: string;
 
 	cCompCtl: catCompCtrlView = {
 		/** Array with all the current catComps */
@@ -110,7 +113,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.logger.verbose('Destruyendo componente');
+		this.logger.verbose('Destruyendo NewEvModalComponent');
 		this.closeModalBtn.nativeElement.click();
 		this.#subs.forEach(s => s.unsubscribe());
 	}
@@ -130,6 +133,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			evModel => evModel.catComp?.id === this.cCompCtl.cCompSelectedObs.value?.id,
 		);
 	}
+
 	/**
 	 * @returns `true` if the form is correct, `false` if it's not
 	 */
@@ -140,10 +144,8 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			this.modelCtl.evDescription === '' ||
 			!this.cCompCtl.cCompSelectedObs.value
 		) {
-			this.logger.verbose('Formulario incorrecto');
 			return false;
 		}
-		this.logger.verbose('Formulario correcto');
 		return this.modelCtl.rangesForm.valid;
 	}
 
@@ -160,7 +162,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 		const modelo = this.modelCtl.evModelSelected;
 		if (!this.modelCtl.rangesForm || !cComp || !modelo) {
 			throw new Error('Contacte con un administrador');
-		} //Se quita undefined
+		}
 		const form = this.modelCtl.rangesForm.value;
 		if (!modelo.subModels) {
 			throw new Error('Contacte con un administrador');
@@ -174,6 +176,7 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			reference: false,
 		};
 		const evModelDB = await this.evModelSv.save(modelToSend, false);
+		// TODO: Extender formGroup type para no hacer casteos con as.
 		this.evToAdd = {
 			description: this.modelCtl.evDescription as string,
 			catComp: cComp,
@@ -220,5 +223,19 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 		const refModel = this.modelCtl.allReferenceModels.find(model => model.catComp.id === cCompSelected.id)!;
 		this.modelCtl.evModelSelected = refModel;
 		this.nivModal.nativeElement.click();
+	}
+
+	/**
+	 * Setter for OrganiDate, emitted from datepicker component
+	 * @param event Event from date picker
+	 */
+	setOrganiDate(_: string, event: MatDatepickerInputEvent<Date>): void {
+		if (!this.modelCtl.rangesForm) {
+			const err = new Error('');
+			this.logger.error('modelCtl de NewEvModalComponent undefined o null when OrganiDate was setted', err);
+			throw err;
+		}
+		this.modelCtl.rangesForm.controls['organiDate'].setValue(event.value);
+		console.log(this.modelCtl.rangesForm.value);
 	}
 }

@@ -1,6 +1,6 @@
 <div
 	class="modal fade"
-	id="exampleModal"
+	[id]="modalId"
 	tabindex="-1"
 	aria-labelledby="exampleModalLabel"
 	aria-hidden="true"
@@ -83,6 +83,12 @@
 					<mat-error *ngIf="periodos.rangeEvaluacion.controls.end.hasError('matEndDateInvalid')"
 						>Invalid Fecha final</mat-error
 					> -->
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Organi date</mat-label>
+					<input matInput [matDatepicker]="pickerOrgani" (dateInput)="setOrganiDate('', $event)" />
+					<mat-datepicker-toggle matSuffix [for]="pickerOrgani"></mat-datepicker-toggle>
+					<mat-datepicker #pickerOrgani></mat-datepicker>
 				</mat-form-field>
 				<select class="form-select mb-2" #selectCatComp (change)="setCatComp(selectCatComp.value)">
 					<option selected hidden disabled [value]="">Seleccione la categoría competencial</option>

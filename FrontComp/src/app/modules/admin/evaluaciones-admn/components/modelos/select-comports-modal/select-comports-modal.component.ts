@@ -22,7 +22,7 @@ type ComportCtrlView = {
 	comportsFiltered: IComportamiento[];
 };
 
-type modalView = {
+type ModalView = {
 	/** Numero actual de comportamientos mostrando */
 	numComportsMostrando: number;
 	/** Cantidad de tuplas que se muestran cada vez que le damos a 'Mostrar más' */
@@ -32,6 +32,8 @@ type modalView = {
 	/** Numero total de comportamientos que se iran mostrando (de 10 en 10) */
 	end: number;
 };
+
+// TODO: Translate TSDoc to english.
 @Component({
 	selector: 'app-select-comports-modal [idModal] [comportsToShowObs] ',
 	templateUrl: './select-comports-modal.component.html',
@@ -56,14 +58,14 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 		comportsFiltered: [],
 	};
 
-	cv: modalView = {
+	cv: ModalView = {
 		numComportsMostrando: 10,
 		mostrarMas: 10,
 		start: 0,
 		end: 10,
 	};
 
-	#cvDefault: modalView = {
+	#cvDefault: ModalView = {
 		numComportsMostrando: 10,
 		mostrarMas: 10,
 		start: 0,
@@ -74,10 +76,7 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	#subs: Subscription[] = [];
 
 	async ngOnInit(): Promise<void> {
-		this.logger.verbose('Cargando componente select-comports-modal');
-		setInterval(() => {
-			console.log(this);
-		}, 5000);
+		this.logger.verbose(`Cargando componente ${this.constructor.name}`);
 		this.#subs.push(
 			this.comportsToShowObs.subscribe(() => {
 				this.comportCtl.comportsSelected = [];
@@ -98,37 +97,44 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.logger.verbose('Desuscribiendo observables para su destrucción, evitando memory leaks');
+		this.logger.debug(`Destroying ${this.constructor.name}`);
 		this.#subs.forEach(sub => sub.unsubscribe());
 		this.closeModal.nativeElement.click();
 	}
 
-	/** Selecciona los comportamientos que va tener el submodelo
+	/**
+	 * TODO: Fix this doc.
+	 * Selecciona los comportamientos que va tener el submodelo
 	 *
 	 * @param comport comportamiento seleccionado
 	 */
 	selectComportamiento(comport: IComportamiento): void {
 		this.logger.debug(`Añadiendo comportamiento con ID: ${comport.id}`, comport);
 		const arrToPush = this.comportCtl.comportsSelected;
-		const index = this.comportCtl.comportsSelected.indexOf(comport);
-		if (index === -1) {
+		const indexOfComport = this.comportCtl.comportsSelected.findIndex(
+			cSelected => cSelected.id === comport.id,
+		);
+		if (indexOfComport === -1) {
 			arrToPush.push(comport);
 		} else {
-			arrToPush.splice(index, 1);
+			arrToPush.splice(indexOfComport, 1);
 		}
 	}
-	/**Flush the "buffer" and moves the data into the model of type {@link IEvModel}*/
+
+	// TODO: Fix tsdoc, isnt correct
+	/**Flush the "buffer" and moves the data into the model of type */
 	addAllComports(): void {
 		this.logger.log('Eliminando buffer y emitiendo comportamientos al backend');
 		this.comports.emit(this.comportCtl.comportsSelected);
 		this.comportCtl.comportsSelected = [];
 	}
 
-	/** Al clicar en el boton 'Mostrar mas' se muestran 10 comportamientos mas a la vista  */
-	showMoreComports(): number {
-		this.logger.verbose('Mostrando 10 comportamientos más');
+	/**
+	 * Adds a number to {@link SelectComportsModalComponent.cv} numComportsMostrando
+	 */
+	showMoreComports(): void {
+		this.logger.verbose(`Adding ${this.cv.mostrarMas} comports to the list`);
 		this.cv.numComportsMostrando = this.cv.numComportsMostrando + this.cv.mostrarMas;
 		this.cv.end = this.cv.numComportsMostrando;
-		return this.cv.numComportsMostrando;
 	}
 }

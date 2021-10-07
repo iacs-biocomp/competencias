@@ -43,5 +43,6 @@
 <app-view-edit-model
 	[evModel]="evModelShowNotUndefined(evModelToShow)"
 	[modoEdicion]="modoEdicion"
+	(onSaveChanges)="saveModel($event)"
 	*ngIf="renderViewModels"
 ></app-view-edit-model>

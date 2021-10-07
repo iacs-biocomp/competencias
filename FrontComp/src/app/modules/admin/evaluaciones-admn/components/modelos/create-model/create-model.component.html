@@ -1,0 +1,44 @@
+<div
+	class="modal fade"
+	*ngIf="isAllDataLoaded"
+	[id]="modalId"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title" id="exampleModalLabel">Crear nuevo modelo de referencia</h2>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<hr />
+			<select (change)="setCatCompSelected()" class="form-select mb-2" #selectCatComp>
+				<option selected hidden disabled [value]="">Seleccione la categoría competencial</option>
+				<option *ngFor="let catComp of getCCompsWithoutRefModel()" [value]="catComp.id">
+					{{ catComp.id }}
+				</option>
+			</select>
+			<div class="modal-footer">
+				<button #closeCreateModel type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+					Cerrar
+				</button>
+				<!-- <button
+					#nextModalBtn
+					class="btn btn-primary"
+					[disabled]="!cv.isCCompSelected"
+					(click)="closeCreateModel.click()"
+				>
+					Siguiente
+				</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-view-edit-model
+	*ngIf="cv.isCCompSelected"
+	[modoEdicion]="true"
+	[evModel]="model"
+	(onSaveChanges)="saveNewRefModel($event)"
+></app-view-edit-model>

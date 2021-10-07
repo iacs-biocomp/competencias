@@ -3,19 +3,21 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 import { EvaluacionesAdmService } from 'services/data';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
-import { ListEvComponent, NewEvModalComponent, CompSelectComponent } from './components';
-import { NivComportFilterPipe } from './components/modelos/pipes/niv-comport-filter.pipe';
+import { NewEvModalComponent, ModelCompSelectComponent, ObjectiveNivsSelectComponent } from './components';
+import { CompSelectComponent } from './components/comp-select/comp-select.component';
+import { ListEvComponent } from './components/list-ev/list-ev.component';
+import { CreateModelComponent } from './components/modelos/create-model/create-model.component';
 import { SelectComportsModalComponent } from './components/modelos/select-comports-modal/select-comports-modal.component';
 import { ViewAllModelsComponent } from './components/modelos/view-all-models/view-all-models.component';
 import { ViewEditModelComponent } from './components/modelos/view-edit-model/view-edit-model.component';
-import { ModelCompSelectComponent } from './components/new-ev-modal/model-comp-select/model-comp-select.component';
-import { ObjectiveNivsSelectComponent } from './components/new-ev-modal/obj-niveles-select/obj-niveles-select.component';
+import { NivComportFilterPipe } from './pipes/niv-comport-filter.pipe';
 
 /** Rutas relacionadas con el subModulo de evaluaciones */
 export const evRoutes: CompRoutes = [
@@ -42,6 +44,7 @@ export const evRoutes: CompRoutes = [
 		SelectComportsModalComponent,
 		NivComportFilterPipe,
 		CompSelectComponent,
+		CreateModelComponent,
 	],
 	imports: [
 		CommonModule,
@@ -50,6 +53,7 @@ export const evRoutes: CompRoutes = [
 		FormsModule,
 		ReactiveFormsModule,
 		MatDatepickerModule,
+		MatInputModule,
 		MatFormFieldModule,
 		MatNativeDateModule,
 		MatSlideToggleModule,
