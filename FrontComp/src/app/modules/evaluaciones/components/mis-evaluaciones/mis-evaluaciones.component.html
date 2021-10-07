@@ -1,6 +1,10 @@
 <h1 class="layout-title">Mis evaluaciones</h1>
 <div class="container-fluid" *ngIf="isDataLoaded">
 	<div class="row gy-4">
+		<app-empty-state
+			*ngIf="evs.length === 0"
+			[textToShow]="'Vaya no hay ninguna evaluacion'"
+		></app-empty-state>
 		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let ev of evs">
 			<div class="card">
 				<div class="card-body">
