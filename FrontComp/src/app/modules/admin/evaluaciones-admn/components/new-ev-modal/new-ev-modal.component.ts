@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { EvModelsAdmnService, EvaluacionesAdmService } from 'services/data';
 import { getCompetOfModel } from 'sharedCode/Utility';
@@ -17,7 +17,7 @@ type modelCtrlView = {
 	/** Descripción de la evaluación, bindeado al input en el html */
 	evDescription: string | undefined;
 	/** Los rangos de fechas de esa evaluacion, periodo de propuesta, validación, valoración... */
-	rangesForm: FormGroup | undefined;
+	rangesForm: ExtFormGroup | undefined;
 	/** Gets all the reference models (array)  */
 	allReferenceModels: IEvModelGetDTO[];
 	/** El modelo seleccionado, se settea cuando el componente hijo devuelve las comps seleccionadas */
@@ -28,6 +28,20 @@ type catCompCtrlView = {
 	catComps: ICatComp[];
 	/** Emits the cCompSelected that is used for the new ev */
 	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
+};
+
+type ExtFormGroup = FormGroup & {
+	controls: {
+		propuestaStart: Omit<AbstractControl, 'value'> & { value: Date };
+		propuestaEnd: Omit<AbstractControl, 'value'> & { value: Date };
+		validacionStart: Omit<AbstractControl, 'value'> & { value: Date };
+		validacionEnd: Omit<AbstractControl, 'value'> & { value: Date };
+		valoracionStart: Omit<AbstractControl, 'value'> & { value: Date };
+		valoracionEnd: Omit<AbstractControl, 'value'> & { value: Date };
+		evaluacionStart: Omit<AbstractControl, 'value'> & { value: Date };
+		evaluacionEnd: Omit<AbstractControl, 'value'> & { value: Date };
+		organiDate: Omit<AbstractControl, 'value'> & { value: Date };
+	};
 };
 
 /** Componente destinado a la creación de una nueva evaluación, modal de bootstrap */
@@ -98,7 +112,8 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			evaluacionStart: ['', [Validators.required]],
 			evaluacionEnd: ['', Validators.required],
 			organiDate: ['', Validators.required],
-		});
+		}) as ExtFormGroup;
+
 		this.#subs.push(
 			this.cCompCtl.cCompSelectedObs.subscribe(cComp => {
 				if (!cComp) {
@@ -163,7 +178,6 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 		if (!this.modelCtl.rangesForm || !cComp || !modelo) {
 			throw new Error('Contacte con un administrador');
 		}
-		const form = this.modelCtl.rangesForm.value;
 		if (!modelo.subModels) {
 			throw new Error('Contacte con un administrador');
 		}
@@ -176,20 +190,20 @@ export class NewEvModalComponent implements OnInit, OnDestroy {
 			reference: false,
 		};
 		const evModelDB = await this.evModelSv.save(modelToSend, false);
-		// TODO: Extender formGroup type para no hacer casteos con as.
+		const rangesControls = this.modelCtl.rangesForm.controls;
 		this.evToAdd = {
 			description: this.modelCtl.evDescription as string,
 			catComp: cComp,
 			model: evModelDB,
-			iniDate: form.propuestaStart as Date,
-			finPropuestas: form.propuestaEnd as Date,
-			iniValidacion: form.validacionStart as Date,
-			endValidacion: form.validacionEnd as Date,
-			iniValoracion: form.valoracionStart as Date,
-			endValoracion: form.valoracionEnd as Date,
-			iniPerEvaluado: form.evaluacionStart as Date,
-			endPerEvaluado: form.evaluacionEnd as Date,
-			organiDate: form.organiDate as Date,
+		  iniDate: rangesControls.propuestaStart.value,
+		  finPropuestas: rangesControls.propuestaEnd.value,
+		  iniValidacion: rangesControls.validacionStart.value,
+		  endValidacion: rangesControls.validacionEnd.value,
+		  iniValoracion: rangesControls.valoracionStart.value,
+		  endValoracion: rangesControls.valoracionEnd.value,
+		  iniPerEvaluado: rangesControls.evaluacionStart.value,
+		  endPerEvaluado: rangesControls.evaluacionEnd.value,
+		  organiDate: rangesControls.organiDate.value,
 		};
 		this.logger.debug(`Evaluacion a guardar:`, this.evToAdd);
 		const saved = await this.evSv.add(this.evToAdd);
