@@ -22,4 +22,8 @@ export class ComportamientosService {
 		}
 		return comportDb;
 	}
+
+	async delete(id: string) {
+		await this.comportRepo.delete(id);
+	}
 }

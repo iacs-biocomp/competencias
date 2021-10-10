@@ -4,6 +4,8 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpException,
+	HttpStatus,
 	NotFoundException,
 	Param,
 	ParseBoolPipe,
@@ -53,12 +55,15 @@ export class ComportamientosController {
 			throw new NotFoundException('No existe ningun comportamiento con ese id');
 		}
 		if (comport.subModels.length !== 0) {
-			// TODO: Change exception type, not sure if UnauthorizedException is correct type
-			throw new UnauthorizedException('Ese comportamiento esta asociado a un submodelo, no se puede borrar');
+			throw new HttpException(
+				{
+					status: HttpStatus.FAILED_DEPENDENCY,
+					error: 'Ese comportamiento esta asociado a un submodelo, no se puede borrar',
+				},
+				HttpStatus.FAILED_DEPENDENCY,
+			);
 		}
-		// TODO: refactor service
-		// await this.comportSv.delete(id);
-		comport.remove();
+		await this.comportSv.delete(comport.id);
 		return true;
 	}
 
