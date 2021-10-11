@@ -10,6 +10,7 @@ import {
 	Post,
 	Put,
 	UnauthorizedException,
+	UnprocessableEntityException,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -53,12 +54,9 @@ export class ComportamientosController {
 			throw new NotFoundException('No existe ningun comportamiento con ese id');
 		}
 		if (comport.subModels.length !== 0) {
-			// TODO: Change exception type, not sure if UnauthorizedException is correct type
-			throw new UnauthorizedException('Ese comportamiento esta asociado a un submodelo, no se puede borrar');
+			throw new UnprocessableEntityException('Ese comportamiento esta asociado a un submodelo, no se puede borrar');
 		}
-		// TODO: refactor service
-		// await this.comportSv.delete(id);
-		comport.remove();
+		await this.comportSv.delete(comport.id);
 		return true;
 	}
 
