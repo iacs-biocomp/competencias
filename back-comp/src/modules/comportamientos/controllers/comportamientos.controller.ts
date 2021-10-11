@@ -4,14 +4,13 @@ import {
 	Controller,
 	Delete,
 	Get,
-	HttpException,
-	HttpStatus,
 	NotFoundException,
 	Param,
 	ParseBoolPipe,
 	Post,
 	Put,
 	UnauthorizedException,
+	UnprocessableEntityException,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -55,13 +54,7 @@ export class ComportamientosController {
 			throw new NotFoundException('No existe ningun comportamiento con ese id');
 		}
 		if (comport.subModels.length !== 0) {
-			throw new HttpException(
-				{
-					status: HttpStatus.FAILED_DEPENDENCY,
-					error: 'Ese comportamiento esta asociado a un submodelo, no se puede borrar',
-				},
-				HttpStatus.FAILED_DEPENDENCY,
-			);
+			throw new UnprocessableEntityException('Ese comportamiento esta asociado a un submodelo, no se puede borrar');
 		}
 		await this.comportSv.delete(comport.id);
 		return true;
