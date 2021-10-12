@@ -37,7 +37,6 @@ export class NivelesController {
 		return this.nivRepo.find({ relations: ['subModels'], where: { reference: true } });
 	}
 
-	//TODO: Completar para añadir los parametros como queryparams y no como el id tal que :id
 	@Get(':id')
 	getNiv(
 		@Param('id', ParseIntPipe) id: number,
@@ -67,6 +66,7 @@ export class NivelesController {
 
 	@Post('')
 	async createNivel(@Body() nivel: Nivel): Promise<true> {
+		// TODO: Refactor, use try/catch instead find if some level exist in database
 		const existingNivel = await this.nivRepo.findOne({ id: nivel.id });
 		if (existingNivel) {
 			throw new ConflictException('Nivel ya creado');
@@ -85,14 +85,17 @@ export class NivelesController {
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async updateNiv(@Body() nivel: NivelGetDTO): Promise<true> {
+		// TODO: Refactor, use try/catch instead find if some level exist in database
 		const existingNivel = await this.nivRepo.findOne({ id: nivel.id }, { relations: ['subModels'] });
 		if (!existingNivel) {
+			// TODO: Translate to english
 			throw new NotFoundException('No existe un nivel con ese id');
 		}
 		if (!Nivel.isNivelWithSubModels(existingNivel)) {
 			throw new NotFoundException('Relations not loaded properly, subModels of nivel are undefined');
 		}
 		if (existingNivel.subModels.length !== 0) {
+			// TODO: Translate to english
 			throw new UnauthorizedException('Ese nivel esta asociado a un submodelo, no se puede modificar');
 		}
 		await this.nivRepo.save(nivel);

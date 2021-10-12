@@ -33,7 +33,6 @@ export class Nivel extends BaseEntity implements INivel {
 	@OneToMany(() => SubModel, subm => subm.nivel)
 	subModels?: SubModel[];
 
-	// TODO: Tsdoc
 	static isNivelWithSubModels(nivel: Nivel): nivel is INivelWithSubModels {
 		return !!nivel.subModels;
 	}

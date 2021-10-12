@@ -23,7 +23,6 @@ export class UserService {
 		if (!user) {
 			throw new NotFoundException();
 		}
-		// TODO: Corregir error as unknown
 		return user as IUserDTO;
 	}
 
@@ -31,7 +30,6 @@ export class UserService {
 		const users: User[] = await this.usrRepo.find({
 			where: { active: true },
 		});
-		// TODO: Corregir error as unknown
 		return users as IUserDTO[];
 	}
 

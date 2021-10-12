@@ -160,7 +160,7 @@ export class EvaluacionesController {
 		});
 		const periodos = periodsInRange.filter(period => isWithinInterval(ev.organiDate, period.interval));
 		if (periodos.length > 1) {
-			// TODO: Cambiar por logger.
+			// TODO: Change console.log call to logger call
 			console.log(
 				new Error(
 					`Existen periodos de una persona en la base de datos que tienen un intervalo de fechas con overlapping, persona: ${periodos[0]?.trabajador.dni}`,
@@ -182,12 +182,12 @@ export class EvaluacionesController {
 	@SetRoles(Roles.ADMIN)
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async createEv(@Body() ev: EvAddDTO): Promise<true> {
-		// TODO: add checks to ensure that model exists in database etc
+		// TODO: check that model with that id exist in db, otherwise throw exception (use correct exception type)
 		// const evDb = await this.evRepo.findOne({});
 		if (!ev.model) {
 			throw new UnprocessableEntityException('La evaluación no tiene un modelo que exista en la bbdd');
 		}
-		// TODO: Use services.
+		// TODO: Refactor using service
 		await this.evRepo.save(ev as unknown as DeepPartial<Ev>);
 		return true;
 	}
@@ -196,6 +196,7 @@ export class EvaluacionesController {
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async changeShowingResults(@Body() payloadDto: UpdateEvShowingResultsDTO) {
+		// TODO: Add validations, check if payloadDto.id is an id from one evaluation that exist in db
 		this.evRepo.update({ id: payloadDto.id }, { isShowingResults: payloadDto.isShowingResults });
 	}
 }

@@ -6,6 +6,6 @@ export class LoggingController {
 	// constructor(private readonly loggerSv: LoggingService) {}
 	@Post('')
 	changeName(@Body() jsonLogginFront: IFrontLoggingPayload) {
-		// TODO: Handle incoming jsons
+		// TODO: Complete method, should log in separate file all messages from certain client
 	}
 }

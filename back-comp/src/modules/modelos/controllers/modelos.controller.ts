@@ -82,7 +82,6 @@ export class ModelosController {
 		@Query('reference', ParseBoolPipe) isReference?: boolean,
 	): Promise<EvModel | undefined> {
 		const referenceParam = isReference ? true : false;
-		console.log(modeloDto);
 		// TODO: Refactor
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
@@ -126,6 +125,7 @@ export class ModelosController {
 		const cComp = await this.catCompRepo.findOne({ id: modeloDto.catComp.id });
 		if (!cComp) throw new UnprocessableEntityException('No existe esa categoría competencial');
 		if (isReference) {
+			// TODO: Move repo logic to services and use exact types not entity type.
 			const dbModel = await this.modelRepo.findOne(
 				{ catComp: cComp, reference: true },
 				{

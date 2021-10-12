@@ -8,7 +8,8 @@ import { ComportRepository } from '../comportamientos.repository';
 export class ComportamientosService {
 	constructor(@InjectRepository(ComportRepository) private readonly comportRepo: ComportRepository) {}
 
-	// TODO: Tsdoc & exact type
+	// TODO: Tsdoc
+	// TODO: Add exact type, Comportamiento is entity type
 	findAll(): Promise<Comportamiento[]> {
 		return this.comportRepo.find({ relations: ['subModels'] });
 	}

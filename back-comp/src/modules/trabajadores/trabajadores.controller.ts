@@ -64,7 +64,6 @@ export class TrabajadoresController {
 		});
 	}
 
-	//TODO: Completar para añadir los parametros como queryparams y no como el dni tal que :dni
 	@Get(':dni')
 	getWorker(
 		@Param('dni') dni: string,
@@ -81,6 +80,7 @@ export class TrabajadoresController {
 		// TODO: Return Promise<**DTO>
 		const wrk = await this.trabRepo.findOne({ user: { username: usrname } });
 		if (!wrk) {
+			// TODO: Refactor, not use const msg and change to 404 exception not 400
 			const msg = `No worker exist associated with this username: ${usrname}`;
 			throw new BadRequestException(msg);
 		}
@@ -89,6 +89,7 @@ export class TrabajadoresController {
 
 	@Delete(':dni')
 	async deleteWorker(@Param('dni') dni: string): Promise<boolean> {
+		// TODO: Use try/catch and delete method instead finding if worker exist in database
 		const worker = await this.trabRepo.findOne({ dni: dni }, { relations: [''] });
 		if (!worker) {
 			throw new NotFoundException('No existe ningun worker con ese dni');
@@ -100,6 +101,7 @@ export class TrabajadoresController {
 	@Post('')
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async createTrabajador(@Body() worker: TrabAddDTO): Promise<boolean> {
+		// TODO: Use try/catch and create method instead finding if worker exist in database
 		const existingTrabajador = await this.trabRepo.findOne({ dni: worker.dni });
 		if (existingTrabajador) {
 			throw new ConflictException('Trabajador ya creado');

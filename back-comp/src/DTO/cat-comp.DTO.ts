@@ -24,6 +24,7 @@ abstract class CCompBaseDTO implements ICCompDTO {
 }
 
 // TODO: catContr required?
+// TODO: Translate TSDoc to English
 /**
  *
  * DTO usado para añadir una nueva categoría competencial
@@ -42,11 +43,13 @@ export class CCompCContrDTO extends CCompBaseDTO implements ICCompCContrDTO {
 	catContr!: CContrGetDTO[];
 }
 
+// TODO: Translate TSDoc to English
 /**
  *  Categoría competencial base
  */
 export class CCompDTO extends CCompBaseDTO implements ICCompDTO {}
 
+// TODO: Translate TSDoc to English
 /**
  *  Categoría competencial con numero de modelos asociados, contando el de referencia
  */

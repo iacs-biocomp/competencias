@@ -34,7 +34,6 @@ export class CompetenciasController {
 		return this.compSv.getAll();
 	}
 
-	// TODO: Comprobar si estaria bien usar una pipe de validación de string
 	@Delete(':id')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	async deleteCompt(@Param('id') id: string): Promise<boolean> {
@@ -67,9 +66,6 @@ export class CompetenciasController {
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	async updateCompt(@Body() compt: CompAddDTO): Promise<boolean> {
-		console.log(compt);
-		// const toFoo = ({ id, descripcion }: CompAddDTO): CompAddDTO => ({ id, descripcion });
-		// const comp = CompAddDTOClass.build(compt);
 		const existingCompt = await this.compSv.getOneById(compt.id);
 		if (!existingCompt) {
 			throw new NotFoundException('No existe una competencia con ese id');

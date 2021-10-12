@@ -38,7 +38,6 @@ export class CatContractController {
 		return this.cContrSv.getAll();
 	}
 
-	// TODO: Check incoming string param, validation pipe? think no
 	@Delete(':id')
 	@SetRoles(Roles.ADMIN)
 	async deleteContr(@Param('id') id: string): Promise<boolean> {

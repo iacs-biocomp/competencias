@@ -234,6 +234,7 @@ export class OrganigramaController {
 			});
 		}
 	}
+
 	private reverseRelType(relation: RelType): RelType {
 		switch (relation) {
 			case 'inferiores':
