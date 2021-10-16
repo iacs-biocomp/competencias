@@ -1,11 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { IsInt } from 'class-validator';
-import { IEvModelGetDTO, IEvModelRefUpdateDTO } from 'sharedInterfaces/DTO';
-import { IEvaluacion } from 'sharedInterfaces/Entity';
-import { CCompDTO, SubModelDTO } from './index';
+import { IEvModelAddDTO, IEvModelGetDTO, IEvModelRefUpdateDTO, ISubModelAddDTO } from 'sharedInterfaces/DTO';
+import { CCompDTO, CompGetDTO, ComportGetDTO, NivelGetDTO, SubModelDTO } from './index';
 
-// TODO: Complete
 export class EvModelDTO implements IEvModelGetDTO {
 	@ApiProperty()
 	@Expose()
@@ -17,12 +15,6 @@ export class EvModelDTO implements IEvModelGetDTO {
 	@Type(() => CCompDTO)
 	catComp: CCompDTO;
 
-	// TODO: Complete with dto
-	@ApiProperty()
-	@Expose()
-	// @Type(() => )
-	evs: IEvaluacion[];
-
 	@ApiProperty({ type: [SubModelDTO] })
 	@Expose()
 	@Type(() => SubModelDTO)
@@ -33,7 +25,22 @@ export class EvModelDTO implements IEvModelGetDTO {
 	reference: boolean;
 }
 
-// export class EvModelAddDTO implements IEvModelAddDTO {}
+// TODO: Test this class, if works properly, export and use in endpoints
+class EvModelAddDTO implements IEvModelAddDTO {
+	@ApiProperty({ type: () => [CCompDTO] })
+	@Expose()
+	@Type(() => CompGetDTO)
+	catComp: CCompDTO;
+
+	@ApiProperty({ type: () => [SubModelAddDTO] })
+	@Expose()
+	@Type(() => CompGetDTO)
+	subModels: ISubModelAddDTO[];
+
+	@ApiProperty()
+	@Expose()
+	reference: boolean;
+}
 
 export class EvModelRefUpdateDTO implements IEvModelRefUpdateDTO {
 	@ApiProperty()
@@ -49,4 +56,29 @@ export class EvModelRefUpdateDTO implements IEvModelRefUpdateDTO {
 	@Expose()
 	@Type(() => SubModelDTO)
 	subModels: SubModelDTO[];
+}
+
+// TODO: Test this class, if works properly, export and use in endpoints
+class SubModelAddDTO implements ISubModelAddDTO {
+	// TODO: Isnt necessary to send a full level, only identifier is necessary, refactor
+	@ApiProperty({ type: () => [NivelGetDTO] })
+	@Expose()
+	@Type(() => NivelGetDTO)
+	nivel: NivelGetDTO;
+
+	// TODO: Isnt necessary to send a full competence, only identifier is necessary, refactor
+	@ApiProperty({ type: () => [CompGetDTO] })
+	@Expose()
+	@Type(() => CompGetDTO)
+	competencia: CompGetDTO;
+
+	// TODO: Isnt necessary to send an array of behaviours, only identifiers are necessary, refactor
+	@ApiProperty({ type: () => [ComportGetDTO] })
+	@Expose()
+	@Type(() => ComportGetDTO)
+	comportamientos: ComportGetDTO[];
+
+	@ApiProperty()
+	@Expose()
+	nivelDescription?: string;
 }
