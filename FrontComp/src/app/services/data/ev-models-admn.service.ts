@@ -18,7 +18,7 @@ export class EvModelsAdmnService {
 
 	/**
 	 * @returns `Array` with all refence evModels
-	 * TODO: DONE comprobar
+	 *
 	 */
 	getAllReference(): Promise<IEvModelGetDTO[]> {
 		const url = `${cnf.API_URL}/modelos/references`;
@@ -29,7 +29,7 @@ export class EvModelsAdmnService {
 	/**
 	 * @param cComp The id from the catComp to get the reference
 	 * @returns The reference model with the catComp selected
-	 * TODO: DONE, comprobar
+	 *
 	 */
 	getOneReference(cComp: Pick<ICatComp, 'id'> | ICatComp['id']): Promise<IEvModelGetDTO> {
 		const cCompId = typeof cComp === 'string' ? cComp : cComp.id;
@@ -44,12 +44,15 @@ export class EvModelsAdmnService {
 	 *
 	 * @param evModel The model to save
 	 * @param reference `true` if it is a model reference, `false` if not
-	 * @returns A `Promise` that it's `true` if it has been saved, exception if not
+	 * @returns A {@link Promise} which resolves as `true` if it has been saved, rejected otherwise
+	 *
 	 */
 	save(evModel: IEvModelAddDTO, reference: boolean): Promise<IEvModelGetDTO> {
-		// TODO: Cambiado a boolean, al serializar se queda true en vez de "true", comprobar en backend que es boolean con pipe
 		const url = `${cnf.API_URL}/modelos`;
-		this.logger.debug(`POST req a: ${url}, guardando el modelo, ¿es de referencia?: ${reference}`, evModel);
+		this.logger.debug(`POST req a: ${url}, guardando el modelo`, {
+			modelSent: evModel,
+			isReferenceModel: reference,
+		});
 		return this.httpClient
 			.post<IEvModelGetDTO>(url, evModel, { params: { reference: reference } })
 			.toPromise();
@@ -58,9 +61,8 @@ export class EvModelsAdmnService {
 	/**
 	 *
 	 * @param refModel The reference model to update
-	 * @returns A `Promise` that it's `true` if it has been updated, exception if not
-	 * @throws TODO: complete
-	 * TODO: DONE, testear
+	 * @returns A {@link Promise} which resolves as `true` if it has been updated, rejected otherwise
+	 *
 	 *
 	 */
 	updateRefModel(refModel: IEvModelRefUpdateDTO): Promise<true> {

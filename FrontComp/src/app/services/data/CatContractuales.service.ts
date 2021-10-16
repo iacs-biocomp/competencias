@@ -18,8 +18,8 @@ export class CatContractService {
 	/**
 	 *
 	 * @param cContr The id of cContr or cContr that will be deleted
-	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
-	 * @throws TODO: complete
+	 * @returns A {@link Promise} that resolves as `true` if it has been deleted, rejected otherwise
+	 *
 	 */
 	delete(cContr: ICatContr['id'] | Pick<ICatContr, 'id'>): Promise<boolean> {
 		const cContrId = typeof cContr === 'string' ? cContr : cContr.id;
@@ -31,8 +31,8 @@ export class CatContractService {
 	/**
 	 *
 	 * @param catContract The cContr to add
-	 * @returns A `Promise` that it's `true` if it has been add, exception if not
-	 * @throws TODO: complete
+	 * @returns A {@link Promise} that resolves as `true` if it has been deleted, rejected otherwise
+	 *
 	 */
 	add(cContr: ICContrAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/catcontr`;
@@ -43,9 +43,8 @@ export class CatContractService {
 	/**
 	 *
 	 * @param cContr the catContract to edit in the ddbb
-	 * @returns A `Promise` that it's `true` if it has been edited, exception if not
-	 * @throws TODO: complete
-	 * TODO: DONE, testear
+	 * @returns A {@link Promise} that resolves as `true` if it has been deleted, rejected otherwise
+	 *
 	 */
 	update(cContr: ICContrAndCCompDTO): Promise<true> {
 		const url = `${cnf.API_URL}/catcontr`;

@@ -17,8 +17,8 @@ export class CompetenciasService {
 
 	/**
 	 *
-	 * @param comp The id of the competencia that will be deleted
-	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
+	 * @param comp The id of the competence that will be deleted
+	 * @returns A {@link Promise} which resolves as `true` if it has been deleted, rejected otherwise
 	 */
 	delete(comp: ICompetencia['id'] | Pick<ICompetencia, 'id'>): Promise<boolean> {
 		const compId = typeof comp === 'string' ? comp : comp.id;
@@ -29,9 +29,8 @@ export class CompetenciasService {
 
 	/**
 	 *
-	 * @param comp The competencia to add
-	 * @returns A `Promise` that it's `true` if it has been added, exception if not
-	 * @throws TODO: complete
+	 * @param comp The competence to add
+	 * @returns A {@link Promise} which resolves as `true` if it has been added, rejected otherwise
 	 */
 	add(comp: ICompAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/competencias`;
@@ -41,8 +40,8 @@ export class CompetenciasService {
 
 	/**
 	 *
-	 * @param comp the competencia to edit in the ddbb
-	 * @returns A `Promise` that it's `True` if it has been edited, `False` if it hasn't
+	 * @param comp The competence with properties already edited.
+	 * @returns A {@link Promise} which resolves as `true` if it has been edited, rejected otherwise
 	 *
 	 */
 	edit(comp: ICompAddDTO): Promise<boolean> {

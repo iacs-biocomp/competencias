@@ -8,7 +8,6 @@ import { BaseLayoutComponent } from './shared/layout/base/base-layout.component'
 import { CompRoutes } from './types/angular-modified-types';
 
 const routes: CompRoutes = [
-	//!La ruta con path = '' va la ultima, Explicación aqui https://is.gd/qRxAtW (Sino el guard hace loop infinito)
 	{
 		path: 'admin',
 		canLoad: [LoginGuard],
@@ -62,6 +61,7 @@ const routes: CompRoutes = [
 		loadChildren: () =>
 			import('./modules/evaluaciones/evaluaciones.module').then(mod => mod.EvaluacionesModule),
 	},
+	//! Route with path equals to '' must be the last one, explained why in this link https://is.gd/qRxAtW (If not, the guard makes an infinite loop)
 	{
 		path: '',
 		canLoad: [LoginGuard],
@@ -71,7 +71,7 @@ const routes: CompRoutes = [
 		component: BaseLayoutComponent,
 		loadChildren: () => import('./modules/public/public.module').then(mod => mod.PublicModule),
 	},
-	//*Redireccionar a public en caso de ruta erronea
+	//*Redirect to public Module in case of wrong path
 	{
 		path: '**',
 		redirectTo: '/',

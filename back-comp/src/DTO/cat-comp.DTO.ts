@@ -4,10 +4,8 @@ import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 import { ICatCompWithNoModelsDTO, ICCompAddDTO, ICCompCContrDTO, ICCompDTO } from 'sharedInterfaces/DTO';
 import { CContrAddDTO, CContrGetDTO } from './index';
 
-// TODO: Translate TSDoc to English
-
 /**
- * DTO base del cual el resto heredan
+ * Base class for competence category DTO
  */
 abstract class CCompBaseDTO implements ICCompDTO {
 	@Expose()
@@ -23,13 +21,13 @@ abstract class CCompBaseDTO implements ICCompDTO {
 	description!: string;
 }
 
-// TODO: catContr required?
-// TODO: Translate TSDoc to English
 /**
  *
- * DTO usado para añadir una nueva categoría competencial
+ * DTO used for adding a new competence category
+ *
  */
 export class CCompAddDTO extends CCompBaseDTO implements ICCompAddDTO {
+	// ?? is catContr required when a cComp is added?
 	@Expose()
 	@ApiProperty({ type: () => CContrAddDTO })
 	@Type(() => CContrAddDTO)
@@ -43,15 +41,13 @@ export class CCompCContrDTO extends CCompBaseDTO implements ICCompCContrDTO {
 	catContr!: CContrGetDTO[];
 }
 
-// TODO: Translate TSDoc to English
 /**
- *  Categoría competencial base
+ *  Base competence category DTO
  */
 export class CCompDTO extends CCompBaseDTO implements ICCompDTO {}
 
-// TODO: Translate TSDoc to English
 /**
- *  Categoría competencial con numero de modelos asociados, contando el de referencia
+ *  Data of a competence category with the number of evaluation models associated with it, counting with the reference model
  */
 export class CatCompWithNoModelsDTO extends CCompBaseDTO implements ICatCompWithNoModelsDTO {
 	@ApiProperty()

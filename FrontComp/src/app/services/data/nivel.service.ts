@@ -31,7 +31,7 @@ export class NivelService {
 	/**
 	 * GET: get all the niveles for reference to the server
 	 *
-	 * @returns `Promise` with all the reference niveles
+	 * @returns A {@link Promise} which resolves with all the reference niveles, rejected if something go wrong
 	 *
 	 */
 	getAllRefNivs(): Promise<INivelGetDTO[]> {
@@ -41,42 +41,42 @@ export class NivelService {
 	}
 
 	/**
+	 *
 	 * @param nivel level's id which will be deleted
-	 * @returns A `Promise` that it's `true` if it has been deleted, `false` if it hasn't
+	 * @returns A {@link Promise} which resolves as `true` if it has been deleted, rejected if something go wrong
+	 *
 	 */
-	delete(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<boolean> {
+	delete(nivel: INivel['id'] | Pick<INivel, 'id'>): Promise<true> {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
 		const url = `${cnf.API_URL}/niveles/${idNivel}`;
 		this.logger.debug(`Eliminando el nivel con ID: ${idNivel}, mandando req a: ${url}`);
-		return this.httpClient.delete<boolean>(url).toPromise();
+		return this.httpClient.delete<true>(url).toPromise();
 	}
 
 	/**
-	 * POST: add a new nivel to the server
 	 *
-	 * @param nivel The nivel we want to add
-	 * @returns A `Promise` that it's `true` if it has been add, `false` if it hasn't
-	 * TODO: DONE, reference falta, bien?
+	 * Add a new reference level to the database
+	 * @param level The level to add
+	 * @returns A {@link Promise} which resolves as `true` if, rejected if something go wrong
+	 *
 	 */
-	add(nivel: INivelAddDTO): Promise<boolean> {
+	add(level: INivelAddDTO): Promise<true> {
 		const url = `${cnf.API_URL}/niveles`;
-		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${nivel.code}, POST req a: ${url}`, {
-			requestBody: nivel,
+		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${level.code}, POST req a: ${url}`, {
+			requestBody: level,
 		});
-		return this.httpClient.post<boolean>(url, nivel).toPromise();
+		return this.httpClient.post<true>(url, level).toPromise();
 	}
 
 	/**
 	 *
-	 * @param nivel the nivel to edit in the ddbb
-	 * @returns A `Promise` that it's `true` if it has been edited, `false` if it hasn't
-	 *
-	 * TODO: DONE, reference falta, bien?
+	 * @param nivel The reference level edited, must have correct code
+	 * @returns A {@link Promise} which resolves as `true` if level has been edited correctly, rejected otherwise
 	 *
 	 */
-	edit(nivel: INivelPutDTO): Promise<boolean> {
+	edit(nivel: INivelPutDTO): Promise<true> {
 		const url = `${cnf.API_URL}/niveles`;
 		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, { requestBody: nivel });
-		return this.httpClient.put<boolean>(url, nivel).toPromise();
+		return this.httpClient.put<true>(url, nivel).toPromise();
 	}
 }

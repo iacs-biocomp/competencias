@@ -22,10 +22,9 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk the worker whose inferiors to search
+	 * @param wrk The worker which relations as inferiores will be setted in database
 	 * @param relations The relations to set
-	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
-	 * @throws TODO: complete
+	 * @returns A {@link Promise} that resolves as `true` if it has been setted, rejected other
 	 */
 	setInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -39,10 +38,9 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk the worker whose superiores to search
+	 * @param wrk The worker which relations as superiores will be setted in database
 	 * @param relations The relations to set
-	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
-	 * @throws TODO: complete
+	 * @returns A {@link Promise} that resolves as `true` if it has been setted, rejected other
 	 *
 	 */
 	setSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
@@ -57,10 +55,9 @@ export class OrganiService {
 
 	/**
 	 *
-	 * @param wrk the worker whose pares to search
+	 * @param wrk The worker which relations as pares will be setted in database
 	 * @param relations The relations to set
-	 * @returns A `Promise` that it's `true` if it has been setted, exception if not
-	 * @throws TODO: complete
+	 * @returns A {@link Promise} that resolves as `true` if it has been setted, rejected other
 	 *
 	 */
 	setPares(
@@ -126,7 +123,6 @@ export class OrganiService {
 	 *
 	 * @param relations The object to set in the body
 	 * @returns Wrap relations param adding `headers` key which is Content-Type application/json
-	 * TODO: return type, extract type from method body
 	 *
 	 */
 	private getDeleteBody<T>(relations: T) {

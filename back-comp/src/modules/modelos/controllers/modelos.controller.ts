@@ -33,15 +33,17 @@ export class ModelosController {
 		private readonly subModelRepo: SubModelRepo,
 	) {}
 
+	// TODO: move repo method call to service and cast as IEvModelGetDTO
 	@Get('references')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
-	getReferenceModels() {
+	getReferenceModels(): Promise<EvModel[]> {
 		return this.modelRepo.find({
 			where: { reference: true },
 			relations: ['catComp', 'subModels', 'subModels.nivel', 'subModels.competencia', 'subModels.comportamientos'],
 		});
 	}
 
+	// TODO: move repo method call to service and cast as IEvModelGetDTO
 	@Get('/reference/:cComp')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	referenceModel(@Param('cComp') catCompId: string): Promise<EvModel | undefined> {
@@ -51,6 +53,7 @@ export class ModelosController {
 		});
 	}
 
+	// TODO: move repo method call to service and cast as IEvModelGetDTO
 	@Get(':cComp')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	modelsCatComp(@Param('cComp') catCompId: string): Promise<EvModel[]> {
@@ -60,6 +63,7 @@ export class ModelosController {
 		});
 	}
 
+	// TODO: move repo method call to service and cast as IEvModelGetDTO
 	@Get('')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	allModels(): Promise<EvModel[]> {
