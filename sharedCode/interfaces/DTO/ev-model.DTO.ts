@@ -31,8 +31,6 @@ export type IEvModelGetDTO = Expand<
 	}
 >;
 
-/** @deprecated change to DTO */
-export type IModelDTO = Omit<RequiredAndNotNull<IEvModel>, 'id' | 'evs'>;
 
 /** @deprecated change to DTO */
 export type IRefModel = Omit<RequiredAndNotNull<IEvModel>, 'evs'>;

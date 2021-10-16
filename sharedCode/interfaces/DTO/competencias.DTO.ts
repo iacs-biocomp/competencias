@@ -9,11 +9,6 @@ export type ICompNoId = Omit<ICompetencia, 'id' | 'createdAt'>;
  */
 export type ICompBaseDTO = Pick<ICompetencia, 'id' | 'descripcion'>;
 
-/** @deprecated use {@link ICompGetDTO} */
-export type ICompNoRelationsDTO = ICompBaseDTO & {
-	createdAt: Date;
-};
-
 /**
  * Base type when requesting competences from database
  * @example
