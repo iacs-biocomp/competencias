@@ -4,6 +4,9 @@ import { Configuration as cnf } from '../config/config.keys';
 import { parse } from 'cookie';
 import { ConfigService } from '../config/config.service';
 import { AuthGuard } from '../guards/auth/auth.guard';
+import { Roles } from 'sharedInterfaces/Entity';
+
+type ModulesObj = { [key: string]: [Roles] };
 
 /**
  * Middleware para el modulo `ServeStaticModule`
@@ -11,32 +14,32 @@ import { AuthGuard } from '../guards/auth/auth.guard';
  */
 @Injectable()
 export class FrontendMiddleware implements NestMiddleware {
+	TOKEN_NAME = this.cnfService.get(cnf.JWT_NAME);
+	JWT_KEY = this.cnfService.get(cnf.JWT_SECRET);
+	LOGIN_URL = '/auth/login';
+	/**Definición de los modulos js (angular) y los roles con los que se puede acceder */
+	MODULES: ModulesObj = {
+		'/src_app_modules_admin_admin_module_ts.js': [Roles.ADMIN],
+	};
+
 	constructor(private authGuard: AuthGuard, private cnfService: ConfigService) {}
 	use(req: Request, res: Response, next: Function) {
 		const URL = req.baseUrl;
-		const TOKEN_NAME = this.cnfService.get(cnf.JWT_NAME);
-		const JWT_KEY = this.cnfService.get(cnf.JWT_SECRET);
-		const LOGIN_URL = '/auth/login';
-
-		/**Definición de los modulos js (angular) y los roles con los que se puede acceder */
-		const MODULOS = {
-			'/modules-activity-activity-module.js': 'ADMIN',
-		};
 		//Petición api
 		if (URL.indexOf('/api') === 0) {
 			next();
 		}
 		//Petición web
-		else if (MODULOS[URL]) {
+		else if (this.MODULES[URL]) {
 			const cookieStr = req.headers.cookie;
 			const cookies = !!cookieStr ? parse(cookieStr) : {};
 			//Comprobar que esta el jwt en cookies
-			if (!cookies[TOKEN_NAME]) {
-				return res.redirect(LOGIN_URL);
+			if (!cookies[this.TOKEN_NAME]) {
+				return res.redirect(this.LOGIN_URL);
 			}
 			//Validar JWT
-			if (!this.authGuard.canActivate(cookies[TOKEN_NAME], JWT_KEY)) {
-				return res.redirect(LOGIN_URL);
+			if (!this.authGuard.canActivate(cookies[this.TOKEN_NAME], this.JWT_KEY)) {
+				return res.redirect(this.LOGIN_URL);
 			}
 			next();
 		} else {
