@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"lib": ["es5", "es6", "ES2017"],
 		"target": "es2017",
-		"module": "commonjs",
+		"module": "CommonJS",
 		"moduleResolution": "node",
 		"strictNullChecks": true,
 		"noUncheckedIndexedAccess": true,
@@ -18,7 +18,8 @@
 		"noImplicitReturns": true,
 		"paths": {
 			"sharedInterfaces/*": ["../sharedCode/interfaces/*"],
-			"sharedCode/*": ["../sharedCode/*"]
+			"sharedCode/*": ["../sharedCode/*"],
+			"tslib": ["./node-modules/tslib/tslib.d.ts"]
 		}
 	}
 }
