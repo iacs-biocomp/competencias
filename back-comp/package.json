@@ -59,6 +59,7 @@
 		"source-map-support": "^0.5.20",
 		"swagger-ui-express": "^4.1.6",
 		"ts-toolbelt": "^9.6.0",
+		"tslib": "^2.3.1",
 		"typeorm": "^0.2.38",
 		"winston": "^3.3.3"
 	},
