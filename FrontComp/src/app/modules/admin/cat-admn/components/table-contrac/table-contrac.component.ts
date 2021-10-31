@@ -27,14 +27,10 @@ export class TableContracComponent implements OnInit {
 		private readonly logger: LogService,
 	) {}
 
-	alert(msg: string) {
-		alert(msg);
-	}
-
 	async ngOnInit(): Promise<void> {
 		this.logger.verbose('Cargando componente table-contrac');
-		const promises = await Promise.all([this.updateContrView(), this.cCompSv.getAll()]);
-		this.catComps = promises[1];
+		const [_, catComps] = await Promise.all([this.updateContrView(), this.cCompSv.getAll()]);
+		this.catComps = catComps;
 	}
 
 	async updateContrView(): Promise<void> {
