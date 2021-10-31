@@ -7,10 +7,30 @@
 				<th scope="col">CAT.CONTRACTUAL</th>
 				<th scope="col">Descripción</th>
 				<th scope="col">CAT.COMPETENCIAL</th>
+				<div>
+					<button class="btn btn-primary" (click)="addEmptyCContr()">
+						<span class="material-icons" title="Añadir categoría competencial"> add </span>
+					</button>
+				</div>
 			</tr>
 		</thead>
 		<tbody>
-			<!-- TODO: Add button that add new catContr -->
+			<tr *ngFor="let cContrAdd of cContrsToAdd">
+				<td>
+					<input type="text" class="form-control" [(ngModel)]="cContrAdd.id" />
+				</td>
+				<td>
+					<input type="text" class="form-control" [(ngModel)]="cContrAdd.description" />
+				</td>
+				<td>
+					<div class="btn btn-danger" (click)="deleteCatCompToAdd(cContrAdd)">
+						<span class="material-icons"> delete </span>
+					</div>
+					<div class="btn btn-success" (click)="persistCContr(cContrAdd)" *ngIf="canPersistCContr(cContrAdd)">
+						<span class="material-icons"> add </span>
+					</div>
+				</td>
+			</tr>
 			<tr *ngFor="let catContr of catContracts">
 				<td>{{ catContr.id }}</td>
 				<td>{{ catContr.description }}</td>

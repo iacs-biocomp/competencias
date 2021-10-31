@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CatContractService, CatCompetencialesService } from 'services/data';
-import { ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
+import { ICContrAddDTO, ICContrAndCCompDTO } from 'sharedInterfaces/DTO';
 import { ICatContr, ICatComp } from 'sharedInterfaces/Entity';
+import { RemovePropsInU, RequiredAndNotNull } from 'sharedInterfaces/Utility';
 import { LogService } from 'src/app/shared/log/log.service';
 
 interface IContracEdit extends ICatContr {
@@ -16,6 +17,7 @@ export class TableContracComponent implements OnInit {
 	catContracts: ICContrAndCCompDTO[] = [];
 	contracts: IContracEdit[] = [];
 	catComps: ICatComp[] = [];
+	cContrsToAdd: ICContrAddDTO[] = [];
 
 	constructor(
 		/** Servicio de categorias contractuales */
@@ -49,5 +51,44 @@ export class TableContracComponent implements OnInit {
 		this.catContractService.delete(catContract.id);
 		this.logger.debug(`Eliminando la catContrac con ID: ${catContract.id}`);
 		return true;
+	}
+
+	addEmptyCContr(): void {
+		this.logger.verbose('Añadiendo cContr vacia a cContrsToAdd');
+		this.cContrsToAdd.push({
+			id: '',
+			description: '',
+		});
+	}
+
+	async persistCContr(cContr: ICContrAddDTO): Promise<void> {
+		if (this.canPersistCContr(cContr)) {
+			const isSaved = await this.catContractService.add(cContr);
+			if (isSaved) {
+				// TODO: Use lodash instead splice and findIndex
+				this.cContrsToAdd.splice(
+					this.cContrsToAdd.findIndex(cContrAdd => cContr.id === cContrAdd.id),
+					1,
+				);
+				this.catContracts.push({
+					...cContr,
+					catComp: {} as RemovePropsInU<RequiredAndNotNull<ICatComp>, object>,
+				});
+			}
+		} else {
+			this.logger.error('Error en la vista, no ha sido controlado si una cContr se puede añadir');
+		}
+	}
+
+	deleteCatCompToAdd(cContrToDelete: { id: string }): void {
+		// TODO: Use lodash instead splice and findIndex
+		this.cContrsToAdd.splice(
+			this.cContrsToAdd.findIndex(cContr => cContr.id === cContrToDelete.id),
+			1,
+		);
+	}
+
+	canPersistCContr(cContr: { id: string; description: string }): boolean {
+		return cContr.description !== '' && cContr.id !== '';
 	}
 }
