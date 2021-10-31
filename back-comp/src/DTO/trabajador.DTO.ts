@@ -39,13 +39,21 @@ export abstract class TrabBase {
 	// @IsNotEmpty({ message: 'Trab.departamento must be defined' })
 	@IsString({ message: 'Trab.departamento should be a string' })
 	departamento: string;
-
 }
 
 export class TrabajadorDTO extends TrabBase implements ITrabajadorDTO {}
 
 export class TrabCCompCContrDTO extends TrabBase {}
 export class TrabAddDTO extends TrabBase implements ITrabAddDTO {
+	@ApiProperty()
+	@Expose()
+	@IsString({ message: 'Trab.catComp must be a string' })
+	@IsNotEmpty({ message: 'Trab.catComp must be defined' })
 	catComp: string;
+
+	@ApiProperty()
+	@Expose()
+	@IsString({ message: 'Trab.catContr must be a string' })
+	@IsNotEmpty({ message: 'Trab.catContr must be defined' })
 	catContr: string;
 }
