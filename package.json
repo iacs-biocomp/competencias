@@ -1,0 +1,20 @@
+{
+	"name": "competencias",
+	"version": "0.0.1",
+	"description": "## Dependencias",
+	"main": "index.js",
+	"scripts": {
+		"install:all": "",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/iacs-biocomp/competencias.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/iacs-biocomp/competencias/issues"
+	},
+	"homepage": "https://github.com/iacs-biocomp/competencias#readme"
+}
