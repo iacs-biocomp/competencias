@@ -37,6 +37,12 @@ export class NivelesController {
 		return this.nivRepo.find({ relations: ['subModels'], where: { reference: true } });
 	}
 
+	@Get('count-reference')
+	@SetRoles(Roles.GESTOR, Roles.ADMIN)
+	countComports(): Promise<number> {
+		return this.nivRepo.count({ where: { reference: true } });
+	}
+
 	@Get(':id')
 	getNiv(
 		@Param('id', ParseIntPipe) id: number,

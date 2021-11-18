@@ -35,6 +35,12 @@ export class ComportamientosController {
 		return this.comportSv.findAll();
 	}
 
+	@Get('count')
+	@SetRoles(Roles.GESTOR, Roles.ADMIN)
+	countComports(): Promise<number> {
+		return this.comportRepo.count();
+	}
+
 	@Get(':id')
 	getComport(
 		@Param('id') id: string,

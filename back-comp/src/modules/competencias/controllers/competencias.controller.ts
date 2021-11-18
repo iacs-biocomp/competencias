@@ -34,6 +34,12 @@ export class CompetenciasController {
 		return this.compSv.getAll();
 	}
 
+	@Get('count')
+	@SetRoles(Roles.GESTOR, Roles.ADMIN)
+	countComports(): Promise<number> {
+		return this.comptRepo.count();
+	}
+
 	@Delete(':id')
 	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	async deleteCompt(@Param('id') id: string): Promise<boolean> {
