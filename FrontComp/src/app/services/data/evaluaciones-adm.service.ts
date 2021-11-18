@@ -14,7 +14,7 @@ export class EvaluacionesAdmService {
 	 * @returns Una promsesa que se resuelve como un array de todas las evaluaciones que tiene el backend
 	 * TODO: DTO return type
 	 */
-	public async getAll(): Promise<IEvaluacion[]> {
+	getAll(): Promise<IEvaluacion[]> {
 		const url = `${cnf.API_URL}/evaluaciones`;
 		this.logger.debug(`Obteniendo todas las evaluaciones de: ${url}`);
 		return this.httpClient.get<IEvaluacion[]>(url).toPromise();

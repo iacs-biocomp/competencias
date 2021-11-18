@@ -9,7 +9,7 @@ import { LogService } from 'src/app/shared/log/log.service';
 export class ComportService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
-	public getAll(): Promise<IComportGetDTO[]> {
+	getAll(): Promise<IComportGetDTO[]> {
 		const url = `${cnf.API_URL}/comportamientos/all`;
 		this.logger.debug(`Obteniendo todos los comportamientos de ${url}`);
 		return this.httpClient.get<IComportGetDTO[]>(url).toPromise();

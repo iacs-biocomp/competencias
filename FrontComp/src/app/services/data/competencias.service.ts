@@ -9,7 +9,7 @@ import { LogService } from 'src/app/shared/log/log.service';
 export class CompetenciasService {
 	constructor(private httpClient: HttpClient, private readonly logger: LogService) {}
 
-	public getAll(): Promise<ICompGetDTO[]> {
+	getAll(): Promise<ICompGetDTO[]> {
 		const url = `${cnf.API_URL}/competencias/all`;
 		this.logger.debug(`Obteniendo todas las competencias de: ${url}`);
 		return this.httpClient.get<ICompGetDTO[]>(url).toPromise();
