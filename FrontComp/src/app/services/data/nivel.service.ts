@@ -79,4 +79,14 @@ export class NivelService {
 		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, { requestBody: nivel });
 		return this.httpClient.put<true>(url, nivel).toPromise();
 	}
+
+	/**
+	 * Obtiene la cuenta de las competencias que existen en la base de datos, usada solo para admin y gestor
+	 * TODO: Translate tsdoc
+	 */
+	getCountReference(): Promise<number> {
+		const url = `${cnf.API_URL}/niveles/count-reference`;
+		this.logger.debug('Getting count of levels');
+		return this.httpClient.get<number>(url).toPromise();
+	}
 }

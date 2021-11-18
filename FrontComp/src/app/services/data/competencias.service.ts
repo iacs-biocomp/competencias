@@ -49,4 +49,14 @@ export class CompetenciasService {
 		this.logger.debug(`Editando la comp con ID: ${comp.id}, PUT req a: ${url}`, comp);
 		return this.httpClient.put<boolean>(url, comp).toPromise();
 	}
+
+	/**
+	 * Obtiene la cuenta de las competencias que existen en la base de datos, usada solo para admin y gestor
+	 * TODO: Translate tsdoc
+	 */
+	getCount(): Promise<number> {
+		const url = `${cnf.API_URL}/competencias/count`;
+		this.logger.debug('Getting count of competencias');
+		return this.httpClient.get<number>(url).toPromise();
+	}
 }

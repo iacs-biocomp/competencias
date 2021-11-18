@@ -33,4 +33,14 @@ export class ComportService {
 		this.logger.debug(`Editando el comport con ID: ${comport.id}, PUT req a: ${url}`, comport);
 		return this.httpClient.put<boolean>(url, comport).toPromise();
 	}
+
+	/**
+	 * Obtiene la cuenta de las competencias que existen en la base de datos, usada solo para admin y gestor
+	 * TODO: Translate tsdoc
+	 */
+	getCount(): Promise<number> {
+		const url = `${cnf.API_URL}/comportamientos/count`;
+		this.logger.debug('Getting count of competencias');
+		return this.httpClient.get<number>(url).toPromise();
+	}
 }
