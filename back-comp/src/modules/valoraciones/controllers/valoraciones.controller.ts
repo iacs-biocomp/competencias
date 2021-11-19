@@ -147,7 +147,7 @@ export class ValoracionesController {
 
 		// TODO: Add some tests for ensure that work properly
 		if (canSave()) {
-		await this.valRepo.save(val as unknown as Valoracion);
+			await this.valRepo.save(val as unknown as Valoracion);
 		} else {
 			throw new Error(
 				`No existe ${dbData
@@ -164,23 +164,22 @@ export class ValoracionesController {
 	@Get('resultados/:evId/:dni')
 	async getEvUserResults(
 		@Param('evId', ParseIntPipe) evId: number,
-		@Param('evId') dni: string,
+		@Param('dni') dni: string,
 	): Promise<IResultadoDTOV2[]> {
-		const [valoraciones, ev] = await Promise.all([
+		const [valoraciones, ev, wrk] = await Promise.all([
 			this.valRepo.find({ where: { evaluado: dni, ev: evId }, relations: ['comp'] }),
 			this.evRepo.findOne(evId),
+			this.wrkRepo.findOne(dni),
 		]);
 		if (!ev) {
-			throw new Error();
+			throw new BadRequestException(`No existe una evaluación con el id ${evId}`);
 		}
-		let compsOfVals: ICompetencia[] = [];
-		valoraciones.forEach(val => {
-			const compOfVal = val.comp;
-			const compInAcc = compsOfVals.find(comp => comp.id === compOfVal.id);
-			if (!compInAcc) {
-				compsOfVals.push(compOfVal);
-			}
-		});
+		if (wrk === undefined) {
+			throw new BadRequestException(`No existe un trabajador con el dni ${dni}`);
+		}
+
+		const compsOfVals = uniq(valoraciones.map(val => val.comp));
+
 		/** Periods in the evaluated range */
 		const periodosInRange = await this.organiSv.getUsrOrganisByRange(wrk, {
 			start: ev.iniPerEvaluado,
@@ -189,8 +188,8 @@ export class ValoracionesController {
 		const latestPeriod = periodosInRange.reduce((acc, el) => {
 			return isAfter(acc.interval.end, el.interval.end) ? acc : el;
 		});
-		// const [inferiores, pares, superiores] = [latestPeriod.inferiores, latestPeriod.pares, latestPeriod.superiores];
-		const [infVals, parVals, supVals] = await Promise.all([
+
+		const [infVals, parVals, supVals] = [
 			valoraciones.filter(
 				val => !!latestPeriod.inferiores.find(trab => trab.dni === (val.evaluador as unknown as string)),
 			),
@@ -198,7 +197,8 @@ export class ValoracionesController {
 			valoraciones.filter(
 				val => !!latestPeriod.superiores.find(trab => trab.dni === (val.evaluador as unknown as string)),
 			),
-		]);
+		];
+
 		const filterValByComp = (vals: Valoracion[], comp: { id: string }) => {
 			return vals.filter(val => val.comp.id === comp.id);
 		};
@@ -238,6 +238,7 @@ export class ValoracionesController {
 	}
 }
 
+// TODO: Refactor, move to sharedCode utils
 export function computeResults(vals: Valoracion[]): number {
 	const nivelesOfVals: Nivel[] = [];
 	const findNivelFn = (code: string) => nivelesOfVals.find(niv => niv.code === code);
