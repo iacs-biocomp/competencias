@@ -158,7 +158,7 @@ export class ValoracionesController {
 			}
 		});
 		/** Periods in the evaluated range */
-		const periodosInRange = await this.organiSv.getUsrOrganisByRange(dni, {
+		const periodosInRange = await this.organiSv.getUsrOrganisByRange(wrk, {
 			start: ev.iniPerEvaluado,
 			end: ev.endPerEvaluado,
 		});

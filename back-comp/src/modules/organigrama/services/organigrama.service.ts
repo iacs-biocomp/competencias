@@ -50,17 +50,11 @@ export class OrganigramaService {
 	 * @param range
 	 * @throws error
 	 */
-	async getUsrOrganisByRange(dni: string, range: Interval): Promise<PeriodWithIntervalNoDate[]> {
-		const wrk = this.trabRepo.findOne(dni);
-		// TypeORM Query Operators
-
-		if (!wrk) {
-			throw new Error('Bad dni');
-		}
+	async getUsrOrganisByRange(wrk: Trabajador, range: Interval): Promise<PeriodWithIntervalNoDate[]> {
 		// const BeforeDate = (date: Date) => Between(subYears(date, 100), date);
 		// TODO: Method extraction, move this code to PeriodService and inject service here
 		const allPeriods = await this.periodRepo.find({
-			where: { trabajador: dni },
+			where: { trabajador: wrk },
 			relations: ['superiores', 'pares', 'inferiores'],
 		});
 		const mapedPeriods = allPeriods.map<PeriodWithIntervalNoDate>(p => {

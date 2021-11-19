@@ -154,7 +154,7 @@ export class EvaluacionesController {
 		if (!ev) {
 			throw new BadRequestException(`No existe una evaluacion con ${evId} como id`);
 		}
-		const periodsInRange = await this.organiSv.getUsrOrganisByRange(worker.dni, {
+		const periodsInRange = await this.organiSv.getUsrOrganisByRange(worker, {
 			start: ev.iniPerEvaluado,
 			end: ev.endPerEvaluado,
 		});
