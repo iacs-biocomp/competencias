@@ -14,11 +14,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { deleteProps } from 'sharedCode/Utility';
+import { Roles } from 'sharedInterfaces/Entity';
 import { TrabAddDTO, TrabCCompCContrDTO } from 'src/DTO/trabajador.DTO';
 import { Trabajador } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';
+import { SetRoles } from '../role/decorators/role.decorator';
 import { TrabajadorRepo } from './trabajador.repository';
 
 @Controller('api/trabajadores')
@@ -87,15 +89,15 @@ export class TrabajadoresController {
 		return wrk;
 	}
 
+	@SetRoles(Roles.ADMIN, Roles.GESTOR)
 	@Delete(':dni')
-	async deleteWorker(@Param('dni') dni: string): Promise<boolean> {
-		// TODO: Use try/catch and delete method instead finding if worker exist in database
-		const worker = await this.trabRepo.findOne({ dni: dni }, { relations: [''] });
-		if (!worker) {
+	async deleteWorker(@Param('dni') dni: string): Promise<true> {
+		try {
+			await this.trabRepo.delete({ dni: dni });
+			return true;
+		} catch (error) {
 			throw new NotFoundException('No existe ningun worker con ese dni');
 		}
-		await this.trabRepo.remove(worker);
-		return true;
 	}
 
 	@Post('')
