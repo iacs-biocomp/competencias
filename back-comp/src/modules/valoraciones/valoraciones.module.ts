@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Configuration as cnfKeys } from 'src/config/config.keys';
 import { ConfigModule } from 'src/config/config.module';
 import { ConfigService } from 'src/config/config.service';
+import { ComptRepository } from '../competencias/competencias.repository';
+import { ComportRepository } from '../comportamientos/comportamientos.repository';
 import { EvRepository } from '../evaluaciones/evaluaciones.repository';
 import { OrganigramaService } from '../organigrama/services/organigrama.service';
 import { PeriodosRepo } from '../trabajadores/periodos.repository';
@@ -14,7 +16,14 @@ import { ValoracionesRepo } from './valoraciones.repository';
 
 @Module({
 	imports: [
-		TypeOrmModule.forFeature([ValoracionesRepo, EvRepository, TrabajadorRepo, PeriodosRepo]),
+		TypeOrmModule.forFeature([
+			ValoracionesRepo,
+			EvRepository,
+			TrabajadorRepo,
+			PeriodosRepo,
+			ComptRepository,
+			ComportRepository,
+		]),
 		// TODO: refactor, encontrar manera de no registar el modulo con la configuración aqui también (esta en authModule)
 		JwtModule.registerAsync({
 			imports: [ConfigModule],

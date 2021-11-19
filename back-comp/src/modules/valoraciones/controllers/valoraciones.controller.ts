@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IJwtPayload, IResultadoDTOV2, IValoracionSettedDTO } from 'sharedInterfaces/DTO';
-import { ICompetencia, INivel, IValoracion, Roles } from 'sharedInterfaces/Entity';
+import { INivel, IValoracion, Roles } from 'sharedInterfaces/Entity';
 import { Nivel, Valoracion } from 'src/entity';
 import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { ValoracionesRepo } from '../valoraciones.repository';
@@ -30,13 +30,19 @@ import { ValoracionAddDTO, ValoracionUpdateDTO } from 'src/DTO';
 import { OrganigramaService } from 'src/modules/organigrama/services/organigrama.service';
 import { EvRepository } from 'src/modules/evaluaciones/evaluaciones.repository';
 import { isAfter } from 'date-fns';
+import { ComptRepository } from 'src/modules/competencias/competencias.repository';
+import { ComportRepository } from 'src/modules/comportamientos/comportamientos.repository';
+import { TrabajadorRepo } from 'src/modules/trabajadores/trabajador.repository';
+import { uniq } from 'lodash';
 
 @Controller('api/valoraciones')
 export class ValoracionesController {
 	constructor(
 		@InjectRepository(ValoracionesRepo) private readonly valRepo: ValoracionesRepo,
 		@InjectRepository(EvRepository) private readonly evRepo: EvRepository,
-		// @InjectRepository(ComptRepository) private readonly compRepo: ComptRepository, // @InjectRepository(ComportRepository) private readonly comportRepo: ComportRepository, // @InjectRepository(TrabajadorRepo) private readonly wrkRepo: TrabajadorRepo, // @InjectRepository(EvRepository) private readonly evRepo: EvRepository,
+		@InjectRepository(ComptRepository) private readonly compRepo: ComptRepository,
+		@InjectRepository(ComportRepository) private readonly comportRepo: ComportRepository,
+		@InjectRepository(TrabajadorRepo) private readonly wrkRepo: TrabajadorRepo,
 		private readonly jwtSv: JwtService,
 		private readonly cnfSv: ConfigService,
 		private readonly organiSv: OrganigramaService,
@@ -108,30 +114,48 @@ export class ValoracionesController {
 	}
 
 	/**
+	 * TODO: Translate to english
 	 * Guarda una nueva valoración en la DB
 	 * @param val La valoración sin identificador a guardar en la DB
-	 * @returns `true` en caso de que se haya guardado correctamente la valoración `false` o Excepción en caso contrario
+	 * @returns `true` en caso de que se haya guardado correctamente la valoración Excepción en caso contrario
 	 */
 	@Post('')
 	@UsePipes(new ValidationPipe({ transform: true, transformOptions: { excludeExtraneousValues: true } }))
 	@UseGuards()
-	async createVal(@Req() req: Request, @Body() val: ValoracionAddDTO): Promise<boolean> {
+	async createVal(@Req() req: Request, @Body() val: ValoracionAddDTO): Promise<true> {
 		const existentVal = await this.valRepo.findOne({
 			where: { ev: { id: val.ev }, comp: { id: val.comp }, comport: { id: val.comport } },
 		});
+
 		if (!!existentVal) {
 			throw new BadRequestException(
 				'La valoración que se quiere crear ya existe, para actualizar realizar petición a endpoint PUT',
 			);
 		}
-		// const [evaluador, evaluado, ev, comp, comport] = await Promise.all([
-		// 	this.wrkRepo.findOne(val.evaluador, { cache: 20000 }),
-		// 	this.wrkRepo.findOne(val.evaluado, { cache: 20000 }),
-		// 	this.evRepo.findOne(val.evaluado, { cache: 20000 }),
-		// 	this.compRepo.findOne(val.comp, { cache: 20000 }),
-		// 	this.comportRepo.findOne(val.comport, { cache: 20000 }),
-		// ]);
+
+		const dbData = await Promise.all([
+			{ name: 'evaluador', value: this.wrkRepo.findOne(val.evaluador) },
+			{ name: 'evaluado', value: this.wrkRepo.findOne(val.evaluado) },
+			{ name: 'evaluacion', value: this.evRepo.findOne(val.evaluado) },
+			{ name: 'competencia', value: this.compRepo.findOne(val.comp) },
+			{ name: 'comportamiento', value: this.comportRepo.findOne(val.comport) },
+		]);
+
+		const canSave = () => {
+			return dbData.every(data => data.value !== undefined);
+		};
+
+		// TODO: Add some tests for ensure that work properly
+		if (canSave()) {
 		await this.valRepo.save(val as unknown as Valoracion);
+		} else {
+			throw new Error(
+				`No existe ${dbData
+					.filter(data => data.value !== undefined)
+					.map(data => data.name)
+					.join(', ')} con los identificadores enviados`,
+			);
+		}
 		return true;
 	}
 
