@@ -2,3 +2,6 @@
 .vscode/settings.json
 node_modules
 dist
+# Lockfiles (Ignored only on develop branches)
+package-lock.json
+pnpm-lock.yaml
