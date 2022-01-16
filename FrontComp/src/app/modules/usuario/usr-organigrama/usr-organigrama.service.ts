@@ -4,6 +4,7 @@ import { IOrganigramaTrabajadorDTO } from 'sharedInterfaces/DTO/organigrama.DTO'
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { environment as cnf } from 'src/environments/environment';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -30,6 +31,6 @@ export class UsrOrganigramaService {
 		}
 		const url = `${cnf.API_URL}/organigrama/${token.username}`;
 		this.logger.debug(`Get req a ${url}, obteniendo mi organigrama`);
-		return this.httpClient.get<IOrganigramaTrabajadorDTO>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IOrganigramaTrabajadorDTO>(url));
 	}
 }

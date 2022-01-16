@@ -2,6 +2,7 @@
 .vscode/settings.json
 node_modules
 dist
+.angular
 # Lockfiles (Ignored only on develop branches)
 package-lock.json
 pnpm-lock.yaml

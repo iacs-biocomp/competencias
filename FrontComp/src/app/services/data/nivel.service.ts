@@ -4,6 +4,7 @@ import { environment as cnf } from 'src/environments/environment';
 import { INivel } from 'sharedInterfaces/Entity';
 import { INivelAddDTO, INivelGetDTO, INivelPutDTO } from 'sharedInterfaces/DTO';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class NivelService {
@@ -12,7 +13,7 @@ export class NivelService {
 	getAll(): Promise<INivelGetDTO[]> {
 		const url = `${cnf.API_URL}/niveles/all`;
 		this.logger.debug(`Obteniendo todos los niveles de ${url}`);
-		return this.httpClient.get<INivelGetDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<INivelGetDTO[]>(url));
 	}
 
 	/**
@@ -25,7 +26,7 @@ export class NivelService {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
 		const url = `${cnf.API_URL}/niveles/${idNivel}`;
 		this.logger.debug(`Obteniendo el nivel con ID: ${idNivel}, mandado req a: ${url}`);
-		return this.httpClient.get<INivel>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<INivel>(url));
 	}
 
 	/**
@@ -37,7 +38,7 @@ export class NivelService {
 	getAllRefNivs(): Promise<INivelGetDTO[]> {
 		const url = `${cnf.API_URL}/niveles/reference`;
 		this.logger.debug(`Obteniendo todos los niveles de referencia de: ${url}`);
-		return this.httpClient.get<INivelGetDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<INivelGetDTO[]>(url));
 	}
 
 	/**
@@ -50,7 +51,7 @@ export class NivelService {
 		const idNivel = typeof nivel === 'number' ? nivel : nivel.id;
 		const url = `${cnf.API_URL}/niveles/${idNivel}`;
 		this.logger.debug(`Eliminando el nivel con ID: ${idNivel}, mandando req a: ${url}`);
-		return this.httpClient.delete<true>(url).toPromise();
+		return firstValueFrom(this.httpClient.delete<true>(url));
 	}
 
 	/**
@@ -65,7 +66,7 @@ export class NivelService {
 		this.logger.debug(`Añadiendo nivel con CÓDIGO: ${level.code}, POST req a: ${url}`, {
 			requestBody: level,
 		});
-		return this.httpClient.post<true>(url, level).toPromise();
+		return firstValueFrom(this.httpClient.post<true>(url, level));
 	}
 
 	/**
@@ -77,7 +78,7 @@ export class NivelService {
 	edit(nivel: INivelPutDTO): Promise<true> {
 		const url = `${cnf.API_URL}/niveles`;
 		this.logger.debug(`Editando nivel con CÓDIGO: ${nivel.code}, PUT req a ${url}`, { requestBody: nivel });
-		return this.httpClient.put<true>(url, nivel).toPromise();
+		return firstValueFrom(this.httpClient.put<true>(url, nivel));
 	}
 
 	/**
@@ -87,6 +88,6 @@ export class NivelService {
 	getCountReference(): Promise<number> {
 		const url = `${cnf.API_URL}/niveles/count-reference`;
 		this.logger.debug('Getting count of levels');
-		return this.httpClient.get<number>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<number>(url));
 	}
 }

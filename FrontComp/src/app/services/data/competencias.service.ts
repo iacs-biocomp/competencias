@@ -4,6 +4,7 @@ import { environment as cnf } from 'src/environments/environment';
 import { ICompAddDTO, ICompGetDTO } from 'sharedInterfaces/DTO';
 import { ICompetencia } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CompetenciasService {
@@ -12,7 +13,7 @@ export class CompetenciasService {
 	getAll(): Promise<ICompGetDTO[]> {
 		const url = `${cnf.API_URL}/competencias/all`;
 		this.logger.debug(`Obteniendo todas las competencias de: ${url}`);
-		return this.httpClient.get<ICompGetDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<ICompGetDTO[]>(url));
 	}
 
 	/**
@@ -24,7 +25,7 @@ export class CompetenciasService {
 		const compId = typeof comp === 'string' ? comp : comp.id;
 		const url = `${cnf.API_URL}/competencias/${compId}`;
 		this.logger.debug(`Eliminando comp con ID: ${compId}, mandando req a: ${url}`);
-		return this.httpClient.delete<boolean>(url).toPromise();
+		return firstValueFrom(this.httpClient.delete<boolean>(url));
 	}
 
 	/**
@@ -35,7 +36,7 @@ export class CompetenciasService {
 	add(comp: ICompAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/competencias`;
 		this.logger.debug(`Añadiendo comp con ID: ${comp.id}, POST req a: ${url}`, comp);
-		return this.httpClient.post<boolean>(url, comp).toPromise();
+		return firstValueFrom(this.httpClient.post<boolean>(url, comp));
 	}
 
 	/**
@@ -47,7 +48,7 @@ export class CompetenciasService {
 	edit(comp: ICompAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/competencias`;
 		this.logger.debug(`Editando la comp con ID: ${comp.id}, PUT req a: ${url}`, comp);
-		return this.httpClient.put<boolean>(url, comp).toPromise();
+		return firstValueFrom(this.httpClient.put<boolean>(url, comp));
 	}
 
 	/**
@@ -57,6 +58,6 @@ export class CompetenciasService {
 	getCount(): Promise<number> {
 		const url = `${cnf.API_URL}/competencias/count`;
 		this.logger.debug('Getting count of competencias');
-		return this.httpClient.get<number>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<number>(url));
 	}
 }

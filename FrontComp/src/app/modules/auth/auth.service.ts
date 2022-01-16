@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment as cnf } from 'src/environments/environment';
 import { IAuthTokenRes, IRegisterRequestDTO, ISignInDto } from 'sharedInterfaces/DTO';
 import { JwtService } from 'src/app/services/auth/jwt.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
 	 * @return Return `true` if successful authentication, otherwise return `false`.
 	 */
 	async sendLoginInfo(body: ISignInDto): Promise<IAuthTokenRes> {
-		return this.httpClient.post<IAuthTokenRes>(cnf.API_URL + '/signin', body).toPromise();
+		return firstValueFrom(this.httpClient.post<IAuthTokenRes>(cnf.API_URL + '/signin', body));
 	}
 
 	/**
@@ -24,9 +25,9 @@ export class AuthService {
 	 * @returns Promise q se resuelve como `true` si todo ha ido bien, `false` en caso contrario
 	 */
 	async sendRegisterReq(body: IRegisterRequestDTO): Promise<boolean> {
-		const response: IAuthTokenRes = await this.httpClient
-			.post<IAuthTokenRes>(cnf.API_URL + '/signup', body)
-			.toPromise();
+		const response: IAuthTokenRes = await firstValueFrom(
+			this.httpClient.post<IAuthTokenRes>(cnf.API_URL + '/signup', body),
+		);
 		console.log(response);
 		if (!response) {
 			return false;

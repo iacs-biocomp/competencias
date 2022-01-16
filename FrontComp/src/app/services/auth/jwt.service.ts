@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { remove as cookieRm } from 'js-cookie';
+import Cookies from 'js-cookie';
 import { environment as cnf } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { IAuthTokenRes, IJwtPayload } from 'sharedInterfaces/DTO';
 import { LoginGuard } from '../../guards/login.guard';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -38,9 +39,9 @@ export class JwtService {
 		if (!this.refresh.eventOcurred) {
 			return;
 		}
-		const response: IAuthTokenRes = await this.httpClient
-			.post<IAuthTokenRes>(`${cnf.API_URL}/jwtrefresh`, { tokenStr: this.token() })
-			.toPromise();
+		const response: IAuthTokenRes = await firstValueFrom(
+			this.httpClient.post<IAuthTokenRes>(`${cnf.API_URL}/jwtrefresh`, { tokenStr: this.token() }),
+		);
 		this.updateJwt(response.token);
 		this.refresh.eventOcurred = false;
 	}
@@ -63,7 +64,7 @@ export class JwtService {
 
 	/**Metodo que borra el token de las cookies y del localStorage */
 	rmToken(): void {
-		cookieRm(cnf.JWT_NAME);
+		Cookies.remove(cnf.JWT_NAME);
 		localStorage.removeItem(cnf.JWT_NAME);
 	}
 

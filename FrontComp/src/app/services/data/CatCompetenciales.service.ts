@@ -4,6 +4,7 @@ import { environment as cnf } from 'src/environments/environment';
 import { ICCompAddDTO, ICCompCContrDTO, ICCompDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CatCompetencialesService {
@@ -12,7 +13,7 @@ export class CatCompetencialesService {
 	public async getAll(): Promise<ICCompCContrDTO[]> {
 		const url = `${cnf.API_URL}/catcomp/all`;
 		this.logger.debug(`Obteniendo todas las cat competenciales de: ${url}`);
-		return this.httpClient.get<ICCompCContrDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<ICCompCContrDTO[]>(url));
 	}
 
 	/**
@@ -23,7 +24,7 @@ export class CatCompetencialesService {
 		const cCompId = typeof cComp === 'string' ? cComp : cComp.id;
 		const url = `${cnf.API_URL}/catcomp/${cCompId}`;
 		this.logger.debug(`Eliminando cComp con ID: ${cCompId}, mandando req a: ${url}`);
-		return this.httpClient.delete<true>(url).toPromise();
+		return firstValueFrom(this.httpClient.delete<true>(url));
 	}
 
 	/**
@@ -33,7 +34,7 @@ export class CatCompetencialesService {
 	add(cComp: ICCompAddDTO): Promise<true> {
 		const url = `${cnf.API_URL}/catcomp`;
 		this.logger.debug(`Añadiendo cComp con ID: ${cComp.id}, POST req a ${url}`, cComp);
-		return this.httpClient.post<true>(url, cComp).toPromise();
+		return firstValueFrom(this.httpClient.post<true>(url, cComp));
 	}
 
 	/**
@@ -43,6 +44,6 @@ export class CatCompetencialesService {
 	edit(cComp: ICCompDTO): Promise<true> {
 		const url = `${cnf.API_URL}/catcomp`;
 		this.logger.debug(`Editando la cComp con ID: ${cComp.id}, PUT req a ${url}`, cComp);
-		return this.httpClient.put<true>(url, cComp).toPromise();
+		return firstValueFrom(this.httpClient.put<true>(url, cComp));
 	}
 }

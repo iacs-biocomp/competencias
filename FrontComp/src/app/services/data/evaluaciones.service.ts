@@ -5,6 +5,7 @@ import { IEvaluacion, IUser } from 'sharedInterfaces/Entity';
 import { WORKERS_EVALUATED } from 'src/app/modules/evaluaciones/components/list-people-to-eval/data';
 import { environment as cnf } from 'src/environments/environment';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 /**
  * Destinado a la obtención de datos relacionados con las evaluaciones de los usuarios, para la administración de las evs usar
@@ -23,7 +24,7 @@ export class EvaluacionesService {
 		const username = typeof usr === 'string' ? usr : usr.username;
 		const url = `${cnf.API_URL}/evaluaciones/user/${username}`;
 		this.logger.debug(`Obteniendo evaluaciones del usuario con username: ${username}, mandando req a ${url}`);
-		return this.httpClient.get<IEvAllRequiredDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IEvAllRequiredDTO[]>(url));
 	}
 
 	/**
@@ -36,7 +37,7 @@ export class EvaluacionesService {
 		this.logger.debug(
 			`Obteniendo la evaluacion con ID: ${evId} con todos los datos del modelo, mandando req a: ${url}`,
 		);
-		return this.httpClient.get<IEvWithModelGetDTO>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IEvWithModelGetDTO>(url));
 	}
 
 	// TODO: TSdoc
@@ -46,8 +47,8 @@ export class EvaluacionesService {
 		// 		res(WORKERS_EVALUATED);
 		// 	}, 350),
 		// );
-		return this.httpClient
-			.get<ITrabajadorDTO[]>(`${cnf.API_URL}/evaluaciones/organi/${usernameOrObj}/${evId}`)
-			.toPromise();
+		return firstValueFrom(
+			this.httpClient.get<ITrabajadorDTO[]>(`${cnf.API_URL}/evaluaciones/organi/${usernameOrObj}/${evId}`),
+		);
 	}
 }

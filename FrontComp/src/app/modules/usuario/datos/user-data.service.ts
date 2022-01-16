@@ -4,6 +4,7 @@ import { IUserDTO } from 'sharedInterfaces/DTO';
 import { IUser } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,6 +23,6 @@ export class UserDataService {
 		// LOG: obteniendo datos del usuario ${username}
 		const url = `${cnf.API_URL}/users/${username}`;
 		this.logger.debug(`Get request a ${url}, obteniendo datos del user: ${username}`);
-		return this.httpClient.get<IUserDTO>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IUserDTO>(url));
 	}
 }

@@ -4,6 +4,7 @@ import { IEvModelAddDTO, IEvModelGetDTO, IEvModelRefUpdateDTO } from 'sharedInte
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 /** Servicio crud para el manejo de los modelos de las evaluaciones */
 @Injectable({ providedIn: 'root' })
@@ -13,7 +14,7 @@ export class EvModelsAdmnService {
 	getAll(): Promise<IEvModelGetDTO[]> {
 		const url = `${cnf.API_URL}/modelos`;
 		this.logger.debug(`Obteniendo todos los modelos de evaluaciones de: ${url}`);
-		return this.httpClient.get<IEvModelGetDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IEvModelGetDTO[]>(url));
 	}
 
 	/**
@@ -23,7 +24,7 @@ export class EvModelsAdmnService {
 	getAllReference(): Promise<IEvModelGetDTO[]> {
 		const url = `${cnf.API_URL}/modelos/references`;
 		this.logger.debug(`Obteniendo todos los modelos de referencia de: ${url}`);
-		return this.httpClient.get<IEvModelGetDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IEvModelGetDTO[]>(url));
 	}
 
 	/**
@@ -37,7 +38,7 @@ export class EvModelsAdmnService {
 		this.logger.debug(
 			`Obteniendo el modelo de referencia asociado a la cComp con ID: ${cCompId}, req a: ${url}`,
 		);
-		return this.httpClient.get<IEvModelGetDTO>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IEvModelGetDTO>(url));
 	}
 
 	/**
@@ -53,9 +54,9 @@ export class EvModelsAdmnService {
 			modelSent: evModel,
 			isReferenceModel: reference,
 		});
-		return this.httpClient
-			.post<IEvModelGetDTO>(url, evModel, { params: { reference: reference } })
-			.toPromise();
+		return firstValueFrom(
+			this.httpClient.post<IEvModelGetDTO>(url, evModel, { params: { reference: reference } }),
+		);
 	}
 
 	/**
@@ -68,6 +69,6 @@ export class EvModelsAdmnService {
 	updateRefModel(refModel: IEvModelRefUpdateDTO): Promise<true> {
 		const url = `${cnf.API_URL}/modelos/reference`;
 		this.logger.debug(`PUT req a: ${url}, actualizando datos del modelo:`, refModel);
-		return this.httpClient.put<true>(url, refModel, { params: { reference: 'true' } }).toPromise();
+		return firstValueFrom(this.httpClient.put<true>(url, refModel, { params: { reference: 'true' } }));
 	}
 }

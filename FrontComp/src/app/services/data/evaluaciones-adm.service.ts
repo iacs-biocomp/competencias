@@ -4,6 +4,7 @@ import { IEvSendDTO, IUpdateEvShowingResultsDTO } from 'sharedInterfaces/DTO';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 /** Tiene todos los metodos necesarios para la administración de las Evaluaciones y Modelos */
 @Injectable({ providedIn: 'root' })
@@ -17,7 +18,7 @@ export class EvaluacionesAdmService {
 	getAll(): Promise<IEvaluacion[]> {
 		const url = `${cnf.API_URL}/evaluaciones`;
 		this.logger.debug(`Obteniendo todas las evaluaciones de: ${url}`);
-		return this.httpClient.get<IEvaluacion[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<IEvaluacion[]>(url));
 	}
 
 	/**
@@ -29,7 +30,7 @@ export class EvaluacionesAdmService {
 		const evalId = typeof ev === 'number' ? ev : ev.id;
 		const url = `${cnf.API_URL}/evaluaciones/${evalId}`;
 		this.logger.debug(`Eliminando ev con ID: ${evalId}, mandando req a: ${url}`);
-		return this.httpClient.delete<true>(url).toPromise();
+		return firstValueFrom(this.httpClient.delete<true>(url));
 	}
 
 	/**
@@ -41,7 +42,7 @@ export class EvaluacionesAdmService {
 	add(ev: IEvSendDTO): Promise<true> {
 		const url = `${cnf.API_URL}/evaluaciones`;
 		this.logger.debug(`POST req a: ${url}, añadiendo evaluación:`, ev);
-		return this.httpClient.post<true>(url, ev).toPromise();
+		return firstValueFrom(this.httpClient.post<true>(url, ev));
 	}
 
 	// /**
@@ -52,7 +53,7 @@ export class EvaluacionesAdmService {
 	//  *
 	//  */
 	// edit(evalu: IEvSendDTO): Promise<boolean> {
-	// 	return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu).toPromise();
+	// 	return this.httpClient.put<boolean>(`${cnf.apiURL}/evaluaciones`, evalu);
 	// }
 
 	updateShowingResults(payload: IUpdateEvShowingResultsDTO) {
@@ -61,6 +62,6 @@ export class EvaluacionesAdmService {
 			`Actualizando valor del slideToggleBtn para mostrar/ocultar resultados, valor: ${payload.isShowingResults}, POST req a ${url}`,
 			payload,
 		);
-		return this.httpClient.post<true>(url, payload).toPromise();
+		return this.httpClient.post<true>(url, payload);
 	}
 }

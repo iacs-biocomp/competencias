@@ -4,6 +4,7 @@ import { environment as cnf } from 'src/environments/environment';
 import { ITrabAddDTO, ITrabajadorDTO, ITrabCCompCContrDTO } from 'sharedInterfaces/DTO';
 import { ITrabajador, IUser } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,7 +19,7 @@ export class TrabajadoresService {
 	public getAll(): Promise<ITrabCCompCContrDTO[]> {
 		const url = `${cnf.API_URL}/trabajadores/all`;
 		this.logger.debug(`Obteniendo todos los trabajadores de: ${url}`);
-		return this.httpClient.get<ITrabCCompCContrDTO[]>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<ITrabCCompCContrDTO[]>(url));
 	}
 
 	/**
@@ -29,7 +30,7 @@ export class TrabajadoresService {
 		const dni = typeof dniOrObj === 'string' ? dniOrObj : dniOrObj.dni;
 		const url = `${cnf.API_URL}/trabajadores/${dni}`;
 		this.logger.debug(`Req a: ${url}, obteniendo el trabajador con DNI: ${dni}`);
-		return this.httpClient.get<ITrabajadorDTO>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<ITrabajadorDTO>(url));
 	}
 
 	/**
@@ -41,7 +42,7 @@ export class TrabajadoresService {
 		const username = typeof usrnameOrObj === 'string' ? usrnameOrObj : usrnameOrObj.username;
 		const url = `${cnf.API_URL}/trabajadores/username/${username}`;
 		this.logger.debug(`Req a: ${url}, obteniendo trabajador por username: ${username}`);
-		return this.httpClient.get<ITrabajadorDTO>(url).toPromise();
+		return firstValueFrom(this.httpClient.get<ITrabajadorDTO>(url));
 	}
 
 	/**
@@ -54,7 +55,7 @@ export class TrabajadoresService {
 		const dniWorker = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/trabajadores/${dniWorker}`;
 		this.logger.debug(`Eliminando trabajador con DNI: ${dniWorker}, mandando req a: ${url}`);
-		return this.httpClient.delete<boolean>(url).toPromise();
+		return firstValueFrom(this.httpClient.delete<boolean>(url));
 	}
 
 	/**
@@ -64,7 +65,7 @@ export class TrabajadoresService {
 	add(worker: ITrabAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/trabajadores`;
 		this.logger.debug(`Añadiendo trabajador con DNI: ${worker.dni}, POST req a ${url}`, worker);
-		return this.httpClient.post<boolean>(url, worker).toPromise();
+		return firstValueFrom(this.httpClient.post<boolean>(url, worker));
 	}
 
 	/**
@@ -75,6 +76,6 @@ export class TrabajadoresService {
 	edit(wrk: ITrabAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/trabajadores`;
 		this.logger.debug(`Editando datos del trabajador con DNI: ${wrk.dni}, PUT req a ${url}`, wrk);
-		return this.httpClient.put<boolean>(url, wrk).toPromise();
+		return firstValueFrom(this.httpClient.put<boolean>(url, wrk));
 	}
 }

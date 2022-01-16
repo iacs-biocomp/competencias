@@ -4,6 +4,7 @@ import { IEvaluacion, ITrabajador } from 'sharedInterfaces/Entity';
 import { environment as cnf } from 'src/environments/environment';
 import { IValoracionAddDTO, IValoracionSettedDTO, IValoracionUpdateDTO } from 'sharedInterfaces/DTO';
 import { LogService } from 'src/app/shared/log/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ValoracionesService {
@@ -23,9 +24,9 @@ export class ValoracionesService {
 		this.logger.debug(
 			`Obteniendo evaluación con ID: ${evId}, que pertenece al trabajador con DNI: ${dni}, mandando req a ${url}`,
 		);
-		return this.httpClient
-			.get<IValoracionSettedDTO[]>(`${cnf.API_URL}/valoraciones/${dni}/${evId}`)
-			.toPromise();
+		return firstValueFrom(
+			this.httpClient.get<IValoracionSettedDTO[]>(`${cnf.API_URL}/valoraciones/${dni}/${evId}`),
+		);
 	}
 
 	/**
@@ -39,7 +40,8 @@ export class ValoracionesService {
 	async add(val: IValoracionAddDTO): Promise<boolean> {
 		const url = `${cnf.API_URL}/valoraciones`;
 		this.logger.debug(`POST req a: ${url}, añadiendo una valoración con los siguientes datos:`, val);
-		return this.httpClient.post<boolean>(url, val).toPromise();
+
+		return firstValueFrom(this.httpClient.post<boolean>(url, val));
 	}
 
 	/**
@@ -53,6 +55,6 @@ export class ValoracionesService {
 		//! Tal vez no haya que logar todo el objeto
 		const url = `${cnf.API_URL}/valoraciones`;
 		this.logger.debug(`PUT req a: ${url}, editando la siguiente valoración:`, val);
-		return this.httpClient.put<boolean>(url, val).toPromise();
+		return firstValueFrom(this.httpClient.post<boolean>(url, val));
 	}
 }

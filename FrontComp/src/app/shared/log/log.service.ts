@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { IFrontLoggingPayload, LogLevels } from 'sharedInterfaces/DTO';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -122,7 +122,7 @@ export class LogService {
 
 	private async sendMsgsToBackend(): Promise<boolean> {
 		try {
-			await this.httpClient.post<true>(`${cnf.API_URL}/logging`, LogService.latestMessages).toPromise();
+			await firstValueFrom(this.httpClient.post<true>(`${cnf.API_URL}/logging`, LogService.latestMessages));
 			return true;
 		} catch (error) {
 			return false;
