@@ -1,0 +1,23 @@
+name: Compile and Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Front dependencies
+        run: (cd FrontComp && npm i)
+      - name: Compile frontend
+        run: (cd FrontComp && npm run build:prod)
+      # - name: Deploy to server
+      # run: ./scripts/deploy_front.sh ${{ secrets.DEPLOY_PATH }} "${{ secrets.SSH_KEY }}" ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_HOST }}
+#
