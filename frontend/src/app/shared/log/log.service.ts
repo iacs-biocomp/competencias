@@ -45,13 +45,7 @@ export class LogService {
 
 	private methodExtraction(msg: string, level: LogLevels, ...args: unknown[]): void {
 		this.purgeMessages();
-		// TODO: reducir complejidad
-		if (
-			typeof args[0] === 'object' &&
-			args[0] !== null &&
-			typeof (args[0] as []).length === 'number' &&
-			(args[0] as []).length !== 0
-		) {
+		if (Array.isArray(args[0]) && args[0].length !== 0) {
 			const msgObj: LogMessage = { msg, date: new Date(), level, ...args };
 			LogService.latestMessages.push(msgObj);
 			if (LogService.levelToLog) {
