@@ -1,5 +1,5 @@
 {
-	"name": "back-comp",
+	"name": "backend",
 	"version": "0.0.1",
 	"description": "",
 	"author": "",
@@ -8,13 +8,13 @@
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
-		"build:compiled": "nest build && ncc build -m dist/back-comp/src/main.js && rm -rf dist/back-comp dist/sharedCode ",
+		"build:compiled": "nest build && ncc build -m dist/backend/src/main.js && rm -rf dist/backend dist/sharedCode ",
 		"build-webpack": "webpack",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
 		"start": "ts-node src/index.ts",
 		"start:dev": "rimraf dist && nest start --watch",
 		"start:debug": "nest start --debug --watch",
-		"start:prod": "NODE_ENV=production node dist/back-comp/src/main",
+		"start:prod": "NODE_ENV=production node dist/backend/src/main",
 		"start:prod_compiled": "NODE_ENV=production node dist/index",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 		"test": "jest",
@@ -98,7 +98,7 @@
 	},
 	"config": {
 		"commitizen": {
-			"path": "./back-comp/node_modules/cz-conventional-changelog"
+			"path": "./backend/node_modules/cz-conventional-changelog"
 		}
 	}
 }

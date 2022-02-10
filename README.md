@@ -25,7 +25,7 @@ pnpm config set shamefully-hoist=true
 
 ```bash
 # Estando posicionado en la carpeta raiz del proyecto:
-cd back-comp && \
+cd backend && \
 npm i ;\
 sudo ./dkbuild.sh ;\
 cd ..
@@ -35,9 +35,9 @@ mkdir /app/ngDist
 sudo docker run --restart=always \
 -p 80:3000 -v /app/ngDist:/app/ngDist --name nodecompetencias -d nodecompetencias
 
-# Para compilar angular y moverlo a la carpeta /app/ngDist esta un script dentro de FrontComp
+# Para compilar angular y moverlo a la carpeta /app/ngDist esta un script dentro de frontend
 # Recordatorio, es necesario tener las dependencias (@angular/core y @angular/compiler) para compilarlo sino da error, con este comando las instala y compila:
-cd FrontComp && \
+cd frontend && \
 npm i ; \
 sudo ./buildCpToVolume.sh; cd ..
 ```
@@ -101,7 +101,7 @@ Luego enlazar el debugger a este proceso, para vscode crear una configuración e
       "request": "launch",
       "name": "Launch Chrome against localhost",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}/FrontComp"
+      "webRoot": "${workspaceFolder}/frontend"
     },
     {
       "name": "Attach",

@@ -5,7 +5,7 @@
 			"type": "pwa-chrome",
 			"request": "launch",
 			"url": "http://localhost:4200",
-			"webRoot": "${workspaceFolder}/FrontComp"
+			"webRoot": "${workspaceFolder}/frontend"
 		},
 		{
 			"name": "Backend Attach",

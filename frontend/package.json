@@ -6,13 +6,13 @@
 		"start:dev": "rimraf dist && ng serve",
 		"build": "ng build --configuration production",
 		"build:prod": "ng build --configuration production && npm run removecss",
-		"removecss": "cd dist/FrontComp && purgecss --css ./styles.css --content *.html *.js --output ./styles.css",
+		"removecss": "cd dist/frontend && purgecss --css ./styles.css --content *.html *.js --output ./styles.css",
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
 		"compodoc": "npx compodoc -p tsconfig.json -s",
 		"commit": "cz",
-		"webpack-bundle-analyzer": "webpack-bundle-analyzer dist/FrontComp/stats.json"
+		"webpack-bundle-analyzer": "webpack-bundle-analyzer dist/frontend/stats.json"
 	},
 	"private": true,
 	"dependencies": {
@@ -86,7 +86,7 @@
 	},
 	"config": {
 		"commitizen": {
-			"path": "./FrontComp/node_modules/cz-conventional-changelog"
+			"path": "./frontend/node_modules/cz-conventional-changelog"
 		}
 	}
 }

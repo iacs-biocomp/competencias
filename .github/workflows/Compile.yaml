@@ -15,9 +15,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install Front dependencies
-        run: (cd FrontComp && npm i)
+        run: (cd frontend && npm i)
       - name: Compile frontend
-        run: (cd FrontComp && npm run build:prod)
+        run: (cd frontend && npm run build:prod)
       # - name: Deploy to server
       # run: ./scripts/deploy_front.sh ${{ secrets.DEPLOY_PATH }} "${{ secrets.SSH_KEY }}" ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_HOST }}
 #

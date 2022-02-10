@@ -2,7 +2,7 @@
 GO_TO=$(dirname "$0")
 cd $GO_TO
 
-cd ../back-comp
+cd ../backend
 sudo docker stop nodecompetencias
 sudo docker rm nodecompetencias
 sudo docker rmi iacs/nodecompetencias:latest

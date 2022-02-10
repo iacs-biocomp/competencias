@@ -1,0 +1,18 @@
+{
+	"type": "postgres",
+	"host": "localhost",
+	"port": 5432,
+	"username": "postgres",
+	"password": "secretpassxd",
+	"database": "postgres",
+	"synchronize": true,
+	"logging": false,
+	"entities": ["src/entity/**/*.entity{.ts,.js}"],
+	"migrations": ["src/database/migrations/*{.ts,.js}"],
+	"subscribers": ["src/subscriber/**/*.ts"],
+	"cli": {
+		"entitiesDir": "src/entity",
+		"migrationsDir": "src/database/migrations",
+		"subscribersDir": "src/subscriber"
+	}
+}

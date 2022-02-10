@@ -20,6 +20,6 @@ wait
 echo "$(tput setaf 2)"Container created and running"$(tput sgr0)"
 echo "$(tput setaf 2)"Executing all migrations"$(tput sgr0)"
 
-cd ../back-comp/ && npm run migration:run
+cd ../backend/ && npm run migration:run
 
 # TODO: add file.sql from pgdump that inserts Default Roles and Admin user.
