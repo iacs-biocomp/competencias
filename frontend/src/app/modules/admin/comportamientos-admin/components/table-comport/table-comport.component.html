@@ -10,30 +10,6 @@
 			class="form-control me-5 max50Percent"
 			(keyup)="cv.filters.descObs.next(descFilter.value)"
 		/>
-		<select
-			class="form-select mb-2"
-			style="max-width: 15%"
-			#compFilter
-			(change)="cv.filters.compObs.next(findCompById(dbData.comps, compFilter.value))"
-		>
-			<option selected hidden disabled>Competencia</option>
-			<option value="undefined">Todas</option>
-			<option *ngFor="let comp of dbData.comps" [ngValue]="comp">
-				{{ comp.id }}
-			</option>
-		</select>
-		<select
-			#nivFilter
-			class="form-select mb-2"
-			style="max-width: 10%"
-			(change)="cv.filters.nivObs.next(findNivelById(dbData.niveles, nivFilter.value))"
-		>
-			<option selected hidden disabled>Nivel</option>
-			<option *ngFor="let niv of dbData.niveles">
-				{{ niv.id }}
-			</option>
-			<option [value]="undefined">Todos</option>
-		</select>
 	</div>
 
 	<table aria-label="Listado de todos los comportamientos existentes" class="table table-hover">
