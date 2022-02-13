@@ -1,11 +1,11 @@
 <h1 class="layout-title">Evaluaciones</h1>
 
-<div class="container-fluid" *ngIf="isDataLoaded">
+<div class="container-fluid" *ngIf="viewControls.isDataLoaded">
 	<button
 		class="btn btn-primary mb-2"
 		data-bs-toggle="modal"
 		[attr.data-bs-target]="'#' + childrenIds.newEvModalId"
-		id="newEvButton"
+		[disabled]="!viewControls.canCreateNewEv"
 	>
 		Nueva evaluación
 	</button>
@@ -13,6 +13,7 @@
 		class="btn btn-success ms-2 mb-2"
 		data-bs-toggle="modal"
 		[attr.data-bs-target]="'#' + childrenIds.createModalId"
+		[disabled]="!viewControls.canCreateNewModel"
 	>
 		Nuevo modelo
 	</button>
@@ -22,10 +23,10 @@
 	<app-create-model [modalId]="childrenIds.createModalId"></app-create-model>
 	<div class="row gy-4">
 		<app-empty-state
-			*ngIf="evaluaciones.length === 0"
+			*ngIf="data.evaluaciones.length === 0"
 			[textToShow]="'Vaya no hay ninguna evaluación, crea una'"
 		></app-empty-state>
-		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let ev of evaluaciones">
+		<div class="col-md-6 col-sm-12 col-lg-4" *ngFor="let ev of data.evaluaciones">
 			<div class="card">
 				<h2 class="card-title">Id evaluación: {{ ev.id }}</h2>
 				<div class="card-body">

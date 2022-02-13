@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { EvaluacionesAdmService } from 'services/data';
+import { CompetenciasService, ComportService, EvaluacionesAdmService, NivelService } from 'services/data';
 import { IEvaluacion } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
 
@@ -11,9 +11,17 @@ import { LogService } from 'src/app/shared/log/log.service';
 	styleUrls: ['./list-ev.component.scss'],
 })
 export class ListEvComponent implements OnInit {
-	isDataLoaded = false;
-	/** Evs in database */
-	evaluaciones: IEvaluacion[] = [];
+	data = {
+		/** Evs in database */
+		evaluaciones: [] as IEvaluacion[],
+	};
+
+	viewControls = {
+		isDataLoaded: false,
+		canCreateNewModel: false,
+		canCreateNewEv: false,
+	};
+
 	/** Children components' ids */
 	childrenIds = {
 		createModalId: 'createModal',
@@ -40,17 +48,41 @@ export class ListEvComponent implements OnInit {
 		},
 	};
 
-	constructor(private readonly evSv: EvaluacionesAdmService, private readonly logger: LogService) {}
+	constructor(
+		private readonly evSv: EvaluacionesAdmService,
+		private readonly logger: LogService,
+		private readonly nivSv: NivelService,
+		private readonly comportSv: ComportService,
+		private readonly compSv: CompetenciasService,
+	) {}
 
-	async ngOnInit() {
-		this.logger.verbose('Inicializando ListEvComponent');
-		await this.updateEvalView();
-		this.isDataLoaded = true;
+	ngOnInit(): void {
+		this.logger.verbose(`ngOnInit ${this.constructor.name}`);
+		(async () => {
+			this.data.evaluaciones = await this.evSv.getAll();
+			const [nivCount, comportCount, compCount] = await Promise.all([
+				this.nivSv.getCountReference(),
+				this.comportSv.getCount(),
+				this.compSv.getCount(),
+			]);
+			this.viewControls.canCreateNewModel = this.canCreateNewModel(nivCount, comportCount, compCount);
+			this.viewControls.canCreateNewEv = this.canCreateNewEv();
+			this.viewControls.isDataLoaded = true;
+		})();
+	}
+
+	private canCreateNewModel(nivCount: number, comportCount: number, compCount: number): boolean {
+		return nivCount > 0 && comportCount > 0 && compCount > 0;
+	}
+
+	private canCreateNewEv(): boolean {
+		// TODO: Completar obteniendo numero de modelos creados, si es mayor a 0 true
+		return true;
 	}
 
 	async updateEvalView(): Promise<void> {
 		this.logger.verbose('Actualizando vista de ListEvComponent');
-		this.evaluaciones = await this.evSv.getAll();
+		this.data.evaluaciones = await this.evSv.getAll();
 	}
 
 	/**
@@ -59,7 +91,7 @@ export class ListEvComponent implements OnInit {
 	 */
 	async showingResultsBtnUpdate(event: MatSlideToggleChange): Promise<void> {
 		const evIdDecoded = this.showingResultsBtnControls.decodeBtnId(event.source.id);
-		let evToModify = this.evaluaciones.find(ev => ev.id === evIdDecoded);
+		let evToModify = this.data.evaluaciones.find(ev => ev.id === evIdDecoded);
 		if (!evToModify) {
 			const err = new Error('This should never happen, contact a programmer, probably decodeBtnId fn failed');
 			this.logger.error('Error:', err);
