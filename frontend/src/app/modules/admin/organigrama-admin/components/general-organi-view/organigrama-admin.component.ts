@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { uniqBy } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { OrganiService, CatCompetencialesService } from 'services/data';
 import { lowerCaseNoWhiteSpaces, toggleInArray } from 'sharedCode/Utility';
+import { IOrganigramaUsrDTO, ITrabajadorDTO, ITrabOrganiDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
 
@@ -10,39 +12,12 @@ type OrgScrollOpts = {
 	removeHighlight?: boolean;
 };
 
-type ModalTitles = 'Inferior' | 'Superior' | 'Par';
-type ModalCtrl = {
-	/** El trabajador sobre el que se abre el modal al cual se le añadirá una relacion */
-	worker?: IOrganigramaUsrDTO;
-	/** Los trabajadores que se quieren añadir como relación del modalWorker,
-	 *  del modalTitle se obtiene que tipo de relación se añadirá */
-	relations: ITrabOrgani[];
-	/** Relaciones de un trabajador a borrar en la base de datos, el modal las añade a este array al hacer click */
-	relationsDelete: ITrabOrgani[];
-	/** Strings permitidos como titulo del modal, usado también para saber que es lo que se quiere añadir (inf/sup/par) */
-	title: ModalTitles;
-	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
-	filter: string;
-	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
-	filterObs: BehaviorSubject<string>;
-	/** Organigrama del modal filtrado (Debe ser filtrado para el trabajador del modal y con el texto dado) */
-	orgFiltered: IOrganigramaUsrDTO[];
-};
+enum ModalTitles {
+	INF = 'Inferior',
+	SUP = 'Superior',
+	PAR = 'Par',
+}
 
-type CtlView = {
-	modal: ModalCtrl;
-
-	/** Categoria competencial usada para filtrar el organigrama */
-	cCompFilter?: ICatComp;
-	/** Categoria competencial usada para filtrar el organigrama */
-	cCompFilterObs: BehaviorSubject<ICatComp | undefined>;
-
-	/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
-	orgFilterObs: BehaviorSubject<string>;
-	/** Representa el texto que se ha usado previamente para filtrar (orgFilterObs.value) */
-	previousFilterTxt: string;
-	[key: string]: any;
-};
 @Component({
 	selector: 'app-organigrama-admin',
 	templateUrl: './organigrama-admin.component.html',
@@ -58,71 +33,87 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	fullOrgani!: IOrganigramaUsrDTO[];
 	/** El organigrama filtrado, este es el que ha de modificarse cuando cambien los valores a filtrar */
 	filteredOrgani!: IOrganigramaUsrDTO[];
-	/** Lista de los trabajadores que hay en el fullOrgani*/
-	trabajadores!: ITrabOrgani[];
-	trabajadoresFiltered!: ITrabOrgani[];
+	/** List of all workers */
+	workers: ITrabOrganiDTO[] = [];
+	workersFiltered: ITrabOrganiDTO[] = [];
 	myControl = new FormControl();
 	/** Todas las categorias competenciales */
-	cComps!: ICatComp[];
+	cComps: ICatComp[] = [];
+
+	/** Used only for the view to access enum members */
+	ModalTitles = ModalTitles;
 
 	/** Control View, objeto que tiene variables unicamente para la vista y se usan poco en el modelo */
-	cv: CtlView = {
-		orgFilterObs: new BehaviorSubject<string>(''),
+	cv = {
+		/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+		orgFilterObs: new BehaviorSubject(''),
+		/** Representa el texto que se ha usado previamente para filtrar (orgFilterObs.value) */
 		previousFilterTxt: '',
 		/** Usada para hacer collapse de todos los accordion o mostrarlos */
 		showall: false,
-		cCompFilter: undefined,
+		/** Categoria competencial usada para filtrar el organigrama */
+		cCompFilter: undefined as ICatComp | undefined,
+		/** Categoria competencial usada para filtrar el organigrama */
 		cCompFilterObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 		trabCount: 0,
 		modal: {
-			title: 'Par',
-			worker: undefined,
-			relations: [],
-			relationsDelete: [],
+			title: ModalTitles.PAR,
+			/** El trabajador sobre el que se abre el modal al cual se le añadirá una relacion */
+			worker: undefined as IOrganigramaUsrDTO | undefined,
+			/** Los trabajadores que se quieren añadir como relación del modalWorker,
+			 *  del modalTitle se obtiene que tipo de relación se añadirá */
+			relations: [] as ITrabajadorDTO[],
+			/** Relaciones de un trabajador a borrar en la base de datos, el modal las añade a este array al hacer click */
+			relationsDelete: [] as ITrabajadorDTO[],
+			/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
 			filter: '',
-			filterObs: new BehaviorSubject<string>(''),
-			orgFiltered: [],
+			/** El filtro a aplicar sobre el organigrama en el MODAL, dado por el usuario en un <input> */
+			filterObs: new BehaviorSubject(''),
+			/** Organigrama del modal filtrado (Debe ser filtrado para el trabajador del modal y con el texto dado) */
+			orgFiltered: [] as IOrganigramaUsrDTO[],
 		},
 	};
-	subs: Subscription[] = [];
+	#subs: Subscription[] = [];
 
 	constructor(
-		private orgSv: OrganiService,
-		private cCompSv: CatCompetencialesService,
+		private readonly orgSv: OrganiService,
+		private readonly cCompSv: CatCompetencialesService,
 		private readonly logger: LogService,
 	) {}
 
-	async ngOnInit(): Promise<void> {
+	ngOnInit(): void {
 		this.logger.verbose('Inicializando componente organigrama-admin');
-		const promises = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
-		this.cComps = promises[1];
-		this.filteredOrgani = this.filterOrgani('');
+		(async () => {
+			const [_, cComps] = await Promise.all([this.syncView(), this.cCompSv.getAll()]);
+			this.cComps = cComps;
+			this.filteredOrgani = this.filterOrgani('');
 
-		this.subs.push(
-			//Suscripción 1
-			this.cv.orgFilterObs.subscribe(txt4filter => {
-				if (txt4filter === this.cv.previousFilterTxt) {
-					return;
-				}
-				this.filteredOrgani = this.filterOrgani(txt4filter);
-				this.cv.previousFilterTxt = txt4filter;
-			}),
-			//Suscripción 2
-			this.cv.modal.filterObs.subscribe(modalFilterTxt => {
-				this.cv.modal.orgFiltered = this.filterNewRelation(
-					this.filterOrgani(modalFilterTxt),
-					this.cv.modal.worker!,
-				);
-			}),
-			this.cv.cCompFilterObs.subscribe(() => {
-				this.filteredOrgani = this.filterOrgani(this.cv.orgFilterObs.value);
-			}),
-		);
+			this.#subs.push(
+				//Suscripción 1
+				this.cv.orgFilterObs.subscribe(txt4filter => {
+					if (txt4filter === this.cv.previousFilterTxt) {
+						return;
+					}
+					this.filteredOrgani = this.filterOrgani(txt4filter);
+					this.cv.previousFilterTxt = txt4filter;
+				}),
+				//Suscripción 2
+				this.cv.modal.filterObs.subscribe(modalFilterTxt => {
+					this.cv.modal.orgFiltered = this.filterNewRelation(
+						this.filterOrgani(modalFilterTxt),
+						this.cv.modal.worker!,
+					);
+				}),
+				this.cv.cCompFilterObs.subscribe(() => {
+					this.filteredOrgani = this.filterOrgani(this.cv.orgFilterObs.value);
+				}),
+			);
+		})();
 	}
 
 	ngOnDestroy(): void {
-		this.logger.verbose('Destruyendo componente');
-		this.subs.forEach(s => s.unsubscribe());
+		this.logger.verbose(`ngOnDestroy of ${this.constructor.name}`);
+		this.#subs.forEach(s => s.unsubscribe());
 		this.closeModalAddRel.nativeElement.click();
 		this.closeModalDeleteRel.nativeElement.click();
 	}
@@ -133,13 +124,13 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	 * @param modalTitle El titulo del modal, de tipo modalTitles
 	 */
 	setCtrlView(modalWorker: IOrganigramaUsrDTO, modalTitle: ModalTitles, addOrRemove: 'remove' | 'add') {
-		const relations = () => {
+		const relations = (): ITrabajadorDTO[] => {
 			switch (modalTitle) {
-				case 'Inferior':
+				case ModalTitles.INF:
 					return modalWorker.inferiores;
-				case 'Superior':
+				case ModalTitles.SUP:
 					return modalWorker.superiores;
-				case 'Par':
+				case ModalTitles.PAR:
 					return modalWorker.pares;
 			}
 		};
@@ -149,28 +140,20 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		this.cv.modal.title = modalTitle;
 	}
 
-	selectRelation(wrk: ITrabOrgani) {
-		const index = this.cv.modal.relations.indexOf(wrk);
-		if (index === -1) {
-			this.cv.modal.relations.push(wrk);
-		} else {
-			this.cv.modal.relations.splice(index, 1);
-		}
+	selectRelation(wrk: typeof this.cv.modal.relationsDelete[0]) {
+		toggleInArray(wrk, this.cv.modal.relations);
 	}
-	selectRelToRm(wrk: ITrabOrgani) {
-		const index = this.cv.modal.relationsDelete.indexOf(wrk);
-		if (index === -1) {
-			this.cv.modal.relationsDelete.push(wrk);
-		} else {
-			this.cv.modal.relationsDelete.splice(index, 1);
-		}
+
+	selectRelToRm(wrk: typeof this.cv.modal.relationsDelete[0]) {
+		toggleInArray(wrk, this.cv.modal.relationsDelete);
 	}
+
 	/** Sincroniza la vista con la base de datos pidiendo todos los datos de nuevo */
 	async syncView(): Promise<void> {
 		this.fullOrgani = await this.orgSv.getFullOrgani();
 		this.fullOrgani.sort((a, b) => a.trabajador.nombre.localeCompare(b.trabajador.nombre));
-		this.trabajadores = this.fullOrgani.map(org => org.trabajador);
-		this.trabajadoresFiltered = this.trabajadores;
+		this.workers = this.fullOrgani.map(org => org.trabajador);
+		this.workersFiltered = this.workers;
 		this.filteredOrgani = this.filterOrgani('');
 		this.cv.modal.filterObs.next('');
 	}
@@ -182,24 +165,23 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	 */
 	async saveRelations(dniId?: string) {
 		let saved = false;
-		let relations: ITrabOrgani[];
-		/**Funcion que recibe unos trabajadores y elimina los duplicados */
-		const filterDuplicates = (rels: ITrabOrgani[]) =>
-			rels.filter((rel, index) => rels.indexOf(rel) === index);
+		let relations: ITrabajadorDTO[];
+		/** Remove duplicate workers, comparing them by dni */
+		const filterDuplicates = <T extends Pick<ITrabajadorDTO, 'dni'>>(rels: T[]): T[] => uniqBy(rels, 'dni');
 		try {
 			switch (this.cv.modal.title) {
-				case 'Inferior':
-					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.inferiores!));
+				case ModalTitles.INF:
+					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker!.inferiores));
 					this.logger.verbose('Guardando relaciones con inferiores');
 					saved = await this.orgSv.setInferiores(this.cv.modal.worker!.trabajador, relations);
 					break;
-				case 'Par':
-					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.pares!));
+				case ModalTitles.PAR:
+					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker!.pares));
 					this.logger.verbose('Guardando relaciones con pares');
 					saved = await this.orgSv.setPares(this.cv.modal.worker!.trabajador, relations);
 					break;
-				case 'Superior':
-					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker?.superiores!));
+				case ModalTitles.SUP:
+					relations = filterDuplicates(this.cv.modal.relations.concat(this.cv.modal.worker!.superiores));
 					this.logger.verbose('Guardando relaciones con superiores');
 					saved = await this.orgSv.setSuperiores(this.cv.modal.worker!.trabajador, relations);
 					break;
@@ -227,13 +209,13 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 		}
 		try {
 			switch (this.cv.modal.title) {
-				case 'Inferior':
+				case ModalTitles.INF:
 					await this.orgSv.deleteInferiores(trabajador, this.cv.modal.relationsDelete);
 					break;
-				case 'Superior':
+				case ModalTitles.SUP:
 					await this.orgSv.deleteSuperiores(trabajador, this.cv.modal.relationsDelete);
 					break;
-				case 'Par':
+				case ModalTitles.PAR:
 					await this.orgSv.deletePares(trabajador, this.cv.modal.relationsDelete);
 					break;
 			}
@@ -255,9 +237,10 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	 *
 	 * @param id Id del elemento HTML al que se quiere hacer scroll
 	 */
-	scroll(id: string, scrollOpts?: OrgScrollOpts) {
+	scroll(id: string, scrollOpts?: OrgScrollOpts): void {
 		const element = document.getElementById(id);
 		if (!element) {
+			console.error(`No element to scroll with id: ${id}`);
 			return;
 		}
 		if (!scrollOpts?.removeHighlight) {

@@ -48,7 +48,7 @@
 							data-bs-toggle="modal"
 							data-bs-target="#removeModal"
 							[disabled]="trab.inferiores.length === 0"
-							(click)="setCtrlView(trab, 'Inferior', 'remove')"
+							(click)="setCtrlView(trab, ModalTitles.INF, 'remove')"
 						>
 							<span class="material-icons" title="Eliminar inferiores"> remove </span>
 						</button>
@@ -56,7 +56,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Inferior', 'add'); cv.modal.filterObs.next('')"
+							(click)="setCtrlView(trab, ModalTitles.INF, 'add'); cv.modal.filterObs.next('')"
 						>
 							<span class="material-icons" title="Añadir inferior"> add </span>
 						</button>
@@ -71,7 +71,7 @@
 							data-bs-toggle="modal"
 							data-bs-target="#removeModal"
 							[disabled]="trab.pares.length === 0"
-							(click)="setCtrlView(trab, 'Par', 'remove')"
+							(click)="setCtrlView(trab, ModalTitles.PAR, 'remove')"
 						>
 							<span class="material-icons" title="Eliminar pares"> remove </span>
 						</button>
@@ -79,7 +79,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Par', 'add'); cv.modal.filterObs.next('')"
+							(click)="setCtrlView(trab, ModalTitles.PAR, 'add'); cv.modal.filterObs.next('')"
 						>
 							<span class="material-icons" title="Añadir par"> add </span>
 						</button>
@@ -93,7 +93,7 @@
 							data-bs-toggle="modal"
 							data-bs-target="#removeModal"
 							[disabled]="trab.superiores.length === 0"
-							(click)="setCtrlView(trab, 'Superior', 'remove')"
+							(click)="setCtrlView(trab, ModalTitles.SUP, 'remove')"
 						>
 							<span class="material-icons" title="Eliminar superiores"> remove </span>
 						</button>
@@ -101,7 +101,7 @@
 							class="btn btn-primary me-2"
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							(click)="setCtrlView(trab, 'Superior', 'add'); cv.modal.filterObs.next('')"
+							(click)="setCtrlView(trab, ModalTitles.SUP, 'add'); cv.modal.filterObs.next('')"
 						>
 							<span class="material-icons" title="Añadir superior"> add </span>
 						</button>
