@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { OrganiService, CatCompetencialesService } from 'services/data';
-import { IOrganigramaUsrDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
+import { lowerCaseNoWhiteSpaces, toggleInArray } from 'sharedCode/Utility';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
 
@@ -305,7 +305,7 @@ export class OrganiGeneralView implements OnInit, OnDestroy {
 	 */
 	filterOrgani(value: string): IOrganigramaUsrDTO[] {
 		this.logger.verbose('Filtrando orgranigrama');
-		const filterValue = value.toLowerCase().replace(/\s/g, '');
+		const filterValue = lowerCaseNoWhiteSpaces(value);
 		const nameFilteredOrg = this.fullOrgani?.filter(org => {
 			const trabNames = org.trabajador.nombre.toLowerCase() + org.trabajador.apellidos.toLowerCase();
 			return trabNames.includes(filterValue) ? true : false;

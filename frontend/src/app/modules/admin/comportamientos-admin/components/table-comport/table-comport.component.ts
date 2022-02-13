@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { IComportamiento } from 'sharedInterfaces/Entity';
-import { findNivelById, findCompById } from 'sharedCode/Utility';
+import { findNivelById, findCompById, lowerCaseNoWhiteSpaces } from 'sharedCode/Utility';
 import { LogService } from 'src/app/shared/log/log.service';
 import { ComportService, CompetenciasService, NivelService } from 'services/data';
 import { ICompGetDTO, IComportGetDTO, INivelGetDTO } from 'sharedInterfaces/DTO';
@@ -66,7 +66,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 			this.dbData.comports.forEach(comport =>
 				this.cv.util4Filters.behaviourDescriptions.set(
 					comport.id,
-					comport.descripcion.toLowerCase().replace(/\s/g, ''),
+					lowerCaseNoWhiteSpaces(comport.descripcion),
 				),
 			);
 		})();
@@ -180,7 +180,7 @@ export class TableComportComponent implements OnInit, OnDestroy {
 			return comports;
 		}
 		return comports.filter(comport => {
-			const filterValue = desc.toLowerCase().replace(/\s/g, '');
+			const filterValue = lowerCaseNoWhiteSpaces(desc);
 			return this.cv.util4Filters.behaviourDescriptions.get(comport.id)?.includes(filterValue) ? true : false;
 		});
 	}

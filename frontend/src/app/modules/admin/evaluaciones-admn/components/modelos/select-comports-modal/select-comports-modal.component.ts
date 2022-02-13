@@ -11,6 +11,7 @@ import {
 import { ICompetencia, IComportamiento, INivel } from 'sharedInterfaces/Entity';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LogService } from 'src/app/shared/log/log.service';
+import { lowerCaseNoWhiteSpaces } from 'sharedCode/Utility';
 
 type ComportCtrlView = {
 	/** La ultima competencia seleccionada */
@@ -88,9 +89,9 @@ export class SelectComportsModalComponent implements OnInit, OnDestroy {
 					this.comportCtl.comportsFiltered = this.comportsToShowObs.value;
 					return;
 				}
-				const filterValue = txt.toLowerCase().replace(/\s/g, '');
+				const filterValue = lowerCaseNoWhiteSpaces(txt);
 				this.comportCtl.comportsFiltered = this.comportsToShowObs.value.filter(comport =>
-					comport.descripcion.toLowerCase().replace(/\s/g, '').includes(filterValue),
+					lowerCaseNoWhiteSpaces(comport.descripcion).includes(filterValue),
 				);
 			}),
 		);

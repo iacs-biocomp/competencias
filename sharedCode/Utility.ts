@@ -279,6 +279,10 @@ export function getAllOfModel<T extends MinCompetencia, U extends MinNivel, P ex
 	}
 }
 
+export function lowerCaseNoWhiteSpaces(value: string): string {
+	return value.toLowerCase().replace(/\s/g, '');
+}
+
 /**
  *  Comprueba si cierta competencia tiene comportamientos asociados a un nivel pasado como parametro
  * @param niv El codigo (no el id) del nivel u objeto a buscar
