@@ -23,10 +23,7 @@ export interface IOrganigramaUsrDTO {
  *
  */
 export interface IOrganigramaTrabajadorDTO {
-	//TODO: Tsdoc
 	superiores: ITrabajadorDTO[];
-	//TODO: Tsdoc
 	pares: ITrabajadorDTO[];
-	//TODO: Tsdoc
 	inferiores: ITrabajadorDTO[];
 }

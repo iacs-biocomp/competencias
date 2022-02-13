@@ -297,7 +297,8 @@ export function checkNivOnComp(
 }
 
 /**
- *  TODO: Complete
+ * Adds an object T to an array if this object doesn't exist, removes it otherwise
+ *
  * @param objToggle objeto a eliminar o añadir
  * @param arrToPushRemove Donde se añade/elimina
  */

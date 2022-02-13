@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { IOrganigramaUsrDTO, ITrabOrgani, IRelationsPostDTO } from 'sharedInterfaces/DTO';
+import { IOrganigramaUsrDTO, IRelationsPostDTO } from 'sharedInterfaces/DTO';
+import { ITrabajador } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
 import { environment as cnf } from 'src/environments/environment';
 
@@ -27,7 +28,7 @@ export class OrganiService {
 	 * @param relations The relations to set
 	 * @returns A {@link Promise} that resolves as `true` if it has been setted, rejected other
 	 */
-	setInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
+	setInferiores(wrk: Pick<ITrabajador, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/organigrama/inferiores/${dni}`;
 		this.logger.debug(
@@ -44,7 +45,7 @@ export class OrganiService {
 	 * @returns A {@link Promise} that resolves as `true` if it has been setted, rejected other
 	 *
 	 */
-	setSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
+	setSuperiores(wrk: Pick<ITrabajador, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/organigrama/superiores/${dni}`;
 		this.logger.debug(
@@ -62,7 +63,7 @@ export class OrganiService {
 	 *
 	 */
 	setPares(
-		wrk: Pick<ITrabOrgani, 'dni'> | ITrabOrgani['dni'],
+		wrk: Pick<ITrabajador, 'dni'> | ITrabajador['dni'],
 		relations: IRelationsPostDTO[],
 	): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
@@ -82,7 +83,7 @@ export class OrganiService {
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 *
 	 */
-	deleteInferiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
+	deleteInferiores(wrk: Pick<ITrabajador, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/organigrama/inferiores/${dni}`;
 		this.logger.debug(
@@ -98,7 +99,7 @@ export class OrganiService {
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 *
 	 */
-	deletePares(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
+	deletePares(wrk: Pick<ITrabajador, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/organigrama/pares/${dni}`;
 		this.logger.debug(`Req a: ${url}, eliminando a trabajador con DNI: ${dni} de las relaciones de pares`);
@@ -111,7 +112,7 @@ export class OrganiService {
 	 * @param relations The relations to delete
 	 * @returns A `Promise` that it's `true` if it has been deleted, exception if not
 	 */
-	deleteSuperiores(wrk: Pick<ITrabOrgani, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
+	deleteSuperiores(wrk: Pick<ITrabajador, 'dni'> | string, relations: IRelationsPostDTO[]): Promise<boolean> {
 		const dni = typeof wrk === 'string' ? wrk : wrk.dni;
 		const url = `${cnf.API_URL}/organigrama/superiores/${dni}`;
 		this.logger.debug(

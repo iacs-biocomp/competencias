@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { isWithinInterval } from 'date-fns';
 import { BehaviorSubject } from 'rxjs';
 import { getIntervalsOfEv, EvIntervals } from 'sharedCode/Utility';
-import { IEvAllRequiredDTO, ITrabOrgani } from 'sharedInterfaces/DTO';
+import { IEvAllRequiredDTO } from 'sharedInterfaces/DTO';
 import { ICatComp } from 'sharedInterfaces/Entity';
 import { JwtService } from 'src/app/services/auth/jwt.service';
 import { EvaluacionesService } from 'src/app/services/data';
@@ -20,11 +20,6 @@ enum EvStatus {
 	COMPLETADA,
 }
 
-type catCompCtrlView = {
-	/** Emits the cCompSelected that is used for the new ev */
-	cCompSelectedObs: BehaviorSubject<ICatComp | undefined>;
-};
-
 type IEvWithStatus = IEvAllRequiredDTO & { status: EvStatus };
 @Component({
 	selector: 'app-mis-evaluaciones',
@@ -36,15 +31,16 @@ export class MisEvaluacionesComponent implements OnInit {
 	//	@Input() catCompObs = new BehaviorSubject<ICatComp>();
 	public EvStatus = EvStatus;
 	isDataLoaded = false;
-	evs!: IEvWithStatus[];
+	evs: IEvWithStatus[] = [];
 
 	//Pruebas para mostrar un texto u otro en los botones (evaluar o calcular)
 	buttonEvaluar = true;
 	buttonCalcular = true;
 
-	trabajador!: ITrabOrgani;
+	// trabajador!: ITrabOrgani;
 
-	cCompCtl: catCompCtrlView = {
+	cCompCtl = {
+		/** Emits the cCompSelected that is used for the new ev */
 		cCompSelectedObs: new BehaviorSubject<ICatComp | undefined>(undefined),
 	};
 

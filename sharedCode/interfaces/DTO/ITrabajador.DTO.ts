@@ -1,4 +1,3 @@
-import { ICatComp } from '../Entity/ICategorias';
 import { ITrabajador } from '../Entity/IUser';
 import { Expand } from '../Utility';
 import { ICCompDTO, ICContrGetDTO } from './categorias';
@@ -28,13 +27,6 @@ export type ITrabCCompCContrStrDTO = Expand<
 	Omit<ITrabCCompCContrDTO, 'catComp' | 'catContr'> & {
 		catComp: string;
 		catContr: string;
-	}
->;
-/** @deprecated No usar ya que no es dto */
-export type ITrabOrgani = Expand<
-	Omit<ITrabajador, 'periodos' | 'user'> & {
-		/** La categoría competencial actual del trabajador, solo EL TRABAJADOR la tiene no sus sup/inf/pares */
-		catComp?: ICatComp;
 	}
 >;
 
