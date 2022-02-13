@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { EvaluacionesAdmService } from 'services/data';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CompRoutes } from 'src/app/types/angular-modified-types';
-import { NewEvModalComponent, ModelCompSelectComponent, ObjectiveNivsSelectComponent } from './components';
+import { NewEvModalComponent, ObjectiveNivsSelectComponent } from './components';
 import { CompSelectComponent } from './components/comp-select/comp-select.component';
 import { ListEvComponent } from './components/list-ev/list-ev.component';
 import { CreateModelComponent } from './components/modelos/create-model/create-model.component';
@@ -39,7 +39,6 @@ export const evRoutes: CompRoutes = [
 		NewEvModalComponent,
 		ViewAllModelsComponent,
 		ViewEditModelComponent,
-		ModelCompSelectComponent,
 		ObjectiveNivsSelectComponent,
 		SelectComportsModalComponent,
 		NivComportFilterPipe,

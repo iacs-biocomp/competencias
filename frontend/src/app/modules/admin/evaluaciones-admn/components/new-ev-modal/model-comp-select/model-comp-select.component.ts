@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { EvModelsAdmnService } from 'services/data';
-import { getCompetOfModel } from 'sharedCode/Utility';
+import { getCompetOfModel, toggleInArray } from 'sharedCode/Utility';
 import { IRefModel } from 'sharedInterfaces/DTO';
 import { ICompetencia, ICatComp } from 'sharedInterfaces/Entity';
 import { LogService } from 'src/app/shared/log/log.service';
@@ -42,7 +42,7 @@ export class ModelCompSelectComponent implements OnInit {
 
 	constructor(private evModelSv: EvModelsAdmnService, private readonly logger: LogService) {}
 
-	async ngOnInit(): Promise<void> {
+	ngOnInit(): void {
 		this.logger.verbose('Cargando componente model-comp-select');
 		if (!this.catCompObs.value) {
 			throw new Error('Has renderizado el componente antes de elegir la catComp, o esta es undefined');
@@ -69,16 +69,10 @@ export class ModelCompSelectComponent implements OnInit {
 	 * @param comp the competence you want to add or remove to the array (compsSelected)
 	 */
 	toggleCompet(comp: ICompetencia): void {
-		// TODO: [10]{N1} Refactor, usar toggle inArray
 		this.logger.debug(`Seleccionando las competencias de la evaluacion`, comp);
-		const arrToPush = this.competCtl.compsSelected;
-		const index = arrToPush.indexOf(comp);
-		if (index == -1) {
-			arrToPush.push(comp);
-		} else {
-			arrToPush.splice(index, 1);
-		}
+		toggleInArray(comp, this.competCtl.compsSelected);
 	}
+
 	/** Sets the competencies selected to the observer */
 	setCompe(): void {
 		this.logger.verbose('Mandando competencias al observable');
