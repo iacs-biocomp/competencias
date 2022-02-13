@@ -29,7 +29,7 @@ const routes: CompRoutes = [
 /** De este modulo cuelga toda la interfaz que el administrador utilizará,
  * para asi al servirla en Nest sea mas facil autorizar la descarga de este */
 @NgModule({
-	declarations: [],
+	declarations: [ManagmentLO],
 	imports: [
 		CommonModule,
 		RouterModule.forChild(routes),
