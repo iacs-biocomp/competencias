@@ -9,8 +9,8 @@
 				<ul class="list-group">
 					<li *ngFor="let comp of compsObs | async" class="list-group-item p-3">
 						{{ comp.descripcion }}
-						<select ngModel="competencia.id" #selectNiv (change)="setNivel(comp, selectNiv.value)">
-							<option *ngFor="let niv of nivs" [value]="niv.code">
+						<select ngModel="competencia.id" #selectNiv (change)="setNivel(comp.id, selectNiv.value)">
+							<option *ngFor="let niv of referenceLevels" [value]="niv.code">
 								{{ niv.code }}
 							</option>
 						</select>
