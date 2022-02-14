@@ -17,7 +17,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IJwtPayload, IResultadoDTOV2, IValoracionSettedDTO } from 'sharedInterfaces/DTO';
 import { INivel, IValoracion, Roles } from 'sharedInterfaces/Entity';
 import { Nivel, Valoracion } from 'src/entity';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { ValoracionesRepo } from '../valoraciones.repository';
 import { ApiParam } from '@nestjs/swagger';
 import { parse } from 'cookie';
@@ -34,6 +33,7 @@ import { ComptRepository } from 'src/modules/competencias/competencias.repositor
 import { ComportRepository } from 'src/modules/comportamientos/comportamientos.repository';
 import { TrabajadorRepo } from 'src/modules/trabajadores/trabajador.repository';
 import { uniq } from 'lodash';
+import { SetRoles } from 'src/decorators/role.decorator';
 
 @Controller('api/valoraciones')
 export class ValoracionesController {

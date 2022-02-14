@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Request } from 'express';
 import { Roles } from 'sharedInterfaces/Entity';
 
 @Injectable()
@@ -13,11 +14,11 @@ export class RoleGuard implements CanActivate {
 			return true;
 		}
 
-		const request = context.switchToHttp().getRequest();
-		const { user } = request;
+		const request = context.switchToHttp().getRequest<Request>();
+		const { user } = request.cookies;
 
 		// TODO: feat(role-guard): added functional role guard
-		// const hasRole = () => user.roles.some((role: string) => roles.includes(role));
+		const hasRole = () => user.roles.some((role: Roles) => roles.includes(role));
 
 		return user && user.roles /* && hasRole() */;
 	}

@@ -16,9 +16,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SetRoles } from 'src/decorators/role.decorator';
 import { NivelGetDTO } from 'src/DTO';
 import { Nivel } from 'src/entity';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { NivelRepository } from '../nivel.repository';
 @Controller('api/niveles')
 export class NivelesController {

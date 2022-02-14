@@ -18,8 +18,8 @@ import { Competencia } from 'src/entity';
 import { CompAddDTO, CompGetDTO } from 'src/DTO/competencias.DTO';
 import { ComptRepository } from '../competencias.repository';
 import { CompetenciasService } from '../services/competencias.service';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SetRoles } from 'src/decorators/role.decorator';
 @Controller('api/competencias')
 export class CompetenciasController {
 	constructor(

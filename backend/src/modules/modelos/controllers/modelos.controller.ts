@@ -15,10 +15,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { deleteProps } from 'sharedCode/Utility';
 import { IEvModelAddDTO } from 'sharedInterfaces/DTO';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SetRoles } from 'src/decorators/role.decorator';
 import { EvModelRefUpdateDTO } from 'src/DTO';
 import { Competencia, Comportamiento, EvModel, Nivel, SubModel } from 'src/entity';
 import { CatCompRepo } from 'src/modules/cat-comp/catComp.repository';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { EvModelRepo } from '../modelos.repository';
 import { SubModelRepo } from '../subModel.repository';
 

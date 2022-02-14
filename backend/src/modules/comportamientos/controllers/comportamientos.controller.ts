@@ -16,9 +16,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SetRoles } from 'src/decorators/role.decorator';
 import { ComportAddDTO, ComportPutDTO } from 'src/DTO';
 import { Comportamiento } from 'src/entity';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { ComportRepository } from '../comportamientos.repository';
 import { ComportamientosService } from '../services/comportamientos.service';
 

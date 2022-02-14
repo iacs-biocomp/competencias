@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Post, Body, Patch, Delete, ParseIntPipe } from '@nestjs/common';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SetRoles } from 'src/decorators/role.decorator';
 import { UserDTO } from 'src/DTO/user.DTO';
 import { Trabajador, User } from 'src/entity';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { UserService } from '../services/user.service';
 
 @Controller('api/users')

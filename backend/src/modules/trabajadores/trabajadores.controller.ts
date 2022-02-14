@@ -20,7 +20,7 @@ import { Trabajador } from 'src/entity';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { CatCompRepo } from '../cat-comp/catComp.repository';
 import { CatContrRepo } from '../cat-contract/catContr.repository';
-import { SetRoles } from '../role/decorators/role.decorator';
+import { SetRoles } from '../../decorators/role.decorator';
 import { TrabajadorRepo } from './trabajador.repository';
 
 @Controller('api/trabajadores')

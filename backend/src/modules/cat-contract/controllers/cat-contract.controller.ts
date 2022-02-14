@@ -13,10 +13,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from 'sharedInterfaces/Entity';
+import { SetRoles } from 'src/decorators/role.decorator';
 import { CContrAndCCompDTO } from 'src/DTO';
 import { CContrAddDTO } from 'src/DTO/cat-contr.DTO';
 import { CatCompRepo } from 'src/modules/cat-comp/catComp.repository';
-import { SetRoles } from 'src/modules/role/decorators/role.decorator';
 import { PeriodosRepo } from 'src/modules/trabajadores/periodos.repository';
 import { CatContrRepo } from '../catContr.repository';
 import { CatContractService } from '../services/cat-contract.service';
